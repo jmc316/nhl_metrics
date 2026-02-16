@@ -1,13 +1,12 @@
 import os
 import random
-import constants as cons
-import pandas as pd
 import numpy as np
 import utils as ut
+import pandas as pd
+import constants as cons
 from termcolor import colored
-from httpcore import ReadTimeout, ConnectError, ConnectTimeout
-from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import OrdinalEncoder
+from sklearn.ensemble import RandomForestRegressor
 
 
 def season_predictions(to_csv=False):
@@ -40,10 +39,8 @@ def season_predictions(to_csv=False):
     season_sched.update(to_predict)
 
     # save the updated season schedule with predictions to a new CSV file
-    # drop the feature columns that are no longer important
     if to_csv:
-        col_order = [cons.id_col, cons.season_col, cons.starttime_utc_col, cons.home_team_name_col, cons.away_team_name_col, cons.home_team_score_col, cons.away_team_score_col, cons.last_period_col]
-        season_sched[col_order].to_csv(cons.output_folder + cons.season_sched_pred_filename, index=False)
+        season_sched.to_csv(cons.output_folder + cons.season_sched_pred_filename, index=False)
 
     return season_sched
 
@@ -51,6 +48,7 @@ def season_predictions(to_csv=False):
 def create_season_df():
     print('\nFetching NHL season schedule...')
 
+    # if the season schedule CSV file already exists in the output folder, load it instead of fetching the data from the API again
     if cons.season_sched_filename in os.listdir(cons.output_folder):
         return pd.read_csv(cons.output_folder + cons.season_sched_filename)
 
@@ -59,14 +57,17 @@ def create_season_df():
     first_day = '2025-10-01'
     last_day = '2026-04-30'
 
+    # initialize an empty dataframe to store the season schedule data
     season_sched = pd.DataFrame()
 
+    # loop through each week of the season and fetch the schedule data for that week, then concatenate it to the season schedule dataframe
     for week in pd.date_range(start=first_day, end=last_day, freq='W'):
-        print(f'\t... {week.strftime('%Y-%m-%d')} ...')
+        print(f'\t... {week.strftime("%Y-%m-%d")} ...')
         for dow in range(0, 7):
             while True:
                 try:
-                    weekly_sched_raw = pd.DataFrame(cons.nhl_client.schedule.weekly_schedule(date=week.strftime('%Y-%m-%d'))['gameWeek'][dow]['games'])
+                    # fetch the schedule data for this week and day of week from the NHL API
+                    weekly_sched_raw = pd.DataFrame(cons.nhl_client.schedule.weekly_schedule(date=week.strftime("%Y-%m-%d"))['gameWeek'][dow]['games'])
                 except Exception as ex:
                     # re-try this week's schedule if there was a timeout error
                     print(f'\t\t... {ex} ...')
@@ -86,6 +87,7 @@ def create_season_df():
                 weekly_sched[cons.home_team_id_col] = [item['id'] for item in weekly_sched_raw['homeTeam']]
                 weekly_sched[cons.home_team_name_col] = [item['placeName']['default'] + ' ' + item['commonName']['default'] for item in weekly_sched_raw['homeTeam']]
 
+                # if the game has already been played, extract the scores and last period type from the raw data; otherwise, set these columns to None for now and they will be filled in with predictions later
                 if 'gameOutcome' in weekly_sched_raw.columns:
                     weekly_sched[cons.away_team_score_col] = [item['score'] for item in weekly_sched_raw['awayTeam']]
                     weekly_sched[cons.home_team_score_col] = [item['score'] for item in weekly_sched_raw['homeTeam']]
@@ -98,10 +100,12 @@ def create_season_df():
                 # only include NHL games (team ids are less than 69) Why 69? Probably need a better way to filter out non-NHL games, but this works for now
                 weekly_sched = weekly_sched.loc[(weekly_sched[cons.away_team_id_col] < 69) & (weekly_sched[cons.away_team_id_col] >= 0)]
 
+                # concatenate this week's schedule to the season schedule dataframe
                 season_sched = pd.concat([season_sched, weekly_sched], ignore_index=True)
 
                 break
 
+    # save the season schedule to a CSV file for future use
     season_sched.to_csv(cons.output_folder + cons.season_sched_filename, index=False)
 
     return season_sched
@@ -149,6 +153,8 @@ def assign_game_points(season_results, to_csv=False):
     season_results[cons.home_team_score_col] = season_results[cons.home_team_score_col].astype(int)
     season_results[cons.last_period_col] = season_results[cons.last_period_col].astype(int)
 
+    # assign points to each team based on the predicted scores and last period type
+    # (2 points for a win in regulation, 1 point for an OT/SO loss, 0 points for a regulation loss)
     season_results['homeTeamPoints'] = np.where(
         season_results[cons.home_team_score_col] > season_results[cons.away_team_score_col], 2, np.where(
             season_results[cons.last_period_col] > 0, 1, np.where(
@@ -172,33 +178,121 @@ def generate_final_standings(season_results, to_csv=False):
 
     print('\nGenerating final standings...')
 
+    # calculate games played for each team
+    home_games = season_results.groupby(cons.home_team_name_col)[cons.home_team_score_col].count().reset_index(name='homeTeamGames')
+    away_games = season_results.groupby(cons.away_team_name_col)[cons.away_team_score_col].count().reset_index(name='awayTeamGames')
+    games_played_df = home_away_accumulation(home_games, away_games, 'Games')
+
+    # calculate total points for each team
     home_points = season_results.groupby(cons.home_team_name_col)['homeTeamPoints'].sum().reset_index()
     away_points = season_results.groupby(cons.away_team_name_col)['awayTeamPoints'].sum().reset_index()
     points_df = home_away_accumulation(home_points, away_points, 'Points')
 
-    home_wins = season_results.groupby(cons.home_team_name_col).apply(lambda x: (x[cons.home_team_score_col] > x[cons.away_team_score_col]).sum()).reset_index(name='homeTeamWins')
-    away_wins = season_results.groupby(cons.away_team_name_col).apply(lambda x: (x[cons.away_team_score_col] > x[cons.home_team_score_col]).sum()).reset_index(name='awayTeamWins')
-    wins_df = home_away_accumulation(home_wins, away_wins, 'Wins')
+    # calculate total wins for each team
+    home_wins = season_results.loc[season_results[cons.home_team_score_col] > season_results[cons.away_team_score_col]].groupby(
+        cons.home_team_name_col).size().reset_index(name='homeTeamWins')
+    away_wins = season_results.loc[season_results[cons.away_team_score_col] > season_results[cons.home_team_score_col]].groupby(
+        cons.away_team_name_col).size().reset_index(name='awayTeamWins')
+    wins_df = home_away_accumulation(home_wins, away_wins, 'Wins', keep_segregated_cols=True)
 
-    home_losses = season_results.loc[season_results[cons.last_period_col]==0].groupby(cons.home_team_name_col).apply(lambda x: (x[cons.home_team_score_col] < x[cons.away_team_score_col]).sum()).reset_index(name='homeTeamLosses')
-    away_losses = season_results.loc[season_results[cons.last_period_col]==0].groupby(cons.away_team_name_col).apply(lambda x: (x[cons.away_team_score_col] < x[cons.home_team_score_col]).sum()).reset_index(name='awayTeamLosses')
-    losses_df = home_away_accumulation(home_losses, away_losses, 'Losses')
+    # calculate total losses for each team
+    home_losses = season_results.loc[(season_results[cons.last_period_col]==0) &
+                                     (season_results[cons.home_team_score_col] < season_results[cons.away_team_score_col])].groupby(
+                                         cons.home_team_name_col).size().reset_index(name='homeTeamLosses')
+    away_losses = season_results.loc[(season_results[cons.last_period_col]==0) &
+                                     (season_results[cons.away_team_score_col] < season_results[cons.home_team_score_col])].groupby(
+                                         cons.away_team_name_col).size().reset_index(name='awayTeamLosses')
+    losses_df = home_away_accumulation(home_losses, away_losses, 'Losses', keep_segregated_cols=True)
 
-    home_otls = season_results.loc[season_results[cons.last_period_col]>0].groupby(cons.home_team_name_col).apply(lambda x: (x[cons.home_team_score_col] < x[cons.away_team_score_col]).sum()).reset_index(name='homeTeamOTLs')
-    away_otls = season_results.loc[season_results[cons.last_period_col]>0].groupby(cons.away_team_name_col).apply(lambda x: (x[cons.away_team_score_col] < x[cons.home_team_score_col]).sum()).reset_index(name='awayTeamOTLs')
-    otls_df = home_away_accumulation(home_otls, away_otls, 'OTLs')
+    # calculate total OT/SO losses for each team
+    home_otls = season_results.loc[(season_results[cons.last_period_col]>0) &
+                                   (season_results[cons.home_team_score_col] < season_results[cons.away_team_score_col])].groupby(
+                                       cons.home_team_name_col).size().reset_index(name='homeTeamOTLs')
+    away_otls = season_results.loc[(season_results[cons.last_period_col]>0) &
+                                   (season_results[cons.away_team_score_col] < season_results[cons.home_team_score_col])].groupby(
+                                       cons.away_team_name_col).size().reset_index(name='awayTeamOTLs')
+    otls_df = home_away_accumulation(home_otls, away_otls, 'OTLs', keep_segregated_cols=True)
 
-    final_standings_pw = pd.merge(points_df, wins_df, on='teamName')
-    final_standings_pwl = pd.merge(final_standings_pw, losses_df, on='teamName')
-    final_standings = pd.merge(final_standings_pwl, otls_df, on='teamName')
+    # calculate total regulation wins for each team (used for tiebreakers in the standings)
+    home_reg_wins = season_results.loc[(season_results[cons.last_period_col]==0) &
+                                       (season_results[cons.home_team_score_col] > season_results[cons.away_team_score_col])].groupby(
+                                           cons.home_team_name_col).size().reset_index(name='homeTeamRegWins')
+    away_reg_wins = season_results.loc[(season_results[cons.last_period_col]==0) &
+                                       (season_results[cons.away_team_score_col] > season_results[cons.home_team_score_col])].groupby(
+                                           cons.away_team_name_col).size().reset_index(name='awayTeamRegWins')
+    reg_wins_df = home_away_accumulation(home_reg_wins, away_reg_wins, 'RegWins')
+
+    # calculate total regulation/OT wins for each team (used for tiebreakers in the standings)
+    home_reg_ot_wins = season_results.loc[(season_results[cons.last_period_col]<2) &
+                                          (season_results[cons.home_team_score_col] > season_results[cons.away_team_score_col])].groupby(
+                                              cons.home_team_name_col).size().reset_index(name='homeTeamRegOTWins')
+    away_reg_ot_wins = season_results.loc[(season_results[cons.last_period_col]<2) &
+                                          (season_results[cons.away_team_score_col] > season_results[cons.home_team_score_col])].groupby(
+                                              cons.away_team_name_col).size().reset_index(name='awayTeamRegOTWins')
+    reg_ot_wins_df = home_away_accumulation(home_reg_ot_wins, away_reg_ot_wins, 'RegOTWins')
+
+    # calculate total shootout wins for each team
+    home_so_wins = season_results.loc[(season_results[cons.last_period_col]==2) &
+                                      (season_results[cons.home_team_score_col] > season_results[cons.away_team_score_col])].groupby(
+                                          cons.home_team_name_col).size().reset_index(name='homeTeamSOWins')
+    away_so_wins = season_results.loc[(season_results[cons.last_period_col]==2) &
+                                      (season_results[cons.away_team_score_col] > season_results[cons.home_team_score_col])].groupby(
+                                          cons.away_team_name_col).size().reset_index(name='awayTeamSOWins')
+    so_wins_df = home_away_accumulation(home_so_wins, away_so_wins, 'SOWins')
+
+    # calculate total shootout losses for each team
+    home_so_losses = season_results.loc[(season_results[cons.last_period_col]==2) &
+                                        (season_results[cons.home_team_score_col] < season_results[cons.away_team_score_col])].groupby(
+                                            cons.home_team_name_col).size().reset_index(name='homeTeamSOLosses')
+    away_so_losses = season_results.loc[(season_results[cons.last_period_col]==2) &
+                                        (season_results[cons.away_team_score_col] < season_results[cons.home_team_score_col])].groupby(
+                                            cons.away_team_name_col).size().reset_index(name='awayTeamSOLosses')
+    so_losses_df = home_away_accumulation(home_so_losses, away_so_losses, 'SOLosses')
+
+    # calculate total Goals For and Goals Against for each team (used for tiebreakers in the standings)
+    home_goals_for = season_results.groupby(
+        cons.home_team_name_col)[cons.home_team_score_col].sum().reset_index(name='homeTeamGoalsFor')
+    away_goals_for = season_results.groupby(
+        cons.away_team_name_col)[cons.away_team_score_col].sum().reset_index(name='awayTeamGoalsFor')
+    goals_for_df = home_away_accumulation(home_goals_for, away_goals_for, 'GoalsFor')
+    home_goals_against = season_results.groupby(
+        cons.home_team_name_col)[cons.away_team_score_col].sum().reset_index(name='homeTeamGoalsAgainst')
+    away_goals_against = season_results.groupby(
+        cons.away_team_name_col)[cons.home_team_score_col].sum().reset_index(name='awayTeamGoalsAgainst')
+    goals_against_df = home_away_accumulation(home_goals_against, away_goals_against, 'GoalsAgainst')
+
+    # merge the points, wins, losses, and OT/SO losses dataframes together to create the final standings dataframe
+    final_standings = pd.merge(points_df, wins_df, on='teamName')
+    final_standings = pd.merge(final_standings, losses_df, on='teamName')
+    final_standings = pd.merge(final_standings, otls_df, on='teamName')
+    final_standings = pd.merge(final_standings, reg_wins_df, on='teamName')
+    final_standings = pd.merge(final_standings, reg_ot_wins_df, on='teamName')
+    final_standings = pd.merge(final_standings, goals_for_df, on='teamName')
+    final_standings = pd.merge(final_standings, goals_against_df, on='teamName')
+    final_standings = pd.merge(final_standings, so_wins_df, on='teamName')
+    final_standings = pd.merge(final_standings, so_losses_df, on='teamName')
+    final_standings = pd.merge(final_standings, games_played_df, on='teamName')
 
     # free memory by deleting the intermediate dataframes that are no longer needed
-    del final_standings_pw, final_standings_pwl, points_df, wins_df, losses_df, otls_df
+    del points_df, wins_df, losses_df, otls_df, reg_wins_df, reg_ot_wins_df, goals_for_df, goals_against_df, so_wins_df, so_losses_df, games_played_df
 
     # load individual team info to merge with final standings for wildcard setup
     team_info_df = ut.team_info()
-
     final_standings = pd.merge(final_standings, team_info_df[['teamName', 'divisionName', 'conferenceName']], on='teamName')
+
+    # calculate goal differential for each team
+    final_standings['goalDifferential'] = final_standings['totalGoalsFor'] - final_standings['totalGoalsAgainst']
+    final_standings['pointsPercentage'] = final_standings['totalPoints'] / (final_standings['totalGames'] * 2)
+
+    col_order = ['conferenceName', 'divisionName', 'teamName', 'totalGames', 'totalWins', 'totalLosses', 'totalOTLs',
+                 'totalPoints', 'pointsPercentage', 'totalRegWins', 'totalRegOTWins', 'totalGoalsFor', 'totalGoalsAgainst',
+                 'goalDifferential', 'totalHomeWins', 'totalHomeLosses', 'totalHomeOTLs', 'totalAwayWins',
+                 'totalAwayLosses', 'totalAwayOTLs', 'totalSOWins', 'totalSOLosses']
+    
+    col_tiebreakers = ['totalPoints', 'pointsPercentage', 'totalRegWins', 'totalRegOTWins', 'totalWins', 'goalDifferential', 'totalGoalsFor']
+
+    final_standings = final_standings[col_order]
+    final_standings.sort_values(by=col_tiebreakers, ascending=[False]*len(col_tiebreakers), inplace=True)
 
     # save the updated season schedule with predictions to a new CSV file
     if to_csv:
@@ -206,11 +300,14 @@ def generate_final_standings(season_results, to_csv=False):
 
     return final_standings
 
+
 def print_wildcard_results(final_standings):
-    # Eastern conference wildcard chart
+
+    # Eastern conference divisional dataframes
     atlantic_standings = final_standings.loc[final_standings['divisionName'] == 'Atlantic'].sort_values(by=['totalPoints'], ascending=[False])
     metro_standings = final_standings.loc[final_standings['divisionName'] == 'Metropolitan'].sort_values(by=['totalPoints'], ascending=[False])
     
+    # print Eastern Conference data
     print('\n-------- Eastern Conference --------')
     print('------------------------------------')
     print('--- Atlantic Division ---')
@@ -228,10 +325,11 @@ def print_wildcard_results(final_standings):
     for _, row in east_wildcard_standings.iterrows():
         team_printer(row)
 
-    # Western conference wildcard chart
+    # Western conference divisional dataframes
     central_standings = final_standings.loc[final_standings['divisionName'] == 'Central'].sort_values(by=['totalPoints'], ascending=[False])
     pacific_standings = final_standings.loc[final_standings['divisionName'] == 'Pacific'].sort_values(by=['totalPoints'], ascending=[False])
     
+    # print Western Conference data
     print('\n-------- Western Conference --------')
     print('------------------------------------')
     print('--- Central Division ---')
@@ -250,21 +348,44 @@ def print_wildcard_results(final_standings):
         team_printer(row)
 
 
-def home_away_accumulation(home_df, away_df, stat_col):
+def home_away_accumulation(home_df, away_df, stat_col, keep_segregated_cols=False):
+
+    # fill in missing teams in the homeTeam dataframe
+    for team in cons.team_colors.keys():
+        if team not in home_df['homeTeamName'].values:
+            print(f'\t... Adding {team} to homeTeam{stat_col} dataframe with 0 {stat_col} ...')
+            home_df = pd.concat([home_df, pd.DataFrame({f'homeTeamName': [team], f'homeTeam{stat_col}': [0]})], ignore_index=True)
+
+    # fill in missing teams in the awayTeam dataframe
+    for team in cons.team_colors.keys():
+        if team not in away_df['awayTeamName'].values:
+            print(f'\t... Adding {team} to awayTeam{stat_col} dataframe with 0 {stat_col} ...')
+            away_df = pd.concat([away_df, pd.DataFrame({f'awayTeamName': [team], f'awayTeam{stat_col}': [0]})], ignore_index=True)
+
+    # merge the home and away dataframes on the team name column, then sum the home and away stats to get the total stat for each team
     merged_df = pd.merge(home_df, away_df, left_on=cons.home_team_name_col, right_on=cons.away_team_name_col)
     merged_df[f'total{stat_col}'] = merged_df[f'homeTeam{stat_col}'] + merged_df[f'awayTeam{stat_col}']
-    merged_df.drop(columns=[cons.away_team_name_col, f'homeTeam{stat_col}', f'awayTeam{stat_col}'], inplace=True)
+    if not keep_segregated_cols:
+        merged_df.drop(columns=[f'homeTeam{stat_col}', f'awayTeam{stat_col}'], inplace=True)
+    else:
+        merged_df.rename(columns={f'homeTeam{stat_col}': f'totalHome{stat_col}',
+                                  f'awayTeam{stat_col}': f'totalAway{stat_col}'}, inplace=True)
+    merged_df.drop(columns=[cons.away_team_name_col], inplace=True)
     merged_df.rename(columns={cons.home_team_name_col: 'teamName'}, inplace=True)
     merged_df.sort_values(by=f'total{stat_col}', ascending=False, inplace=True)
-    return merged_df.reset_index(drop=True)
+    merged_df.reset_index(drop=True, inplace=True)
+
+    return merged_df
 
 
 def team_printer(row):
+
+    # print the team name, total points, and record (wins-losses-OTLs) for this team,
+    # with the text colored in the team's primary color
     if len(row['teamName']) < 16:
         print(colored(f'\t{row['teamName']}\t\t{row['totalPoints']}\t{row['totalWins']}-{row['totalLosses']}-{row['totalOTLs']}', cons.team_colors[row['teamName']]))
     else:
         print(colored(f'\t{row['teamName']}\t{row['totalPoints']}\t{row['totalWins']}-{row['totalLosses']}-{row['totalOTLs']}', cons.team_colors[row['teamName']]))
-
 
 
 if __name__ == "__main__":
