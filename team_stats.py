@@ -1,5 +1,7 @@
 import constants as cons
 import terminal_ui as tui
+import pandas as pd
+import numpy as np
 
 from constants import nhl_client
 
@@ -18,9 +20,47 @@ def nhl_team_standings():
     print('Fetching NHL team standings...')
 
     # Fetch the standings
-    standings = nhl_client.standings.league_standings()
+    league_df = pd.DataFrame(nhl_client.standings.league_standings()['standings'])
 
-    print(standings)
+    for col in league_df.columns:
+        if isinstance(league_df[col], np.int64):
+            league_df[col] = league_df[col].astype(int)
+
+    # eastern conference playoff seeding
+    east_conf_spots = league_df.loc[
+        (league_df['conferenceName']=='Eastern')].sort_values(by=['wildcardSequence', 'divisionName'])
+    
+    # western conference playoff seeding
+    west_conf_spots = league_df.loc[
+        (league_df['conferenceName']=='Western')].sort_values(by=['wildcardSequence', 'divisionName'])
+
+    print('--- Eastern Conference Wild Card ---')
+    for _, team in east_conf_spots.iterrows():
+        if team['wildcardSequence'] == 2:
+            print(team['wildcardSequence'], team['teamName']['default'], '\t', team['points'])
+            print('------------')
+        elif team['divisionSequence'] == 3:
+            print(team['divisionSequence'], team['teamName']['default'], '\t', team['points'])
+            print('------------')
+        elif team['wildcardSequence'] == 0:
+            print(team['divisionSequence'], team['teamName']['default'], '\t', team['points'])
+        else:
+            print(team['wildcardSequence'], team['teamName']['default'], '\t', team['points'])
+
+    print('\n--- Western Conference Wild Card ---')
+    for _, team in west_conf_spots.iterrows():
+        if team['wildcardSequence'] == 2:
+            print(team['wildcardSequence'], team['teamName']['default'], '\t', team['points'])
+            print('------------')
+        elif team['divisionSequence'] == 3:
+            print(team['divisionSequence'], team['teamName']['default'], '\t', team['points'])
+            print('------------')
+        elif team['wildcardSequence'] == 0:
+            print(team['divisionSequence'], team['teamName']['default'], '\t', team['points'])
+        else:
+            print(team['wildcardSequence'], team['teamName']['default'], '\t', team['points'])
+
+    print()
 
 
 def nhl_individual_team_stats():

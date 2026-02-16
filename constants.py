@@ -6,6 +6,7 @@ nhl_client = NHLClient()
 # format is 'Option Name': ['module_name', 'function_name']
 main_options = {
     'NHL Team Stats': ['team_stats', 'nhl_team_stats'],
+    'Predictions': ['predictions', 'nhl_predictions'],
 }
 
 exit_option = {'Exit': ['terminal_ui', 'exit_program']}

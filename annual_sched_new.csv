@@ -1,0 +1,874 @@
+id,season,startTimeUTC,venueTimezone,venue,awayTeamId,awayTeamName,homeTeamId,homeTeamName,awayTeamScore,homeTeamScore,lastPeriod
+2025020001,20252026,2025-10-07T21:00:00Z,US/Eastern,Amerant Bank Arena,16,Chicago Blackhawks,13,Florida Panthers,2,3,REG
+2025020002,20252026,2025-10-08T00:00:00Z,America/New_York,Madison Square Garden,5,Pittsburgh Penguins,3,New York Rangers,3,0,REG
+2025020003,20252026,2025-10-08T02:30:00Z,America/Los_Angeles,Crypto.com Arena,21,Colorado Avalanche,26,Los Angeles Kings,4,1,REG
+2025020004,20252026,2025-10-08T23:00:00Z,America/Toronto,Scotiabank Arena,8,Montréal Canadiens,10,Toronto Maple Leafs,2,5,REG
+2025020005,20252026,2025-10-08T23:30:00Z,US/Eastern,Capital One Arena,6,Boston Bruins,15,Washington Capitals,3,1,REG
+2025020006,20252026,2025-10-09T02:00:00Z,America/Edmonton,Rogers Place,20,Calgary Flames,22,Edmonton Oilers,4,3,SO
+2025020007,20252026,2025-10-09T02:00:00Z,US/Pacific,T-Mobile Arena,26,Los Angeles Kings,54,Vegas Golden Knights,6,5,SO
+2025020008,20252026,2025-10-09T23:00:00Z,US/Eastern,TD Garden,16,Chicago Blackhawks,6,Boston Bruins,3,4,OT
+2025020009,20252026,2025-10-09T23:00:00Z,America/New_York,KeyBank Center,3,New York Rangers,7,Buffalo Sabres,4,0,REG
+2025020010,20252026,2025-10-09T23:00:00Z,America/Detroit,Little Caesars Arena,8,Montréal Canadiens,17,Detroit Red Wings,5,1,REG
+2025020011,20252026,2025-10-09T23:00:00Z,US/Eastern,Benchmark International Arena,9,Ottawa Senators,14,Tampa Bay Lightning,5,4,REG
+2025020012,20252026,2025-10-09T23:00:00Z,US/Eastern,Amerant Bank Arena,4,Philadelphia Flyers,13,Florida Panthers,1,2,REG
+2025020013,20252026,2025-10-09T23:00:00Z,US/Eastern,PPG Paints Arena,2,New York Islanders,5,Pittsburgh Penguins,3,4,REG
+2025020014,20252026,2025-10-09T23:30:00Z,US/Eastern,Lenovo Center,1,New Jersey Devils,12,Carolina Hurricanes,3,6,REG
+2025020015,20252026,2025-10-10T00:00:00Z,US/Central,Enterprise Center,30,Minnesota Wild,19,St. Louis Blues,5,0,REG
+2025020016,20252026,2025-10-10T00:00:00Z,US/Central,Bridgestone Arena,29,Columbus Blue Jackets,18,Nashville Predators,1,2,REG
+2025020017,20252026,2025-10-10T00:00:00Z,America/Winnipeg,Canada Life Centre,25,Dallas Stars,52,Winnipeg Jets,5,4,REG
+2025020019,20252026,2025-10-10T02:00:00Z,America/Vancouver,Rogers Arena,20,Calgary Flames,23,Vancouver Canucks,1,5,REG
+2025020021,20252026,2025-10-10T02:00:00Z,US/Pacific,Climate Pledge Arena,24,Anaheim Ducks,55,Seattle Kraken,1,3,REG
+2025020038,20252026,2025-10-12T23:00:00Z,America/New_York,Madison Square Garden,15,Washington Capitals,3,New York Rangers,1,0,REG
+2025020039,20252026,2025-10-13T16:30:00Z,America/New_York,KeyBank Center,21,Colorado Avalanche,7,Buffalo Sabres,3,1,REG
+2025020040,20252026,2025-10-13T17:00:00Z,US/Eastern,TD Garden,14,Tampa Bay Lightning,6,Boston Bruins,4,3,REG
+2025020041,20252026,2025-10-13T17:00:00Z,US/Eastern,Canadian Tire Centre,18,Nashville Predators,9,Ottawa Senators,4,1,REG
+2025020043,20252026,2025-10-13T18:00:00Z,America/Toronto,Scotiabank Arena,17,Detroit Red Wings,10,Toronto Maple Leafs,3,2,REG
+2025020044,20252026,2025-10-13T23:00:00Z,US/Eastern,Xfinity Mobile Arena,13,Florida Panthers,4,Philadelphia Flyers,2,5,REG
+2025020045,20252026,2025-10-13T23:00:00Z,US/Eastern,Nationwide Arena,1,New Jersey Devils,29,Columbus Blue Jackets,3,2,REG
+2025020046,20252026,2025-10-13T23:30:00Z,America/Vancouver,Rogers Arena,19,St. Louis Blues,23,Vancouver Canucks,5,2,REG
+2025020047,20252026,2025-10-14T00:00:00Z,US/Central,Grand Casino Arena,26,Los Angeles Kings,30,Minnesota Wild,3,4,SO
+2025020049,20252026,2025-10-14T23:00:00Z,America/Toronto,Scotiabank Arena,18,Nashville Predators,10,Toronto Maple Leafs,4,7,REG
+2025020051,20252026,2025-10-14T23:00:00Z,America/New_York,Madison Square Garden,22,Edmonton Oilers,3,New York Rangers,2,0,REG
+2025020052,20252026,2025-10-14T23:00:00Z,US/Eastern,Capital One Arena,14,Tampa Bay Lightning,15,Washington Capitals,2,3,OT
+2025020054,20252026,2025-10-15T01:30:00Z,US/Central,American Airlines Center,30,Minnesota Wild,25,Dallas Stars,2,5,REG
+2025020055,20252026,2025-10-15T02:00:00Z,US/Pacific,SAP Center at San Jose,12,Carolina Hurricanes,28,San Jose Sharks,5,1,REG
+2025020056,20252026,2025-10-15T02:30:00Z,America/Los_Angeles,Honda Center,5,Pittsburgh Penguins,24,Anaheim Ducks,3,4,REG
+2025020057,20252026,2025-10-15T23:00:00Z,America/New_York,KeyBank Center,9,Ottawa Senators,7,Buffalo Sabres,4,8,REG
+2025020058,20252026,2025-10-15T23:00:00Z,America/Detroit,Little Caesars Arena,13,Florida Panthers,17,Detroit Red Wings,1,4,REG
+2025020059,20252026,2025-10-16T01:30:00Z,US/Central,Enterprise Center,16,Chicago Blackhawks,19,St. Louis Blues,8,3,REG
+2025020060,20252026,2025-10-16T01:30:00Z,America/Denver,Delta Center,20,Calgary Flames,68,Utah Mammoth,1,3,REG
+2025020061,20252026,2025-10-16T23:00:00Z,America/Toronto,Scotiabank Arena,3,New York Rangers,10,Toronto Maple Leafs,1,2,OT
+2025020062,20252026,2025-10-16T23:00:00Z,America/Montreal,Centre Bell,18,Nashville Predators,8,Montréal Canadiens,2,3,OT
+2025020064,20252026,2025-10-16T23:00:00Z,US/Eastern,Prudential Center,13,Florida Panthers,1,New Jersey Devils,1,3,REG
+2025020067,20252026,2025-10-16T23:00:00Z,US/Eastern,Nationwide Arena,21,Colorado Avalanche,29,Columbus Blue Jackets,4,1,REG
+2025020065,20252026,2025-10-16T23:30:00Z,America/New_York,UBS Arena,22,Edmonton Oilers,2,New York Islanders,2,4,REG
+2025020068,20252026,2025-10-17T00:00:00Z,US/Central,American Airlines Center,23,Vancouver Canucks,25,Dallas Stars,5,3,REG
+2025020069,20252026,2025-10-17T02:00:00Z,US/Pacific,T-Mobile Arena,6,Boston Bruins,54,Vegas Golden Knights,5,6,REG
+2025020070,20252026,2025-10-17T02:00:00Z,America/Los_Angeles,Honda Center,12,Carolina Hurricanes,24,Anaheim Ducks,4,1,REG
+2025020071,20252026,2025-10-17T02:00:00Z,America/Los_Angeles,Crypto.com Arena,5,Pittsburgh Penguins,26,Los Angeles Kings,4,2,REG
+2025020072,20252026,2025-10-17T23:00:00Z,America/Detroit,Little Caesars Arena,14,Tampa Bay Lightning,17,Detroit Red Wings,1,2,OT
+2025020073,20252026,2025-10-17T23:00:00Z,US/Eastern,Capital One Arena,30,Minnesota Wild,15,Washington Capitals,1,5,REG
+2025020074,20252026,2025-10-18T00:30:00Z,America/Chicago,United Center,23,Vancouver Canucks,16,Chicago Blackhawks,3,2,SO
+2025020075,20252026,2025-10-18T01:00:00Z,America/Denver,Delta Center,28,San Jose Sharks,68,Utah Mammoth,3,6,REG
+2025020089,20252026,2025-10-19T16:30:00Z,US/Eastern,Capital One Arena,23,Vancouver Canucks,15,Washington Capitals,4,3,REG
+2025020090,20252026,2025-10-19T19:00:00Z,America/Detroit,Little Caesars Arena,22,Edmonton Oilers,17,Detroit Red Wings,2,4,REG
+2025020091,20252026,2025-10-19T23:00:00Z,America/Chicago,United Center,24,Anaheim Ducks,16,Chicago Blackhawks,1,2,OT
+2025020092,20252026,2025-10-19T23:00:00Z,America/Denver,Delta Center,6,Boston Bruins,68,Utah Mammoth,2,3,REG
+2025020093,20252026,2025-10-20T23:00:00Z,America/New_York,Madison Square Garden,30,Minnesota Wild,3,New York Rangers,3,1,REG
+2025020095,20252026,2025-10-20T23:30:00Z,America/Montreal,Centre Bell,7,Buffalo Sabres,8,Montréal Canadiens,2,4,REG
+2025020097,20252026,2025-10-21T02:00:00Z,US/Pacific,T-Mobile Arena,12,Carolina Hurricanes,54,Vegas Golden Knights,1,4,REG
+2025020098,20252026,2025-10-21T23:00:00Z,America/Toronto,Scotiabank Arena,1,New Jersey Devils,10,Toronto Maple Leafs,5,2,REG
+2025020099,20252026,2025-10-21T23:00:00Z,US/Eastern,Canadian Tire Centre,22,Edmonton Oilers,9,Ottawa Senators,3,2,OT
+2025020100,20252026,2025-10-21T23:00:00Z,America/New_York,UBS Arena,28,San Jose Sharks,2,New York Islanders,3,4,REG
+2025020101,20252026,2025-10-21T23:00:00Z,US/Eastern,PPG Paints Arena,23,Vancouver Canucks,5,Pittsburgh Penguins,1,5,REG
+2025020103,20252026,2025-10-21T23:30:00Z,US/Eastern,TD Garden,13,Florida Panthers,6,Boston Bruins,4,3,REG
+2025020104,20252026,2025-10-22T00:00:00Z,US/Central,Enterprise Center,26,Los Angeles Kings,19,St. Louis Blues,2,1,OT
+2025020105,20252026,2025-10-22T00:00:00Z,US/Central,Bridgestone Arena,24,Anaheim Ducks,18,Nashville Predators,5,2,REG
+2025020106,20252026,2025-10-22T00:00:00Z,US/Central,American Airlines Center,29,Columbus Blue Jackets,25,Dallas Stars,5,1,REG
+2025020107,20252026,2025-10-22T02:00:00Z,America/Denver,Delta Center,21,Colorado Avalanche,68,Utah Mammoth,3,4,OT
+2025020108,20252026,2025-10-22T23:00:00Z,US/Eastern,Prudential Center,30,Minnesota Wild,1,New Jersey Devils,1,4,REG
+2025020109,20252026,2025-10-22T23:30:00Z,America/New_York,KeyBank Center,17,Detroit Red Wings,7,Buffalo Sabres,2,4,REG
+2025020110,20252026,2025-10-23T00:30:00Z,US/Mountain,Scotiabank Saddledome,8,Montréal Canadiens,20,Calgary Flames,2,1,OT
+2025020113,20252026,2025-10-23T22:45:00Z,US/Eastern,Benchmark International Arena,16,Chicago Blackhawks,14,Tampa Bay Lightning,3,2,REG
+2025020111,20252026,2025-10-23T23:00:00Z,US/Eastern,TD Garden,24,Anaheim Ducks,6,Boston Bruins,7,5,REG
+2025020112,20252026,2025-10-23T23:00:00Z,US/Eastern,Canadian Tire Centre,4,Philadelphia Flyers,9,Ottawa Senators,1,2,REG
+2025020114,20252026,2025-10-23T23:00:00Z,US/Eastern,Amerant Bank Arena,5,Pittsburgh Penguins,13,Florida Panthers,5,3,REG
+2025020115,20252026,2025-10-23T23:00:00Z,America/New_York,UBS Arena,17,Detroit Red Wings,2,New York Islanders,2,7,REG
+2025020116,20252026,2025-10-23T23:00:00Z,America/New_York,Madison Square Garden,28,San Jose Sharks,3,New York Rangers,6,5,OT
+2025020118,20252026,2025-10-24T00:00:00Z,US/Central,Bridgestone Arena,23,Vancouver Canucks,18,Nashville Predators,1,2,REG
+2025020119,20252026,2025-10-24T01:00:00Z,US/Central,American Airlines Center,26,Los Angeles Kings,25,Dallas Stars,3,2,OT
+2025020121,20252026,2025-10-24T01:00:00Z,America/Denver,Ball Arena,12,Carolina Hurricanes,21,Colorado Avalanche,5,4,SO
+2025020122,20252026,2025-10-24T01:00:00Z,America/Edmonton,Rogers Place,8,Montréal Canadiens,22,Edmonton Oilers,5,6,REG
+2025020123,20252026,2025-10-24T23:00:00Z,America/New_York,KeyBank Center,10,Toronto Maple Leafs,7,Buffalo Sabres,3,5,REG
+2025020124,20252026,2025-10-24T23:00:00Z,US/Eastern,Prudential Center,28,San Jose Sharks,1,New Jersey Devils,1,3,REG
+2025020125,20252026,2025-10-24T23:00:00Z,US/Eastern,Nationwide Arena,15,Washington Capitals,29,Columbus Blue Jackets,5,1,REG
+2025020126,20252026,2025-10-25T00:00:00Z,America/Winnipeg,Canada Life Centre,20,Calgary Flames,52,Winnipeg Jets,3,5,REG
+2025020140,20252026,2025-10-26T17:00:00Z,US/Eastern,Prudential Center,21,Colorado Avalanche,1,New Jersey Devils,3,4,OT
+2025020142,20252026,2025-10-26T22:00:00Z,US/Central,Grand Casino Arena,28,San Jose Sharks,30,Minnesota Wild,6,5,OT
+2025020144,20252026,2025-10-26T23:00:00Z,America/Chicago,United Center,26,Los Angeles Kings,16,Chicago Blackhawks,3,1,REG
+2025020145,20252026,2025-10-26T23:00:00Z,US/Central,Bridgestone Arena,25,Dallas Stars,18,Nashville Predators,3,2,REG
+2025020146,20252026,2025-10-27T00:00:00Z,US/Mountain,Scotiabank Saddledome,3,New York Rangers,20,Calgary Flames,1,5,REG
+2025020147,20252026,2025-10-27T02:00:00Z,America/Vancouver,Rogers Arena,22,Edmonton Oilers,23,Vancouver Canucks,3,4,OT
+2025020148,20252026,2025-10-27T23:00:00Z,US/Eastern,PPG Paints Arena,19,St. Louis Blues,5,Pittsburgh Penguins,3,6,REG
+2025020149,20252026,2025-10-27T23:30:00Z,US/Eastern,Canadian Tire Centre,6,Boston Bruins,9,Ottawa Senators,2,7,REG
+2025020150,20252026,2025-10-28T22:00:00Z,US/Eastern,Xfinity Mobile Arena,5,Pittsburgh Penguins,4,Philadelphia Flyers,2,3,SO
+2025020151,20252026,2025-10-28T22:00:00Z,America/Toronto,Scotiabank Arena,20,Calgary Flames,10,Toronto Maple Leafs,3,4,REG
+2025020152,20252026,2025-10-28T22:45:00Z,America/New_York,KeyBank Center,29,Columbus Blue Jackets,7,Buffalo Sabres,4,3,OT
+2025020153,20252026,2025-10-28T23:00:00Z,US/Eastern,Amerant Bank Arena,24,Anaheim Ducks,13,Florida Panthers,3,2,SO
+2025020154,20252026,2025-10-28T23:15:00Z,US/Eastern,TD Garden,2,New York Islanders,6,Boston Bruins,2,5,REG
+2025020156,20252026,2025-10-28T23:45:00Z,US/Central,Bridgestone Arena,14,Tampa Bay Lightning,18,Nashville Predators,5,2,REG
+2025020158,20252026,2025-10-29T00:15:00Z,US/Central,Enterprise Center,17,Detroit Red Wings,19,St. Louis Blues,5,2,REG
+2025020159,20252026,2025-10-29T00:30:00Z,US/Central,American Airlines Center,15,Washington Capitals,25,Dallas Stars,0,1,REG
+2025020160,20252026,2025-10-29T00:45:00Z,America/Chicago,United Center,9,Ottawa Senators,16,Chicago Blackhawks,3,7,REG
+2025020161,20252026,2025-10-29T01:00:00Z,America/Denver,Ball Arena,1,New Jersey Devils,21,Colorado Avalanche,4,8,REG
+2025020163,20252026,2025-10-29T02:00:00Z,America/Vancouver,Rogers Arena,3,New York Rangers,23,Vancouver Canucks,2,0,REG
+2025020164,20252026,2025-10-29T02:30:00Z,US/Pacific,Climate Pledge Arena,8,Montréal Canadiens,55,Seattle Kraken,4,3,OT
+2025020165,20252026,2025-10-29T03:00:00Z,US/Pacific,SAP Center at San Jose,26,Los Angeles Kings,28,San Jose Sharks,4,3,REG
+2025020166,20252026,2025-10-29T23:30:00Z,US/Eastern,Nationwide Arena,10,Toronto Maple Leafs,29,Columbus Blue Jackets,3,6,REG
+2025020167,20252026,2025-10-30T23:00:00Z,US/Eastern,TD Garden,7,Buffalo Sabres,6,Boston Bruins,3,4,OT
+2025020168,20252026,2025-10-30T23:00:00Z,US/Eastern,Canadian Tire Centre,20,Calgary Flames,9,Ottawa Senators,3,4,SO
+2025020169,20252026,2025-10-30T23:00:00Z,US/Eastern,Benchmark International Arena,25,Dallas Stars,14,Tampa Bay Lightning,1,2,OT
+2025020170,20252026,2025-10-30T23:00:00Z,US/Eastern,Xfinity Mobile Arena,18,Nashville Predators,4,Philadelphia Flyers,1,4,REG
+2025020171,20252026,2025-10-30T23:30:00Z,US/Eastern,Lenovo Center,2,New York Islanders,12,Carolina Hurricanes,2,6,REG
+2025020172,20252026,2025-10-31T00:00:00Z,US/Central,Enterprise Center,23,Vancouver Canucks,19,St. Louis Blues,4,3,SO
+2025020173,20252026,2025-10-31T00:00:00Z,US/Central,Grand Casino Arena,5,Pittsburgh Penguins,30,Minnesota Wild,4,1,REG
+2025020174,20252026,2025-10-31T00:00:00Z,America/Winnipeg,Canada Life Centre,16,Chicago Blackhawks,52,Winnipeg Jets,3,6,REG
+2025020175,20252026,2025-10-31T01:00:00Z,America/Edmonton,Rogers Place,3,New York Rangers,22,Edmonton Oilers,4,3,OT
+2025020176,20252026,2025-10-31T02:00:00Z,US/Pacific,SAP Center at San Jose,1,New Jersey Devils,28,San Jose Sharks,2,5,REG
+2025020177,20252026,2025-10-31T02:30:00Z,America/Los_Angeles,Crypto.com Arena,17,Detroit Red Wings,26,Los Angeles Kings,4,3,SO
+2025020178,20252026,2025-10-31T20:00:00Z,US/Pacific,T-Mobile Arena,21,Colorado Avalanche,54,Vegas Golden Knights,4,2,REG
+2025020179,20252026,2025-10-31T23:00:00Z,US/Eastern,Capital One Arena,2,New York Islanders,15,Washington Capitals,3,1,REG
+2025020180,20252026,2025-11-01T02:00:00Z,America/Los_Angeles,Honda Center,17,Detroit Red Wings,24,Anaheim Ducks,2,5,REG
+2025020194,20252026,2025-11-02T20:30:00Z,America/Denver,Delta Center,14,Tampa Bay Lightning,68,Utah Mammoth,4,2,REG
+2025020195,20252026,2025-11-02T22:00:00Z,America/New_York,UBS Arena,29,Columbus Blue Jackets,2,New York Islanders,2,3,REG
+2025020196,20252026,2025-11-03T00:00:00Z,US/Eastern,Xfinity Mobile Arena,20,Calgary Flames,4,Philadelphia Flyers,2,1,REG
+2025020197,20252026,2025-11-03T01:00:00Z,America/Los_Angeles,Honda Center,1,New Jersey Devils,24,Anaheim Ducks,1,4,REG
+2025020198,20252026,2025-11-03T01:00:00Z,US/Pacific,SAP Center at San Jose,17,Detroit Red Wings,28,San Jose Sharks,3,2,SO
+2025020199,20252026,2025-11-04T00:30:00Z,America/Toronto,Scotiabank Arena,5,Pittsburgh Penguins,10,Toronto Maple Leafs,3,4,REG
+2025020200,20252026,2025-11-04T01:30:00Z,US/Central,Enterprise Center,22,Edmonton Oilers,19,St. Louis Blues,2,3,REG
+2025020201,20252026,2025-11-04T01:30:00Z,US/Central,Bridgestone Arena,23,Vancouver Canucks,18,Nashville Predators,5,4,OT
+2025020202,20252026,2025-11-04T03:00:00Z,US/Pacific,Climate Pledge Arena,16,Chicago Blackhawks,55,Seattle Kraken,1,3,REG
+2025020204,20252026,2025-11-05T00:00:00Z,America/Montreal,Centre Bell,4,Philadelphia Flyers,8,Montréal Canadiens,5,4,SO
+2025020205,20252026,2025-11-05T00:00:00Z,America/New_York,UBS Arena,6,Boston Bruins,2,New York Islanders,4,3,SO
+2025020206,20252026,2025-11-05T00:00:00Z,America/New_York,Madison Square Garden,12,Carolina Hurricanes,3,New York Rangers,3,0,REG
+2025020207,20252026,2025-11-05T01:00:00Z,US/Central,American Airlines Center,22,Edmonton Oilers,25,Dallas Stars,3,4,SO
+2025020208,20252026,2025-11-05T01:00:00Z,US/Central,Grand Casino Arena,18,Nashville Predators,30,Minnesota Wild,2,3,OT
+2025020209,20252026,2025-11-05T02:30:00Z,America/Denver,Ball Arena,14,Tampa Bay Lightning,21,Colorado Avalanche,2,3,REG
+2025020210,20252026,2025-11-05T03:00:00Z,US/Pacific,T-Mobile Arena,17,Detroit Red Wings,54,Vegas Golden Knights,0,1,REG
+2025020211,20252026,2025-11-05T03:00:00Z,America/Los_Angeles,Honda Center,13,Florida Panthers,24,Anaheim Ducks,3,7,REG
+2025020214,20252026,2025-11-06T00:30:00Z,US/Eastern,Capital One Arena,19,St. Louis Blues,15,Washington Capitals,1,6,REG
+2025020215,20252026,2025-11-06T02:30:00Z,US/Mountain,Scotiabank Saddledome,29,Columbus Blue Jackets,20,Calgary Flames,1,5,REG
+2025020216,20252026,2025-11-06T03:00:00Z,America/Vancouver,Rogers Arena,16,Chicago Blackhawks,23,Vancouver Canucks,5,2,REG
+2025020217,20252026,2025-11-06T03:00:00Z,US/Pacific,Climate Pledge Arena,28,San Jose Sharks,55,Seattle Kraken,6,1,REG
+2025020218,20252026,2025-11-07T00:00:00Z,US/Eastern,TD Garden,9,Ottawa Senators,6,Boston Bruins,2,3,OT
+2025020219,20252026,2025-11-07T00:00:00Z,America/New_York,KeyBank Center,19,St. Louis Blues,7,Buffalo Sabres,3,0,REG
+2025020220,20252026,2025-11-07T00:00:00Z,US/Eastern,Prudential Center,8,Montréal Canadiens,1,New Jersey Devils,3,4,OT
+2025020222,20252026,2025-11-07T00:00:00Z,US/Eastern,Lenovo Center,30,Minnesota Wild,12,Carolina Hurricanes,3,4,REG
+2025020221,20252026,2025-11-07T00:30:00Z,US/Eastern,PPG Paints Arena,15,Washington Capitals,5,Pittsburgh Penguins,3,5,REG
+2025020223,20252026,2025-11-07T01:00:00Z,US/Central,Bridgestone Arena,4,Philadelphia Flyers,18,Nashville Predators,3,1,REG
+2025020224,20252026,2025-11-07T01:00:00Z,US/Central,American Airlines Center,24,Anaheim Ducks,25,Dallas Stars,7,5,REG
+2025020225,20252026,2025-11-07T03:00:00Z,US/Pacific,T-Mobile Arena,14,Tampa Bay Lightning,54,Vegas Golden Knights,6,3,REG
+2025020226,20252026,2025-11-07T03:00:00Z,America/Los_Angeles,Crypto.com Arena,13,Florida Panthers,26,Los Angeles Kings,5,2,REG
+2025020227,20252026,2025-11-08T00:00:00Z,America/Detroit,Little Caesars Arena,3,New York Rangers,17,Detroit Red Wings,4,1,REG
+2025020228,20252026,2025-11-08T00:00:00Z,America/New_York,UBS Arena,30,Minnesota Wild,2,New York Islanders,5,2,REG
+2025020229,20252026,2025-11-08T02:00:00Z,US/Mountain,Scotiabank Saddledome,16,Chicago Blackhawks,20,Calgary Flames,4,0,REG
+2025020244,20252026,2025-11-09T18:00:00Z,America/Detroit,Little Caesars Arena,16,Chicago Blackhawks,17,Detroit Red Wings,5,1,REG
+2025020245,20252026,2025-11-09T19:00:00Z,US/Eastern,PPG Paints Arena,26,Los Angeles Kings,5,Pittsburgh Penguins,3,2,REG
+2025020246,20252026,2025-11-10T00:00:00Z,America/Toronto,Scotiabank Arena,12,Carolina Hurricanes,10,Toronto Maple Leafs,5,4,REG
+2025020249,20252026,2025-11-10T01:00:00Z,US/Central,Grand Casino Arena,20,Calgary Flames,30,Minnesota Wild,0,2,REG
+2025020250,20252026,2025-11-10T03:00:00Z,America/Vancouver,Rogers Arena,21,Colorado Avalanche,23,Vancouver Canucks,5,4,OT
+2025020252,20252026,2025-11-11T00:00:00Z,US/Eastern,Prudential Center,2,New York Islanders,1,New Jersey Devils,3,2,OT
+2025020253,20252026,2025-11-11T00:00:00Z,America/New_York,Madison Square Garden,18,Nashville Predators,3,New York Rangers,3,6,REG
+2025020254,20252026,2025-11-11T01:30:00Z,America/Edmonton,Rogers Place,29,Columbus Blue Jackets,22,Edmonton Oilers,4,5,OT
+2025020255,20252026,2025-11-11T03:00:00Z,US/Pacific,T-Mobile Arena,13,Florida Panthers,54,Vegas Golden Knights,3,2,REG
+2025020256,20252026,2025-11-12T00:00:00Z,US/Eastern,TD Garden,10,Toronto Maple Leafs,6,Boston Bruins,3,5,REG
+2025020257,20252026,2025-11-12T00:00:00Z,America/Montreal,Centre Bell,26,Los Angeles Kings,8,Montréal Canadiens,5,1,REG
+2025020258,20252026,2025-11-12T00:00:00Z,US/Eastern,Canadian Tire Centre,25,Dallas Stars,9,Ottawa Senators,3,2,OT
+2025020259,20252026,2025-11-12T00:00:00Z,US/Eastern,Lenovo Center,15,Washington Capitals,12,Carolina Hurricanes,4,1,REG
+2025020260,20252026,2025-11-12T01:00:00Z,US/Central,Enterprise Center,20,Calgary Flames,19,St. Louis Blues,2,3,REG
+2025020261,20252026,2025-11-12T01:00:00Z,US/Central,Grand Casino Arena,28,San Jose Sharks,30,Minnesota Wild,2,1,OT
+2025020262,20252026,2025-11-12T02:30:00Z,America/Denver,Ball Arena,24,Anaheim Ducks,21,Colorado Avalanche,1,4,REG
+2025020264,20252026,2025-11-12T03:00:00Z,US/Pacific,Climate Pledge Arena,29,Columbus Blue Jackets,55,Seattle Kraken,2,1,SO
+2025020265,20252026,2025-11-13T00:00:00Z,US/Eastern,Benchmark International Arena,3,New York Rangers,14,Tampa Bay Lightning,7,3,REG
+2025020266,20252026,2025-11-13T00:30:00Z,US/Eastern,Xfinity Mobile Arena,22,Edmonton Oilers,4,Philadelphia Flyers,2,1,OT
+2025020267,20252026,2025-11-13T02:00:00Z,America/Denver,Delta Center,7,Buffalo Sabres,68,Utah Mammoth,2,5,REG
+2025020268,20252026,2025-11-13T02:30:00Z,America/Chicago,United Center,1,New Jersey Devils,16,Chicago Blackhawks,4,3,OT
+2025020269,20252026,2025-11-14T00:00:00Z,America/Toronto,Scotiabank Arena,26,Los Angeles Kings,10,Toronto Maple Leafs,4,3,OT
+2025020270,20252026,2025-11-14T00:00:00Z,America/Montreal,Centre Bell,25,Dallas Stars,8,Montréal Canadiens,7,0,REG
+2025020271,20252026,2025-11-14T00:00:00Z,US/Eastern,Canadian Tire Centre,6,Boston Bruins,9,Ottawa Senators,3,5,REG
+2025020272,20252026,2025-11-14T00:00:00Z,America/Detroit,Little Caesars Arena,24,Anaheim Ducks,17,Detroit Red Wings,3,6,REG
+2025020273,20252026,2025-11-14T00:00:00Z,US/Eastern,Amerant Bank Arena,15,Washington Capitals,13,Florida Panthers,3,6,REG
+2025020274,20252026,2025-11-14T00:30:00Z,US/Eastern,Nationwide Arena,22,Edmonton Oilers,29,Columbus Blue Jackets,4,5,REG
+2025020275,20252026,2025-11-14T02:00:00Z,America/Denver,Ball Arena,7,Buffalo Sabres,21,Colorado Avalanche,3,6,REG
+2025020276,20252026,2025-11-14T02:00:00Z,US/Mountain,Scotiabank Saddledome,28,San Jose Sharks,20,Calgary Flames,0,2,REG
+2025020277,20252026,2025-11-14T03:00:00Z,US/Pacific,T-Mobile Arena,2,New York Islanders,54,Vegas Golden Knights,4,3,OT
+2025020281,20252026,2025-11-14T19:00:00Z,Europe/Stockholm,Avicii Arena,5,Pittsburgh Penguins,18,Nashville Predators,1,2,OT
+2025020279,20252026,2025-11-15T00:00:00Z,US/Eastern,Lenovo Center,23,Vancouver Canucks,12,Carolina Hurricanes,3,4,OT
+2025020280,20252026,2025-11-15T01:00:00Z,US/Central,Enterprise Center,4,Philadelphia Flyers,19,St. Louis Blues,6,5,SO
+2025020282,20252026,2025-11-15T02:00:00Z,America/Denver,Delta Center,2,New York Islanders,68,Utah Mammoth,3,2,OT
+2025020296,20252026,2025-11-16T14:00:00Z,Europe/Stockholm,Avicii Arena,18,Nashville Predators,5,Pittsburgh Penguins,0,4,REG
+2025020297,20252026,2025-11-16T22:00:00Z,US/Eastern,Benchmark International Arena,23,Vancouver Canucks,14,Tampa Bay Lightning,6,2,REG
+2025020299,20252026,2025-11-17T00:00:00Z,America/New_York,Madison Square Garden,17,Detroit Red Wings,3,New York Rangers,2,1,REG
+2025020300,20252026,2025-11-17T02:00:00Z,America/Denver,Ball Arena,2,New York Islanders,21,Colorado Avalanche,1,4,REG
+2025020301,20252026,2025-11-18T00:00:00Z,US/Eastern,TD Garden,12,Carolina Hurricanes,6,Boston Bruins,3,1,REG
+2025020302,20252026,2025-11-18T00:00:00Z,America/New_York,KeyBank Center,22,Edmonton Oilers,7,Buffalo Sabres,1,5,REG
+2025020303,20252026,2025-11-18T00:00:00Z,US/Eastern,Amerant Bank Arena,23,Vancouver Canucks,13,Florida Panthers,5,8,REG
+2025020304,20252026,2025-11-18T00:00:00Z,US/Eastern,Capital One Arena,26,Los Angeles Kings,15,Washington Capitals,1,2,REG
+2025020305,20252026,2025-11-18T00:30:00Z,US/Eastern,Nationwide Arena,8,Montréal Canadiens,29,Columbus Blue Jackets,3,4,SO
+2025020307,20252026,2025-11-19T00:00:00Z,America/Toronto,Scotiabank Arena,19,St. Louis Blues,10,Toronto Maple Leafs,2,3,OT
+2025020309,20252026,2025-11-19T00:00:00Z,US/Eastern,Benchmark International Arena,1,New Jersey Devils,14,Tampa Bay Lightning,1,5,REG
+2025020310,20252026,2025-11-19T01:00:00Z,US/Central,American Airlines Center,2,New York Islanders,25,Dallas Stars,3,2,REG
+2025020311,20252026,2025-11-19T01:00:00Z,America/Winnipeg,Canada Life Centre,29,Columbus Blue Jackets,52,Winnipeg Jets,2,5,REG
+2025020312,20252026,2025-11-19T01:30:00Z,America/Chicago,United Center,20,Calgary Flames,16,Chicago Blackhawks,2,5,REG
+2025020313,20252026,2025-11-19T03:00:00Z,US/Pacific,T-Mobile Arena,3,New York Rangers,54,Vegas Golden Knights,2,3,REG
+2025020315,20252026,2025-11-20T00:00:00Z,US/Eastern,Capital One Arena,22,Edmonton Oilers,15,Washington Capitals,4,7,REG
+2025020316,20252026,2025-11-20T00:30:00Z,America/New_York,KeyBank Center,20,Calgary Flames,7,Buffalo Sabres,6,2,REG
+2025020317,20252026,2025-11-20T02:30:00Z,US/Central,Grand Casino Arena,12,Carolina Hurricanes,30,Minnesota Wild,3,4,SO
+2025020318,20252026,2025-11-20T03:00:00Z,America/Los_Angeles,Honda Center,6,Boston Bruins,24,Anaheim Ducks,3,4,REG
+2025020319,20252026,2025-11-21T00:00:00Z,America/Toronto,Scotiabank Arena,29,Columbus Blue Jackets,10,Toronto Maple Leafs,3,2,OT
+2025020320,20252026,2025-11-21T00:00:00Z,America/Montreal,Centre Bell,15,Washington Capitals,8,Montréal Canadiens,8,4,REG
+2025020321,20252026,2025-11-21T00:00:00Z,America/Detroit,Little Caesars Arena,2,New York Islanders,17,Detroit Red Wings,5,0,REG
+2025020323,20252026,2025-11-21T00:00:00Z,US/Eastern,Amerant Bank Arena,1,New Jersey Devils,13,Florida Panthers,0,1,REG
+2025020324,20252026,2025-11-21T00:00:00Z,US/Eastern,Xfinity Mobile Arena,19,St. Louis Blues,4,Philadelphia Flyers,2,3,OT
+2025020322,20252026,2025-11-21T00:30:00Z,US/Eastern,Benchmark International Arena,22,Edmonton Oilers,14,Tampa Bay Lightning,1,2,OT
+2025020326,20252026,2025-11-21T02:00:00Z,America/Denver,Ball Arena,3,New York Rangers,21,Colorado Avalanche,3,6,REG
+2025020328,20252026,2025-11-21T03:00:00Z,America/Vancouver,Rogers Arena,25,Dallas Stars,23,Vancouver Canucks,4,2,REG
+2025020329,20252026,2025-11-21T03:00:00Z,America/Los_Angeles,Honda Center,9,Ottawa Senators,24,Anaheim Ducks,3,2,REG
+2025020330,20252026,2025-11-21T03:00:00Z,US/Pacific,SAP Center at San Jose,26,Los Angeles Kings,28,San Jose Sharks,3,4,SO
+2025020331,20252026,2025-11-22T00:00:00Z,America/New_York,KeyBank Center,16,Chicago Blackhawks,7,Buffalo Sabres,3,9,REG
+2025020332,20252026,2025-11-22T00:00:00Z,US/Eastern,PPG Paints Arena,30,Minnesota Wild,5,Pittsburgh Penguins,5,0,REG
+2025020333,20252026,2025-11-22T01:00:00Z,America/Winnipeg,Canada Life Centre,12,Carolina Hurricanes,52,Winnipeg Jets,4,3,REG
+2025020334,20252026,2025-11-22T03:30:00Z,America/Los_Angeles,Crypto.com Arena,6,Boston Bruins,26,Los Angeles Kings,2,1,OT
+2025020347,20252026,2025-11-23T18:00:00Z,America/New_York,KeyBank Center,12,Carolina Hurricanes,7,Buffalo Sabres,1,4,REG
+2025020348,20252026,2025-11-23T21:00:00Z,America/Winnipeg,Canada Life Centre,30,Minnesota Wild,52,Winnipeg Jets,3,0,REG
+2025020350,20252026,2025-11-24T00:00:00Z,America/Chicago,United Center,21,Colorado Avalanche,16,Chicago Blackhawks,1,0,REG
+2025020351,20252026,2025-11-24T01:00:00Z,US/Pacific,SAP Center at San Jose,6,Boston Bruins,28,San Jose Sharks,1,3,REG
+2025020352,20252026,2025-11-24T02:00:00Z,America/Vancouver,Rogers Arena,20,Calgary Flames,23,Vancouver Canucks,5,2,REG
+2025020353,20252026,2025-11-25T00:00:00Z,US/Eastern,Benchmark International Arena,4,Philadelphia Flyers,14,Tampa Bay Lightning,0,3,REG
+2025020354,20252026,2025-11-25T00:00:00Z,US/Eastern,Prudential Center,17,Detroit Red Wings,1,New Jersey Devils,3,4,REG
+2025020355,20252026,2025-11-25T00:00:00Z,America/New_York,Madison Square Garden,19,St. Louis Blues,3,New York Rangers,2,3,REG
+2025020356,20252026,2025-11-25T00:00:00Z,US/Eastern,Capital One Arena,29,Columbus Blue Jackets,15,Washington Capitals,1,5,REG
+2025020357,20252026,2025-11-25T01:00:00Z,US/Central,Bridgestone Arena,13,Florida Panthers,18,Nashville Predators,8,3,REG
+2025020359,20252026,2025-11-25T02:00:00Z,America/Los_Angeles,Crypto.com Arena,9,Ottawa Senators,26,Los Angeles Kings,1,2,REG
+2025020360,20252026,2025-11-26T02:00:00Z,America/Edmonton,Rogers Place,25,Dallas Stars,22,Edmonton Oilers,8,3,REG
+2025020361,20252026,2025-11-27T00:00:00Z,America/Detroit,Little Caesars Arena,18,Nashville Predators,17,Detroit Red Wings,6,3,REG
+2025020362,20252026,2025-11-27T00:00:00Z,US/Eastern,Benchmark International Arena,20,Calgary Flames,14,Tampa Bay Lightning,1,5,REG
+2025020363,20252026,2025-11-27T00:00:00Z,US/Eastern,Amerant Bank Arena,4,Philadelphia Flyers,13,Florida Panthers,4,2,REG
+2025020364,20252026,2025-11-27T00:00:00Z,US/Eastern,Prudential Center,19,St. Louis Blues,1,New Jersey Devils,2,3,OT
+2025020365,20252026,2025-11-27T00:00:00Z,America/New_York,UBS Arena,6,Boston Bruins,2,New York Islanders,3,1,REG
+2025020366,20252026,2025-11-27T00:00:00Z,US/Eastern,PPG Paints Arena,7,Buffalo Sabres,5,Pittsburgh Penguins,2,4,REG
+2025020368,20252026,2025-11-27T00:00:00Z,US/Eastern,Lenovo Center,3,New York Rangers,12,Carolina Hurricanes,4,2,REG
+2025020369,20252026,2025-11-27T00:00:00Z,US/Eastern,Nationwide Arena,10,Toronto Maple Leafs,29,Columbus Blue Jackets,2,1,OT
+2025020370,20252026,2025-11-27T01:30:00Z,America/Chicago,United Center,30,Minnesota Wild,16,Chicago Blackhawks,4,3,OT
+2025020371,20252026,2025-11-27T02:00:00Z,America/Denver,Ball Arena,28,San Jose Sharks,21,Colorado Avalanche,0,6,REG
+2025020372,20252026,2025-11-27T02:30:00Z,America/Denver,Delta Center,8,Montréal Canadiens,68,Utah Mammoth,4,3,REG
+2025020373,20252026,2025-11-27T03:00:00Z,US/Pacific,T-Mobile Arena,9,Ottawa Senators,54,Vegas Golden Knights,4,3,SO
+2025020374,20252026,2025-11-27T03:00:00Z,America/Los_Angeles,Honda Center,23,Vancouver Canucks,24,Anaheim Ducks,5,4,REG
+2025020375,20252026,2025-11-27T03:00:00Z,US/Pacific,Climate Pledge Arena,25,Dallas Stars,55,Seattle Kraken,3,2,REG
+2025020377,20252026,2025-11-28T17:00:00Z,America/Detroit,Little Caesars Arena,14,Tampa Bay Lightning,17,Detroit Red Wings,6,3,REG
+2025020376,20252026,2025-11-28T18:00:00Z,US/Eastern,TD Garden,3,New York Rangers,6,Boston Bruins,6,2,REG
+2025020378,20252026,2025-11-28T20:30:00Z,US/Central,Grand Casino Arena,21,Colorado Avalanche,30,Minnesota Wild,2,3,SO
+2025020379,20252026,2025-11-28T21:00:00Z,America/New_York,KeyBank Center,1,New Jersey Devils,7,Buffalo Sabres,5,0,REG
+2025020380,20252026,2025-11-28T21:00:00Z,US/Eastern,Amerant Bank Arena,20,Calgary Flames,13,Florida Panthers,5,3,REG
+2025020381,20252026,2025-11-28T21:00:00Z,America/New_York,UBS Arena,4,Philadelphia Flyers,2,New York Islanders,4,3,SO
+2025020382,20252026,2025-11-28T21:00:00Z,US/Central,Enterprise Center,9,Ottawa Senators,19,St. Louis Blues,3,4,REG
+2025020383,20252026,2025-11-28T21:00:00Z,US/Pacific,T-Mobile Arena,8,Montréal Canadiens,54,Vegas Golden Knights,4,1,REG
+2025020384,20252026,2025-11-28T21:00:00Z,America/Los_Angeles,Honda Center,26,Los Angeles Kings,24,Anaheim Ducks,4,5,SO
+2025020385,20252026,2025-11-28T21:00:00Z,US/Pacific,SAP Center at San Jose,23,Vancouver Canucks,28,San Jose Sharks,2,3,REG
+2025020386,20252026,2025-11-28T22:00:00Z,US/Eastern,Capital One Arena,10,Toronto Maple Leafs,15,Washington Capitals,2,4,REG
+2025020388,20252026,2025-11-29T00:00:00Z,US/Eastern,Nationwide Arena,5,Pittsburgh Penguins,29,Columbus Blue Jackets,4,3,OT
+2025020389,20252026,2025-11-29T01:00:00Z,America/Chicago,United Center,18,Nashville Predators,16,Chicago Blackhawks,4,3,REG
+2025020402,20252026,2025-11-30T18:00:00Z,America/New_York,UBS Arena,15,Washington Capitals,2,New York Islanders,4,1,REG
+2025020403,20252026,2025-11-30T20:30:00Z,America/Chicago,United Center,24,Anaheim Ducks,16,Chicago Blackhawks,3,5,REG
+2025020404,20252026,2025-11-30T22:00:00Z,US/Eastern,Lenovo Center,20,Calgary Flames,12,Carolina Hurricanes,0,1,OT
+2025020405,20252026,2025-11-30T23:00:00Z,US/Central,American Airlines Center,9,Ottawa Senators,25,Dallas Stars,1,6,REG
+2025020406,20252026,2025-12-02T00:00:00Z,US/Eastern,Prudential Center,29,Columbus Blue Jackets,1,New Jersey Devils,5,3,REG
+2025020407,20252026,2025-12-02T00:00:00Z,US/Eastern,Xfinity Mobile Arena,5,Pittsburgh Penguins,4,Philadelphia Flyers,5,1,REG
+2025020409,20252026,2025-12-02T01:00:00Z,US/Central,Enterprise Center,24,Anaheim Ducks,19,St. Louis Blues,4,1,REG
+2025020411,20252026,2025-12-03T00:00:00Z,America/Montreal,Centre Bell,9,Ottawa Senators,8,Montréal Canadiens,5,2,REG
+2025020412,20252026,2025-12-03T00:00:00Z,America/Detroit,Little Caesars Arena,6,Boston Bruins,17,Detroit Red Wings,4,5,REG
+2025020414,20252026,2025-12-03T00:00:00Z,America/New_York,UBS Arena,14,Tampa Bay Lightning,2,New York Islanders,1,2,REG
+2025020415,20252026,2025-12-03T00:00:00Z,America/New_York,Madison Square Garden,25,Dallas Stars,3,New York Rangers,2,3,OT
+2025020413,20252026,2025-12-03T00:30:00Z,US/Eastern,Amerant Bank Arena,10,Toronto Maple Leafs,13,Florida Panthers,4,1,REG
+2025020416,20252026,2025-12-03T01:00:00Z,US/Central,Bridgestone Arena,20,Calgary Flames,18,Nashville Predators,1,5,REG
+2025020417,20252026,2025-12-03T02:00:00Z,America/Denver,Ball Arena,23,Vancouver Canucks,21,Colorado Avalanche,1,3,REG
+2025020418,20252026,2025-12-03T02:00:00Z,America/Edmonton,Rogers Place,30,Minnesota Wild,22,Edmonton Oilers,1,0,REG
+2025020419,20252026,2025-12-03T03:00:00Z,US/Pacific,T-Mobile Arena,16,Chicago Blackhawks,54,Vegas Golden Knights,3,4,SO
+2025020420,20252026,2025-12-03T03:30:00Z,America/Los_Angeles,Crypto.com Arena,15,Washington Capitals,26,Los Angeles Kings,3,1,REG
+2025020421,20252026,2025-12-04T00:00:00Z,US/Eastern,Prudential Center,25,Dallas Stars,1,New Jersey Devils,3,0,REG
+2025020423,20252026,2025-12-04T00:30:00Z,US/Eastern,Xfinity Mobile Arena,7,Buffalo Sabres,4,Philadelphia Flyers,2,5,REG
+2025020425,20252026,2025-12-04T03:00:00Z,US/Pacific,SAP Center at San Jose,15,Washington Capitals,28,San Jose Sharks,7,1,REG
+2025020426,20252026,2025-12-05T00:00:00Z,US/Eastern,TD Garden,19,St. Louis Blues,6,Boston Bruins,2,5,REG
+2025020427,20252026,2025-12-05T00:00:00Z,US/Eastern,Canadian Tire Centre,3,New York Rangers,9,Ottawa Senators,4,2,REG
+2025020428,20252026,2025-12-05T00:00:00Z,US/Eastern,Benchmark International Arena,5,Pittsburgh Penguins,14,Tampa Bay Lightning,4,3,REG
+2025020429,20252026,2025-12-05T00:00:00Z,US/Eastern,Amerant Bank Arena,18,Nashville Predators,13,Florida Panthers,2,1,OT
+2025020430,20252026,2025-12-05T00:00:00Z,America/New_York,UBS Arena,21,Colorado Avalanche,2,New York Islanders,3,6,REG
+2025020431,20252026,2025-12-05T00:00:00Z,US/Eastern,Lenovo Center,10,Toronto Maple Leafs,12,Carolina Hurricanes,5,1,REG
+2025020432,20252026,2025-12-05T00:30:00Z,US/Eastern,Nationwide Arena,17,Detroit Red Wings,29,Columbus Blue Jackets,5,6,SO
+2025020433,20252026,2025-12-05T02:00:00Z,US/Mountain,Scotiabank Saddledome,30,Minnesota Wild,20,Calgary Flames,1,4,REG
+2025020435,20252026,2025-12-05T03:00:00Z,America/Los_Angeles,Crypto.com Arena,16,Chicago Blackhawks,26,Los Angeles Kings,2,1,REG
+2025020437,20252026,2025-12-06T00:00:00Z,America/Winnipeg,Canada Life Centre,7,Buffalo Sabres,52,Winnipeg Jets,1,4,REG
+2025020438,20252026,2025-12-06T01:00:00Z,US/Central,American Airlines Center,28,San Jose Sharks,25,Dallas Stars,1,4,REG
+2025020440,20252026,2025-12-06T03:00:00Z,America/Los_Angeles,Honda Center,15,Washington Capitals,24,Anaheim Ducks,3,4,SO
+2025020453,20252026,2025-12-07T18:00:00Z,US/Eastern,Xfinity Mobile Arena,21,Colorado Avalanche,4,Philadelphia Flyers,3,2,REG
+2025020454,20252026,2025-12-07T22:00:00Z,US/Eastern,Amerant Bank Arena,2,New York Islanders,13,Florida Panthers,1,4,REG
+2025020455,20252026,2025-12-07T22:00:00Z,US/Eastern,Lenovo Center,28,San Jose Sharks,12,Carolina Hurricanes,4,1,REG
+2025020456,20252026,2025-12-07T23:00:00Z,US/Central,American Airlines Center,5,Pittsburgh Penguins,25,Dallas Stars,2,3,SO
+2025020457,20252026,2025-12-08T00:00:00Z,America/Montreal,Centre Bell,19,St. Louis Blues,8,Montréal Canadiens,4,3,REG
+2025020459,20252026,2025-12-08T00:00:00Z,US/Eastern,Capital One Arena,29,Columbus Blue Jackets,15,Washington Capitals,0,2,REG
+2025020460,20252026,2025-12-08T01:00:00Z,America/Los_Angeles,Honda Center,16,Chicago Blackhawks,24,Anaheim Ducks,1,7,REG
+2025020461,20252026,2025-12-09T00:30:00Z,America/Toronto,Scotiabank Arena,14,Tampa Bay Lightning,10,Toronto Maple Leafs,0,2,REG
+2025020462,20252026,2025-12-09T02:00:00Z,America/Denver,Delta Center,26,Los Angeles Kings,68,Utah Mammoth,4,2,REG
+2025020463,20252026,2025-12-09T02:00:00Z,US/Mountain,Scotiabank Saddledome,7,Buffalo Sabres,20,Calgary Flames,4,7,REG
+2025020464,20252026,2025-12-09T03:00:00Z,America/Vancouver,Rogers Arena,17,Detroit Red Wings,23,Vancouver Canucks,4,0,REG
+2025020465,20252026,2025-12-09T03:00:00Z,US/Pacific,Climate Pledge Arena,30,Minnesota Wild,55,Seattle Kraken,4,1,REG
+2025020466,20252026,2025-12-10T00:00:00Z,America/Montreal,Centre Bell,14,Tampa Bay Lightning,8,Montréal Canadiens,6,1,REG
+2025020467,20252026,2025-12-10T00:00:00Z,US/Eastern,Canadian Tire Centre,1,New Jersey Devils,9,Ottawa Senators,4,3,REG
+2025020469,20252026,2025-12-10T00:00:00Z,US/Eastern,Xfinity Mobile Arena,28,San Jose Sharks,4,Philadelphia Flyers,1,4,REG
+2025020470,20252026,2025-12-10T00:00:00Z,US/Eastern,PPG Paints Arena,24,Anaheim Ducks,5,Pittsburgh Penguins,4,3,SO
+2025020471,20252026,2025-12-10T00:30:00Z,US/Eastern,Lenovo Center,29,Columbus Blue Jackets,12,Carolina Hurricanes,1,4,REG
+2025020472,20252026,2025-12-10T01:00:00Z,US/Central,Enterprise Center,6,Boston Bruins,19,St. Louis Blues,5,2,REG
+2025020473,20252026,2025-12-10T01:00:00Z,America/Winnipeg,Canada Life Centre,25,Dallas Stars,52,Winnipeg Jets,4,3,REG
+2025020474,20252026,2025-12-10T02:00:00Z,America/Edmonton,Rogers Place,7,Buffalo Sabres,22,Edmonton Oilers,4,3,OT
+2025020475,20252026,2025-12-10T02:30:00Z,US/Central,Bridgestone Arena,21,Colorado Avalanche,18,Nashville Predators,3,4,SO
+2025020476,20252026,2025-12-11T00:30:00Z,America/Chicago,United Center,3,New York Rangers,16,Chicago Blackhawks,0,3,REG
+2025020477,20252026,2025-12-11T01:30:00Z,US/Mountain,Scotiabank Saddledome,17,Detroit Red Wings,20,Calgary Flames,4,3,REG
+2025020478,20252026,2025-12-11T02:00:00Z,America/Denver,Delta Center,13,Florida Panthers,68,Utah Mammoth,4,3,REG
+2025020479,20252026,2025-12-11T03:00:00Z,US/Pacific,Climate Pledge Arena,26,Los Angeles Kings,55,Seattle Kraken,2,3,OT
+2025020480,20252026,2025-12-12T00:00:00Z,America/Toronto,Scotiabank Arena,28,San Jose Sharks,10,Toronto Maple Leafs,3,2,OT
+2025020481,20252026,2025-12-12T00:00:00Z,US/Eastern,Prudential Center,14,Tampa Bay Lightning,1,New Jersey Devils,8,4,REG
+2025020482,20252026,2025-12-12T00:00:00Z,America/New_York,UBS Arena,24,Anaheim Ducks,2,New York Islanders,2,5,REG
+2025020484,20252026,2025-12-12T00:00:00Z,US/Eastern,PPG Paints Arena,8,Montréal Canadiens,5,Pittsburgh Penguins,4,2,REG
+2025020485,20252026,2025-12-12T00:00:00Z,US/Eastern,Capital One Arena,12,Carolina Hurricanes,15,Washington Capitals,3,2,SO
+2025020486,20252026,2025-12-12T00:00:00Z,US/Eastern,Nationwide Arena,9,Ottawa Senators,29,Columbus Blue Jackets,6,3,REG
+2025020487,20252026,2025-12-12T01:00:00Z,US/Central,Bridgestone Arena,19,St. Louis Blues,18,Nashville Predators,2,7,REG
+2025020488,20252026,2025-12-12T01:00:00Z,US/Central,Grand Casino Arena,25,Dallas Stars,30,Minnesota Wild,2,5,REG
+2025020489,20252026,2025-12-12T01:00:00Z,America/Winnipeg,Canada Life Centre,6,Boston Bruins,52,Winnipeg Jets,6,3,REG
+2025020491,20252026,2025-12-12T02:00:00Z,America/Edmonton,Rogers Place,17,Detroit Red Wings,22,Edmonton Oilers,1,4,REG
+2025020490,20252026,2025-12-12T02:30:00Z,America/Denver,Ball Arena,13,Florida Panthers,21,Colorado Avalanche,2,6,REG
+2025020492,20252026,2025-12-12T03:00:00Z,America/Vancouver,Rogers Arena,7,Buffalo Sabres,23,Vancouver Canucks,3,2,REG
+2025020493,20252026,2025-12-13T01:00:00Z,US/Central,Enterprise Center,16,Chicago Blackhawks,19,St. Louis Blues,2,3,REG
+2025020508,20252026,2025-12-14T17:30:00Z,US/Eastern,Prudential Center,23,Vancouver Canucks,1,New Jersey Devils,2,1,REG
+2025020510,20252026,2025-12-14T22:00:00Z,US/Eastern,Lenovo Center,4,Philadelphia Flyers,12,Carolina Hurricanes,2,3,SO
+2025020511,20252026,2025-12-14T23:00:00Z,US/Central,Grand Casino Arena,6,Boston Bruins,30,Minnesota Wild,2,6,REG
+2025020512,20252026,2025-12-15T00:00:00Z,America/Montreal,Centre Bell,22,Edmonton Oilers,8,Montréal Canadiens,1,4,REG
+2025020513,20252026,2025-12-15T01:00:00Z,US/Pacific,Climate Pledge Arena,7,Buffalo Sabres,55,Seattle Kraken,3,1,REG
+2025020514,20252026,2025-12-16T00:00:00Z,US/Eastern,Benchmark International Arena,13,Florida Panthers,14,Tampa Bay Lightning,5,2,REG
+2025020515,20252026,2025-12-16T00:00:00Z,America/New_York,Madison Square Garden,24,Anaheim Ducks,3,New York Rangers,4,1,REG
+2025020516,20252026,2025-12-16T00:30:00Z,America/Winnipeg,Canada Life Centre,9,Ottawa Senators,52,Winnipeg Jets,3,2,OT
+2025020517,20252026,2025-12-16T01:00:00Z,US/Central,Enterprise Center,18,Nashville Predators,19,St. Louis Blues,5,2,REG
+2025020518,20252026,2025-12-16T01:00:00Z,US/Central,American Airlines Center,26,Los Angeles Kings,25,Dallas Stars,1,4,REG
+2025020520,20252026,2025-12-17T00:00:00Z,America/Toronto,Scotiabank Arena,16,Chicago Blackhawks,10,Toronto Maple Leafs,2,3,REG
+2025020521,20252026,2025-12-17T00:00:00Z,America/Montreal,Centre Bell,4,Philadelphia Flyers,8,Montréal Canadiens,4,1,REG
+2025020522,20252026,2025-12-17T00:00:00Z,America/Detroit,Little Caesars Arena,2,New York Islanders,17,Detroit Red Wings,2,3,REG
+2025020523,20252026,2025-12-17T00:00:00Z,America/New_York,Madison Square Garden,23,Vancouver Canucks,3,New York Rangers,3,0,REG
+2025020525,20252026,2025-12-17T00:00:00Z,US/Eastern,Nationwide Arena,24,Anaheim Ducks,29,Columbus Blue Jackets,3,4,OT
+2025020524,20252026,2025-12-17T00:30:00Z,US/Eastern,PPG Paints Arena,22,Edmonton Oilers,5,Pittsburgh Penguins,6,4,REG
+2025020526,20252026,2025-12-17T01:00:00Z,US/Central,Grand Casino Arena,15,Washington Capitals,30,Minnesota Wild,0,5,REG
+2025020527,20252026,2025-12-17T03:00:00Z,US/Pacific,SAP Center at San Jose,20,Calgary Flames,28,San Jose Sharks,3,6,REG
+2025020528,20252026,2025-12-17T03:00:00Z,US/Pacific,Climate Pledge Arena,21,Colorado Avalanche,55,Seattle Kraken,5,3,REG
+2025020529,20252026,2025-12-18T00:00:00Z,US/Eastern,Amerant Bank Arena,26,Los Angeles Kings,13,Florida Panthers,2,3,REG
+2025020532,20252026,2025-12-18T01:00:00Z,US/Central,Bridgestone Arena,12,Carolina Hurricanes,18,Nashville Predators,4,1,REG
+2025020533,20252026,2025-12-18T03:00:00Z,US/Pacific,T-Mobile Arena,1,New Jersey Devils,54,Vegas Golden Knights,2,1,SO
+2025020534,20252026,2025-12-19T00:00:00Z,US/Eastern,TD Garden,22,Edmonton Oilers,6,Boston Bruins,3,1,REG
+2025020536,20252026,2025-12-19T00:00:00Z,America/Montreal,Centre Bell,16,Chicago Blackhawks,8,Montréal Canadiens,1,4,REG
+2025020537,20252026,2025-12-19T00:00:00Z,US/Eastern,Canadian Tire Centre,5,Pittsburgh Penguins,9,Ottawa Senators,0,4,REG
+2025020538,20252026,2025-12-19T00:00:00Z,US/Eastern,Benchmark International Arena,26,Los Angeles Kings,14,Tampa Bay Lightning,2,1,REG
+2025020539,20252026,2025-12-19T00:00:00Z,US/Eastern,Capital One Arena,10,Toronto Maple Leafs,15,Washington Capitals,0,4,REG
+2025020540,20252026,2025-12-19T00:00:00Z,US/Eastern,Nationwide Arena,30,Minnesota Wild,29,Columbus Blue Jackets,5,2,REG
+2025020535,20252026,2025-12-19T00:30:00Z,America/New_York,KeyBank Center,4,Philadelphia Flyers,7,Buffalo Sabres,3,5,REG
+2025020541,20252026,2025-12-19T01:00:00Z,US/Central,Enterprise Center,3,New York Rangers,19,St. Louis Blues,2,1,OT
+2025020543,20252026,2025-12-19T03:00:00Z,US/Pacific,SAP Center at San Jose,25,Dallas Stars,28,San Jose Sharks,5,3,REG
+2025020544,20252026,2025-12-20T00:00:00Z,US/Eastern,Amerant Bank Arena,12,Carolina Hurricanes,13,Florida Panthers,3,4,SO
+2025020545,20252026,2025-12-20T00:00:00Z,America/New_York,UBS Arena,23,Vancouver Canucks,2,New York Islanders,4,1,REG
+2025020547,20252026,2025-12-20T02:00:00Z,America/Denver,Delta Center,1,New Jersey Devils,68,Utah Mammoth,2,1,REG
+2025020548,20252026,2025-12-20T03:00:00Z,America/Los_Angeles,Honda Center,25,Dallas Stars,24,Anaheim Ducks,8,3,REG
+2025020562,20252026,2025-12-21T18:00:00Z,America/Detroit,Little Caesars Arena,15,Washington Capitals,17,Detroit Red Wings,2,3,OT
+2025020563,20252026,2025-12-21T23:00:00Z,US/Central,Grand Casino Arena,21,Colorado Avalanche,30,Minnesota Wild,5,1,REG
+2025020564,20252026,2025-12-22T00:00:00Z,US/Eastern,TD Garden,9,Ottawa Senators,6,Boston Bruins,6,2,REG
+2025020565,20252026,2025-12-22T00:00:00Z,US/Eastern,Prudential Center,7,Buffalo Sabres,1,New Jersey Devils,3,1,REG
+2025020566,20252026,2025-12-22T00:00:00Z,US/Eastern,PPG Paints Arena,8,Montréal Canadiens,5,Pittsburgh Penguins,3,4,SO
+2025020567,20252026,2025-12-22T00:00:00Z,US/Central,Bridgestone Arena,3,New York Rangers,18,Nashville Predators,1,2,REG
+2025020568,20252026,2025-12-22T00:00:00Z,US/Central,American Airlines Center,10,Toronto Maple Leafs,25,Dallas Stars,1,5,REG
+2025020571,20252026,2025-12-23T00:00:00Z,US/Eastern,Benchmark International Arena,19,St. Louis Blues,14,Tampa Bay Lightning,1,4,REG
+2025020572,20252026,2025-12-23T00:30:00Z,US/Eastern,Xfinity Mobile Arena,23,Vancouver Canucks,4,Philadelphia Flyers,2,5,REG
+2025020574,20252026,2025-12-23T03:00:00Z,America/Los_Angeles,Crypto.com Arena,29,Columbus Blue Jackets,26,Los Angeles Kings,3,1,REG
+2025020575,20252026,2025-12-23T21:00:00Z,America/Toronto,Scotiabank Arena,5,Pittsburgh Penguins,10,Toronto Maple Leafs,3,6,REG
+2025020579,20252026,2025-12-23T23:30:00Z,America/Detroit,Little Caesars Arena,25,Dallas Stars,17,Detroit Red Wings,3,4,OT
+2025020576,20252026,2025-12-24T00:00:00Z,US/Eastern,Capital One Arena,3,New York Rangers,15,Washington Capitals,7,3,REG
+2025020577,20252026,2025-12-24T00:00:00Z,US/Eastern,TD Garden,8,Montréal Canadiens,6,Boston Bruins,6,2,REG
+2025020578,20252026,2025-12-24T00:00:00Z,US/Eastern,Canadian Tire Centre,7,Buffalo Sabres,9,Ottawa Senators,3,2,OT
+2025020580,20252026,2025-12-24T00:00:00Z,America/New_York,UBS Arena,1,New Jersey Devils,2,New York Islanders,1,2,REG
+2025020581,20252026,2025-12-24T00:00:00Z,US/Eastern,Lenovo Center,13,Florida Panthers,12,Carolina Hurricanes,5,2,REG
+2025020582,20252026,2025-12-24T01:00:00Z,US/Central,Grand Casino Arena,18,Nashville Predators,30,Minnesota Wild,3,2,OT
+2025020583,20252026,2025-12-24T02:00:00Z,America/Chicago,United Center,4,Philadelphia Flyers,16,Chicago Blackhawks,3,1,REG
+2025020585,20252026,2025-12-24T02:00:00Z,America/Edmonton,Rogers Place,20,Calgary Flames,22,Edmonton Oilers,1,5,REG
+2025020586,20252026,2025-12-24T03:00:00Z,US/Pacific,T-Mobile Arena,28,San Jose Sharks,54,Vegas Golden Knights,2,7,REG
+2025020602,20252026,2025-12-28T22:00:00Z,US/Eastern,Benchmark International Arena,8,Montréal Canadiens,14,Tampa Bay Lightning,4,5,SO
+2025020603,20252026,2025-12-28T22:00:00Z,US/Eastern,Nationwide Arena,2,New York Islanders,29,Columbus Blue Jackets,2,4,REG
+2025020601,20252026,2025-12-29T00:00:00Z,America/Detroit,Little Caesars Arena,10,Toronto Maple Leafs,17,Detroit Red Wings,2,3,OT
+2025020604,20252026,2025-12-29T00:00:00Z,America/Chicago,United Center,5,Pittsburgh Penguins,16,Chicago Blackhawks,7,3,REG
+2025020605,20252026,2025-12-29T01:00:00Z,US/Pacific,Climate Pledge Arena,4,Philadelphia Flyers,55,Seattle Kraken,1,4,REG
+2025020607,20252026,2025-12-30T00:00:00Z,US/Eastern,Amerant Bank Arena,15,Washington Capitals,13,Florida Panthers,3,5,REG
+2025020608,20252026,2025-12-30T00:00:00Z,US/Eastern,Lenovo Center,3,New York Rangers,12,Carolina Hurricanes,2,3,OT
+2025020606,20252026,2025-12-30T00:30:00Z,US/Eastern,Canadian Tire Centre,29,Columbus Blue Jackets,9,Ottawa Senators,4,1,REG
+2025020609,20252026,2025-12-30T00:30:00Z,America/Winnipeg,Canada Life Centre,22,Edmonton Oilers,52,Winnipeg Jets,3,1,REG
+2025020610,20252026,2025-12-30T01:00:00Z,US/Central,Enterprise Center,7,Buffalo Sabres,19,St. Louis Blues,4,2,REG
+2025020611,20252026,2025-12-30T02:00:00Z,America/Denver,Ball Arena,26,Los Angeles Kings,21,Colorado Avalanche,2,5,REG
+2025020612,20252026,2025-12-30T02:00:00Z,America/Denver,Delta Center,18,Nashville Predators,68,Utah Mammoth,4,3,REG
+2025020613,20252026,2025-12-30T02:00:00Z,US/Mountain,Scotiabank Saddledome,6,Boston Bruins,20,Calgary Flames,1,2,OT
+2025020614,20252026,2025-12-30T03:00:00Z,US/Pacific,T-Mobile Arena,30,Minnesota Wild,54,Vegas Golden Knights,5,2,REG
+2025020615,20252026,2025-12-30T03:00:00Z,America/Los_Angeles,Honda Center,28,San Jose Sharks,24,Anaheim Ducks,5,4,REG
+2025020616,20252026,2025-12-30T03:00:00Z,US/Pacific,Climate Pledge Arena,23,Vancouver Canucks,55,Seattle Kraken,3,2,SO
+2025020617,20252026,2025-12-31T00:00:00Z,America/Toronto,Scotiabank Arena,1,New Jersey Devils,10,Toronto Maple Leafs,0,4,REG
+2025020618,20252026,2025-12-31T00:00:00Z,US/Eastern,Amerant Bank Arena,8,Montréal Canadiens,13,Florida Panthers,3,2,OT
+2025020619,20252026,2025-12-31T00:00:00Z,US/Eastern,PPG Paints Arena,12,Carolina Hurricanes,5,Pittsburgh Penguins,1,5,REG
+2025020620,20252026,2025-12-31T01:30:00Z,America/Chicago,United Center,2,New York Islanders,16,Chicago Blackhawks,3,2,SO
+2025020621,20252026,2025-12-31T03:00:00Z,America/Vancouver,Rogers Arena,4,Philadelphia Flyers,23,Vancouver Canucks,6,3,REG
+2025020622,20252026,2025-12-31T17:30:00Z,US/Eastern,Capital One Arena,3,New York Rangers,15,Washington Capitals,3,6,REG
+2025020623,20252026,2025-12-31T20:00:00Z,US/Pacific,T-Mobile Arena,18,Nashville Predators,54,Vegas Golden Knights,4,2,REG
+2025020624,20252026,2025-12-31T21:00:00Z,America/Los_Angeles,Honda Center,14,Tampa Bay Lightning,24,Anaheim Ducks,4,3,OT
+2025020625,20252026,2025-12-31T21:00:00Z,US/Pacific,SAP Center at San Jose,30,Minnesota Wild,28,San Jose Sharks,3,4,SO
+2025020627,20252026,2026-01-01T00:00:00Z,US/Eastern,Nationwide Arena,1,New Jersey Devils,29,Columbus Blue Jackets,3,2,REG
+2025020628,20252026,2026-01-01T01:00:00Z,US/Central,American Airlines Center,7,Buffalo Sabres,25,Dallas Stars,4,1,REG
+2025020629,20252026,2026-01-01T02:00:00Z,America/Denver,Ball Arena,19,St. Louis Blues,21,Colorado Avalanche,1,6,REG
+2025020630,20252026,2026-01-01T02:30:00Z,US/Mountain,Scotiabank Saddledome,4,Philadelphia Flyers,20,Calgary Flames,1,5,REG
+2025020631,20252026,2026-01-01T02:30:00Z,America/Edmonton,Rogers Place,6,Boston Bruins,22,Edmonton Oilers,6,2,REG
+2025020632,20252026,2026-01-01T18:00:00Z,US/Eastern,Canadian Tire Centre,15,Washington Capitals,9,Ottawa Senators,3,4,REG
+2025020635,20252026,2026-01-02T00:00:00Z,US/Eastern,PPG Paints Arena,17,Detroit Red Wings,5,Pittsburgh Penguins,3,4,OT
+2025020636,20252026,2026-01-02T00:00:00Z,US/Eastern,Lenovo Center,8,Montréal Canadiens,12,Carolina Hurricanes,7,5,REG
+2025020639,20252026,2026-01-02T00:00:00Z,America/Los_Angeles,Crypto.com Arena,14,Tampa Bay Lightning,26,Los Angeles Kings,5,3,REG
+2025020637,20252026,2026-01-02T01:30:00Z,America/Chicago,United Center,25,Dallas Stars,16,Chicago Blackhawks,3,4,REG
+2025020638,20252026,2026-01-02T03:00:00Z,US/Pacific,Climate Pledge Arena,18,Nashville Predators,55,Seattle Kraken,1,4,REG
+2025020641,20252026,2026-01-03T01:00:00Z,America/New_York,loanDepot park,3,New York Rangers,13,Florida Panthers,5,1,REG
+2025020643,20252026,2026-01-03T03:30:00Z,America/Los_Angeles,Honda Center,30,Minnesota Wild,24,Anaheim Ducks,5,2,REG
+2025020657,20252026,2026-01-04T19:00:00Z,US/Central,American Airlines Center,8,Montréal Canadiens,25,Dallas Stars,4,3,OT
+2025020658,20252026,2026-01-04T20:00:00Z,US/Eastern,Nationwide Arena,5,Pittsburgh Penguins,29,Columbus Blue Jackets,5,4,OT
+2025020659,20252026,2026-01-04T22:00:00Z,US/Eastern,Amerant Bank Arena,21,Colorado Avalanche,13,Florida Panthers,1,2,REG
+2025020660,20252026,2026-01-05T00:00:00Z,US/Eastern,Prudential Center,12,Carolina Hurricanes,1,New Jersey Devils,3,1,REG
+2025020663,20252026,2026-01-06T00:00:00Z,US/Eastern,Capital One Arena,24,Anaheim Ducks,15,Washington Capitals,4,7,REG
+2025020664,20252026,2026-01-06T00:30:00Z,US/Eastern,Canadian Tire Centre,17,Detroit Red Wings,9,Ottawa Senators,5,3,REG
+2025020666,20252026,2026-01-06T03:30:00Z,America/Los_Angeles,Crypto.com Arena,30,Minnesota Wild,26,Los Angeles Kings,2,4,REG
+2025020667,20252026,2026-01-07T00:00:00Z,America/New_York,KeyBank Center,23,Vancouver Canucks,7,Buffalo Sabres,3,5,REG
+2025020668,20252026,2026-01-07T00:00:00Z,US/Eastern,Benchmark International Arena,21,Colorado Avalanche,14,Tampa Bay Lightning,2,4,REG
+2025020670,20252026,2026-01-07T00:00:00Z,US/Eastern,Xfinity Mobile Arena,24,Anaheim Ducks,4,Philadelphia Flyers,2,5,REG
+2025020671,20252026,2026-01-07T00:00:00Z,US/Eastern,Lenovo Center,25,Dallas Stars,12,Carolina Hurricanes,3,6,REG
+2025020669,20252026,2026-01-07T00:30:00Z,America/New_York,UBS Arena,1,New Jersey Devils,2,New York Islanders,0,9,REG
+2025020672,20252026,2026-01-07T00:30:00Z,America/Toronto,Scotiabank Arena,13,Florida Panthers,10,Toronto Maple Leafs,1,4,REG
+2025020674,20252026,2026-01-07T02:00:00Z,America/Edmonton,Rogers Place,18,Nashville Predators,22,Edmonton Oilers,2,6,REG
+2025020675,20252026,2026-01-07T03:00:00Z,US/Pacific,SAP Center at San Jose,29,Columbus Blue Jackets,28,San Jose Sharks,2,5,REG
+2025020676,20252026,2026-01-07T03:00:00Z,US/Pacific,Climate Pledge Arena,6,Boston Bruins,55,Seattle Kraken,4,7,REG
+2025020677,20252026,2026-01-08T00:00:00Z,US/Eastern,Capital One Arena,25,Dallas Stars,15,Washington Capitals,4,1,REG
+2025020678,20252026,2026-01-08T00:30:00Z,America/Montreal,Centre Bell,20,Calgary Flames,8,Montréal Canadiens,1,4,REG
+2025020679,20252026,2026-01-08T02:30:00Z,America/Chicago,United Center,19,St. Louis Blues,16,Chicago Blackhawks,3,7,REG
+2025020680,20252026,2026-01-08T02:30:00Z,America/Denver,Delta Center,9,Ottawa Senators,68,Utah Mammoth,1,3,REG
+2025020681,20252026,2026-01-08T03:30:00Z,America/Los_Angeles,Crypto.com Arena,28,San Jose Sharks,26,Los Angeles Kings,4,3,OT
+2025020682,20252026,2026-01-09T00:00:00Z,US/Eastern,TD Garden,20,Calgary Flames,6,Boston Bruins,1,4,REG
+2025020683,20252026,2026-01-09T00:00:00Z,America/Montreal,Centre Bell,13,Florida Panthers,8,Montréal Canadiens,2,6,REG
+2025020684,20252026,2026-01-09T00:00:00Z,America/Detroit,Little Caesars Arena,23,Vancouver Canucks,17,Detroit Red Wings,1,5,REG
+2025020685,20252026,2026-01-09T00:00:00Z,America/New_York,Madison Square Garden,7,Buffalo Sabres,3,New York Rangers,5,2,REG
+2025020686,20252026,2026-01-09T00:00:00Z,US/Eastern,Xfinity Mobile Arena,10,Toronto Maple Leafs,4,Philadelphia Flyers,2,1,OT
+2025020687,20252026,2026-01-09T00:00:00Z,US/Eastern,PPG Paints Arena,1,New Jersey Devils,5,Pittsburgh Penguins,1,4,REG
+2025020688,20252026,2026-01-09T00:00:00Z,US/Eastern,Lenovo Center,24,Anaheim Ducks,12,Carolina Hurricanes,2,5,REG
+2025020689,20252026,2026-01-09T01:00:00Z,US/Central,Bridgestone Arena,2,New York Islanders,18,Nashville Predators,1,2,SO
+2025020690,20252026,2026-01-09T01:00:00Z,America/Winnipeg,Canada Life Centre,22,Edmonton Oilers,52,Winnipeg Jets,4,3,REG
+2025020691,20252026,2026-01-09T02:00:00Z,America/Denver,Ball Arena,9,Ottawa Senators,21,Colorado Avalanche,2,8,REG
+2025020692,20252026,2026-01-09T03:00:00Z,US/Pacific,T-Mobile Arena,29,Columbus Blue Jackets,54,Vegas Golden Knights,3,5,REG
+2025020693,20252026,2026-01-09T03:00:00Z,US/Pacific,Climate Pledge Arena,30,Minnesota Wild,55,Seattle Kraken,3,2,OT
+2025020694,20252026,2026-01-10T01:00:00Z,America/Chicago,United Center,15,Washington Capitals,16,Chicago Blackhawks,5,1,REG
+2025020695,20252026,2026-01-10T01:00:00Z,America/Winnipeg,Canada Life Centre,26,Los Angeles Kings,52,Winnipeg Jets,1,5,REG
+2025020696,20252026,2026-01-10T02:00:00Z,America/Denver,Delta Center,19,St. Louis Blues,68,Utah Mammoth,2,4,REG
+2025020711,20252026,2026-01-11T19:00:00Z,America/Winnipeg,Canada Life Centre,1,New Jersey Devils,52,Winnipeg Jets,3,4,REG
+2025020712,20252026,2026-01-11T22:00:00Z,US/Eastern,TD Garden,5,Pittsburgh Penguins,6,Boston Bruins,0,1,REG
+2025020713,20252026,2026-01-12T00:00:00Z,US/Central,Bridgestone Arena,15,Washington Capitals,18,Nashville Predators,2,3,REG
+2025020714,20252026,2026-01-12T00:00:00Z,America/Denver,Delta Center,29,Columbus Blue Jackets,68,Utah Mammoth,3,2,OT
+2025020716,20252026,2026-01-13T00:00:00Z,America/New_York,KeyBank Center,13,Florida Panthers,7,Buffalo Sabres,4,3,REG
+2025020717,20252026,2026-01-13T00:00:00Z,America/Detroit,Little Caesars Arena,12,Carolina Hurricanes,17,Detroit Red Wings,3,4,OT
+2025020719,20252026,2026-01-13T00:00:00Z,US/Eastern,Xfinity Mobile Arena,14,Tampa Bay Lightning,4,Philadelphia Flyers,5,1,REG
+2025020720,20252026,2026-01-13T00:30:00Z,America/Montreal,Centre Bell,23,Vancouver Canucks,8,Montréal Canadiens,3,6,REG
+2025020721,20252026,2026-01-13T01:00:00Z,US/Central,Grand Casino Arena,1,New Jersey Devils,30,Minnesota Wild,5,2,REG
+2025020722,20252026,2026-01-13T01:30:00Z,America/Chicago,United Center,22,Edmonton Oilers,16,Chicago Blackhawks,4,1,REG
+2025020723,20252026,2026-01-13T03:00:00Z,America/Denver,Ball Arena,10,Toronto Maple Leafs,21,Colorado Avalanche,4,3,OT
+2025020724,20252026,2026-01-13T03:00:00Z,America/Los_Angeles,Crypto.com Arena,25,Dallas Stars,26,Los Angeles Kings,3,1,REG
+2025020725,20252026,2026-01-14T00:00:00Z,US/Eastern,Canadian Tire Centre,23,Vancouver Canucks,9,Ottawa Senators,1,2,REG
+2025020726,20252026,2026-01-14T00:00:00Z,US/Eastern,PPG Paints Arena,14,Tampa Bay Lightning,5,Pittsburgh Penguins,2,1,SO
+2025020727,20252026,2026-01-14T00:00:00Z,US/Eastern,Capital One Arena,8,Montréal Canadiens,15,Washington Capitals,2,3,OT
+2025020728,20252026,2026-01-14T00:00:00Z,US/Eastern,Nationwide Arena,20,Calgary Flames,29,Columbus Blue Jackets,3,5,REG
+2025020729,20252026,2026-01-14T00:30:00Z,US/Eastern,TD Garden,17,Detroit Red Wings,6,Boston Bruins,0,3,REG
+2025020730,20252026,2026-01-14T00:30:00Z,US/Central,Enterprise Center,12,Carolina Hurricanes,19,St. Louis Blues,0,3,REG
+2025020731,20252026,2026-01-14T01:00:00Z,US/Central,Bridgestone Arena,22,Edmonton Oilers,18,Nashville Predators,3,4,OT
+2025020732,20252026,2026-01-14T01:00:00Z,America/Winnipeg,Canada Life Centre,2,New York Islanders,52,Winnipeg Jets,4,5,REG
+2025020733,20252026,2026-01-14T03:00:00Z,America/Denver,Delta Center,10,Toronto Maple Leafs,68,Utah Mammoth,1,6,REG
+2025020734,20252026,2026-01-14T03:00:00Z,America/Los_Angeles,Honda Center,25,Dallas Stars,24,Anaheim Ducks,1,3,REG
+2025020736,20252026,2026-01-15T00:30:00Z,America/New_York,KeyBank Center,4,Philadelphia Flyers,7,Buffalo Sabres,2,5,REG
+2025020737,20252026,2026-01-15T00:30:00Z,America/New_York,Madison Square Garden,9,Ottawa Senators,3,New York Rangers,8,4,REG
+2025020740,20252026,2026-01-16T00:00:00Z,America/New_York,KeyBank Center,8,Montréal Canadiens,7,Buffalo Sabres,3,5,REG
+2025020741,20252026,2026-01-16T00:00:00Z,US/Eastern,PPG Paints Arena,4,Philadelphia Flyers,5,Pittsburgh Penguins,3,6,REG
+2025020742,20252026,2026-01-16T00:00:00Z,US/Eastern,Capital One Arena,28,San Jose Sharks,15,Washington Capitals,3,2,REG
+2025020743,20252026,2026-01-16T00:00:00Z,US/Eastern,Nationwide Arena,23,Vancouver Canucks,29,Columbus Blue Jackets,1,4,REG
+2025020745,20252026,2026-01-16T01:30:00Z,America/Chicago,United Center,20,Calgary Flames,16,Chicago Blackhawks,3,1,REG
+2025020746,20252026,2026-01-16T02:00:00Z,America/Denver,Delta Center,25,Dallas Stars,68,Utah Mammoth,1,2,REG
+2025020747,20252026,2026-01-16T02:00:00Z,America/Edmonton,Rogers Place,2,New York Islanders,22,Edmonton Oilers,1,0,REG
+2025020748,20252026,2026-01-16T02:30:00Z,US/Pacific,T-Mobile Arena,10,Toronto Maple Leafs,54,Vegas Golden Knights,5,6,OT
+2025020749,20252026,2026-01-17T00:00:00Z,America/Detroit,Little Caesars Arena,28,San Jose Sharks,17,Detroit Red Wings,2,4,REG
+2025020750,20252026,2026-01-17T00:00:00Z,US/Eastern,Lenovo Center,13,Florida Panthers,12,Carolina Hurricanes,1,9,REG
+2025020751,20252026,2026-01-17T01:00:00Z,US/Central,Enterprise Center,14,Tampa Bay Lightning,19,St. Louis Blues,2,3,SO
+2025020752,20252026,2026-01-17T02:00:00Z,America/Denver,Ball Arena,18,Nashville Predators,21,Colorado Avalanche,7,3,REG
+2025020753,20252026,2026-01-17T03:30:00Z,America/Los_Angeles,Crypto.com Arena,24,Anaheim Ducks,26,Los Angeles Kings,3,2,SO
+2025020767,20252026,2026-01-18T19:00:00Z,US/Central,American Airlines Center,14,Tampa Bay Lightning,25,Dallas Stars,4,1,REG
+2025020768,20252026,2026-01-18T22:00:00Z,America/Detroit,Little Caesars Arena,9,Ottawa Senators,17,Detroit Red Wings,3,4,OT
+2025020769,20252026,2026-01-19T01:00:00Z,America/Edmonton,Rogers Place,19,St. Louis Blues,22,Edmonton Oilers,0,5,REG
+2025020770,20252026,2026-01-19T18:30:00Z,US/Eastern,Lenovo Center,7,Buffalo Sabres,12,Carolina Hurricanes,1,2,REG
+2025020771,20252026,2026-01-19T21:00:00Z,America/Denver,Ball Arena,15,Washington Capitals,21,Colorado Avalanche,2,5,REG
+2025020772,20252026,2026-01-19T22:00:00Z,US/Pacific,Climate Pledge Arena,5,Pittsburgh Penguins,55,Seattle Kraken,6,3,REG
+2025020773,20252026,2026-01-19T23:00:00Z,US/Eastern,Amerant Bank Arena,28,San Jose Sharks,13,Florida Panthers,4,1,REG
+2025020774,20252026,2026-01-20T00:30:00Z,America/Toronto,Scotiabank Arena,30,Minnesota Wild,10,Toronto Maple Leafs,6,3,REG
+2025020775,20252026,2026-01-20T01:00:00Z,US/Pacific,T-Mobile Arena,4,Philadelphia Flyers,54,Vegas Golden Knights,2,1,REG
+2025020777,20252026,2026-01-20T02:00:00Z,US/Mountain,Scotiabank Saddledome,1,New Jersey Devils,20,Calgary Flames,2,1,OT
+2025020778,20252026,2026-01-20T03:00:00Z,America/Vancouver,Rogers Arena,2,New York Islanders,23,Vancouver Canucks,4,3,REG
+2025020779,20252026,2026-01-20T03:00:00Z,America/Los_Angeles,Honda Center,3,New York Rangers,24,Anaheim Ducks,3,5,REG
+2025020780,20252026,2026-01-21T00:00:00Z,America/Montreal,Centre Bell,30,Minnesota Wild,8,Montréal Canadiens,3,4,REG
+2025020781,20252026,2026-01-21T00:00:00Z,US/Eastern,Benchmark International Arena,28,San Jose Sharks,14,Tampa Bay Lightning,1,4,REG
+2025020782,20252026,2026-01-21T00:00:00Z,US/Eastern,Nationwide Arena,9,Ottawa Senators,29,Columbus Blue Jackets,4,1,REG
+2025020783,20252026,2026-01-21T00:30:00Z,US/Central,American Airlines Center,6,Boston Bruins,25,Dallas Stars,2,6,REG
+2025020784,20252026,2026-01-21T01:00:00Z,US/Central,Bridgestone Arena,7,Buffalo Sabres,18,Nashville Predators,5,3,REG
+2025020785,20252026,2026-01-21T01:00:00Z,America/Winnipeg,Canada Life Centre,19,St. Louis Blues,52,Winnipeg Jets,1,3,REG
+2025020786,20252026,2026-01-21T03:00:00Z,America/Edmonton,Rogers Place,1,New Jersey Devils,22,Edmonton Oilers,2,1,REG
+2025020787,20252026,2026-01-21T03:00:00Z,America/Los_Angeles,Crypto.com Arena,3,New York Rangers,26,Los Angeles Kings,3,4,REG
+2025020788,20252026,2026-01-22T00:00:00Z,America/Toronto,Scotiabank Arena,17,Detroit Red Wings,10,Toronto Maple Leafs,2,1,OT
+2025020789,20252026,2026-01-22T02:00:00Z,America/Denver,Ball Arena,24,Anaheim Ducks,21,Colorado Avalanche,2,1,SO
+2025020790,20252026,2026-01-22T02:00:00Z,America/Denver,Delta Center,4,Philadelphia Flyers,68,Utah Mammoth,4,5,OT
+2025020791,20252026,2026-01-22T02:30:00Z,US/Mountain,Scotiabank Saddledome,5,Pittsburgh Penguins,20,Calgary Flames,4,1,REG
+2025020793,20252026,2026-01-22T02:30:00Z,US/Pacific,Climate Pledge Arena,2,New York Islanders,55,Seattle Kraken,1,4,REG
+2025020792,20252026,2026-01-22T03:00:00Z,America/Vancouver,Rogers Arena,15,Washington Capitals,23,Vancouver Canucks,3,4,REG
+2025020795,20252026,2026-01-23T00:00:00Z,America/Montreal,Centre Bell,7,Buffalo Sabres,8,Montréal Canadiens,4,2,REG
+2025020796,20252026,2026-01-23T00:00:00Z,US/Eastern,Lenovo Center,16,Chicago Blackhawks,12,Carolina Hurricanes,4,3,SO
+2025020797,20252026,2026-01-23T00:00:00Z,US/Eastern,Nationwide Arena,25,Dallas Stars,29,Columbus Blue Jackets,0,1,REG
+2025020798,20252026,2026-01-23T01:00:00Z,US/Central,Bridgestone Arena,9,Ottawa Senators,18,Nashville Predators,3,5,REG
+2025020799,20252026,2026-01-23T01:00:00Z,America/Winnipeg,Canada Life Centre,13,Florida Panthers,52,Winnipeg Jets,2,1,SO
+2025020800,20252026,2026-01-23T02:00:00Z,America/Edmonton,Rogers Place,5,Pittsburgh Penguins,22,Edmonton Oilers,6,2,REG
+2025020801,20252026,2026-01-23T02:30:00Z,US/Central,Grand Casino Arena,17,Detroit Red Wings,30,Minnesota Wild,3,4,OT
+2025020803,20252026,2026-01-24T00:00:00Z,America/Chicago,United Center,14,Tampa Bay Lightning,16,Chicago Blackhawks,2,1,SO
+2025020804,20252026,2026-01-24T01:00:00Z,US/Central,American Airlines Center,19,St. Louis Blues,25,Dallas Stars,2,3,REG
+2025020805,20252026,2026-01-24T02:00:00Z,America/Denver,Ball Arena,4,Philadelphia Flyers,21,Colorado Avalanche,7,3,REG
+2025020806,20252026,2026-01-24T02:00:00Z,US/Mountain,Scotiabank Saddledome,15,Washington Capitals,20,Calgary Flames,3,1,REG
+2025020807,20252026,2026-01-24T03:00:00Z,America/Vancouver,Rogers Arena,1,New Jersey Devils,23,Vancouver Canucks,5,4,REG
+2025020808,20252026,2026-01-24T03:00:00Z,US/Pacific,SAP Center at San Jose,3,New York Rangers,28,San Jose Sharks,1,3,REG
+2025020809,20252026,2026-01-24T03:00:00Z,US/Pacific,Climate Pledge Arena,24,Anaheim Ducks,55,Seattle Kraken,4,2,REG
+2025020819,20252026,2026-01-25T18:30:00Z,America/Toronto,Scotiabank Arena,21,Colorado Avalanche,10,Toronto Maple Leafs,4,1,REG
+2025020820,20252026,2026-01-25T20:00:00Z,US/Pacific,Climate Pledge Arena,1,New Jersey Devils,55,Seattle Kraken,2,4,REG
+2025020822,20252026,2026-01-25T23:00:00Z,America/Vancouver,Rogers Arena,5,Pittsburgh Penguins,23,Vancouver Canucks,3,2,REG
+2025020823,20252026,2026-01-26T00:00:00Z,America/Chicago,United Center,13,Florida Panthers,16,Chicago Blackhawks,5,1,REG
+2025020824,20252026,2026-01-26T01:00:00Z,US/Mountain,Scotiabank Saddledome,24,Anaheim Ducks,20,Calgary Flames,4,3,OT
+2025020826,20252026,2026-01-27T00:00:00Z,America/New_York,Madison Square Garden,6,Boston Bruins,3,New York Rangers,3,4,OT
+2025020827,20252026,2026-01-27T00:00:00Z,US/Eastern,Xfinity Mobile Arena,2,New York Islanders,4,Philadelphia Flyers,4,0,REG
+2025020829,20252026,2026-01-27T01:30:00Z,America/Edmonton,Rogers Place,24,Anaheim Ducks,22,Edmonton Oilers,4,7,REG
+2025020830,20252026,2026-01-28T00:00:00Z,US/Eastern,TD Garden,18,Nashville Predators,6,Boston Bruins,2,3,OT
+2025020831,20252026,2026-01-28T00:00:00Z,America/Toronto,Scotiabank Arena,7,Buffalo Sabres,10,Toronto Maple Leafs,7,4,REG
+2025020833,20252026,2026-01-28T00:00:00Z,America/Detroit,Little Caesars Arena,26,Los Angeles Kings,17,Detroit Red Wings,3,1,REG
+2025020836,20252026,2026-01-28T01:00:00Z,US/Central,Enterprise Center,25,Dallas Stars,19,St. Louis Blues,4,3,REG
+2025020837,20252026,2026-01-28T01:00:00Z,US/Central,Grand Casino Arena,16,Chicago Blackhawks,30,Minnesota Wild,3,4,SO
+2025020838,20252026,2026-01-28T03:00:00Z,America/Vancouver,Rogers Arena,28,San Jose Sharks,23,Vancouver Canucks,5,2,REG
+2025020839,20252026,2026-01-28T03:00:00Z,US/Pacific,Climate Pledge Arena,15,Washington Capitals,55,Seattle Kraken,1,5,REG
+2025020842,20252026,2026-01-29T00:00:00Z,America/New_York,UBS Arena,3,New York Rangers,2,New York Islanders,2,5,REG
+2025020840,20252026,2026-01-29T00:30:00Z,US/Eastern,Nationwide Arena,4,Philadelphia Flyers,29,Columbus Blue Jackets,3,5,REG
+2025020841,20252026,2026-01-29T00:30:00Z,US/Eastern,Canadian Tire Centre,21,Colorado Avalanche,9,Ottawa Senators,2,5,REG
+2025020843,20252026,2026-01-30T00:00:00Z,US/Eastern,TD Garden,4,Philadelphia Flyers,6,Boston Bruins,3,6,REG
+2025020844,20252026,2026-01-30T00:00:00Z,America/New_York,KeyBank Center,26,Los Angeles Kings,7,Buffalo Sabres,1,4,REG
+2025020845,20252026,2026-01-30T00:00:00Z,America/Montreal,Centre Bell,21,Colorado Avalanche,8,Montréal Canadiens,3,7,REG
+2025020848,20252026,2026-01-30T00:00:00Z,US/Eastern,Prudential Center,18,Nashville Predators,1,New Jersey Devils,2,3,OT
+2025020849,20252026,2026-01-30T00:00:00Z,America/New_York,Madison Square Garden,2,New York Islanders,3,New York Rangers,2,1,REG
+2025020850,20252026,2026-01-30T00:00:00Z,US/Eastern,PPG Paints Arena,16,Chicago Blackhawks,5,Pittsburgh Penguins,2,6,REG
+2025020846,20252026,2026-01-30T00:30:00Z,America/Detroit,Little Caesars Arena,15,Washington Capitals,17,Detroit Red Wings,4,3,SO
+2025020852,20252026,2026-01-30T01:00:00Z,US/Central,Enterprise Center,13,Florida Panthers,19,St. Louis Blues,4,5,REG
+2025020853,20252026,2026-01-30T01:00:00Z,US/Central,Grand Casino Arena,20,Calgary Flames,30,Minnesota Wild,1,4,REG
+2025020854,20252026,2026-01-30T02:00:00Z,America/Edmonton,Rogers Place,28,San Jose Sharks,22,Edmonton Oilers,3,4,OT
+2025020855,20252026,2026-01-30T03:00:00Z,America/Vancouver,Rogers Arena,24,Anaheim Ducks,23,Vancouver Canucks,0,2,REG
+2025020856,20252026,2026-01-30T03:00:00Z,US/Pacific,T-Mobile Arena,25,Dallas Stars,54,Vegas Golden Knights,5,4,SO
+2025020857,20252026,2026-01-30T03:00:00Z,US/Pacific,Climate Pledge Arena,10,Toronto Maple Leafs,55,Seattle Kraken,2,5,REG
+2025020858,20252026,2026-01-31T01:30:00Z,America/Chicago,United Center,29,Columbus Blue Jackets,16,Chicago Blackhawks,4,2,REG
+2025020874,20252026,2026-02-01T20:00:00Z,US/Eastern,Lenovo Center,26,Los Angeles Kings,12,Carolina Hurricanes,2,3,OT
+2025020873,20252026,2026-02-01T23:30:00Z,America/New_York,Raymond James Stadium,6,Boston Bruins,14,Tampa Bay Lightning,5,6,SO
+2025020876,20252026,2026-02-03T00:00:00Z,US/Eastern,Amerant Bank Arena,7,Buffalo Sabres,13,Florida Panthers,5,3,REG
+2025020877,20252026,2026-02-03T00:00:00Z,US/Eastern,PPG Paints Arena,9,Ottawa Senators,5,Pittsburgh Penguins,3,2,REG
+2025020878,20252026,2026-02-03T00:00:00Z,US/Eastern,Capital One Arena,2,New York Islanders,15,Washington Capitals,1,4,REG
+2025020879,20252026,2026-02-03T00:30:00Z,US/Central,Grand Casino Arena,8,Montréal Canadiens,30,Minnesota Wild,3,4,OT
+2025020880,20252026,2026-02-03T01:00:00Z,US/Central,Bridgestone Arena,19,St. Louis Blues,18,Nashville Predators,5,6,REG
+2025020881,20252026,2026-02-03T01:30:00Z,America/Chicago,United Center,28,San Jose Sharks,16,Chicago Blackhawks,3,6,REG
+2025020883,20252026,2026-02-03T02:00:00Z,America/Denver,Ball Arena,17,Detroit Red Wings,21,Colorado Avalanche,2,0,REG
+2025020884,20252026,2026-02-03T02:30:00Z,America/Denver,Delta Center,23,Vancouver Canucks,68,Utah Mammoth,2,6,REG
+2025020885,20252026,2026-02-03T03:00:00Z,US/Mountain,Scotiabank Saddledome,10,Toronto Maple Leafs,20,Calgary Flames,4,2,REG
+2025020887,20252026,2026-02-04T00:00:00Z,US/Eastern,Prudential Center,29,Columbus Blue Jackets,1,New Jersey Devils,3,0,REG
+2025020889,20252026,2026-02-04T00:00:00Z,US/Eastern,Xfinity Mobile Arena,15,Washington Capitals,4,Philadelphia Flyers,2,4,REG
+2025020890,20252026,2026-02-04T00:00:00Z,US/Eastern,Lenovo Center,9,Ottawa Senators,12,Carolina Hurricanes,3,4,REG
+2025020886,20252026,2026-02-04T00:30:00Z,US/Eastern,Benchmark International Arena,7,Buffalo Sabres,14,Tampa Bay Lightning,3,4,OT
+2025020888,20252026,2026-02-04T00:30:00Z,America/New_York,UBS Arena,5,Pittsburgh Penguins,2,New York Islanders,4,5,OT
+2025020891,20252026,2026-02-04T01:30:00Z,America/Edmonton,Rogers Place,10,Toronto Maple Leafs,22,Edmonton Oilers,5,2,REG
+2025020893,20252026,2026-02-05T00:00:00Z,US/Eastern,Amerant Bank Arena,6,Boston Bruins,13,Florida Panthers,4,5,SO
+2025020894,20252026,2026-02-05T00:00:00Z,US/Eastern,Nationwide Arena,16,Chicago Blackhawks,29,Columbus Blue Jackets,0,4,REG
+2025020895,20252026,2026-02-05T00:00:00Z,America/Winnipeg,Canada Life Centre,8,Montréal Canadiens,52,Winnipeg Jets,5,1,REG
+2025020896,20252026,2026-02-05T01:00:00Z,US/Central,Bridgestone Arena,30,Minnesota Wild,18,Nashville Predators,6,5,OT
+2025020897,20252026,2026-02-05T02:00:00Z,America/Denver,Ball Arena,28,San Jose Sharks,21,Colorado Avalanche,2,4,REG
+2025020898,20252026,2026-02-05T02:00:00Z,America/Denver,Delta Center,17,Detroit Red Wings,68,Utah Mammoth,1,4,REG
+2025020899,20252026,2026-02-05T02:30:00Z,US/Central,American Airlines Center,19,St. Louis Blues,25,Dallas Stars,4,5,REG
+2025020900,20252026,2026-02-05T03:00:00Z,US/Mountain,Scotiabank Saddledome,22,Edmonton Oilers,20,Calgary Flames,3,4,REG
+2025020901,20252026,2026-02-05T03:00:00Z,US/Pacific,T-Mobile Arena,23,Vancouver Canucks,54,Vegas Golden Knights,2,5,REG
+2025020903,20252026,2026-02-06T00:00:00Z,America/New_York,KeyBank Center,5,Pittsburgh Penguins,7,Buffalo Sabres,5,2,REG
+2025020905,20252026,2026-02-06T00:00:00Z,US/Eastern,Prudential Center,2,New York Islanders,1,New Jersey Devils,3,1,REG
+2025020906,20252026,2026-02-06T00:00:00Z,America/New_York,Madison Square Garden,12,Carolina Hurricanes,3,New York Rangers,2,0,REG
+2025020907,20252026,2026-02-06T00:00:00Z,US/Eastern,Xfinity Mobile Arena,9,Ottawa Senators,4,Philadelphia Flyers,2,1,OT
+2025020908,20252026,2026-02-06T00:00:00Z,US/Eastern,Capital One Arena,18,Nashville Predators,15,Washington Capitals,2,4,REG
+2025020904,20252026,2026-02-06T00:30:00Z,US/Eastern,Benchmark International Arena,13,Florida Panthers,14,Tampa Bay Lightning,1,6,REG
+2025020909,20252026,2026-02-06T03:00:00Z,US/Pacific,T-Mobile Arena,26,Los Angeles Kings,54,Vegas Golden Knights,1,4,REG
+2025020910,20252026,2026-02-26T00:00:00Z,US/Eastern,Prudential Center,7,Buffalo Sabres,1,New Jersey Devils,,,
+2025020911,20252026,2026-02-26T00:00:00Z,US/Eastern,Capital One Arena,4,Philadelphia Flyers,15,Washington Capitals,,,
+2025020912,20252026,2026-02-26T00:30:00Z,US/Eastern,Benchmark International Arena,10,Toronto Maple Leafs,14,Tampa Bay Lightning,,,
+2025020914,20252026,2026-02-26T02:00:00Z,America/Denver,Delta Center,21,Colorado Avalanche,68,Utah Mammoth,,,
+2025020917,20252026,2026-02-26T03:30:00Z,America/Los_Angeles,Honda Center,22,Edmonton Oilers,24,Anaheim Ducks,,,
+2025020918,20252026,2026-02-27T00:00:00Z,US/Eastern,TD Garden,29,Columbus Blue Jackets,6,Boston Bruins,,,
+2025020919,20252026,2026-02-27T00:00:00Z,America/Montreal,Centre Bell,2,New York Islanders,8,Montréal Canadiens,,,
+2025020920,20252026,2026-02-27T00:00:00Z,US/Eastern,Canadian Tire Centre,17,Detroit Red Wings,9,Ottawa Senators,,,
+2025020921,20252026,2026-02-27T00:00:00Z,US/Eastern,Amerant Bank Arena,10,Toronto Maple Leafs,13,Florida Panthers,,,
+2025020922,20252026,2026-02-27T00:00:00Z,US/Eastern,PPG Paints Arena,1,New Jersey Devils,5,Pittsburgh Penguins,,,
+2025020923,20252026,2026-02-27T00:00:00Z,US/Eastern,Lenovo Center,14,Tampa Bay Lightning,12,Carolina Hurricanes,,,
+2025020924,20252026,2026-02-27T01:00:00Z,America/New_York,Madison Square Garden,4,Philadelphia Flyers,3,New York Rangers,,,
+2025020926,20252026,2026-02-27T01:00:00Z,US/Central,Bridgestone Arena,16,Chicago Blackhawks,18,Nashville Predators,,,
+2025020927,20252026,2026-02-27T02:00:00Z,America/Denver,Ball Arena,30,Minnesota Wild,21,Colorado Avalanche,,,
+2025020928,20252026,2026-02-27T03:00:00Z,US/Pacific,SAP Center at San Jose,20,Calgary Flames,28,San Jose Sharks,,,
+2025020929,20252026,2026-02-27T03:30:00Z,America/Los_Angeles,Crypto.com Arena,22,Edmonton Oilers,26,Los Angeles Kings,,,
+2025020930,20252026,2026-02-28T00:00:00Z,US/Eastern,Amerant Bank Arena,7,Buffalo Sabres,13,Florida Panthers,,,
+2025020932,20252026,2026-02-28T02:00:00Z,America/Denver,Delta Center,30,Minnesota Wild,68,Utah Mammoth,,,
+2025020949,20252026,2026-03-01T21:00:00Z,America/Denver,Delta Center,16,Chicago Blackhawks,68,Utah Mammoth,,,
+2025020951,20252026,2026-03-01T22:00:00Z,US/Central,Grand Casino Arena,19,St. Louis Blues,30,Minnesota Wild,,,
+2025020948,20252026,2026-03-01T23:30:00Z,America/New_York,UBS Arena,13,Florida Panthers,2,New York Islanders,,,
+2025020952,20252026,2026-03-02T01:00:00Z,America/Los_Angeles,Honda Center,20,Calgary Flames,24,Anaheim Ducks,,,
+2025020955,20252026,2026-03-02T19:00:00Z,US/Central,Bridgestone Arena,17,Detroit Red Wings,18,Nashville Predators,,,
+2025020953,20252026,2026-03-03T00:00:00Z,America/New_York,Madison Square Garden,29,Columbus Blue Jackets,3,New York Rangers,,,
+2025020954,20252026,2026-03-03T00:30:00Z,America/Toronto,Scotiabank Arena,4,Philadelphia Flyers,10,Toronto Maple Leafs,,,
+2025020956,20252026,2026-03-03T03:00:00Z,America/Vancouver,Rogers Arena,25,Dallas Stars,23,Vancouver Canucks,,,
+2025020957,20252026,2026-03-03T03:00:00Z,US/Pacific,Climate Pledge Arena,12,Carolina Hurricanes,55,Seattle Kraken,,,
+2025020958,20252026,2026-03-03T03:30:00Z,America/Los_Angeles,Crypto.com Arena,21,Colorado Avalanche,26,Los Angeles Kings,,,
+2025020959,20252026,2026-03-04T00:00:00Z,US/Eastern,TD Garden,5,Pittsburgh Penguins,6,Boston Bruins,,,
+2025020961,20252026,2026-03-04T00:00:00Z,US/Eastern,Prudential Center,13,Florida Panthers,1,New Jersey Devils,,,
+2025020963,20252026,2026-03-04T00:00:00Z,US/Eastern,Nationwide Arena,18,Nashville Predators,29,Columbus Blue Jackets,,,
+2025020964,20252026,2026-03-04T01:00:00Z,America/Winnipeg,Canada Life Centre,16,Chicago Blackhawks,52,Winnipeg Jets,,,
+2025020965,20252026,2026-03-04T02:00:00Z,US/Mountain,Scotiabank Saddledome,25,Dallas Stars,20,Calgary Flames,,,
+2025020966,20252026,2026-03-04T02:00:00Z,America/Edmonton,Rogers Place,9,Ottawa Senators,22,Edmonton Oilers,,,
+2025020967,20252026,2026-03-04T02:30:00Z,US/Central,Grand Casino Arena,14,Tampa Bay Lightning,30,Minnesota Wild,,,
+2025020968,20252026,2026-03-04T03:00:00Z,America/Los_Angeles,Honda Center,21,Colorado Avalanche,24,Anaheim Ducks,,,
+2025020969,20252026,2026-03-04T03:00:00Z,US/Pacific,SAP Center at San Jose,8,Montréal Canadiens,28,San Jose Sharks,,,
+2025020971,20252026,2026-03-05T00:00:00Z,US/Eastern,Prudential Center,10,Toronto Maple Leafs,1,New Jersey Devils,,,
+2025020972,20252026,2026-03-05T03:00:00Z,America/Vancouver,Rogers Arena,12,Carolina Hurricanes,23,Vancouver Canucks,,,
+2025020973,20252026,2026-03-05T03:00:00Z,America/Los_Angeles,Honda Center,2,New York Islanders,24,Anaheim Ducks,,,
+2025020974,20252026,2026-03-05T03:00:00Z,US/Pacific,Climate Pledge Arena,19,St. Louis Blues,55,Seattle Kraken,,,
+2025020975,20252026,2026-03-06T00:00:00Z,America/New_York,Madison Square Garden,10,Toronto Maple Leafs,3,New York Rangers,,,
+2025020977,20252026,2026-03-06T00:00:00Z,US/Eastern,PPG Paints Arena,7,Buffalo Sabres,5,Pittsburgh Penguins,,,
+2025020978,20252026,2026-03-06T00:00:00Z,US/Eastern,Nationwide Arena,13,Florida Panthers,29,Columbus Blue Jackets,,,
+2025020979,20252026,2026-03-06T01:00:00Z,US/Central,Bridgestone Arena,6,Boston Bruins,18,Nashville Predators,,,
+2025020980,20252026,2026-03-06T01:00:00Z,America/Winnipeg,Canada Life Centre,14,Tampa Bay Lightning,52,Winnipeg Jets,,,
+2025020981,20252026,2026-03-06T02:00:00Z,US/Mountain,Scotiabank Saddledome,9,Ottawa Senators,20,Calgary Flames,,,
+2025020982,20252026,2026-03-06T02:30:00Z,America/Los_Angeles,Crypto.com Arena,2,New York Islanders,26,Los Angeles Kings,,,
+2025020983,20252026,2026-03-07T00:00:00Z,America/Detroit,Little Caesars Arena,13,Florida Panthers,17,Detroit Red Wings,,,
+2025020984,20252026,2026-03-07T01:00:00Z,US/Central,American Airlines Center,21,Colorado Avalanche,25,Dallas Stars,,,
+2025020985,20252026,2026-03-07T01:30:00Z,America/Chicago,United Center,23,Vancouver Canucks,16,Chicago Blackhawks,,,
+2025020986,20252026,2026-03-07T02:00:00Z,America/Edmonton,Rogers Place,12,Carolina Hurricanes,22,Edmonton Oilers,,,
+2025020987,20252026,2026-03-07T02:00:00Z,America/Los_Angeles,Honda Center,8,Montréal Canadiens,24,Anaheim Ducks,,,
+2025020988,20252026,2026-03-07T03:00:00Z,US/Pacific,T-Mobile Arena,30,Minnesota Wild,54,Vegas Golden Knights,,,
+2025020989,20252026,2026-03-07T03:00:00Z,US/Pacific,SAP Center at San Jose,19,St. Louis Blues,28,San Jose Sharks,,,
+2025021001,20252026,2026-03-08T18:00:00Z,America/Denver,Ball Arena,30,Minnesota Wild,21,Colorado Avalanche,,,
+2025021002,20252026,2026-03-08T20:30:00Z,US/Eastern,PPG Paints Arena,6,Boston Bruins,5,Pittsburgh Penguins,,,
+2025021003,20252026,2026-03-08T22:00:00Z,America/New_York,KeyBank Center,14,Tampa Bay Lightning,7,Buffalo Sabres,,,
+2025021004,20252026,2026-03-08T22:00:00Z,US/Central,American Airlines Center,16,Chicago Blackhawks,25,Dallas Stars,,,
+2025021005,20252026,2026-03-08T23:00:00Z,US/Eastern,Prudential Center,17,Detroit Red Wings,1,New Jersey Devils,,,
+2025021006,20252026,2026-03-09T01:00:00Z,America/Los_Angeles,Honda Center,19,St. Louis Blues,24,Anaheim Ducks,,,
+2025021007,20252026,2026-03-09T01:30:00Z,US/Pacific,T-Mobile Arena,22,Edmonton Oilers,54,Vegas Golden Knights,,,
+2025020828,20252026,2026-03-09T20:00:00Z,US/Eastern,Nationwide Arena,26,Los Angeles Kings,29,Columbus Blue Jackets,,,
+2025021008,20252026,2026-03-09T23:00:00Z,US/Eastern,Xfinity Mobile Arena,3,New York Rangers,4,Philadelphia Flyers,,,
+2025021009,20252026,2026-03-09T23:00:00Z,US/Eastern,Capital One Arena,20,Calgary Flames,15,Washington Capitals,,,
+2025021011,20252026,2026-03-10T01:00:00Z,America/Vancouver,Rogers Arena,9,Ottawa Senators,23,Vancouver Canucks,,,
+2025021012,20252026,2026-03-10T23:00:00Z,US/Eastern,TD Garden,26,Los Angeles Kings,6,Boston Bruins,,,
+2025021013,20252026,2026-03-10T23:00:00Z,America/New_York,KeyBank Center,28,San Jose Sharks,7,Buffalo Sabres,,,
+2025021014,20252026,2026-03-10T23:00:00Z,America/Montreal,Centre Bell,10,Toronto Maple Leafs,8,Montréal Canadiens,,,
+2025021015,20252026,2026-03-10T23:00:00Z,US/Eastern,Benchmark International Arena,29,Columbus Blue Jackets,14,Tampa Bay Lightning,,,
+2025021016,20252026,2026-03-10T23:00:00Z,US/Eastern,Amerant Bank Arena,17,Detroit Red Wings,13,Florida Panthers,,,
+2025021017,20252026,2026-03-10T23:00:00Z,America/New_York,Madison Square Garden,20,Calgary Flames,3,New York Rangers,,,
+2025021018,20252026,2026-03-10T23:00:00Z,US/Eastern,Lenovo Center,5,Pittsburgh Penguins,12,Carolina Hurricanes,,,
+2025021019,20252026,2026-03-10T23:30:00Z,US/Central,Enterprise Center,2,New York Islanders,19,St. Louis Blues,,,
+2025021022,20252026,2026-03-11T00:30:00Z,America/Winnipeg,Canada Life Centre,24,Anaheim Ducks,52,Winnipeg Jets,,,
+2025021023,20252026,2026-03-11T02:00:00Z,America/Denver,Ball Arena,22,Edmonton Oilers,21,Colorado Avalanche,,,
+2025021024,20252026,2026-03-11T02:00:00Z,US/Pacific,Climate Pledge Arena,18,Nashville Predators,55,Seattle Kraken,,,
+2025021025,20252026,2026-03-11T23:30:00Z,US/Eastern,Canadian Tire Centre,8,Montréal Canadiens,9,Ottawa Senators,,,
+2025021026,20252026,2026-03-11T23:30:00Z,US/Eastern,Xfinity Mobile Arena,15,Washington Capitals,4,Philadelphia Flyers,,,
+2025021027,20252026,2026-03-12T23:00:00Z,US/Eastern,TD Garden,28,San Jose Sharks,6,Boston Bruins,,,
+2025021028,20252026,2026-03-12T23:00:00Z,America/New_York,KeyBank Center,15,Washington Capitals,7,Buffalo Sabres,,,
+2025021029,20252026,2026-03-12T23:00:00Z,America/Toronto,Scotiabank Arena,24,Anaheim Ducks,10,Toronto Maple Leafs,,,
+2025021030,20252026,2026-03-12T23:00:00Z,US/Eastern,Benchmark International Arena,17,Detroit Red Wings,14,Tampa Bay Lightning,,,
+2025021031,20252026,2026-03-12T23:00:00Z,US/Eastern,Amerant Bank Arena,29,Columbus Blue Jackets,13,Florida Panthers,,,
+2025021032,20252026,2026-03-12T23:00:00Z,US/Eastern,Prudential Center,20,Calgary Flames,1,New Jersey Devils,,,
+2025021033,20252026,2026-03-12T23:00:00Z,US/Eastern,Lenovo Center,19,St. Louis Blues,12,Carolina Hurricanes,,,
+2025021034,20252026,2026-03-13T00:00:00Z,US/Central,American Airlines Center,22,Edmonton Oilers,25,Dallas Stars,,,
+2025021035,20252026,2026-03-13T00:00:00Z,US/Central,Grand Casino Arena,4,Philadelphia Flyers,30,Minnesota Wild,,,
+2025021036,20252026,2026-03-13T00:00:00Z,America/Winnipeg,Canada Life Centre,3,New York Rangers,52,Winnipeg Jets,,,
+2025021037,20252026,2026-03-13T01:00:00Z,America/Denver,Delta Center,16,Chicago Blackhawks,68,Utah Mammoth,,,
+2025021038,20252026,2026-03-13T02:00:00Z,America/Vancouver,Rogers Arena,18,Nashville Predators,23,Vancouver Canucks,,,
+2025021039,20252026,2026-03-13T02:00:00Z,US/Pacific,T-Mobile Arena,5,Pittsburgh Penguins,54,Vegas Golden Knights,,,
+2025021040,20252026,2026-03-13T02:00:00Z,US/Pacific,Climate Pledge Arena,21,Colorado Avalanche,55,Seattle Kraken,,,
+2025021041,20252026,2026-03-13T23:00:00Z,America/New_York,UBS Arena,26,Los Angeles Kings,2,New York Islanders,,,
+2025021042,20252026,2026-03-14T00:00:00Z,US/Central,Enterprise Center,22,Edmonton Oilers,19,St. Louis Blues,,,
+2025021057,20252026,2026-03-15T19:00:00Z,America/Winnipeg,Canada Life Centre,19,St. Louis Blues,52,Winnipeg Jets,,,
+2025021058,20252026,2026-03-15T21:00:00Z,US/Eastern,Canadian Tire Centre,28,San Jose Sharks,9,Ottawa Senators,,,
+2025021059,20252026,2026-03-15T23:00:00Z,America/Montreal,Centre Bell,24,Anaheim Ducks,8,Montréal Canadiens,,,
+2025021060,20252026,2026-03-15T23:30:00Z,US/Central,Grand Casino Arena,10,Toronto Maple Leafs,30,Minnesota Wild,,,
+2025021061,20252026,2026-03-16T00:00:00Z,America/Edmonton,Rogers Place,18,Nashville Predators,22,Edmonton Oilers,,,
+2025021062,20252026,2026-03-16T00:00:00Z,US/Pacific,Climate Pledge Arena,13,Florida Panthers,55,Seattle Kraken,,,
+2025021063,20252026,2026-03-16T23:00:00Z,America/Detroit,Little Caesars Arena,20,Calgary Flames,17,Detroit Red Wings,,,
+2025021064,20252026,2026-03-16T23:00:00Z,US/Eastern,Prudential Center,6,Boston Bruins,1,New Jersey Devils,,,
+2025021065,20252026,2026-03-16T23:00:00Z,America/New_York,Madison Square Garden,26,Los Angeles Kings,3,New York Rangers,,,
+2025021067,20252026,2026-03-17T01:30:00Z,America/Denver,Ball Arena,5,Pittsburgh Penguins,21,Colorado Avalanche,,,
+2025021068,20252026,2026-03-17T23:00:00Z,America/Toronto,Scotiabank Arena,2,New York Islanders,10,Toronto Maple Leafs,,,
+2025021069,20252026,2026-03-17T23:00:00Z,America/Montreal,Centre Bell,6,Boston Bruins,8,Montréal Canadiens,,,
+2025021070,20252026,2026-03-17T23:00:00Z,US/Eastern,Nationwide Arena,12,Carolina Hurricanes,29,Columbus Blue Jackets,,,
+2025021072,20252026,2026-03-17T23:30:00Z,America/Chicago,United Center,30,Minnesota Wild,16,Chicago Blackhawks,,,
+2025021071,20252026,2026-03-18T00:00:00Z,America/Winnipeg,Canada Life Centre,18,Nashville Predators,52,Winnipeg Jets,,,
+2025021073,20252026,2026-03-18T01:00:00Z,America/Edmonton,Rogers Place,28,San Jose Sharks,22,Edmonton Oilers,,,
+2025021074,20252026,2026-03-18T02:00:00Z,America/Vancouver,Rogers Arena,13,Florida Panthers,23,Vancouver Canucks,,,
+2025021075,20252026,2026-03-18T02:00:00Z,US/Pacific,T-Mobile Arena,7,Buffalo Sabres,54,Vegas Golden Knights,,,
+2025021076,20252026,2026-03-18T02:00:00Z,US/Pacific,Climate Pledge Arena,14,Tampa Bay Lightning,55,Seattle Kraken,,,
+2025021077,20252026,2026-03-18T23:00:00Z,America/New_York,Madison Square Garden,1,New Jersey Devils,3,New York Rangers,,,
+2025021078,20252026,2026-03-18T23:00:00Z,US/Eastern,Lenovo Center,5,Pittsburgh Penguins,12,Carolina Hurricanes,,,
+2025021079,20252026,2026-03-18T23:30:00Z,US/Eastern,Capital One Arena,9,Ottawa Senators,15,Washington Capitals,,,
+2025021080,20252026,2026-03-19T01:30:00Z,America/Denver,Ball Arena,25,Dallas Stars,21,Colorado Avalanche,,,
+2025021081,20252026,2026-03-19T01:30:00Z,US/Mountain,Scotiabank Saddledome,19,St. Louis Blues,20,Calgary Flames,,,
+2025021082,20252026,2026-03-19T02:00:00Z,America/Los_Angeles,Honda Center,4,Philadelphia Flyers,24,Anaheim Ducks,,,
+2025021084,20252026,2026-03-19T23:00:00Z,US/Eastern,Canadian Tire Centre,2,New York Islanders,9,Ottawa Senators,,,
+2025021085,20252026,2026-03-19T23:00:00Z,America/Detroit,Little Caesars Arena,8,Montréal Canadiens,17,Detroit Red Wings,,,
+2025021086,20252026,2026-03-19T23:00:00Z,US/Eastern,Nationwide Arena,3,New York Rangers,29,Columbus Blue Jackets,,,
+2025021088,20252026,2026-03-19T23:30:00Z,US/Central,Grand Casino Arena,16,Chicago Blackhawks,30,Minnesota Wild,,,
+2025021089,20252026,2026-03-20T01:00:00Z,America/Edmonton,Rogers Place,13,Florida Panthers,22,Edmonton Oilers,,,
+2025021090,20252026,2026-03-20T02:00:00Z,America/Vancouver,Rogers Arena,14,Tampa Bay Lightning,23,Vancouver Canucks,,,
+2025021092,20252026,2026-03-20T02:00:00Z,US/Pacific,SAP Center at San Jose,7,Buffalo Sabres,28,San Jose Sharks,,,
+2025021093,20252026,2026-03-20T02:30:00Z,America/Los_Angeles,Crypto.com Arena,4,Philadelphia Flyers,26,Los Angeles Kings,,,
+2025021094,20252026,2026-03-20T23:00:00Z,America/Toronto,Scotiabank Arena,12,Carolina Hurricanes,10,Toronto Maple Leafs,,,
+2025021095,20252026,2026-03-20T23:00:00Z,US/Eastern,Capital One Arena,1,New Jersey Devils,15,Washington Capitals,,,
+2025021096,20252026,2026-03-21T00:30:00Z,America/Chicago,United Center,21,Colorado Avalanche,16,Chicago Blackhawks,,,
+2025021097,20252026,2026-03-21T01:00:00Z,US/Mountain,Scotiabank Saddledome,13,Florida Panthers,20,Calgary Flames,,,
+2025021098,20252026,2026-03-21T02:00:00Z,America/Denver,Delta Center,24,Anaheim Ducks,68,Utah Mammoth,,,
+2025021111,20252026,2026-03-22T16:30:00Z,US/Eastern,Capital One Arena,21,Colorado Avalanche,15,Washington Capitals,,,
+2025021112,20252026,2026-03-22T19:00:00Z,US/Eastern,PPG Paints Arena,12,Carolina Hurricanes,5,Pittsburgh Penguins,,,
+2025021113,20252026,2026-03-22T19:00:00Z,America/Chicago,United Center,18,Nashville Predators,16,Chicago Blackhawks,,,
+2025021114,20252026,2026-03-22T23:00:00Z,America/New_York,UBS Arena,29,Columbus Blue Jackets,2,New York Islanders,,,
+2025021116,20252026,2026-03-23T00:00:00Z,US/Mountain,Scotiabank Saddledome,14,Tampa Bay Lightning,20,Calgary Flames,,,
+2025021117,20252026,2026-03-23T00:00:00Z,America/Los_Angeles,Honda Center,7,Buffalo Sabres,24,Anaheim Ducks,,,
+2025021118,20252026,2026-03-23T01:00:00Z,America/Denver,Delta Center,26,Los Angeles Kings,68,Utah Mammoth,,,
+2025021119,20252026,2026-03-23T23:30:00Z,America/New_York,Madison Square Garden,9,Ottawa Senators,3,New York Rangers,,,
+2025021120,20252026,2026-03-24T23:00:00Z,US/Eastern,TD Garden,10,Toronto Maple Leafs,6,Boston Bruins,,,
+2025021121,20252026,2026-03-24T23:00:00Z,America/Montreal,Centre Bell,12,Carolina Hurricanes,8,Montréal Canadiens,,,
+2025021122,20252026,2026-03-24T23:00:00Z,America/Detroit,Little Caesars Arena,9,Ottawa Senators,17,Detroit Red Wings,,,
+2025021124,20252026,2026-03-24T23:00:00Z,America/New_York,UBS Arena,16,Chicago Blackhawks,2,New York Islanders,,,
+2025021125,20252026,2026-03-24T23:00:00Z,US/Eastern,Xfinity Mobile Arena,29,Columbus Blue Jackets,4,Philadelphia Flyers,,,
+2025021126,20252026,2026-03-24T23:00:00Z,US/Eastern,PPG Paints Arena,21,Colorado Avalanche,5,Pittsburgh Penguins,,,
+2025021127,20252026,2026-03-24T23:30:00Z,US/Eastern,Benchmark International Arena,30,Minnesota Wild,14,Tampa Bay Lightning,,,
+2025021128,20252026,2026-03-25T00:00:00Z,US/Central,Enterprise Center,15,Washington Capitals,19,St. Louis Blues,,,
+2025021129,20252026,2026-03-25T00:00:00Z,US/Central,Bridgestone Arena,28,San Jose Sharks,18,Nashville Predators,,,
+2025021130,20252026,2026-03-25T00:00:00Z,US/Central,American Airlines Center,1,New Jersey Devils,25,Dallas Stars,,,
+2025021133,20252026,2026-03-25T01:00:00Z,US/Mountain,Scotiabank Saddledome,26,Los Angeles Kings,20,Calgary Flames,,,
+2025021132,20252026,2026-03-25T01:30:00Z,America/Denver,Delta Center,22,Edmonton Oilers,68,Utah Mammoth,,,
+2025021134,20252026,2026-03-25T02:00:00Z,America/Vancouver,Rogers Arena,24,Anaheim Ducks,23,Vancouver Canucks,,,
+2025021135,20252026,2026-03-25T23:00:00Z,America/New_York,KeyBank Center,6,Boston Bruins,7,Buffalo Sabres,,,
+2025021136,20252026,2026-03-25T23:30:00Z,America/Toronto,Scotiabank Arena,3,New York Rangers,10,Toronto Maple Leafs,,,
+2025021137,20252026,2026-03-26T23:00:00Z,America/Montreal,Centre Bell,29,Columbus Blue Jackets,8,Montréal Canadiens,,,
+2025021138,20252026,2026-03-26T23:00:00Z,US/Eastern,Canadian Tire Centre,5,Pittsburgh Penguins,9,Ottawa Senators,,,
+2025021140,20252026,2026-03-26T23:00:00Z,US/Eastern,Amerant Bank Arena,30,Minnesota Wild,13,Florida Panthers,,,
+2025021141,20252026,2026-03-26T23:00:00Z,America/New_York,UBS Arena,25,Dallas Stars,2,New York Islanders,,,
+2025021142,20252026,2026-03-26T23:00:00Z,US/Eastern,Xfinity Mobile Arena,16,Chicago Blackhawks,4,Philadelphia Flyers,,,
+2025021143,20252026,2026-03-27T00:00:00Z,US/Central,Enterprise Center,28,San Jose Sharks,19,St. Louis Blues,,,
+2025021144,20252026,2026-03-27T00:00:00Z,US/Central,Bridgestone Arena,1,New Jersey Devils,18,Nashville Predators,,,
+2025021145,20252026,2026-03-27T00:00:00Z,America/Winnipeg,Canada Life Centre,21,Colorado Avalanche,52,Winnipeg Jets,,,
+2025021146,20252026,2026-03-27T01:00:00Z,America/Denver,Delta Center,15,Washington Capitals,68,Utah Mammoth,,,
+2025021147,20252026,2026-03-27T01:00:00Z,US/Mountain,Scotiabank Saddledome,24,Anaheim Ducks,20,Calgary Flames,,,
+2025021148,20252026,2026-03-27T01:30:00Z,US/Pacific,T-Mobile Arena,22,Edmonton Oilers,54,Vegas Golden Knights,,,
+2025021149,20252026,2026-03-27T02:00:00Z,America/Vancouver,Rogers Arena,26,Los Angeles Kings,23,Vancouver Canucks,,,
+2025021150,20252026,2026-03-27T23:00:00Z,America/New_York,KeyBank Center,17,Detroit Red Wings,7,Buffalo Sabres,,,
+2025021151,20252026,2026-03-27T23:00:00Z,America/New_York,Madison Square Garden,16,Chicago Blackhawks,3,New York Rangers,,,
+2025021167,20252026,2026-03-29T17:00:00Z,America/New_York,Madison Square Garden,13,Florida Panthers,3,New York Rangers,,,
+2025021168,20252026,2026-03-29T21:00:00Z,US/Eastern,Benchmark International Arena,18,Nashville Predators,14,Tampa Bay Lightning,,,
+2025021169,20252026,2026-03-29T21:00:00Z,US/Eastern,Lenovo Center,8,Montréal Canadiens,12,Carolina Hurricanes,,,
+2025021170,20252026,2026-03-29T21:00:00Z,US/Eastern,Nationwide Arena,6,Boston Bruins,29,Columbus Blue Jackets,,,
+2025021171,20252026,2026-03-29T23:00:00Z,US/Eastern,Prudential Center,16,Chicago Blackhawks,1,New Jersey Devils,,,
+2025021172,20252026,2026-03-29T23:00:00Z,US/Eastern,Xfinity Mobile Arena,25,Dallas Stars,4,Philadelphia Flyers,,,
+2025021173,20252026,2026-03-30T23:00:00Z,America/New_York,UBS Arena,5,Pittsburgh Penguins,2,New York Islanders,,,
+2025021174,20252026,2026-03-31T00:30:00Z,America/Denver,Ball Arena,20,Calgary Flames,21,Colorado Avalanche,,,
+2025021175,20252026,2026-03-31T02:00:00Z,US/Pacific,T-Mobile Arena,23,Vancouver Canucks,54,Vegas Golden Knights,,,
+2025021176,20252026,2026-03-31T02:00:00Z,America/Los_Angeles,Honda Center,10,Toronto Maple Leafs,24,Anaheim Ducks,,,
+2025021177,20252026,2026-03-31T02:00:00Z,US/Pacific,SAP Center at San Jose,19,St. Louis Blues,28,San Jose Sharks,,,
+2025021178,20252026,2026-03-31T23:00:00Z,US/Eastern,TD Garden,25,Dallas Stars,6,Boston Bruins,,,
+2025021179,20252026,2026-03-31T23:00:00Z,America/New_York,KeyBank Center,2,New York Islanders,7,Buffalo Sabres,,,
+2025021180,20252026,2026-03-31T23:00:00Z,US/Eastern,Benchmark International Arena,8,Montréal Canadiens,14,Tampa Bay Lightning,,,
+2025021181,20252026,2026-03-31T23:00:00Z,US/Eastern,Amerant Bank Arena,9,Ottawa Senators,13,Florida Panthers,,,
+2025021182,20252026,2026-03-31T23:00:00Z,America/New_York,Madison Square Garden,1,New Jersey Devils,3,New York Rangers,,,
+2025021183,20252026,2026-03-31T23:00:00Z,US/Eastern,PPG Paints Arena,17,Detroit Red Wings,5,Pittsburgh Penguins,,,
+2025021184,20252026,2026-03-31T23:00:00Z,US/Eastern,Capital One Arena,4,Philadelphia Flyers,15,Washington Capitals,,,
+2025021185,20252026,2026-03-31T23:30:00Z,US/Eastern,Nationwide Arena,12,Carolina Hurricanes,29,Columbus Blue Jackets,,,
+2025021188,20252026,2026-04-02T00:30:00Z,America/Denver,Ball Arena,23,Vancouver Canucks,21,Colorado Avalanche,,,
+2025021189,20252026,2026-04-02T01:00:00Z,America/Los_Angeles,Crypto.com Arena,19,St. Louis Blues,26,Los Angeles Kings,,,
+2025021190,20252026,2026-04-02T02:00:00Z,US/Pacific,SAP Center at San Jose,24,Anaheim Ducks,28,San Jose Sharks,,,
+2025021191,20252026,2026-04-02T23:00:00Z,US/Eastern,Canadian Tire Centre,7,Buffalo Sabres,9,Ottawa Senators,,,
+2025021192,20252026,2026-04-02T23:00:00Z,US/Eastern,Benchmark International Arena,5,Pittsburgh Penguins,14,Tampa Bay Lightning,,,
+2025021193,20252026,2026-04-02T23:00:00Z,US/Eastern,Amerant Bank Arena,6,Boston Bruins,13,Florida Panthers,,,
+2025021195,20252026,2026-04-02T23:00:00Z,America/New_York,Madison Square Garden,8,Montréal Canadiens,3,New York Rangers,,,
+2025021196,20252026,2026-04-02T23:00:00Z,US/Eastern,Xfinity Mobile Arena,17,Detroit Red Wings,4,Philadelphia Flyers,,,
+2025021197,20252026,2026-04-02T23:00:00Z,US/Eastern,Lenovo Center,29,Columbus Blue Jackets,12,Carolina Hurricanes,,,
+2025021194,20252026,2026-04-02T23:30:00Z,US/Eastern,Prudential Center,15,Washington Capitals,1,New Jersey Devils,,,
+2025021199,20252026,2026-04-03T00:00:00Z,US/Central,Grand Casino Arena,23,Vancouver Canucks,30,Minnesota Wild,,,
+2025021200,20252026,2026-04-03T01:00:00Z,America/Edmonton,Rogers Place,16,Chicago Blackhawks,22,Edmonton Oilers,,,
+2025021201,20252026,2026-04-03T02:00:00Z,US/Pacific,T-Mobile Arena,20,Calgary Flames,54,Vegas Golden Knights,,,
+2025021202,20252026,2026-04-03T02:00:00Z,US/Pacific,SAP Center at San Jose,10,Toronto Maple Leafs,28,San Jose Sharks,,,
+2025021204,20252026,2026-04-03T02:30:00Z,America/Los_Angeles,Crypto.com Arena,18,Nashville Predators,26,Los Angeles Kings,,,
+2025021205,20252026,2026-04-03T23:00:00Z,America/New_York,UBS Arena,4,Philadelphia Flyers,2,New York Islanders,,,
+2025021206,20252026,2026-04-04T02:00:00Z,America/Los_Angeles,Honda Center,19,St. Louis Blues,24,Anaheim Ducks,,,
+2025021222,20252026,2026-04-05T17:00:00Z,America/Detroit,Little Caesars Arena,30,Minnesota Wild,17,Detroit Red Wings,,,
+2025021223,20252026,2026-04-05T19:00:00Z,US/Eastern,PPG Paints Arena,13,Florida Panthers,5,Pittsburgh Penguins,,,
+2025021224,20252026,2026-04-05T19:30:00Z,US/Eastern,Xfinity Mobile Arena,6,Boston Bruins,4,Philadelphia Flyers,,,
+2025021225,20252026,2026-04-05T21:00:00Z,US/Eastern,Canadian Tire Centre,12,Carolina Hurricanes,9,Ottawa Senators,,,
+2025021226,20252026,2026-04-05T23:00:00Z,America/Montreal,Centre Bell,1,New Jersey Devils,8,Montréal Canadiens,,,
+2025021227,20252026,2026-04-05T23:00:00Z,America/New_York,Madison Square Garden,15,Washington Capitals,3,New York Rangers,,,
+2025021228,20252026,2026-04-06T01:30:00Z,America/Denver,Ball Arena,19,St. Louis Blues,21,Colorado Avalanche,,,
+2025021229,20252026,2026-04-06T23:00:00Z,America/New_York,KeyBank Center,14,Tampa Bay Lightning,7,Buffalo Sabres,,,
+2025021231,20252026,2026-04-07T02:00:00Z,US/Pacific,SAP Center at San Jose,16,Chicago Blackhawks,28,San Jose Sharks,,,
+2025021232,20252026,2026-04-07T02:30:00Z,America/Los_Angeles,Crypto.com Arena,18,Nashville Predators,26,Los Angeles Kings,,,
+2025021233,20252026,2026-04-07T23:00:00Z,America/Montreal,Centre Bell,13,Florida Panthers,8,Montréal Canadiens,,,
+2025021234,20252026,2026-04-07T23:00:00Z,US/Eastern,Canadian Tire Centre,14,Tampa Bay Lightning,9,Ottawa Senators,,,
+2025021235,20252026,2026-04-07T23:00:00Z,America/Detroit,Little Caesars Arena,29,Columbus Blue Jackets,17,Detroit Red Wings,,,
+2025021236,20252026,2026-04-07T23:00:00Z,US/Eastern,Prudential Center,4,Philadelphia Flyers,1,New Jersey Devils,,,
+2025021237,20252026,2026-04-07T23:00:00Z,US/Eastern,Lenovo Center,6,Boston Bruins,12,Carolina Hurricanes,,,
+2025021238,20252026,2026-04-08T00:00:00Z,US/Central,Enterprise Center,21,Colorado Avalanche,19,St. Louis Blues,,,
+2025021239,20252026,2026-04-08T00:00:00Z,US/Central,American Airlines Center,20,Calgary Flames,25,Dallas Stars,,,
+2025021241,20252026,2026-04-08T01:30:00Z,America/Denver,Delta Center,22,Edmonton Oilers,68,Utah Mammoth,,,
+2025021243,20252026,2026-04-08T02:00:00Z,America/Los_Angeles,Honda Center,18,Nashville Predators,24,Anaheim Ducks,,,
+2025021244,20252026,2026-04-08T23:00:00Z,America/New_York,Madison Square Garden,7,Buffalo Sabres,3,New York Rangers,,,
+2025021245,20252026,2026-04-08T23:30:00Z,America/Toronto,Scotiabank Arena,15,Washington Capitals,10,Toronto Maple Leafs,,,
+2025021246,20252026,2026-04-09T02:00:00Z,US/Pacific,SAP Center at San Jose,22,Edmonton Oilers,28,San Jose Sharks,,,
+2025021252,20252026,2026-04-09T22:45:00Z,America/New_York,UBS Arena,10,Toronto Maple Leafs,2,New York Islanders,,,
+2025021247,20252026,2026-04-09T23:00:00Z,America/New_York,KeyBank Center,29,Columbus Blue Jackets,7,Buffalo Sabres,,,
+2025021248,20252026,2026-04-09T23:00:00Z,America/Montreal,Centre Bell,14,Tampa Bay Lightning,8,Montréal Canadiens,,,
+2025021249,20252026,2026-04-09T23:00:00Z,US/Eastern,Canadian Tire Centre,13,Florida Panthers,9,Ottawa Senators,,,
+2025021250,20252026,2026-04-09T23:00:00Z,America/Detroit,Little Caesars Arena,4,Philadelphia Flyers,17,Detroit Red Wings,,,
+2025021251,20252026,2026-04-09T23:00:00Z,US/Eastern,Prudential Center,5,Pittsburgh Penguins,1,New Jersey Devils,,,
+2025021255,20252026,2026-04-10T00:30:00Z,America/Chicago,United Center,12,Carolina Hurricanes,16,Chicago Blackhawks,,,
+2025021254,20252026,2026-04-10T01:00:00Z,US/Central,American Airlines Center,30,Minnesota Wild,25,Dallas Stars,,,
+2025021256,20252026,2026-04-10T01:00:00Z,America/Denver,Ball Arena,20,Calgary Flames,21,Colorado Avalanche,,,
+2025021257,20252026,2026-04-10T01:00:00Z,America/Denver,Delta Center,18,Nashville Predators,68,Utah Mammoth,,,
+2025021258,20252026,2026-04-10T02:00:00Z,America/Los_Angeles,Honda Center,28,San Jose Sharks,24,Anaheim Ducks,,,
+2025021260,20252026,2026-04-10T02:30:00Z,America/Los_Angeles,Crypto.com Arena,23,Vancouver Canucks,26,Los Angeles Kings,,,
+2025021276,20252026,2026-04-12T19:00:00Z,US/Eastern,Capital One Arena,5,Pittsburgh Penguins,15,Washington Capitals,,,
+2025021277,20252026,2026-04-12T22:00:00Z,America/New_York,UBS Arena,8,Montréal Canadiens,2,New York Islanders,,,
+2025021278,20252026,2026-04-12T22:00:00Z,US/Eastern,Nationwide Arena,6,Boston Bruins,29,Columbus Blue Jackets,,,
+2025021279,20252026,2026-04-12T23:00:00Z,US/Eastern,Prudential Center,9,Ottawa Senators,1,New Jersey Devils,,,
+2025021280,20252026,2026-04-13T00:00:00Z,America/Los_Angeles,Honda Center,23,Vancouver Canucks,24,Anaheim Ducks,,,
+2025021282,20252026,2026-04-13T23:00:00Z,US/Eastern,Benchmark International Arena,17,Detroit Red Wings,14,Tampa Bay Lightning,,,
+2025021283,20252026,2026-04-13T23:00:00Z,US/Eastern,Amerant Bank Arena,3,New York Rangers,13,Florida Panthers,,,
+2025021284,20252026,2026-04-13T23:00:00Z,US/Eastern,Xfinity Mobile Arena,12,Carolina Hurricanes,4,Philadelphia Flyers,,,
+2025021285,20252026,2026-04-13T23:30:00Z,America/Toronto,Scotiabank Arena,25,Dallas Stars,10,Toronto Maple Leafs,,,
+2025021286,20252026,2026-04-14T00:00:00Z,US/Central,Enterprise Center,30,Minnesota Wild,19,St. Louis Blues,,,
+2025021287,20252026,2026-04-14T00:00:00Z,US/Central,Bridgestone Arena,28,San Jose Sharks,18,Nashville Predators,,,
+2025021288,20252026,2026-04-14T00:30:00Z,America/Chicago,United Center,7,Buffalo Sabres,16,Chicago Blackhawks,,,
+2025021289,20252026,2026-04-14T01:30:00Z,America/Edmonton,Rogers Place,21,Colorado Avalanche,22,Edmonton Oilers,,,
+2025021291,20252026,2026-04-14T01:30:00Z,US/Pacific,Climate Pledge Arena,26,Los Angeles Kings,55,Seattle Kraken,,,
+2025021292,20252026,2026-04-14T23:00:00Z,US/Eastern,TD Garden,1,New Jersey Devils,6,Boston Bruins,,,
+2025021293,20252026,2026-04-14T23:00:00Z,America/New_York,UBS Arena,12,Carolina Hurricanes,2,New York Islanders,,,
+2025021294,20252026,2026-04-14T23:00:00Z,US/Eastern,Xfinity Mobile Arena,8,Montréal Canadiens,4,Philadelphia Flyers,,,
+2025021295,20252026,2026-04-14T23:00:00Z,US/Eastern,Nationwide Arena,15,Washington Capitals,29,Columbus Blue Jackets,,,
+2025021296,20252026,2026-04-15T00:00:00Z,US/Central,Grand Casino Arena,24,Anaheim Ducks,30,Minnesota Wild,,,
+2025021298,20252026,2026-04-15T01:00:00Z,US/Mountain,Scotiabank Saddledome,21,Colorado Avalanche,20,Calgary Flames,,,
+2025021299,20252026,2026-04-15T01:30:00Z,US/Central,Enterprise Center,5,Pittsburgh Penguins,19,St. Louis Blues,,,
+2025021300,20252026,2026-04-15T02:00:00Z,America/Vancouver,Rogers Arena,26,Los Angeles Kings,23,Vancouver Canucks,,,
+2025021301,20252026,2026-04-15T23:00:00Z,America/New_York,KeyBank Center,25,Dallas Stars,7,Buffalo Sabres,,,
+2025021302,20252026,2026-04-15T23:00:00Z,US/Eastern,Benchmark International Arena,3,New York Rangers,14,Tampa Bay Lightning,,,
+2025021303,20252026,2026-04-15T23:00:00Z,US/Eastern,Amerant Bank Arena,17,Detroit Red Wings,13,Florida Panthers,,,
+2025021304,20252026,2026-04-15T23:30:00Z,US/Eastern,Canadian Tire Centre,10,Toronto Maple Leafs,9,Ottawa Senators,,,
+2025021305,20252026,2026-04-16T00:30:00Z,America/Chicago,United Center,28,San Jose Sharks,16,Chicago Blackhawks,,,
+2025021307,20252026,2026-04-17T00:00:00Z,US/Central,Bridgestone Arena,24,Anaheim Ducks,18,Nashville Predators,,,
+2025021308,20252026,2026-04-17T00:00:00Z,America/Winnipeg,Canada Life Centre,28,San Jose Sharks,52,Winnipeg Jets,,,
+2025021309,20252026,2026-04-17T00:00:00Z,America/Denver,Delta Center,19,St. Louis Blues,68,Utah Mammoth,,,
+2025021310,20252026,2026-04-17T01:00:00Z,US/Mountain,Scotiabank Saddledome,26,Los Angeles Kings,20,Calgary Flames,,,
+2025021311,20252026,2026-04-17T01:00:00Z,America/Edmonton,Rogers Place,23,Vancouver Canucks,22,Edmonton Oilers,,,
