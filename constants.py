@@ -19,7 +19,7 @@ team_stats_options = {
 last_period_map = {'REG': 0, 'OT': 1, 'SO': 2}
 shootout_rate = 20
 
-id_col = 'id'
+game_id_col = 'id'
 season_col = 'season'
 starttime_utc_col = 'startTimeUTC'
 game_year_col = 'gameYear'
@@ -28,21 +28,85 @@ game_day_col = 'gameDay'
 game_time_col = 'gameTimeUTC'
 venue_timezone_col = 'venueTimezone'
 venue_col = 'venue'
-away_team_id_col = 'awayTeamId'
-home_team_id_col = 'homeTeamId'
 away_team_name_col = 'awayTeamName'
 home_team_name_col = 'homeTeamName'
 away_team_score_col = 'awayTeamScore'
 home_team_score_col = 'homeTeamScore'
 last_period_col = 'lastPeriod'
+default_col = 'default'
+team_name_col = 'teamName'
 
-feature_cols = [id_col, season_col, game_year_col, game_month_col, game_day_col, game_time_col, venue_timezone_col, venue_col, away_team_id_col, home_team_id_col]
+away_team_col = 'awayTeam'
+home_team_col = 'homeTeam'
+home_team_games_col = 'homeTeamGames'
+away_team_games_col = 'awayTeamGames'
+home_team_points_col = 'homeTeamPoints'
+away_team_points_col = 'awayTeamPoints'
+home_team_wins_col = 'homeTeamWins'
+away_team_wins_col = 'awayTeamWins'
+home_team_losses_col = 'homeTeamLosses'
+away_team_losses_col = 'awayTeamLosses'
+home_team_otls_col = 'homeTeamOTLs'
+away_team_otls_col = 'awayTeamOTLs'
+home_team_reg_wins_col = 'homeTeamRegWins'
+away_team_reg_wins_col = 'awayTeamRegWins'
+home_team_reg_ot_wins_col = 'homeTeamRegOTWins'
+away_team_reg_ot_wins_col = 'awayTeamRegOTWins'
+home_team_so_wins_col = 'homeTeamSOWins'
+away_team_so_wins_col = 'awayTeamSOWins'
+home_team_so_losses_col = 'homeTeamSOLosses'
+away_team_so_losses_col = 'awayTeamSOLosses'
+home_team_goals_for_col = 'homeTeamGoalsFor'
+away_team_goals_for_col = 'awayTeamGoalsFor'
+home_team_goals_against_col = 'homeTeamGoalsAgainst'
+away_team_goals_against_col = 'awayTeamGoalsAgainst'
+goal_diff_col = 'goalDifferential'
+points_percentage_col = 'pointsPercentage'
+division_name_col = 'divisionName'
+conference_name_col = 'conferenceName'
+division_seed_col = 'divisionSeed'
+conference_seed_col = 'conferenceSeed'
+playoff_seed_col = 'playoffSeed'
+total_points_col = 'totalPoints'
+total_wins_col = 'totalWins'
+total_losses_col = 'totalLosses'
+total_otls_col = 'totalOTLs'
+playoff_per_col = 'playoff_%'
+total_goals_for_col = 'totalGoalsFor'
+total_goals_against_col = 'totalGoalsAgainst'
+total_games_col = 'totalGames'
+game_outcome_col = 'gameOutcome'
+game_type_col = 'gameType' # 1 = preseason, 2 = regular season, 3 = playoffs, 4 = all-star game
+
+date_format_yyyy_mm_dd = '%Y-%m-%d'
+div_1_val = 'div_1'
+div_2_val = 'div_2'
+div_3_val = 'div_3'
+wc_1_val = 'wc_1'
+wc_2_val = 'wc_2'
+missed_val = 'Missed'
+atl_div_val = 'Atlantic'
+metro_div_val = 'Metropolitan'
+pac_div_val = 'Pacific'
+cen_div_val = 'Central'
+season_stdt = '09-23'
+season_enddt = '06-30'
+
+feature_cols = [game_id_col, season_col, game_type_col, game_year_col, game_month_col, game_day_col, game_time_col, venue_timezone_col, venue_col]
 predict_cols = [away_team_score_col, home_team_score_col, last_period_col]
+tiebreaker_cols = ['totalPoints', 'pointsPercentage', 'totalRegWins', 'totalRegOTWins', 'totalWins', 'goalDifferential', 'totalGoalsFor']
+final_standings_col_order = ['conferenceName', 'conferenceSeed', 'divisionName', 'divisionSeed', 'playoffSeed', 'teamName', 'totalGames',
+                 'totalWins', 'totalLosses', 'totalOTLs', 'totalPoints', 'pointsPercentage', 'totalRegWins', 'totalRegOTWins',
+                 'totalGoalsFor', 'totalGoalsAgainst', 'goalDifferential', 'totalHomeWins', 'totalHomeLosses',
+                 'totalHomeOTLs', 'totalAwayWins', 'totalAwayLosses', 'totalAwayOTLs', 'totalSOWins', 'totalSOLosses']
+
 
 output_folder = 'output/'
+season_sched_folder = output_folder + 'season_schedules/'
 season_sched_filename = 'season_sched.csv'
 season_sched_pred_filename = 'season_sched_pred.csv'
 season_sched_pred_points_filename = 'season_sched_pred_points.csv'
+final_standings_filename = 'final_standings.csv'
 
 team_colors = {
     'Anaheim Ducks': 'cyan',
