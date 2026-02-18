@@ -77,6 +77,18 @@ total_goals_against_col = 'totalGoalsAgainst'
 total_games_col = 'totalGames'
 game_outcome_col = 'gameOutcome'
 game_type_col = 'gameType' # 1 = preseason, 2 = regular season, 3 = playoffs, 4 = all-star game
+home_team_prev_10_wins_col = 'homeTeamPrev10Wins'
+away_team_prev_10_wins_col = 'awayTeamPrev10Wins'
+home_team_prev_10_losses_col = 'homeTeamPrev10Losses'
+away_team_prev_10_losses_col = 'awayTeamPrev10Losses'
+home_team_prev_10_otl_col = 'homeTeamPrev10OTLs'
+away_team_prev_10_otl_col = 'awayTeamPrev10OTLs'
+home_team_wins_col = 'homeTeamWins'
+away_team_wins_col = 'awayTeamWins'
+home_team_losses_col = 'homeTeamLosses'
+away_team_losses_col = 'awayTeamLosses'
+home_team_otls_col = 'homeTeamOTLs'
+away_team_otls_col = 'awayTeamOTLs'
 
 date_format_yyyy_mm_dd = '%Y-%m-%d'
 div_1_val = 'div_1'
@@ -92,7 +104,11 @@ cen_div_val = 'Central'
 season_stdt = '09-23'
 season_enddt = '06-30'
 
-feature_cols = [game_id_col, season_col, game_type_col, game_year_col, game_month_col, game_day_col, game_time_col, venue_timezone_col, venue_col]
+feature_cols = [game_id_col, season_col, game_type_col, game_month_col, game_time_col, venue_timezone_col, venue_col,
+                home_team_prev_10_wins_col, home_team_prev_10_losses_col, home_team_prev_10_otl_col,
+                away_team_prev_10_wins_col, away_team_prev_10_losses_col, away_team_prev_10_otl_col,
+                home_team_wins_col, home_team_losses_col, home_team_otls_col, away_team_wins_col, away_team_losses_col,
+                away_team_otls_col]
 predict_cols = [away_team_score_col, home_team_score_col, last_period_col]
 tiebreaker_cols = ['totalPoints', 'pointsPercentage', 'totalRegWins', 'totalRegOTWins', 'totalWins', 'goalDifferential', 'totalGoalsFor']
 final_standings_col_order = ['conferenceName', 'conferenceSeed', 'divisionName', 'divisionSeed', 'playoffSeed', 'teamName', 'totalGames',

@@ -6,6 +6,7 @@ import pandas as pd
 import constants as cons
 from tabulate import tabulate
 from termcolor import colored
+from skl_utils import prev10_result, season_result
 from sklearn.preprocessing import OrdinalEncoder
 from sklearn.ensemble import RandomForestRegressor
 
@@ -14,9 +15,6 @@ def season_predictions(to_csv=False):
 
     # load or create the season schedule dataframe
     season_sched = create_feature_set()
-
-    # apply preprocessing to the model features
-    season_sched = feature_preprocessing(season_sched)
 
     print('\tTraining model and generating predictions...')
 
@@ -123,10 +121,15 @@ def create_season_df(season_name, from_csv=True, to_csv=False, debug=False):
                     weekly_sched[cons.home_team_score_col] = None
                     weekly_sched[cons.last_period_col] = None
 
+                weekly_sched[cons.season_col] = weekly_sched[cons.season_col].astype(str)
+
                 # concatenate this week's schedule to the season schedule dataframe
                 season_sched = pd.concat([season_sched, weekly_sched], ignore_index=True)
 
                 break
+
+    # create features for completed seasons to store in season schedule CSV file
+    season_sched = feature_preprocessing(season_sched, debug=True)
 
     # save the season schedule to a CSV file for future use
     if to_csv:
@@ -136,15 +139,63 @@ def create_season_df(season_name, from_csv=True, to_csv=False, debug=False):
     return season_sched
 
 
-def feature_preprocessing(season_sched):
+def feature_preprocessing(season_sched, debug=False):
 
     print('\tPreprocessing feature data...')
 
+    # calculate the number of wins for the home team in all matchups
+    if debug: print('\t... [feature_creation] home wins ...')
+    season_result(season_sched, cons.home_team_wins_col, cons.home_team_name_col)
+
+    # calculate the number of losses for the home team in all matchups
+    if debug: print('\t... [feature_creation] home losses ...')
+    season_result(season_sched, cons.home_team_losses_col, cons.home_team_name_col)
+
+    # calculate the number of OTLs for the home team in all matchups
+    if debug: print('\t... [feature_creation] home OTLs ...')
+    season_result(season_sched, cons.home_team_otls_col, cons.home_team_name_col)
+
+    # calculate the number of wins for the away team in all matchups
+    if debug: print('\t... [feature_creation] away wins ...')
+    season_result(season_sched, cons.away_team_wins_col, cons.away_team_name_col)
+
+    # calculate the number of losses for the away team in all matchups
+    if debug: print('\t... [feature_creation] away losses ...')
+    season_result(season_sched, cons.away_team_losses_col, cons.away_team_name_col)
+
+    # calculate the number of OTLs for the away team in all matchups
+    if debug: print('\t... [feature_creation] away OTLs ...')
+    season_result(season_sched, cons.away_team_otls_col, cons.away_team_name_col)
+
+    # calculate the number of wins in the previous 10 games for the home team in all matchups
+    if debug: print('\t... [feature_creation] home prev 10 wins ...')
+    prev10_result(season_sched, cons.home_team_prev_10_wins_col, cons.home_team_name_col)
+
+    # calculate the number of losses in the previous 10 games for the home team in all matchups
+    if debug: print('\t... [feature_creation] home prev 10 losses ...')
+    prev10_result(season_sched, cons.home_team_prev_10_losses_col, cons.home_team_name_col)
+
+    # calculate the number of OTLs in the previous 10 games for the home team in all matchups
+    if debug: print('\t... [feature_creation] home prev 10 OTLs ...')
+    prev10_result(season_sched, cons.home_team_prev_10_otl_col, cons.home_team_name_col)
+
+    # calculate the number of wins in the previous 10 games for the away team in all matchups
+    if debug: print('\t... [feature_creation] away prev 10 wins ...')
+    prev10_result(season_sched, cons.away_team_prev_10_wins_col, cons.away_team_name_col)
+
+    # calculate the number of losses in the previous 10 games for the away team in all matchups
+    if debug: print('\t... [feature_creation] away prev 10 losses ...')
+    prev10_result(season_sched, cons.away_team_prev_10_losses_col, cons.away_team_name_col)
+
+    # calculate the number of OTLs in the previous 10 games for the away team in all matchups
+    if debug: print('\t... [feature_creation] away prev 10 OTLs ...')
+    prev10_result(season_sched, cons.away_team_prev_10_otl_col, cons.away_team_name_col)
+
     # convert the 'startTimeUTC' column to datetime and extract the relevant features
     season_sched[cons.starttime_utc_col] = pd.to_datetime(season_sched[cons.starttime_utc_col])
-    season_sched[cons.game_year_col] = season_sched[cons.starttime_utc_col].dt.year
+    # season_sched[cons.game_year_col] = season_sched[cons.starttime_utc_col].dt.year
     season_sched[cons.game_month_col] = season_sched[cons.starttime_utc_col].dt.month
-    season_sched[cons.game_day_col] = season_sched[cons.starttime_utc_col].dt.day
+    # season_sched[cons.game_day_col] = season_sched[cons.starttime_utc_col].dt.day
     season_sched[cons.game_time_col] = season_sched[cons.starttime_utc_col].dt.hour * 60 + season_sched[cons.starttime_utc_col].dt.minute
 
     # encode the categorical features using ordinal encoding
@@ -211,6 +262,7 @@ def generate_final_standings(season_results, to_csv=False, load_csv=False):
     print('\tGenerating final standings...')
 
     # filter the final schedule on the current season
+    season_results[cons.season_col] = season_results[cons.season_col].astype(str)
     current_season = str(int(max(season_results[cons.season_col].str[4:]))-1) + max(season_results[cons.season_col].str[4:])
     season_results = season_results.loc[season_results[cons.season_col] == current_season]
 
@@ -477,7 +529,8 @@ if __name__ == "__main__":
 
     ######################
     # create season schedule dataframe for inputted season
-    create_season_df('20212022', from_csv=False, to_csv=True)
+    # create_season_df('20222023', from_csv=False, to_csv=True)
+    # create_season_df('20212022', from_csv=False, to_csv=True)
 
     ######################
     # create a single season prediction wiuth saving the results as csv files
@@ -487,4 +540,4 @@ if __name__ == "__main__":
 
     ######################
     # create playoff spot predictions for current season based on n simulations
-    playoff_spot_predictions(n=100)
+    playoff_spot_predictions(n=20)

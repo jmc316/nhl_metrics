@@ -1,0 +1,1402 @@
+id,season,gameType,startTimeUTC,venueTimezone,venue,awayTeamName,homeTeamName,awayTeamScore,homeTeamScore,lastPeriod,homeTeamPrev10Wins,homeTeamPrev10Losses,homeTeamPrev10OTLs,awayTeamPrev10Wins,awayTeamPrev10Losses,awayTeamPrev10OTLs
+2021020001,20212022,2,2021-10-12T23:30:00Z,US/Eastern,Amalie Arena,Pittsburgh Penguins,Tampa Bay Lightning,6.0,2.0,REG,0,0,0,0,0,0
+2021020002,20212022,2,2021-10-13T02:00:00Z,US/Pacific,T-Mobile Arena,Seattle Kraken,Vegas Golden Knights,3.0,4.0,REG,0,0,0,0,0,0
+2021020003,20212022,2,2021-10-13T23:00:00Z,America/Toronto,Scotiabank Arena,Montréal Canadiens,Toronto Maple Leafs,1.0,2.0,REG,0,0,0,0,0,0
+2021020004,20212022,2,2021-10-13T23:30:00Z,US/Eastern,Capital One Arena,New York Rangers,Washington Capitals,1.0,5.0,REG,0,0,0,0,0,0
+2021020005,20212022,2,2021-10-14T02:00:00Z,America/Denver,Ball Arena,Chicago Blackhawks,Colorado Avalanche,2.0,4.0,REG,0,0,0,0,0,0
+2021020006,20212022,2,2021-10-14T02:00:00Z,America/Edmonton,Rogers Place,Vancouver Canucks,Edmonton Oilers,2.0,3.0,SO,0,0,0,0,0,0
+2021020015,20212022,2,2021-10-14T02:00:00Z,America/Los_Angeles,Honda Center,Winnipeg Jets,Anaheim Ducks,1.0,4.0,REG,0,0,0,0,0,0
+2021020007,20212022,2,2021-10-14T23:00:00Z,America/New_York,KeyBank Center,Montréal Canadiens,Buffalo Sabres,1.0,5.0,REG,0,0,0,0,1,0
+2021020008,20212022,2,2021-10-14T23:00:00Z,US/Eastern,Canadian Tire Centre,Toronto Maple Leafs,Ottawa Senators,2.0,3.0,REG,0,0,0,1,0,0
+2021020010,20212022,2,2021-10-14T23:00:00Z,US/Eastern,FLA Live Arena,Pittsburgh Penguins,Florida Panthers,4.0,5.0,OT,0,0,0,1,0,0
+2021020011,20212022,2,2021-10-14T23:00:00Z,America/New_York,Madison Square Garden,Dallas Stars,New York Rangers,3.0,2.0,OT,0,1,0,0,0,0
+2021020012,20212022,2,2021-10-14T23:00:00Z,US/Eastern,PNC Arena,New York Islanders,Carolina Hurricanes,3.0,6.0,REG,0,0,0,0,0,0
+2021020013,20212022,2,2021-10-14T23:00:00Z,US/Eastern,Nationwide Arena,Arizona Coyotes,Columbus Blue Jackets,2.0,8.0,REG,0,0,0,0,0,0
+2021020009,20212022,2,2021-10-14T23:30:00Z,America/Detroit,Little Caesars Arena,Tampa Bay Lightning,Detroit Red Wings,7.0,6.0,OT,0,0,0,0,1,0
+2021020014,20212022,2,2021-10-15T00:00:00Z,US/Central,Bridgestone Arena,Seattle Kraken,Nashville Predators,4.0,3.0,REG,0,0,0,0,1,0
+2021020016,20212022,2,2021-10-15T02:30:00Z,America/Los_Angeles,STAPLES Center,Vegas Golden Knights,Los Angeles Kings,2.0,6.0,REG,0,0,0,1,0,0
+2021020017,20212022,2,2021-10-15T23:00:00Z,US/Eastern,Prudential Center,Chicago Blackhawks,New Jersey Devils,3.0,4.0,OT,0,0,0,0,1,0
+2021020018,20212022,2,2021-10-15T23:00:00Z,US/Eastern,Wells Fargo Center,Vancouver Canucks,Philadelphia Flyers,5.0,4.0,SO,0,0,0,0,0,1
+2021020019,20212022,2,2021-10-16T02:00:00Z,America/Los_Angeles,Honda Center,Minnesota Wild,Anaheim Ducks,2.0,1.0,REG,1,0,0,0,0,0
+2021020021,20212022,2,2021-10-16T17:00:00Z,America/New_York,KeyBank Center,Arizona Coyotes,Buffalo Sabres,1.0,2.0,SO,1,0,0,0,1,0
+2021020025,20212022,2,2021-10-16T22:00:00Z,US/Eastern,FLA Live Arena,New York Islanders,Florida Panthers,1.0,5.0,REG,1,0,0,0,1,0
+2021020020,20212022,2,2021-10-16T23:00:00Z,US/Eastern,TD Garden,Dallas Stars,Boston Bruins,1.0,3.0,REG,0,0,0,1,0,0
+2021020022,20212022,2,2021-10-16T23:00:00Z,America/Toronto,Scotiabank Arena,Ottawa Senators,Toronto Maple Leafs,1.0,3.0,REG,1,1,0,1,0,0
+2021020023,20212022,2,2021-10-16T23:00:00Z,America/Montreal,Centre Bell,New York Rangers,Montréal Canadiens,3.0,1.0,REG,0,2,0,0,1,1
+2021020024,20212022,2,2021-10-16T23:00:00Z,America/Detroit,Little Caesars Arena,Vancouver Canucks,Detroit Red Wings,1.0,3.0,REG,0,0,1,1,0,1
+2021020026,20212022,2,2021-10-16T23:00:00Z,US/Eastern,PPG Paints Arena,Chicago Blackhawks,Pittsburgh Penguins,2.0,5.0,REG,1,0,1,0,1,1
+2021020027,20212022,2,2021-10-16T23:00:00Z,US/Eastern,Capital One Arena,Tampa Bay Lightning,Washington Capitals,2.0,1.0,OT,1,0,0,1,1,0
+2021020028,20212022,2,2021-10-16T23:00:00Z,US/Eastern,Nationwide Arena,Seattle Kraken,Columbus Blue Jackets,1.0,2.0,OT,1,0,0,1,1,0
+2021020029,20212022,2,2021-10-17T00:00:00Z,US/Central,Bridgestone Arena,Carolina Hurricanes,Nashville Predators,3.0,2.0,REG,0,1,0,1,0,0
+2021020030,20212022,2,2021-10-17T01:00:00Z,America/Denver,Ball Arena,St. Louis Blues,Colorado Avalanche,5.0,3.0,REG,1,0,0,0,0,0
+2021020031,20212022,2,2021-10-17T02:00:00Z,America/Edmonton,Rogers Place,Calgary Flames,Edmonton Oilers,2.0,5.0,REG,1,0,0,0,0,0
+2021020033,20212022,2,2021-10-17T02:00:00Z,US/Pacific,SAP Center at San Jose,Winnipeg Jets,San Jose Sharks,3.0,4.0,REG,0,0,0,0,1,0
+2021020032,20212022,2,2021-10-17T02:30:00Z,America/Los_Angeles,STAPLES Center,Minnesota Wild,Los Angeles Kings,3.0,2.0,REG,1,0,0,1,0,0
+2021020034,20212022,2,2021-10-17T21:00:00Z,US/Eastern,Canadian Tire Centre,Dallas Stars,Ottawa Senators,2.0,3.0,REG,1,1,0,1,1,0
+2021020035,20212022,2,2021-10-18T23:00:00Z,America/Toronto,Scotiabank Arena,New York Rangers,Toronto Maple Leafs,2.0,1.0,OT,2,1,0,1,1,1
+2021020036,20212022,2,2021-10-18T23:00:00Z,US/Eastern,Wells Fargo Center,Seattle Kraken,Philadelphia Flyers,1.0,6.0,REG,0,0,1,1,1,1
+2021020037,20212022,2,2021-10-19T01:30:00Z,US/Mountain,Scotiabank Saddledome,Anaheim Ducks,Calgary Flames,3.0,2.0,OT,0,1,0,1,1,0
+2021020038,20212022,2,2021-10-19T02:00:00Z,America/Phoenix,Gila River Arena,St. Louis Blues,Arizona Coyotes,7.0,4.0,REG,0,1,1,1,0,0
+2021020039,20212022,2,2021-10-19T23:00:00Z,America/New_York,KeyBank Center,Vancouver Canucks,Buffalo Sabres,2.0,5.0,REG,2,0,0,1,1,1
+2021020040,20212022,2,2021-10-19T23:00:00Z,America/Montreal,Centre Bell,San Jose Sharks,Montréal Canadiens,5.0,0.0,REG,0,3,0,1,0,0
+2021020042,20212022,2,2021-10-19T23:00:00Z,US/Eastern,Amalie Arena,Florida Panthers,Tampa Bay Lightning,4.0,1.0,REG,2,1,0,2,0,0
+2021020043,20212022,2,2021-10-19T23:00:00Z,US/Eastern,Prudential Center,Seattle Kraken,New Jersey Devils,2.0,4.0,REG,1,0,0,1,2,1
+2021020044,20212022,2,2021-10-19T23:00:00Z,US/Eastern,PPG Paints Arena,Dallas Stars,Pittsburgh Penguins,2.0,1.0,SO,2,0,1,1,2,0
+2021020045,20212022,2,2021-10-19T23:00:00Z,US/Eastern,Capital One Arena,Colorado Avalanche,Washington Capitals,3.0,6.0,REG,1,0,1,1,1,0
+2021020041,20212022,2,2021-10-19T23:30:00Z,America/Detroit,Little Caesars Arena,Columbus Blue Jackets,Detroit Red Wings,1.0,4.0,REG,1,0,1,2,0,0
+2021020046,20212022,2,2021-10-20T00:00:00Z,America/Chicago,United Center,New York Islanders,Chicago Blackhawks,4.0,1.0,REG,0,2,1,0,2,0
+2021020047,20212022,2,2021-10-20T00:00:00Z,US/Central,Bridgestone Arena,Los Angeles Kings,Nashville Predators,1.0,2.0,REG,0,2,0,1,1,0
+2021020048,20212022,2,2021-10-20T00:00:00Z,US/Central,Xcel Energy Center,Winnipeg Jets,Minnesota Wild,5.0,6.0,OT,2,0,0,0,2,0
+2021020049,20212022,2,2021-10-20T01:00:00Z,America/Edmonton,Rogers Place,Anaheim Ducks,Edmonton Oilers,5.0,6.0,REG,2,0,0,2,1,0
+2021020050,20212022,2,2021-10-20T23:30:00Z,US/Eastern,Wells Fargo Center,Boston Bruins,Philadelphia Flyers,3.0,6.0,REG,1,0,1,1,0,0
+2021020051,20212022,2,2021-10-21T02:00:00Z,US/Pacific,T-Mobile Arena,St. Louis Blues,Vegas Golden Knights,3.0,1.0,REG,1,1,0,2,0,0
+2021020052,20212022,2,2021-10-21T23:00:00Z,America/Montreal,Centre Bell,Carolina Hurricanes,Montréal Canadiens,4.0,1.0,REG,0,4,0,2,0,0
+2021020053,20212022,2,2021-10-21T23:00:00Z,US/Eastern,Canadian Tire Centre,San Jose Sharks,Ottawa Senators,2.0,1.0,REG,2,1,0,2,0,0
+2021020055,20212022,2,2021-10-21T23:00:00Z,US/Eastern,FLA Live Arena,Colorado Avalanche,Florida Panthers,1.0,4.0,REG,3,0,0,1,2,0
+2021020056,20212022,2,2021-10-21T23:00:00Z,US/Eastern,Prudential Center,Washington Capitals,New Jersey Devils,4.0,1.0,REG,2,0,0,2,0,1
+2021020057,20212022,2,2021-10-21T23:00:00Z,US/Eastern,Nationwide Arena,New York Islanders,Columbus Blue Jackets,2.0,3.0,OT,2,1,0,1,2,0
+2021020054,20212022,2,2021-10-21T23:30:00Z,America/Detroit,Little Caesars Arena,Calgary Flames,Detroit Red Wings,3.0,0.0,REG,2,0,1,0,1,1
+2021020059,20212022,2,2021-10-22T00:00:00Z,US/Central,Bridgestone Arena,New York Rangers,Nashville Predators,3.0,1.0,REG,1,2,0,2,1,1
+2021020060,20212022,2,2021-10-22T00:00:00Z,America/Winnipeg,Canada Life Centre,Anaheim Ducks,Winnipeg Jets,1.0,5.0,REG,0,2,1,2,2,0
+2021020058,20212022,2,2021-10-22T00:30:00Z,America/Chicago,United Center,Vancouver Canucks,Chicago Blackhawks,4.0,1.0,REG,0,3,1,1,2,1
+2021020061,20212022,2,2021-10-22T02:00:00Z,America/Phoenix,Gila River Arena,Edmonton Oilers,Arizona Coyotes,5.0,1.0,REG,0,2,1,3,0,0
+2021020063,20212022,2,2021-10-22T22:00:00Z,America/Toronto,Scotiabank Arena,San Jose Sharks,Toronto Maple Leafs,5.0,3.0,REG,2,1,1,3,0,0
+2021020062,20212022,2,2021-10-22T23:00:00Z,America/New_York,KeyBank Center,Boston Bruins,Buffalo Sabres,4.0,1.0,REG,3,0,0,1,1,0
+2021020064,20212022,2,2021-10-23T00:30:00Z,US/Central,American Airlines Center,Los Angeles Kings,Dallas Stars,2.0,3.0,OT,2,2,0,1,2,0
+2021020065,20212022,2,2021-10-23T02:00:00Z,US/Pacific,T-Mobile Arena,Edmonton Oilers,Vegas Golden Knights,5.0,3.0,REG,1,2,0,4,0,0
+2021020067,20212022,2,2021-10-23T17:00:00Z,US/Eastern,Canadian Tire Centre,New York Rangers,Ottawa Senators,3.0,2.0,REG,2,2,0,3,1,1
+2021020072,20212022,2,2021-10-23T17:00:00Z,US/Eastern,Capital One Arena,Calgary Flames,Washington Capitals,4.0,3.0,OT,3,0,1,1,1,1
+2021020075,20212022,2,2021-10-23T22:00:00Z,US/Central,Xcel Energy Center,Anaheim Ducks,Minnesota Wild,3.0,4.0,OT,3,0,0,2,3,0
+2021020066,20212022,2,2021-10-23T23:00:00Z,America/Montreal,Centre Bell,Detroit Red Wings,Montréal Canadiens,1.0,6.0,REG,0,5,0,2,1,1
+2021020068,20212022,2,2021-10-23T23:00:00Z,US/Eastern,Amalie Arena,Colorado Avalanche,Tampa Bay Lightning,4.0,3.0,SO,2,2,0,1,3,0
+2021020069,20212022,2,2021-10-23T23:00:00Z,US/Eastern,Prudential Center,Buffalo Sabres,New Jersey Devils,1.0,2.0,OT,2,1,0,3,1,0
+2021020070,20212022,2,2021-10-23T23:00:00Z,US/Eastern,Wells Fargo Center,Florida Panthers,Philadelphia Flyers,4.0,2.0,REG,2,0,1,4,0,0
+2021020071,20212022,2,2021-10-23T23:00:00Z,US/Eastern,PPG Paints Arena,Toronto Maple Leafs,Pittsburgh Penguins,1.0,7.0,REG,2,0,2,2,2,1
+2021020073,20212022,2,2021-10-23T23:00:00Z,US/Eastern,Nationwide Arena,Carolina Hurricanes,Columbus Blue Jackets,5.0,1.0,REG,3,1,0,3,0,0
+2021020076,20212022,2,2021-10-23T23:00:00Z,America/Winnipeg,Canada Life Centre,Nashville Predators,Winnipeg Jets,4.0,6.0,REG,1,2,1,1,3,0
+2021020074,20212022,2,2021-10-24T00:00:00Z,US/Central,Enterprise Center,Los Angeles Kings,St. Louis Blues,3.0,7.0,REG,3,0,0,1,2,1
+2021020077,20212022,2,2021-10-24T01:00:00Z,America/Phoenix,Gila River Arena,New York Islanders,Arizona Coyotes,3.0,0.0,REG,0,3,1,1,2,1
+2021020078,20212022,2,2021-10-24T02:00:00Z,US/Pacific,Climate Pledge Arena,Vancouver Canucks,Seattle Kraken,4.0,2.0,REG,1,3,1,2,2,1
+2021020079,20212022,2,2021-10-24T17:00:00Z,US/Eastern,TD Garden,San Jose Sharks,Boston Bruins,3.0,4.0,REG,2,1,0,4,0,0
+2021020081,20212022,2,2021-10-24T22:00:00Z,US/Central,Xcel Energy Center,Nashville Predators,Minnesota Wild,5.0,2.0,REG,4,0,0,1,4,0
+2021020080,20212022,2,2021-10-24T23:00:00Z,America/Chicago,United Center,Detroit Red Wings,Chicago Blackhawks,6.0,3.0,REG,0,4,1,2,2,1
+2021020082,20212022,2,2021-10-25T02:00:00Z,US/Pacific,T-Mobile Arena,New York Islanders,Vegas Golden Knights,2.0,0.0,REG,1,3,0,2,2,1
+2021020083,20212022,2,2021-10-25T23:00:00Z,America/New_York,KeyBank Center,Tampa Bay Lightning,Buffalo Sabres,1.0,5.0,REG,3,1,1,2,2,1
+2021020084,20212022,2,2021-10-25T23:00:00Z,US/Eastern,Canadian Tire Centre,Washington Capitals,Ottawa Senators,7.0,5.0,REG,2,3,0,3,0,2
+2021020085,20212022,2,2021-10-25T23:00:00Z,US/Eastern,FLA Live Arena,Arizona Coyotes,Florida Panthers,3.0,5.0,REG,5,0,0,0,4,1
+2021020086,20212022,2,2021-10-25T23:00:00Z,America/New_York,Madison Square Garden,Calgary Flames,New York Rangers,5.0,1.0,REG,4,1,1,2,1,1
+2021020087,20212022,2,2021-10-25T23:00:00Z,US/Eastern,PNC Arena,Toronto Maple Leafs,Carolina Hurricanes,1.0,4.0,REG,4,0,0,2,3,1
+2021020088,20212022,2,2021-10-25T23:00:00Z,US/Eastern,Nationwide Arena,Dallas Stars,Columbus Blue Jackets,1.0,4.0,REG,3,2,0,3,2,0
+2021020089,20212022,2,2021-10-26T00:00:00Z,US/Central,Enterprise Center,Los Angeles Kings,St. Louis Blues,0.0,3.0,REG,4,0,0,1,3,1
+2021020090,20212022,2,2021-10-26T23:00:00Z,US/Eastern,Prudential Center,Calgary Flames,New Jersey Devils,5.0,3.0,REG,3,1,0,3,1,1
+2021020091,20212022,2,2021-10-26T23:00:00Z,US/Eastern,PPG Paints Arena,Tampa Bay Lightning,Pittsburgh Penguins,5.0,1.0,REG,3,0,2,2,3,1
+2021020093,20212022,2,2021-10-27T00:00:00Z,America/Denver,Ball Arena,Vegas Golden Knights,Colorado Avalanche,3.0,1.0,REG,2,3,0,1,4,0
+2021020092,20212022,2,2021-10-27T00:30:00Z,US/Central,Bridgestone Arena,San Jose Sharks,Nashville Predators,1.0,3.0,REG,2,4,0,4,1,0
+2021020094,20212022,2,2021-10-27T02:00:00Z,America/Vancouver,Rogers Arena,Minnesota Wild,Vancouver Canucks,3.0,2.0,REG,3,2,1,4,1,0
+2021020095,20212022,2,2021-10-27T02:00:00Z,America/Los_Angeles,Honda Center,Winnipeg Jets,Anaheim Ducks,4.0,3.0,REG,2,3,1,2,2,1
+2021020096,20212022,2,2021-10-27T02:00:00Z,US/Pacific,Climate Pledge Arena,Montréal Canadiens,Seattle Kraken,1.0,5.0,REG,1,4,1,1,5,0
+2021020097,20212022,2,2021-10-27T23:00:00Z,US/Eastern,FLA Live Arena,Boston Bruins,Florida Panthers,1.0,4.0,REG,6,0,0,3,1,0
+2021020098,20212022,2,2021-10-27T23:00:00Z,US/Eastern,Capital One Arena,Detroit Red Wings,Washington Capitals,3.0,2.0,OT,4,0,2,3,2,1
+2021020099,20212022,2,2021-10-27T23:30:00Z,America/Chicago,United Center,Toronto Maple Leafs,Chicago Blackhawks,3.0,2.0,OT,0,5,1,2,4,1
+2021020100,20212022,2,2021-10-28T00:30:00Z,US/Central,American Airlines Center,Vegas Golden Knights,Dallas Stars,3.0,2.0,OT,3,3,0,2,4,0
+2021020101,20212022,2,2021-10-28T02:00:00Z,America/Edmonton,Rogers Place,Philadelphia Flyers,Edmonton Oilers,5.0,3.0,REG,5,0,0,2,1,1
+2021020102,20212022,2,2021-10-28T23:00:00Z,US/Eastern,Amalie Arena,Arizona Coyotes,Tampa Bay Lightning,1.0,5.0,REG,3,3,1,0,5,1
+2021020103,20212022,2,2021-10-28T23:00:00Z,US/Eastern,PPG Paints Arena,Calgary Flames,Pittsburgh Penguins,4.0,0.0,REG,3,1,2,4,1,1
+2021020104,20212022,2,2021-10-28T23:00:00Z,US/Eastern,PNC Arena,Boston Bruins,Carolina Hurricanes,0.0,3.0,REG,5,0,0,3,2,0
+2021020105,20212022,2,2021-10-29T00:00:00Z,US/Central,Enterprise Center,Colorado Avalanche,St. Louis Blues,4.0,3.0,REG,5,0,0,2,4,0
+2021020106,20212022,2,2021-10-29T02:00:00Z,America/Vancouver,Rogers Arena,Philadelphia Flyers,Vancouver Canucks,2.0,1.0,REG,3,3,1,3,1,1
+2021020107,20212022,2,2021-10-29T02:00:00Z,America/Los_Angeles,Honda Center,Buffalo Sabres,Anaheim Ducks,4.0,3.0,OT,2,4,1,4,1,1
+2021020110,20212022,2,2021-10-29T02:00:00Z,US/Pacific,Climate Pledge Arena,Minnesota Wild,Seattle Kraken,1.0,4.0,REG,2,4,1,5,1,0
+2021020108,20212022,2,2021-10-29T02:30:00Z,America/Los_Angeles,STAPLES Center,Winnipeg Jets,Los Angeles Kings,3.0,2.0,REG,1,4,1,3,2,1
+2021020109,20212022,2,2021-10-29T02:30:00Z,US/Pacific,SAP Center at San Jose,Montréal Canadiens,San Jose Sharks,4.0,0.0,REG,4,2,0,1,6,0
+2021020111,20212022,2,2021-10-29T23:00:00Z,America/Detroit,Little Caesars Arena,Florida Panthers,Detroit Red Wings,3.0,2.0,OT,4,2,1,7,0,0
+2021020112,20212022,2,2021-10-29T23:00:00Z,America/New_York,Madison Square Garden,Columbus Blue Jackets,New York Rangers,0.0,4.0,REG,4,2,1,4,2,0
+2021020113,20212022,2,2021-10-29T23:00:00Z,US/Eastern,Capital One Arena,Arizona Coyotes,Washington Capitals,0.0,2.0,REG,4,0,3,0,6,1
+2021020114,20212022,2,2021-10-29T23:00:00Z,US/Eastern,PNC Arena,Chicago Blackhawks,Carolina Hurricanes,3.0,6.0,REG,6,0,0,0,5,2
+2021020116,20212022,2,2021-10-30T00:00:00Z,US/Pacific,T-Mobile Arena,Anaheim Ducks,Vegas Golden Knights,4.0,5.0,SO,3,4,0,2,4,2
+2021020115,20212022,2,2021-10-30T00:30:00Z,US/Central,American Airlines Center,Ottawa Senators,Dallas Stars,4.0,1.0,REG,3,3,1,2,4,0
+2021020121,20212022,2,2021-10-30T17:30:00Z,US/Central,Bridgestone Arena,New York Islanders,Nashville Predators,2.0,3.0,SO,3,4,0,3,2,1
+2021020125,20212022,2,2021-10-30T20:00:00Z,America/Los_Angeles,STAPLES Center,Montréal Canadiens,Los Angeles Kings,2.0,5.0,REG,1,5,1,2,6,0
+2021020117,20212022,2,2021-10-30T23:00:00Z,US/Eastern,TD Garden,Florida Panthers,Boston Bruins,2.0,3.0,SO,3,3,0,8,0,0
+2021020118,20212022,2,2021-10-30T23:00:00Z,America/Toronto,Scotiabank Arena,Detroit Red Wings,Toronto Maple Leafs,4.0,5.0,REG,3,4,1,4,2,2
+2021020119,20212022,2,2021-10-30T23:00:00Z,US/Eastern,PPG Paints Arena,New Jersey Devils,Pittsburgh Penguins,4.0,2.0,REG,3,2,2,3,2,0
+2021020126,20212022,2,2021-10-30T23:00:00Z,US/Pacific,SAP Center at San Jose,Winnipeg Jets,San Jose Sharks,1.0,2.0,OT,4,3,0,4,2,1
+2021020120,20212022,2,2021-10-31T00:00:00Z,US/Central,Enterprise Center,Chicago Blackhawks,St. Louis Blues,0.0,1.0,REG,5,1,0,0,6,2
+2021020122,20212022,2,2021-10-31T01:00:00Z,America/Denver,Ball Arena,Minnesota Wild,Colorado Avalanche,1.0,4.0,REG,3,4,0,5,2,0
+2021020123,20212022,2,2021-10-31T02:00:00Z,US/Mountain,Scotiabank Saddledome,Philadelphia Flyers,Calgary Flames,0.0,4.0,REG,5,1,1,4,1,1
+2021020124,20212022,2,2021-10-31T02:00:00Z,America/Vancouver,Rogers Arena,Edmonton Oilers,Vancouver Canucks,2.0,1.0,REG,3,4,1,5,1,0
+2021020128,20212022,2,2021-10-31T17:00:00Z,US/Eastern,PNC Arena,Arizona Coyotes,Carolina Hurricanes,1.0,2.0,REG,7,0,0,0,7,1
+2021020129,20212022,2,2021-10-31T20:00:00Z,America/Los_Angeles,Honda Center,Montréal Canadiens,Anaheim Ducks,2.0,4.0,REG,2,4,3,2,7,0
+2021020130,20212022,2,2021-10-31T20:00:00Z,America/Los_Angeles,STAPLES Center,Buffalo Sabres,Los Angeles Kings,2.0,3.0,REG,2,5,1,5,1,1
+2021020127,20212022,2,2021-10-31T21:00:00Z,US/Eastern,Prudential Center,Columbus Blue Jackets,New Jersey Devils,4.0,3.0,SO,4,2,0,4,3,0
+2021020131,20212022,2,2021-11-01T01:00:00Z,US/Pacific,Climate Pledge Arena,New York Rangers,Seattle Kraken,3.0,1.0,REG,3,4,1,5,2,1
+2021020132,20212022,2,2021-11-01T23:00:00Z,US/Eastern,Amalie Arena,Washington Capitals,Tampa Bay Lightning,2.0,3.0,REG,4,3,1,5,0,3
+2021020133,20212022,2,2021-11-02T00:00:00Z,America/Chicago,United Center,Ottawa Senators,Chicago Blackhawks,1.0,5.0,REG,0,7,2,3,4,0
+2021020134,20212022,2,2021-11-02T01:30:00Z,America/Edmonton,Rogers Place,Seattle Kraken,Edmonton Oilers,2.0,5.0,REG,6,1,0,3,5,1
+2021020135,20212022,2,2021-11-02T23:00:00Z,America/Toronto,Scotiabank Arena,Vegas Golden Knights,Toronto Maple Leafs,0.0,4.0,REG,4,4,1,4,4,0
+2021020136,20212022,2,2021-11-02T23:00:00Z,America/Montreal,Centre Bell,Detroit Red Wings,Montréal Canadiens,0.0,3.0,REG,2,8,0,4,3,2
+2021020137,20212022,2,2021-11-02T23:00:00Z,US/Eastern,Wells Fargo Center,Arizona Coyotes,Philadelphia Flyers,0.0,3.0,REG,4,2,1,0,8,1
+2021020138,20212022,2,2021-11-03T00:00:00Z,US/Central,Xcel Energy Center,Ottawa Senators,Minnesota Wild,4.0,5.0,OT,5,3,0,3,5,0
+2021020139,20212022,2,2021-11-03T00:00:00Z,America/Winnipeg,Canada Life Centre,Dallas Stars,Winnipeg Jets,3.0,4.0,SO,4,2,2,3,4,1
+2021020140,20212022,2,2021-11-03T01:00:00Z,US/Mountain,Scotiabank Saddledome,Nashville Predators,Calgary Flames,3.0,2.0,OT,6,1,1,4,4,0
+2021020141,20212022,2,2021-11-03T02:00:00Z,America/Vancouver,Rogers Arena,New York Rangers,Vancouver Canucks,2.0,3.0,OT,3,5,1,6,2,1
+2021020142,20212022,2,2021-11-03T02:00:00Z,America/Los_Angeles,Honda Center,New Jersey Devils,Anaheim Ducks,0.0,4.0,REG,3,4,3,4,2,1
+2021020143,20212022,2,2021-11-03T02:30:00Z,US/Pacific,SAP Center at San Jose,Buffalo Sabres,San Jose Sharks,3.0,5.0,REG,5,3,0,5,2,1
+2021020144,20212022,2,2021-11-04T00:30:00Z,America/Chicago,United Center,Carolina Hurricanes,Chicago Blackhawks,4.0,3.0,REG,1,7,2,8,0,0
+2021020146,20212022,2,2021-11-04T00:30:00Z,America/Edmonton,Rogers Place,Nashville Predators,Edmonton Oilers,2.0,5.0,REG,7,1,0,5,4,0
+2021020145,20212022,2,2021-11-04T01:00:00Z,America/Denver,Ball Arena,Columbus Blue Jackets,Colorado Avalanche,5.0,4.0,OT,4,4,0,5,3,0
+2021020147,20212022,2,2021-11-04T02:00:00Z,America/Los_Angeles,STAPLES Center,St. Louis Blues,Los Angeles Kings,2.0,3.0,SO,3,5,1,6,1,0
+2021020148,20212022,2,2021-11-04T23:00:00Z,US/Eastern,TD Garden,Detroit Red Wings,Boston Bruins,1.0,5.0,REG,4,3,0,4,4,2
+2021020149,20212022,2,2021-11-04T23:00:00Z,America/Toronto,Scotiabank Arena,Tampa Bay Lightning,Toronto Maple Leafs,1.0,2.0,OT,5,4,1,5,3,1
+2021020150,20212022,2,2021-11-04T23:00:00Z,America/Montreal,Centre Bell,New York Islanders,Montréal Canadiens,6.0,2.0,REG,3,7,0,3,2,2
+2021020151,20212022,2,2021-11-04T23:00:00Z,US/Eastern,Canadian Tire Centre,Vegas Golden Knights,Ottawa Senators,5.0,1.0,REG,3,5,1,4,5,0
+2021020152,20212022,2,2021-11-04T23:00:00Z,US/Eastern,FLA Live Arena,Washington Capitals,Florida Panthers,4.0,5.0,OT,8,0,1,5,1,3
+2021020153,20212022,2,2021-11-04T23:00:00Z,US/Eastern,PPG Paints Arena,Philadelphia Flyers,Pittsburgh Penguins,2.0,3.0,OT,3,3,2,5,2,1
+2021020154,20212022,2,2021-11-05T01:00:00Z,US/Mountain,Scotiabank Saddledome,Dallas Stars,Calgary Flames,4.0,3.0,OT,6,1,2,3,4,2
+2021020156,20212022,2,2021-11-05T02:00:00Z,US/Pacific,Climate Pledge Arena,Buffalo Sabres,Seattle Kraken,2.0,5.0,REG,3,6,1,5,3,1
+2021020155,20212022,2,2021-11-05T02:30:00Z,US/Pacific,SAP Center at San Jose,St. Louis Blues,San Jose Sharks,5.0,3.0,REG,6,3,0,6,1,1
+2021020157,20212022,2,2021-11-06T00:00:00Z,America/Winnipeg,Canada Life Centre,Chicago Blackhawks,Winnipeg Jets,1.0,5.0,REG,5,2,2,1,7,2
+2021020158,20212022,2,2021-11-06T01:30:00Z,America/Edmonton,Rogers Place,New York Rangers,Edmonton Oilers,5.0,6.0,OT,8,1,0,6,2,2
+2021020159,20212022,2,2021-11-06T02:00:00Z,America/Vancouver,Rogers Arena,Nashville Predators,Vancouver Canucks,3.0,2.0,REG,4,5,1,5,5,0
+2021020160,20212022,2,2021-11-06T02:00:00Z,America/Los_Angeles,Honda Center,Arizona Coyotes,Anaheim Ducks,1.0,3.0,REG,3,4,3,0,9,1
+2021020161,20212022,2,2021-11-06T02:30:00Z,America/Los_Angeles,STAPLES Center,New Jersey Devils,Los Angeles Kings,2.0,3.0,OT,4,5,1,4,3,1
+2021020165,20212022,2,2021-11-06T18:00:00Z,US/Eastern,Canadian Tire Centre,Tampa Bay Lightning,Ottawa Senators,5.0,3.0,REG,3,6,1,5,3,2
+2021020166,20212022,2,2021-11-06T22:00:00Z,US/Eastern,FLA Live Arena,Carolina Hurricanes,Florida Panthers,2.0,5.0,REG,9,0,1,9,0,0
+2021020162,20212022,2,2021-11-06T23:00:00Z,America/New_York,KeyBank Center,Detroit Red Wings,Buffalo Sabres,4.0,3.0,OT,5,4,1,4,5,1
+2021020163,20212022,2,2021-11-06T23:00:00Z,America/Toronto,Scotiabank Arena,Boston Bruins,Toronto Maple Leafs,2.0,5.0,REG,5,4,1,5,3,0
+2021020164,20212022,2,2021-11-06T23:00:00Z,America/Montreal,Centre Bell,Vegas Golden Knights,Montréal Canadiens,5.0,2.0,REG,3,7,0,5,5,0
+2021020167,20212022,2,2021-11-06T23:00:00Z,US/Eastern,PPG Paints Arena,Minnesota Wild,Pittsburgh Penguins,5.0,4.0,SO,4,3,2,6,3,0
+2021020168,20212022,2,2021-11-06T23:00:00Z,US/Eastern,Capital One Arena,Philadelphia Flyers,Washington Capitals,2.0,1.0,REG,5,1,4,5,2,2
+2021020169,20212022,2,2021-11-06T23:00:00Z,US/Eastern,Nationwide Arena,Colorado Avalanche,Columbus Blue Jackets,2.0,4.0,REG,6,3,0,4,4,1
+2021020170,20212022,2,2021-11-06T23:00:00Z,America/Winnipeg,Canada Life Centre,New York Islanders,Winnipeg Jets,2.0,0.0,REG,6,2,2,4,2,2
+2021020171,20212022,2,2021-11-07T02:00:00Z,US/Mountain,Scotiabank Saddledome,New York Rangers,Calgary Flames,0.0,6.0,REG,6,1,3,6,1,3
+2021020172,20212022,2,2021-11-07T02:00:00Z,America/Phoenix,Gila River Arena,Seattle Kraken,Arizona Coyotes,4.0,5.0,REG,0,9,1,4,5,1
+2021020173,20212022,2,2021-11-07T02:30:00Z,US/Pacific,SAP Center at San Jose,New Jersey Devils,San Jose Sharks,3.0,2.0,SO,6,4,0,4,3,2
+2021020174,20212022,2,2021-11-07T23:00:00Z,America/Detroit,Little Caesars Arena,Vegas Golden Knights,Detroit Red Wings,2.0,5.0,REG,4,5,1,5,5,0
+2021020175,20212022,2,2021-11-08T00:00:00Z,America/Chicago,United Center,Nashville Predators,Chicago Blackhawks,1.0,2.0,OT,1,8,1,6,4,0
+2021020176,20212022,2,2021-11-08T01:00:00Z,US/Central,Xcel Energy Center,New York Islanders,Minnesota Wild,2.0,5.0,REG,7,3,0,5,2,2
+2021020178,20212022,2,2021-11-08T01:00:00Z,America/Los_Angeles,Honda Center,St. Louis Blues,Anaheim Ducks,1.0,4.0,REG,4,3,3,7,1,1
+2021020177,20212022,2,2021-11-08T03:00:00Z,America/Vancouver,Rogers Arena,Dallas Stars,Vancouver Canucks,3.0,6.0,REG,4,6,0,4,4,2
+2021020180,20212022,2,2021-11-09T00:00:00Z,America/New_York,Madison Square Garden,Florida Panthers,New York Rangers,3.0,4.0,REG,6,2,2,9,0,1
+2021020181,20212022,2,2021-11-09T00:00:00Z,US/Eastern,Capital One Arena,Buffalo Sabres,Washington Capitals,3.0,5.0,REG,4,2,4,4,4,2
+2021020179,20212022,2,2021-11-09T00:30:00Z,America/Toronto,Scotiabank Arena,Los Angeles Kings,Toronto Maple Leafs,5.0,1.0,REG,6,3,1,4,5,1
+2021020182,20212022,2,2021-11-10T00:00:00Z,US/Eastern,TD Garden,Ottawa Senators,Boston Bruins,2.0,3.0,REG,5,4,0,2,7,1
+2021020183,20212022,2,2021-11-10T00:00:00Z,America/Montreal,Centre Bell,Los Angeles Kings,Montréal Canadiens,3.0,2.0,OT,3,7,0,5,4,1
+2021020185,20212022,2,2021-11-10T00:00:00Z,US/Eastern,Amalie Arena,Carolina Hurricanes,Tampa Bay Lightning,2.0,1.0,OT,6,2,2,9,1,0
+2021020186,20212022,2,2021-11-10T00:00:00Z,US/Eastern,Prudential Center,Florida Panthers,New Jersey Devils,3.0,7.0,REG,5,3,2,8,1,1
+2021020184,20212022,2,2021-11-10T00:30:00Z,America/Detroit,Little Caesars Arena,Edmonton Oilers,Detroit Red Wings,2.0,4.0,REG,4,5,1,9,1,0
+2021020188,20212022,2,2021-11-10T01:00:00Z,America/Winnipeg,Canada Life Centre,St. Louis Blues,Winnipeg Jets,3.0,2.0,SO,6,2,2,7,2,1
+2021020187,20212022,2,2021-11-10T01:30:00Z,America/Chicago,United Center,Pittsburgh Penguins,Chicago Blackhawks,2.0,3.0,SO,2,7,1,4,3,3
+2021020189,20212022,2,2021-11-10T02:00:00Z,US/Mountain,Scotiabank Saddledome,San Jose Sharks,Calgary Flames,4.0,1.0,REG,7,0,3,5,4,1
+2021020190,20212022,2,2021-11-10T03:00:00Z,America/Vancouver,Rogers Arena,Anaheim Ducks,Vancouver Canucks,3.0,2.0,OT,4,6,0,4,3,3
+2021020191,20212022,2,2021-11-10T03:00:00Z,US/Pacific,T-Mobile Arena,Seattle Kraken,Vegas Golden Knights,2.0,4.0,REG,5,5,0,3,6,1
+2021020192,20212022,2,2021-11-11T00:30:00Z,US/Eastern,Wells Fargo Center,Toronto Maple Leafs,Philadelphia Flyers,3.0,0.0,REG,6,2,2,5,4,1
+2021020193,20212022,2,2021-11-11T01:30:00Z,US/Central,American Airlines Center,Nashville Predators,Dallas Stars,4.0,2.0,REG,3,5,2,6,3,1
+2021020194,20212022,2,2021-11-11T03:00:00Z,America/Phoenix,Gila River Arena,Minnesota Wild,Arizona Coyotes,5.0,2.0,REG,1,9,0,7,3,0
+2021020195,20212022,2,2021-11-12T00:00:00Z,US/Eastern,TD Garden,Edmonton Oilers,Boston Bruins,5.0,3.0,REG,6,4,0,8,2,0
+2021020196,20212022,2,2021-11-12T00:00:00Z,America/Montreal,Centre Bell,Calgary Flames,Montréal Canadiens,2.0,4.0,REG,3,6,1,7,1,2
+2021020197,20212022,2,2021-11-12T00:00:00Z,US/Eastern,Canadian Tire Centre,Los Angeles Kings,Ottawa Senators,2.0,0.0,REG,2,7,1,6,3,1
+2021020199,20212022,2,2021-11-12T00:00:00Z,US/Eastern,Prudential Center,New York Islanders,New Jersey Devils,0.0,4.0,REG,5,3,2,5,3,2
+2021020200,20212022,2,2021-11-12T00:00:00Z,US/Eastern,PPG Paints Arena,Florida Panthers,Pittsburgh Penguins,2.0,3.0,SO,3,3,4,7,2,1
+2021020198,20212022,2,2021-11-12T00:30:00Z,America/Detroit,Little Caesars Arena,Washington Capitals,Detroit Red Wings,2.0,0.0,REG,5,4,1,5,2,3
+2021020201,20212022,2,2021-11-12T01:00:00Z,US/Central,Enterprise Center,Nashville Predators,St. Louis Blues,4.0,3.0,OT,7,2,1,6,3,1
+2021020202,20212022,2,2021-11-12T01:00:00Z,America/Winnipeg,Canada Life Centre,San Jose Sharks,Winnipeg Jets,1.0,4.0,REG,6,1,3,5,4,1
+2021020203,20212022,2,2021-11-12T02:00:00Z,America/Denver,Ball Arena,Vancouver Canucks,Colorado Avalanche,1.0,7.0,REG,4,5,1,4,5,1
+2021020204,20212022,2,2021-11-12T03:00:00Z,US/Pacific,T-Mobile Arena,Minnesota Wild,Vegas Golden Knights,2.0,3.0,REG,6,4,0,7,3,0
+2021020205,20212022,2,2021-11-12T03:00:00Z,US/Pacific,Climate Pledge Arena,Anaheim Ducks,Seattle Kraken,7.0,4.0,REG,3,7,0,5,2,3
+2021020206,20212022,2,2021-11-13T00:00:00Z,America/New_York,KeyBank Center,Edmonton Oilers,Buffalo Sabres,2.0,3.0,REG,3,5,2,8,2,0
+2021020207,20212022,2,2021-11-13T00:00:00Z,America/Toronto,Scotiabank Arena,Calgary Flames,Toronto Maple Leafs,1.0,2.0,OT,6,4,0,6,2,2
+2021020208,20212022,2,2021-11-13T00:00:00Z,US/Eastern,PNC Arena,Philadelphia Flyers,Carolina Hurricanes,2.0,1.0,REG,9,1,0,6,3,1
+2021020209,20212022,2,2021-11-13T00:00:00Z,US/Eastern,Nationwide Arena,Washington Capitals,Columbus Blue Jackets,4.0,3.0,REG,7,3,0,5,2,3
+2021020210,20212022,2,2021-11-13T01:30:00Z,America/Chicago,United Center,Arizona Coyotes,Chicago Blackhawks,1.0,2.0,REG,3,6,1,1,9,0
+2021020215,20212022,2,2021-11-13T18:00:00Z,US/Eastern,Prudential Center,Boston Bruins,New Jersey Devils,5.0,2.0,REG,5,3,2,5,5,0
+2021020211,20212022,2,2021-11-14T00:00:00Z,America/New_York,KeyBank Center,Toronto Maple Leafs,Buffalo Sabres,5.0,4.0,REG,3,5,2,7,3,0
+2021020212,20212022,2,2021-11-14T00:00:00Z,US/Eastern,Canadian Tire Centre,Pittsburgh Penguins,Ottawa Senators,3.0,6.0,REG,1,8,1,4,3,3
+2021020213,20212022,2,2021-11-14T00:00:00Z,America/Detroit,Little Caesars Arena,Montréal Canadiens,Detroit Red Wings,2.0,3.0,OT,5,4,1,4,5,1
+2021020214,20212022,2,2021-11-14T00:00:00Z,US/Eastern,Amalie Arena,Florida Panthers,Tampa Bay Lightning,2.0,3.0,OT,5,2,3,6,2,2
+2021020217,20212022,2,2021-11-14T00:00:00Z,US/Eastern,Nationwide Arena,New York Rangers,Columbus Blue Jackets,5.0,3.0,REG,6,4,0,6,2,2
+2021020220,20212022,2,2021-11-14T00:00:00Z,America/Winnipeg,Canada Life Centre,Los Angeles Kings,Winnipeg Jets,2.0,3.0,OT,7,1,2,7,3,0
+2021020216,20212022,2,2021-11-14T00:30:00Z,US/Eastern,PNC Arena,St. Louis Blues,Carolina Hurricanes,2.0,3.0,REG,8,2,0,6,2,2
+2021020218,20212022,2,2021-11-14T01:00:00Z,US/Central,Bridgestone Arena,Arizona Coyotes,Nashville Predators,1.0,4.0,REG,7,2,1,1,9,0
+2021020219,20212022,2,2021-11-14T01:00:00Z,US/Central,American Airlines Center,Philadelphia Flyers,Dallas Stars,2.0,5.0,REG,3,5,2,6,3,1
+2021020221,20212022,2,2021-11-14T02:00:00Z,America/Denver,Ball Arena,San Jose Sharks,Colorado Avalanche,2.0,6.0,REG,4,5,1,4,5,1
+2021020222,20212022,2,2021-11-14T03:00:00Z,US/Pacific,T-Mobile Arena,Vancouver Canucks,Vegas Golden Knights,4.0,7.0,REG,7,3,0,4,5,1
+2021020223,20212022,2,2021-11-14T03:00:00Z,US/Pacific,Climate Pledge Arena,Minnesota Wild,Seattle Kraken,4.0,2.0,REG,3,7,0,6,4,0
+2021020225,20212022,2,2021-11-14T22:00:00Z,US/Eastern,Canadian Tire Centre,Calgary Flames,Ottawa Senators,4.0,0.0,REG,2,7,1,5,2,3
+2021020224,20212022,2,2021-11-15T00:00:00Z,US/Eastern,TD Garden,Montréal Canadiens,Boston Bruins,2.0,5.0,REG,6,4,0,3,5,2
+2021020226,20212022,2,2021-11-15T00:00:00Z,America/New_York,Madison Square Garden,New Jersey Devils,New York Rangers,3.0,4.0,SO,6,2,2,5,3,2
+2021020227,20212022,2,2021-11-15T00:00:00Z,US/Eastern,Capital One Arena,Pittsburgh Penguins,Washington Capitals,1.0,6.0,REG,5,2,3,3,4,3
+2021020228,20212022,2,2021-11-15T00:00:00Z,US/Central,Enterprise Center,Edmonton Oilers,St. Louis Blues,5.0,4.0,REG,5,3,2,7,3,0
+2021020229,20212022,2,2021-11-15T01:00:00Z,America/Los_Angeles,Honda Center,Vancouver Canucks,Anaheim Ducks,1.0,5.0,REG,6,1,3,3,6,1
+2021020230,20212022,2,2021-11-16T00:00:00Z,US/Eastern,Amalie Arena,New York Islanders,Tampa Bay Lightning,1.0,4.0,REG,5,2,3,5,3,2
+2021020231,20212022,2,2021-11-16T00:00:00Z,US/Eastern,Nationwide Arena,Detroit Red Wings,Columbus Blue Jackets,3.0,5.0,REG,5,5,0,5,4,1
+2021020232,20212022,2,2021-11-17T00:00:00Z,America/Toronto,Scotiabank Arena,Nashville Predators,Toronto Maple Leafs,0.0,3.0,REG,8,2,0,8,1,1
+2021020233,20212022,2,2021-11-17T00:00:00Z,US/Eastern,FLA Live Arena,New York Islanders,Florida Panthers,1.0,6.0,REG,5,2,3,5,3,2
+2021020235,20212022,2,2021-11-17T00:00:00Z,America/New_York,Madison Square Garden,Montréal Canadiens,New York Rangers,2.0,3.0,REG,6,2,2,3,5,2
+2021020236,20212022,2,2021-11-17T00:00:00Z,US/Eastern,Wells Fargo Center,Calgary Flames,Philadelphia Flyers,1.0,2.0,OT,5,4,1,5,2,3
+2021020237,20212022,2,2021-11-17T00:00:00Z,US/Eastern,PPG Paints Arena,Buffalo Sabres,Pittsburgh Penguins,2.0,1.0,REG,3,5,2,3,5,2
+2021020238,20212022,2,2021-11-17T01:00:00Z,US/Central,Enterprise Center,Arizona Coyotes,St. Louis Blues,3.0,2.0,REG,4,4,2,1,9,0
+2021020240,20212022,2,2021-11-17T01:00:00Z,US/Central,Xcel Energy Center,San Jose Sharks,Minnesota Wild,4.0,1.0,REG,6,4,0,3,6,1
+2021020241,20212022,2,2021-11-17T01:00:00Z,America/Winnipeg,Canada Life Centre,Edmonton Oilers,Winnipeg Jets,2.0,5.0,REG,7,1,2,7,3,0
+2021020239,20212022,2,2021-11-17T01:30:00Z,US/Central,American Airlines Center,Detroit Red Wings,Dallas Stars,2.0,5.0,REG,4,4,2,4,5,1
+2021020242,20212022,2,2021-11-17T03:00:00Z,US/Pacific,T-Mobile Arena,Carolina Hurricanes,Vegas Golden Knights,4.0,2.0,REG,8,2,0,8,2,0
+2021020243,20212022,2,2021-11-17T03:00:00Z,America/Los_Angeles,Honda Center,Washington Capitals,Anaheim Ducks,2.0,3.0,OT,7,1,2,6,2,2
+2021020244,20212022,2,2021-11-18T02:00:00Z,America/Vancouver,Rogers Arena,Colorado Avalanche,Vancouver Canucks,4.0,2.0,REG,2,7,1,5,4,1
+2021020246,20212022,2,2021-11-18T03:00:00Z,US/Pacific,Climate Pledge Arena,Chicago Blackhawks,Seattle Kraken,4.0,2.0,REG,3,7,0,4,5,1
+2021020245,20212022,2,2021-11-18T03:30:00Z,America/Los_Angeles,STAPLES Center,Washington Capitals,Los Angeles Kings,2.0,0.0,REG,7,2,1,5,2,3
+2021020247,20212022,2,2021-11-19T00:00:00Z,America/New_York,KeyBank Center,Calgary Flames,Buffalo Sabres,5.0,0.0,REG,4,5,1,4,2,4
+2021020248,20212022,2,2021-11-19T00:00:00Z,America/Toronto,Scotiabank Arena,New York Rangers,Toronto Maple Leafs,1.0,2.0,REG,9,1,0,6,2,2
+2021020249,20212022,2,2021-11-19T00:00:00Z,America/Montreal,Centre Bell,Pittsburgh Penguins,Montréal Canadiens,6.0,0.0,REG,2,6,2,2,6,2
+2021020251,20212022,2,2021-11-19T00:00:00Z,US/Eastern,FLA Live Arena,New Jersey Devils,Florida Panthers,1.0,4.0,REG,5,2,3,4,3,3
+2021020252,20212022,2,2021-11-19T00:00:00Z,US/Eastern,Wells Fargo Center,Tampa Bay Lightning,Philadelphia Flyers,4.0,3.0,SO,6,3,1,6,1,3
+2021020253,20212022,2,2021-11-19T01:00:00Z,US/Central,Enterprise Center,San Jose Sharks,St. Louis Blues,1.0,4.0,REG,3,5,2,4,5,1
+2021020254,20212022,2,2021-11-19T01:00:00Z,US/Central,Xcel Energy Center,Dallas Stars,Minnesota Wild,2.0,7.0,REG,6,4,0,4,4,2
+2021020255,20212022,2,2021-11-19T02:00:00Z,America/Edmonton,Rogers Place,Winnipeg Jets,Edmonton Oilers,1.0,2.0,SO,6,4,0,7,1,2
+2021020256,20212022,2,2021-11-19T02:00:00Z,America/Phoenix,Gila River Arena,Columbus Blue Jackets,Arizona Coyotes,5.0,4.0,SO,2,8,0,6,4,0
+2021020257,20212022,2,2021-11-19T03:00:00Z,US/Pacific,T-Mobile Arena,Detroit Red Wings,Vegas Golden Knights,2.0,5.0,REG,7,3,0,4,6,0
+2021020258,20212022,2,2021-11-19T03:00:00Z,America/Los_Angeles,Honda Center,Carolina Hurricanes,Anaheim Ducks,2.0,1.0,REG,8,0,2,8,2,0
+2021020259,20212022,2,2021-11-20T03:00:00Z,America/Vancouver,Rogers Arena,Winnipeg Jets,Vancouver Canucks,2.0,3.0,REG,2,7,1,6,1,3
+2021020260,20212022,2,2021-11-20T03:00:00Z,US/Pacific,Climate Pledge Arena,Colorado Avalanche,Seattle Kraken,7.0,3.0,REG,3,7,0,6,3,1
+2021020264,20212022,2,2021-11-20T21:00:00Z,US/Eastern,Amalie Arena,New Jersey Devils,Tampa Bay Lightning,5.0,3.0,REG,7,1,2,4,3,3
+2021020272,20212022,2,2021-11-20T21:00:00Z,America/Los_Angeles,STAPLES Center,Carolina Hurricanes,Los Angeles Kings,5.0,4.0,REG,7,2,1,8,2,0
+2021020265,20212022,2,2021-11-20T23:00:00Z,US/Eastern,FLA Live Arena,Minnesota Wild,Florida Panthers,4.0,5.0,REG,5,2,3,6,4,0
+2021020261,20212022,2,2021-11-21T00:00:00Z,America/Toronto,Scotiabank Arena,Pittsburgh Penguins,Toronto Maple Leafs,2.0,0.0,REG,9,1,0,3,5,2
+2021020262,20212022,2,2021-11-21T00:00:00Z,America/Montreal,Centre Bell,Nashville Predators,Montréal Canadiens,3.0,6.0,REG,2,6,2,7,2,1
+2021020266,20212022,2,2021-11-21T00:00:00Z,America/New_York,UBS Arena,Calgary Flames,New York Islanders,5.0,2.0,REG,4,4,2,4,2,4
+2021020267,20212022,2,2021-11-21T00:00:00Z,US/Eastern,Wells Fargo Center,Boston Bruins,Philadelphia Flyers,5.0,2.0,REG,5,3,2,6,4,0
+2021020268,20212022,2,2021-11-21T01:00:00Z,US/Central,American Airlines Center,St. Louis Blues,Dallas Stars,1.0,4.0,REG,3,5,2,4,4,2
+2021020270,20212022,2,2021-11-21T01:00:00Z,America/Phoenix,Gila River Arena,Detroit Red Wings,Arizona Coyotes,1.0,2.0,OT,2,7,1,4,6,0
+2021020269,20212022,2,2021-11-21T03:00:00Z,America/Edmonton,Rogers Place,Chicago Blackhawks,Edmonton Oilers,2.0,5.0,REG,7,3,0,5,4,1
+2021020271,20212022,2,2021-11-21T03:00:00Z,US/Pacific,T-Mobile Arena,Columbus Blue Jackets,Vegas Golden Knights,2.0,3.0,REG,7,3,0,6,4,0
+2021020273,20212022,2,2021-11-21T03:30:00Z,US/Pacific,SAP Center at San Jose,Washington Capitals,San Jose Sharks,4.0,0.0,REG,4,5,1,6,2,2
+2021020275,20212022,2,2021-11-21T22:00:00Z,US/Eastern,Amalie Arena,Minnesota Wild,Tampa Bay Lightning,4.0,5.0,SO,7,1,2,6,4,0
+2021020277,20212022,2,2021-11-21T23:00:00Z,America/New_York,Madison Square Garden,Buffalo Sabres,New York Rangers,4.0,5.0,REG,6,2,2,3,6,1
+2021020274,20212022,2,2021-11-22T00:00:00Z,US/Eastern,TD Garden,Calgary Flames,Boston Bruins,4.0,0.0,REG,6,4,0,4,2,4
+2021020276,20212022,2,2021-11-22T00:30:00Z,America/New_York,UBS Arena,Toronto Maple Leafs,New York Islanders,3.0,0.0,REG,4,5,1,8,2,0
+2021020278,20212022,2,2021-11-22T01:00:00Z,America/Vancouver,Rogers Arena,Chicago Blackhawks,Vancouver Canucks,1.0,0.0,REG,3,6,1,5,5,0
+2021020280,20212022,2,2021-11-22T02:00:00Z,US/Pacific,Climate Pledge Arena,Washington Capitals,Seattle Kraken,2.0,5.0,REG,2,8,0,6,2,2
+2021020279,20212022,2,2021-11-22T03:00:00Z,America/Los_Angeles,STAPLES Center,Arizona Coyotes,Los Angeles Kings,2.0,1.0,OT,7,2,1,3,6,1
+2021020281,20212022,2,2021-11-23T00:00:00Z,America/New_York,KeyBank Center,Columbus Blue Jackets,Buffalo Sabres,7.0,4.0,REG,2,7,1,6,4,0
+2021020282,20212022,2,2021-11-23T01:00:00Z,US/Central,Enterprise Center,Vegas Golden Knights,St. Louis Blues,2.0,5.0,REG,3,5,2,7,3,0
+2021020283,20212022,2,2021-11-23T01:00:00Z,US/Central,Bridgestone Arena,Anaheim Ducks,Nashville Predators,2.0,3.0,REG,6,3,1,8,1,1
+2021020284,20212022,2,2021-11-23T01:30:00Z,America/Winnipeg,Canada Life Centre,Pittsburgh Penguins,Winnipeg Jets,3.0,1.0,REG,5,2,3,4,4,2
+2021020285,20212022,2,2021-11-23T01:30:00Z,America/Denver,Ball Arena,Ottawa Senators,Colorado Avalanche,5.0,7.0,REG,7,2,1,2,7,1
+2021020286,20212022,2,2021-11-23T03:30:00Z,US/Pacific,SAP Center at San Jose,Carolina Hurricanes,San Jose Sharks,1.0,2.0,OT,4,5,1,8,2,0
+2021020287,20212022,2,2021-11-24T00:00:00Z,US/Eastern,Amalie Arena,Philadelphia Flyers,Tampa Bay Lightning,0.0,4.0,REG,7,1,2,4,4,2
+2021020288,20212022,2,2021-11-24T01:30:00Z,US/Central,American Airlines Center,Edmonton Oilers,Dallas Stars,1.0,4.0,REG,4,4,2,7,3,0
+2021020289,20212022,2,2021-11-24T02:00:00Z,US/Mountain,Scotiabank Saddledome,Chicago Blackhawks,Calgary Flames,2.0,5.0,REG,5,2,3,6,4,0
+2021020290,20212022,2,2021-11-25T00:00:00Z,America/New_York,KeyBank Center,Boston Bruins,Buffalo Sabres,5.0,1.0,REG,2,7,1,6,4,0
+2021020292,20212022,2,2021-11-25T00:00:00Z,US/Eastern,FLA Live Arena,Philadelphia Flyers,Florida Panthers,1.0,2.0,OT,5,2,3,4,4,2
+2021020293,20212022,2,2021-11-25T00:00:00Z,US/Eastern,Prudential Center,Minnesota Wild,New Jersey Devils,3.0,2.0,SO,4,3,3,6,3,1
+2021020295,20212022,2,2021-11-25T00:00:00Z,US/Eastern,PPG Paints Arena,Vancouver Canucks,Pittsburgh Penguins,1.0,4.0,REG,5,3,2,3,6,1
+2021020296,20212022,2,2021-11-25T00:00:00Z,US/Eastern,Capital One Arena,Montréal Canadiens,Washington Capitals,3.0,6.0,REG,6,2,2,3,5,2
+2021020297,20212022,2,2021-11-25T00:00:00Z,US/Eastern,Nationwide Arena,Winnipeg Jets,Columbus Blue Jackets,0.0,3.0,REG,6,4,0,5,3,2
+2021020291,20212022,2,2021-11-25T00:30:00Z,America/Detroit,Little Caesars Arena,St. Louis Blues,Detroit Red Wings,2.0,4.0,REG,4,5,1,4,5,1
+2021020294,20212022,2,2021-11-25T00:30:00Z,America/New_York,UBS Arena,New York Rangers,New York Islanders,4.0,1.0,REG,3,6,1,6,2,2
+2021020298,20212022,2,2021-11-25T01:00:00Z,US/Central,Bridgestone Arena,Vegas Golden Knights,Nashville Predators,5.0,2.0,REG,6,3,1,7,3,0
+2021020299,20212022,2,2021-11-25T02:00:00Z,America/Denver,Ball Arena,Anaheim Ducks,Colorado Avalanche,2.0,5.0,REG,7,2,1,8,2,0
+2021020300,20212022,2,2021-11-25T03:00:00Z,America/Phoenix,Gila River Arena,Edmonton Oilers,Arizona Coyotes,5.0,3.0,REG,4,5,1,6,4,0
+2021020301,20212022,2,2021-11-25T03:00:00Z,America/Los_Angeles,STAPLES Center,Toronto Maple Leafs,Los Angeles Kings,6.0,2.0,REG,6,2,2,8,2,0
+2021020303,20212022,2,2021-11-25T03:00:00Z,US/Pacific,Climate Pledge Arena,Carolina Hurricanes,Seattle Kraken,1.0,2.0,REG,2,8,0,7,2,1
+2021020302,20212022,2,2021-11-25T03:30:00Z,US/Pacific,SAP Center at San Jose,Ottawa Senators,San Jose Sharks,3.0,6.0,REG,4,5,1,2,7,1
+2021020304,20212022,2,2021-11-26T18:00:00Z,US/Eastern,TD Garden,New York Rangers,Boston Bruins,5.0,2.0,REG,7,3,0,6,2,2
+2021020308,20212022,2,2021-11-26T20:30:00Z,US/Eastern,Wells Fargo Center,Carolina Hurricanes,Philadelphia Flyers,6.0,3.0,REG,3,4,3,6,3,1
+2021020311,20212022,2,2021-11-26T20:30:00Z,America/Chicago,United Center,St. Louis Blues,Chicago Blackhawks,2.0,3.0,OT,6,4,0,3,6,1
+2021020314,20212022,2,2021-11-26T20:30:00Z,US/Central,Xcel Energy Center,Winnipeg Jets,Minnesota Wild,1.0,7.0,REG,6,3,1,4,4,2
+2021020315,20212022,2,2021-11-26T21:00:00Z,America/Los_Angeles,Honda Center,Ottawa Senators,Anaheim Ducks,0.0,4.0,REG,7,3,0,1,8,1
+2021020309,20212022,2,2021-11-26T22:00:00Z,US/Eastern,Capital One Arena,Florida Panthers,Washington Capitals,3.0,4.0,REG,7,2,1,6,2,2
+2021020312,20212022,2,2021-11-26T23:00:00Z,US/Central,Bridgestone Arena,New Jersey Devils,Nashville Predators,2.0,4.0,REG,5,4,1,4,3,3
+2021020305,20212022,2,2021-11-27T00:00:00Z,America/New_York,KeyBank Center,Montréal Canadiens,Buffalo Sabres,1.0,4.0,REG,2,7,1,2,6,2
+2021020306,20212022,2,2021-11-27T00:00:00Z,US/Eastern,Amalie Arena,Seattle Kraken,Tampa Bay Lightning,0.0,3.0,REG,7,1,2,3,7,0
+2021020310,20212022,2,2021-11-27T00:00:00Z,US/Eastern,Nationwide Arena,Vancouver Canucks,Columbus Blue Jackets,2.0,4.0,REG,7,3,0,2,7,1
+2021020307,20212022,2,2021-11-27T00:30:00Z,America/New_York,UBS Arena,Pittsburgh Penguins,New York Islanders,1.0,0.0,REG,2,7,1,5,3,2
+2021020313,20212022,2,2021-11-27T00:30:00Z,US/Central,American Airlines Center,Colorado Avalanche,Dallas Stars,1.0,3.0,REG,5,4,1,8,1,1
+2021020316,20212022,2,2021-11-27T03:30:00Z,US/Pacific,SAP Center at San Jose,Toronto Maple Leafs,San Jose Sharks,4.0,1.0,REG,4,5,1,8,2,0
+2021020318,20212022,2,2021-11-27T23:00:00Z,US/Eastern,FLA Live Arena,Seattle Kraken,Florida Panthers,4.0,1.0,REG,5,3,2,3,7,0
+2021020317,20212022,2,2021-11-28T00:00:00Z,America/Detroit,Little Caesars Arena,Buffalo Sabres,Detroit Red Wings,2.0,3.0,OT,5,4,1,3,6,1
+2021020319,20212022,2,2021-11-28T00:00:00Z,US/Eastern,PPG Paints Arena,Montréal Canadiens,Pittsburgh Penguins,6.0,3.0,REG,6,3,1,2,6,2
+2021020324,20212022,2,2021-11-28T00:00:00Z,US/Pacific,T-Mobile Arena,Edmonton Oilers,Vegas Golden Knights,3.0,2.0,REG,7,3,0,6,4,0
+2021020325,20212022,2,2021-11-28T00:00:00Z,America/Los_Angeles,STAPLES Center,Ottawa Senators,Los Angeles Kings,2.0,4.0,REG,5,3,2,1,8,1
+2021020320,20212022,2,2021-11-28T01:00:00Z,US/Central,Enterprise Center,Columbus Blue Jackets,St. Louis Blues,3.0,6.0,REG,3,5,2,7,3,0
+2021020323,20212022,2,2021-11-28T01:00:00Z,America/Phoenix,Gila River Arena,Dallas Stars,Arizona Coyotes,3.0,2.0,REG,4,5,1,6,3,1
+2021020321,20212022,2,2021-11-28T02:00:00Z,America/Denver,Ball Arena,Nashville Predators,Colorado Avalanche,2.0,6.0,REG,7,2,1,6,3,1
+2021020322,20212022,2,2021-11-28T03:00:00Z,US/Mountain,Scotiabank Saddledome,Winnipeg Jets,Calgary Flames,4.0,2.0,REG,6,2,2,3,5,2
+2021020329,20212022,2,2021-11-28T18:00:00Z,US/Eastern,PNC Arena,Washington Capitals,Carolina Hurricanes,4.0,2.0,REG,6,3,1,8,1,1
+2021020331,20212022,2,2021-11-28T19:00:00Z,US/Central,Xcel Energy Center,Tampa Bay Lightning,Minnesota Wild,2.0,4.0,REG,6,3,1,7,1,2
+2021020326,20212022,2,2021-11-29T00:00:00Z,US/Eastern,TD Garden,Vancouver Canucks,Boston Bruins,2.0,3.0,REG,6,4,0,2,7,1
+2021020327,20212022,2,2021-11-29T00:00:00Z,US/Eastern,Prudential Center,Philadelphia Flyers,New Jersey Devils,2.0,5.0,REG,4,3,3,3,5,2
+2021020330,20212022,2,2021-11-29T00:00:00Z,America/Chicago,United Center,San Jose Sharks,Chicago Blackhawks,2.0,0.0,REG,6,4,0,4,5,1
+2021020332,20212022,2,2021-11-29T01:00:00Z,America/Los_Angeles,Honda Center,Toronto Maple Leafs,Anaheim Ducks,5.0,1.0,REG,7,3,0,8,2,0
+2021020333,20212022,2,2021-11-30T00:00:00Z,America/New_York,KeyBank Center,Seattle Kraken,Buffalo Sabres,7.0,4.0,REG,3,6,1,3,7,0
+2021020334,20212022,2,2021-11-30T00:30:00Z,America/Montreal,Centre Bell,Vancouver Canucks,Montréal Canadiens,2.0,1.0,REG,3,5,2,1,8,1
+2021020335,20212022,2,2021-11-30T00:30:00Z,America/Winnipeg,Canada Life Centre,Arizona Coyotes,Winnipeg Jets,1.0,0.0,REG,4,4,2,4,5,1
+2021020336,20212022,2,2021-11-30T02:00:00Z,US/Mountain,Scotiabank Saddledome,Pittsburgh Penguins,Calgary Flames,1.0,2.0,SO,5,3,2,6,4,0
+2021020337,20212022,2,2021-12-01T00:00:00Z,US/Eastern,TD Garden,Detroit Red Wings,Boston Bruins,2.0,1.0,REG,6,4,0,5,4,1
+2021020338,20212022,2,2021-12-01T00:00:00Z,US/Eastern,FLA Live Arena,Washington Capitals,Florida Panthers,4.0,5.0,REG,4,4,2,8,1,1
+2021020339,20212022,2,2021-12-01T00:00:00Z,US/Eastern,Prudential Center,San Jose Sharks,New Jersey Devils,5.0,2.0,REG,5,3,2,5,5,0
+2021020341,20212022,2,2021-12-01T01:00:00Z,US/Central,Enterprise Center,Tampa Bay Lightning,St. Louis Blues,3.0,4.0,SO,3,5,2,7,2,1
+2021020342,20212022,2,2021-12-01T01:00:00Z,US/Central,Bridgestone Arena,Columbus Blue Jackets,Nashville Predators,0.0,6.0,REG,5,4,1,6,4,0
+2021020344,20212022,2,2021-12-01T01:00:00Z,US/Central,Xcel Energy Center,Arizona Coyotes,Minnesota Wild,2.0,5.0,REG,6,3,1,4,5,1
+2021020343,20212022,2,2021-12-01T01:30:00Z,US/Central,American Airlines Center,Carolina Hurricanes,Dallas Stars,1.0,4.0,REG,7,3,0,6,3,1
+2021020345,20212022,2,2021-12-01T03:30:00Z,America/Los_Angeles,STAPLES Center,Anaheim Ducks,Los Angeles Kings,5.0,4.0,SO,5,3,2,6,4,0
+2021020349,20212022,2,2021-12-02T00:00:00Z,America/New_York,Madison Square Garden,Philadelphia Flyers,New York Rangers,1.0,4.0,REG,7,2,1,2,6,2
+2021020346,20212022,2,2021-12-02T00:30:00Z,America/Toronto,Scotiabank Arena,Colorado Avalanche,Toronto Maple Leafs,3.0,8.0,REG,9,1,0,7,2,1
+2021020347,20212022,2,2021-12-02T00:30:00Z,US/Eastern,Canadian Tire Centre,Vancouver Canucks,Ottawa Senators,6.0,2.0,REG,1,9,0,2,8,0
+2021020348,20212022,2,2021-12-02T00:30:00Z,America/Detroit,Little Caesars Arena,Seattle Kraken,Detroit Red Wings,3.0,4.0,SO,5,4,1,4,6,0
+2021020350,20212022,2,2021-12-02T03:00:00Z,America/Edmonton,Rogers Place,Pittsburgh Penguins,Edmonton Oilers,2.0,5.0,REG,6,4,0,5,4,1
+2021020351,20212022,2,2021-12-02T03:00:00Z,America/Los_Angeles,Honda Center,Vegas Golden Knights,Anaheim Ducks,5.0,6.0,REG,6,4,0,6,4,0
+2021020352,20212022,2,2021-12-03T00:00:00Z,America/Montreal,Centre Bell,Colorado Avalanche,Montréal Canadiens,4.0,1.0,REG,3,6,1,7,3,0
+2021020353,20212022,2,2021-12-03T00:00:00Z,US/Eastern,Amalie Arena,St. Louis Blues,Tampa Bay Lightning,2.0,4.0,REG,6,2,2,4,5,1
+2021020354,20212022,2,2021-12-03T00:00:00Z,US/Eastern,FLA Live Arena,Buffalo Sabres,Florida Panthers,4.0,7.0,REG,5,3,2,3,6,1
+2021020356,20212022,2,2021-12-03T00:00:00Z,US/Eastern,Capital One Arena,Chicago Blackhawks,Washington Capitals,4.0,3.0,SO,7,2,1,6,4,0
+2021020357,20212022,2,2021-12-03T00:00:00Z,US/Eastern,PNC Arena,Ottawa Senators,Carolina Hurricanes,3.0,2.0,REG,5,4,1,1,9,0
+2021020355,20212022,2,2021-12-03T00:30:00Z,America/New_York,UBS Arena,San Jose Sharks,New York Islanders,2.0,1.0,OT,2,8,0,5,5,0
+2021020358,20212022,2,2021-12-03T01:00:00Z,US/Central,Bridgestone Arena,Boston Bruins,Nashville Predators,2.0,0.0,REG,6,4,0,6,4,0
+2021020360,20212022,2,2021-12-03T01:00:00Z,US/Central,Xcel Energy Center,New Jersey Devils,Minnesota Wild,2.0,5.0,REG,6,3,1,4,4,2
+2021020359,20212022,2,2021-12-03T01:30:00Z,US/Central,American Airlines Center,Columbus Blue Jackets,Dallas Stars,2.0,3.0,REG,7,3,0,5,5,0
+2021020361,20212022,2,2021-12-03T03:30:00Z,America/Los_Angeles,STAPLES Center,Calgary Flames,Los Angeles Kings,3.0,2.0,REG,4,3,3,6,2,2
+2021020362,20212022,2,2021-12-04T00:00:00Z,America/New_York,Madison Square Garden,San Jose Sharks,New York Rangers,0.0,1.0,REG,8,2,0,6,4,0
+2021020363,20212022,2,2021-12-04T01:00:00Z,America/Winnipeg,Canada Life Centre,New Jersey Devils,Winnipeg Jets,4.0,8.0,REG,4,5,1,3,5,2
+2021020364,20212022,2,2021-12-04T02:30:00Z,America/Phoenix,Gila River Arena,Vegas Golden Knights,Arizona Coyotes,7.0,1.0,REG,4,5,1,6,4,0
+2021020365,20212022,2,2021-12-04T03:00:00Z,America/Los_Angeles,Honda Center,Calgary Flames,Anaheim Ducks,4.0,3.0,SO,6,4,0,7,1,2
+2021020366,20212022,2,2021-12-04T03:00:00Z,US/Pacific,Climate Pledge Arena,Edmonton Oilers,Seattle Kraken,3.0,4.0,REG,4,5,1,7,3,0
+2021020370,20212022,2,2021-12-04T18:00:00Z,US/Eastern,FLA Live Arena,St. Louis Blues,Florida Panthers,3.0,4.0,SO,6,2,2,4,5,1
+2021020367,20212022,2,2021-12-05T00:00:00Z,US/Eastern,TD Garden,Tampa Bay Lightning,Boston Bruins,3.0,2.0,OT,6,4,0,7,2,1
+2021020368,20212022,2,2021-12-05T00:00:00Z,US/Eastern,Canadian Tire Centre,Colorado Avalanche,Ottawa Senators,5.0,6.0,OT,2,8,0,8,2,0
+2021020369,20212022,2,2021-12-05T00:00:00Z,America/Detroit,Little Caesars Arena,New York Islanders,Detroit Red Wings,3.0,4.0,OT,5,4,1,1,8,1
+2021020372,20212022,2,2021-12-05T00:00:00Z,US/Eastern,Capital One Arena,Columbus Blue Jackets,Washington Capitals,1.0,3.0,REG,6,2,2,5,5,0
+2021020374,20212022,2,2021-12-05T00:00:00Z,US/Central,Bridgestone Arena,Montréal Canadiens,Nashville Predators,3.0,4.0,OT,5,5,0,2,7,1
+2021020375,20212022,2,2021-12-05T00:00:00Z,US/Central,Xcel Energy Center,Toronto Maple Leafs,Minnesota Wild,3.0,4.0,SO,7,2,1,9,1,0
+2021020373,20212022,2,2021-12-05T00:30:00Z,US/Eastern,PNC Arena,Buffalo Sabres,Carolina Hurricanes,2.0,6.0,REG,5,4,1,2,7,1
+2021020371,20212022,2,2021-12-05T01:00:00Z,America/New_York,Madison Square Garden,Chicago Blackhawks,New York Rangers,2.0,3.0,REG,9,1,0,7,3,0
+2021020376,20212022,2,2021-12-05T03:00:00Z,America/Vancouver,Rogers Arena,Pittsburgh Penguins,Vancouver Canucks,4.0,1.0,REG,3,7,0,5,4,1
+2021020378,20212022,2,2021-12-05T23:00:00Z,US/Eastern,Wells Fargo Center,Tampa Bay Lightning,Philadelphia Flyers,7.0,1.0,REG,2,6,2,7,2,1
+2021020379,20212022,2,2021-12-05T23:00:00Z,US/Eastern,Nationwide Arena,San Jose Sharks,Columbus Blue Jackets,4.0,6.0,REG,5,5,0,6,4,0
+2021020377,20212022,2,2021-12-06T00:30:00Z,America/New_York,UBS Arena,Chicago Blackhawks,New York Islanders,3.0,2.0,SO,0,8,2,6,4,0
+2021020380,20212022,2,2021-12-06T01:00:00Z,America/Winnipeg,Canada Life Centre,Toronto Maple Leafs,Winnipeg Jets,3.0,6.0,REG,4,5,1,8,1,1
+2021020381,20212022,2,2021-12-06T01:00:00Z,America/Edmonton,Rogers Place,Los Angeles Kings,Edmonton Oilers,5.0,1.0,REG,6,4,0,3,4,3
+2021020382,20212022,2,2021-12-06T03:00:00Z,US/Pacific,T-Mobile Arena,Calgary Flames,Vegas Golden Knights,2.0,3.0,REG,6,4,0,8,1,1
+2021020234,20212022,2,2021-12-07T00:00:00Z,US/Eastern,Prudential Center,Ottawa Senators,New Jersey Devils,3.0,2.0,SO,2,6,2,3,7,0
+2021020383,20212022,2,2021-12-07T00:00:00Z,US/Eastern,Wells Fargo Center,Colorado Avalanche,Philadelphia Flyers,7.0,5.0,REG,1,7,2,7,2,1
+2021020384,20212022,2,2021-12-07T00:00:00Z,US/Eastern,Capital One Arena,Anaheim Ducks,Washington Capitals,3.0,4.0,SO,6,2,2,5,4,1
+2021020385,20212022,2,2021-12-07T01:30:00Z,US/Central,American Airlines Center,Arizona Coyotes,Dallas Stars,1.0,4.0,REG,8,2,0,4,5,1
+2021020386,20212022,2,2021-12-07T03:00:00Z,America/Vancouver,Rogers Arena,Los Angeles Kings,Vancouver Canucks,0.0,4.0,REG,3,7,0,3,4,3
+2021020387,20212022,2,2021-12-07T03:00:00Z,US/Pacific,Climate Pledge Arena,Pittsburgh Penguins,Seattle Kraken,6.0,1.0,REG,5,4,1,6,3,1
+2021020389,20212022,2,2021-12-08T00:00:00Z,America/Toronto,Scotiabank Arena,Columbus Blue Jackets,Toronto Maple Leafs,4.0,5.0,REG,7,2,1,5,5,0
+2021020390,20212022,2,2021-12-08T00:00:00Z,America/Montreal,Centre Bell,Tampa Bay Lightning,Montréal Canadiens,3.0,2.0,REG,2,7,1,7,2,1
+2021020391,20212022,2,2021-12-08T00:00:00Z,US/Eastern,Canadian Tire Centre,New York Islanders,Ottawa Senators,5.0,3.0,REG,4,6,0,0,7,3
+2021020392,20212022,2,2021-12-08T00:00:00Z,America/Detroit,Little Caesars Arena,Nashville Predators,Detroit Red Wings,5.0,2.0,REG,6,3,1,5,5,0
+2021020388,20212022,2,2021-12-08T00:30:00Z,America/New_York,KeyBank Center,Anaheim Ducks,Buffalo Sabres,2.0,0.0,REG,2,7,1,4,4,2
+2021020394,20212022,2,2021-12-08T01:00:00Z,US/Central,Enterprise Center,Florida Panthers,St. Louis Blues,3.0,4.0,OT,4,4,2,7,2,1
+2021020395,20212022,2,2021-12-08T01:00:00Z,America/Winnipeg,Canada Life Centre,Carolina Hurricanes,Winnipeg Jets,4.0,2.0,REG,4,5,1,5,4,1
+2021020393,20212022,2,2021-12-08T01:30:00Z,America/Chicago,United Center,New York Rangers,Chicago Blackhawks,6.0,2.0,REG,6,4,0,9,1,0
+2021020396,20212022,2,2021-12-08T02:00:00Z,America/Edmonton,Rogers Place,Minnesota Wild,Edmonton Oilers,4.0,1.0,REG,6,4,0,7,2,1
+2021020397,20212022,2,2021-12-08T03:30:00Z,US/Pacific,SAP Center at San Jose,Calgary Flames,San Jose Sharks,3.0,5.0,REG,5,5,0,7,2,1
+2021020398,20212022,2,2021-12-09T00:00:00Z,US/Eastern,Prudential Center,Philadelphia Flyers,New Jersey Devils,0.0,3.0,REG,2,5,3,1,7,2
+2021020399,20212022,2,2021-12-09T00:00:00Z,America/New_York,Madison Square Garden,Colorado Avalanche,New York Rangers,7.0,3.0,REG,9,1,0,7,2,1
+2021020400,20212022,2,2021-12-09T02:00:00Z,America/Vancouver,Rogers Arena,Boston Bruins,Vancouver Canucks,1.0,2.0,SO,4,6,0,6,3,1
+2021020401,20212022,2,2021-12-09T03:00:00Z,US/Pacific,T-Mobile Arena,Dallas Stars,Vegas Golden Knights,4.0,5.0,REG,6,4,0,9,1,0
+2021020402,20212022,2,2021-12-10T00:00:00Z,America/Toronto,Scotiabank Arena,Tampa Bay Lightning,Toronto Maple Leafs,5.0,3.0,REG,7,2,1,7,2,1
+2021020403,20212022,2,2021-12-10T00:00:00Z,America/Montreal,Centre Bell,Chicago Blackhawks,Montréal Canadiens,2.0,0.0,REG,2,7,1,5,5,0
+2021020405,20212022,2,2021-12-10T00:00:00Z,US/Eastern,Nationwide Arena,Anaheim Ducks,Columbus Blue Jackets,2.0,1.0,SO,4,6,0,4,4,2
+2021020404,20212022,2,2021-12-10T00:30:00Z,America/New_York,UBS Arena,Nashville Predators,New York Islanders,4.0,3.0,REG,1,6,3,5,5,0
+2021020406,20212022,2,2021-12-10T01:00:00Z,US/Central,Enterprise Center,Detroit Red Wings,St. Louis Blues,2.0,6.0,REG,5,3,2,5,4,1
+2021020407,20212022,2,2021-12-10T02:00:00Z,US/Mountain,Scotiabank Saddledome,Carolina Hurricanes,Calgary Flames,2.0,1.0,OT,7,3,0,5,4,1
+2021020408,20212022,2,2021-12-10T02:00:00Z,America/Edmonton,Rogers Place,Boston Bruins,Edmonton Oilers,3.0,2.0,REG,5,5,0,5,3,2
+2021020411,20212022,2,2021-12-10T03:00:00Z,US/Pacific,Climate Pledge Arena,Winnipeg Jets,Seattle Kraken,3.0,0.0,REG,5,4,1,3,6,1
+2021020409,20212022,2,2021-12-10T03:30:00Z,America/Los_Angeles,STAPLES Center,Dallas Stars,Los Angeles Kings,0.0,4.0,REG,2,5,3,8,2,0
+2021020410,20212022,2,2021-12-10T03:30:00Z,US/Pacific,SAP Center at San Jose,Minnesota Wild,San Jose Sharks,5.0,2.0,REG,6,4,0,8,1,1
+2021020412,20212022,2,2021-12-11T00:00:00Z,America/New_York,KeyBank Center,New York Rangers,Buffalo Sabres,2.0,1.0,REG,1,8,1,8,2,0
+2021020414,20212022,2,2021-12-11T00:00:00Z,US/Eastern,Capital One Arena,Pittsburgh Penguins,Washington Capitals,4.0,2.0,REG,7,2,1,7,2,1
+2021020413,20212022,2,2021-12-11T00:30:00Z,US/Eastern,Prudential Center,Nashville Predators,New Jersey Devils,3.0,2.0,REG,3,5,2,6,4,0
+2021020415,20212022,2,2021-12-11T02:00:00Z,America/Denver,Ball Arena,Detroit Red Wings,Colorado Avalanche,3.0,7.0,REG,7,2,1,5,4,1
+2021020416,20212022,2,2021-12-11T02:00:00Z,America/Phoenix,Gila River Arena,Florida Panthers,Arizona Coyotes,3.0,1.0,REG,4,5,1,7,2,1
+2021020417,20212022,2,2021-12-11T03:00:00Z,America/Vancouver,Rogers Arena,Winnipeg Jets,Vancouver Canucks,3.0,4.0,SO,5,5,0,4,6,0
+2021020418,20212022,2,2021-12-11T03:00:00Z,US/Pacific,T-Mobile Arena,Philadelphia Flyers,Vegas Golden Knights,4.0,3.0,REG,6,4,0,0,8,2
+2021020421,20212022,2,2021-12-11T18:00:00Z,US/Eastern,Canadian Tire Centre,Tampa Bay Lightning,Ottawa Senators,0.0,4.0,REG,3,7,0,8,1,1
+2021020419,20212022,2,2021-12-12T00:00:00Z,America/New_York,KeyBank Center,Washington Capitals,Buffalo Sabres,3.0,2.0,SO,1,8,1,6,3,1
+2021020420,20212022,2,2021-12-12T00:00:00Z,America/Toronto,Scotiabank Arena,Chicago Blackhawks,Toronto Maple Leafs,4.0,5.0,REG,6,3,1,5,5,0
+2021020423,20212022,2,2021-12-12T00:00:00Z,US/Eastern,PPG Paints Arena,Anaheim Ducks,Pittsburgh Penguins,0.0,1.0,REG,7,2,1,5,3,2
+2021020424,20212022,2,2021-12-12T00:00:00Z,US/Central,Enterprise Center,Montréal Canadiens,St. Louis Blues,1.0,4.0,REG,5,3,2,2,7,1
+2021020422,20212022,2,2021-12-12T00:30:00Z,America/New_York,UBS Arena,New Jersey Devils,New York Islanders,2.0,4.0,REG,1,6,3,3,5,2
+2021020427,20212022,2,2021-12-12T02:00:00Z,America/Phoenix,Gila River Arena,Philadelphia Flyers,Arizona Coyotes,5.0,3.0,REG,3,6,1,1,8,1
+2021020425,20212022,2,2021-12-12T03:00:00Z,US/Mountain,Scotiabank Saddledome,Boston Bruins,Calgary Flames,4.0,2.0,REG,6,3,1,5,3,2
+2021020426,20212022,2,2021-12-12T03:00:00Z,America/Edmonton,Rogers Place,Carolina Hurricanes,Edmonton Oilers,3.0,1.0,REG,5,5,0,5,4,1
+2021020430,20212022,2,2021-12-12T03:00:00Z,US/Pacific,Climate Pledge Arena,Columbus Blue Jackets,Seattle Kraken,5.0,4.0,OT,5,4,1,4,5,1
+2021020428,20212022,2,2021-12-12T03:30:00Z,America/Los_Angeles,STAPLES Center,Minnesota Wild,Los Angeles Kings,1.0,2.0,REG,3,5,2,8,1,1
+2021020429,20212022,2,2021-12-12T03:30:00Z,US/Pacific,SAP Center at San Jose,Dallas Stars,San Jose Sharks,1.0,2.0,REG,6,4,0,7,3,0
+2021020431,20212022,2,2021-12-13T00:00:00Z,America/New_York,Madison Square Garden,Nashville Predators,New York Rangers,1.0,0.0,REG,8,2,0,7,3,0
+2021020432,20212022,2,2021-12-13T00:00:00Z,US/Central,Enterprise Center,Anaheim Ducks,St. Louis Blues,3.0,2.0,OT,6,2,2,5,3,2
+2021020433,20212022,2,2021-12-13T01:00:00Z,America/Denver,Ball Arena,Florida Panthers,Colorado Avalanche,2.0,3.0,REG,7,2,1,7,2,1
+2021020435,20212022,2,2021-12-13T02:00:00Z,US/Pacific,T-Mobile Arena,Minnesota Wild,Vegas Golden Knights,4.0,6.0,REG,6,4,0,8,1,1
+2021020434,20212022,2,2021-12-13T03:00:00Z,America/Vancouver,Rogers Arena,Carolina Hurricanes,Vancouver Canucks,1.0,2.0,REG,5,5,0,5,4,1
+2021020437,20212022,2,2021-12-15T00:00:00Z,US/Eastern,TD Garden,Vegas Golden Knights,Boston Bruins,4.0,1.0,REG,5,3,2,6,4,0
+2021020439,20212022,2,2021-12-15T00:00:00Z,US/Eastern,Amalie Arena,Los Angeles Kings,Tampa Bay Lightning,2.0,3.0,OT,7,2,1,4,4,2
+2021020440,20212022,2,2021-12-15T00:00:00Z,US/Eastern,FLA Live Arena,Ottawa Senators,Florida Panthers,8.0,2.0,REG,6,3,1,4,6,0
+2021020441,20212022,2,2021-12-15T00:00:00Z,US/Eastern,Wells Fargo Center,New Jersey Devils,Philadelphia Flyers,1.0,6.0,REG,2,7,1,2,6,2
+2021020442,20212022,2,2021-12-15T00:00:00Z,US/Eastern,PPG Paints Arena,Montréal Canadiens,Pittsburgh Penguins,2.0,5.0,REG,7,2,1,2,7,1
+2021020438,20212022,2,2021-12-15T00:30:00Z,America/Detroit,Little Caesars Arena,New York Islanders,Detroit Red Wings,1.0,2.0,REG,5,4,1,2,5,3
+2021020446,20212022,2,2021-12-15T01:00:00Z,America/Winnipeg,Canada Life Centre,Buffalo Sabres,Winnipeg Jets,4.0,2.0,REG,4,5,1,1,7,2
+2021020444,20212022,2,2021-12-15T01:30:00Z,US/Central,American Airlines Center,St. Louis Blues,Dallas Stars,4.0,1.0,REG,7,3,0,5,2,3
+2021020447,20212022,2,2021-12-15T02:00:00Z,America/Denver,Ball Arena,New York Rangers,Colorado Avalanche,2.0,4.0,REG,7,2,1,8,2,0
+2021020448,20212022,2,2021-12-15T02:00:00Z,America/Edmonton,Rogers Place,Toronto Maple Leafs,Edmonton Oilers,5.0,1.0,REG,4,6,0,7,2,1
+2021020449,20212022,2,2021-12-15T03:00:00Z,America/Vancouver,Rogers Arena,Columbus Blue Jackets,Vancouver Canucks,3.0,4.0,REG,6,4,0,4,5,1
+2021020450,20212022,2,2021-12-15T03:30:00Z,US/Pacific,SAP Center at San Jose,Seattle Kraken,San Jose Sharks,3.0,1.0,REG,6,4,0,5,3,2
+2021020451,20212022,2,2021-12-16T01:00:00Z,America/Chicago,United Center,Washington Capitals,Chicago Blackhawks,4.0,5.0,OT,5,5,0,6,3,1
+2021020452,20212022,2,2021-12-16T02:00:00Z,America/Phoenix,Gila River Arena,New York Rangers,Arizona Coyotes,3.0,2.0,REG,3,7,0,7,3,0
+2021020453,20212022,2,2021-12-16T03:00:00Z,America/Los_Angeles,Honda Center,Seattle Kraken,Anaheim Ducks,1.0,4.0,REG,6,2,2,5,3,2
+2021020454,20212022,2,2021-12-17T00:00:00Z,America/Montreal,Centre Bell,Philadelphia Flyers,Montréal Canadiens,2.0,3.0,SO,1,8,1,3,6,1
+2021020455,20212022,2,2021-12-17T00:00:00Z,US/Eastern,Amalie Arena,Ottawa Senators,Tampa Bay Lightning,1.0,2.0,REG,7,2,1,5,5,0
+2021020456,20212022,2,2021-12-17T00:00:00Z,US/Eastern,FLA Live Arena,Los Angeles Kings,Florida Panthers,4.0,1.0,REG,5,4,1,4,3,3
+2021020457,20212022,2,2021-12-17T00:00:00Z,US/Eastern,Prudential Center,Vegas Golden Knights,New Jersey Devils,5.0,3.0,REG,2,7,1,6,4,0
+2021020459,20212022,2,2021-12-17T00:00:00Z,US/Eastern,PNC Arena,Detroit Red Wings,Carolina Hurricanes,3.0,5.0,REG,5,5,0,6,3,1
+2021020458,20212022,2,2021-12-17T00:30:00Z,America/New_York,UBS Arena,Boston Bruins,New York Islanders,1.0,3.0,REG,2,5,3,5,3,2
+2021020460,20212022,2,2021-12-17T01:00:00Z,US/Central,Bridgestone Arena,Colorado Avalanche,Nashville Predators,2.0,5.0,REG,7,3,0,7,2,1
+2021020461,20212022,2,2021-12-17T01:00:00Z,US/Central,Xcel Energy Center,Buffalo Sabres,Minnesota Wild,3.0,2.0,SO,8,2,0,2,6,2
+2021020463,20212022,2,2021-12-17T02:00:00Z,America/Edmonton,Rogers Place,Columbus Blue Jackets,Edmonton Oilers,2.0,5.0,REG,3,7,0,3,6,1
+2021020464,20212022,2,2021-12-17T03:30:00Z,US/Pacific,SAP Center at San Jose,Vancouver Canucks,San Jose Sharks,5.0,2.0,REG,5,5,0,7,3,0
+2021020465,20212022,2,2021-12-18T00:00:00Z,America/New_York,Madison Square Garden,Vegas Golden Knights,New York Rangers,3.0,2.0,SO,7,3,0,7,3,0
+2021020466,20212022,2,2021-12-18T00:00:00Z,US/Eastern,PPG Paints Arena,Buffalo Sabres,Pittsburgh Penguins,2.0,3.0,OT,7,2,1,3,5,2
+2021020468,20212022,2,2021-12-18T01:00:00Z,US/Central,Enterprise Center,Dallas Stars,St. Louis Blues,1.0,4.0,REG,6,1,3,6,4,0
+2021020469,20212022,2,2021-12-18T01:00:00Z,America/Winnipeg,Canada Life Centre,Washington Capitals,Winnipeg Jets,5.0,2.0,REG,4,5,1,6,2,2
+2021020467,20212022,2,2021-12-18T01:30:00Z,America/Chicago,United Center,Nashville Predators,Chicago Blackhawks,3.0,2.0,OT,5,5,0,8,2,0
+2021020470,20212022,2,2021-12-18T03:00:00Z,America/Los_Angeles,Honda Center,Arizona Coyotes,Anaheim Ducks,6.0,5.0,OT,6,2,2,2,8,0
+2021020473,20212022,2,2021-12-19T00:00:00Z,US/Eastern,Wells Fargo Center,Ottawa Senators,Philadelphia Flyers,3.0,4.0,OT,3,6,1,5,5,0
+2021020474,20212022,2,2021-12-19T00:00:00Z,US/Eastern,PNC Arena,Los Angeles Kings,Carolina Hurricanes,1.0,5.0,REG,6,4,0,5,3,2
+2021020472,20212022,2,2021-12-19T01:00:00Z,America/Detroit,Little Caesars Arena,New Jersey Devils,Detroit Red Wings,2.0,5.0,REG,6,4,0,2,7,1
+2021020475,20212022,2,2021-12-19T01:00:00Z,US/Central,American Airlines Center,Chicago Blackhawks,Dallas Stars,3.0,4.0,OT,5,5,0,5,4,1
+2021020480,20212022,2,2021-12-19T03:00:00Z,US/Pacific,Climate Pledge Arena,Edmonton Oilers,Seattle Kraken,5.0,3.0,REG,4,4,2,4,6,0
+2021020483,20212022,2,2021-12-19T19:00:00Z,America/New_York,UBS Arena,Vegas Golden Knights,New York Islanders,4.0,3.0,SO,3,4,3,7,3,0
+2021020486,20212022,2,2021-12-19T20:00:00Z,America/Winnipeg,Canada Life Centre,St. Louis Blues,Winnipeg Jets,2.0,4.0,REG,4,5,1,7,1,2
+2021020482,20212022,2,2021-12-20T00:00:00Z,US/Eastern,Prudential Center,Pittsburgh Penguins,New Jersey Devils,3.0,2.0,REG,1,8,1,7,2,1
+2021020484,20212022,2,2021-12-20T00:00:00Z,US/Eastern,Capital One Arena,Los Angeles Kings,Washington Capitals,3.0,2.0,REG,6,2,2,5,3,2
+2021020492,20212022,2,2021-12-21T01:30:00Z,US/Central,American Airlines Center,Minnesota Wild,Dallas Stars,4.0,7.0,REG,5,5,0,7,2,1
+2021020501,20212022,2,2021-12-22T03:00:00Z,US/Pacific,T-Mobile Arena,Tampa Bay Lightning,Vegas Golden Knights,4.0,3.0,REG,8,2,0,7,2,1
+2021020537,20212022,2,2021-12-29T00:00:00Z,US/Eastern,Amalie Arena,Montréal Canadiens,Tampa Bay Lightning,4.0,5.0,OT,8,1,1,2,7,1
+2021020539,20212022,2,2021-12-29T03:30:00Z,America/Los_Angeles,Crypto.com Arena,Vegas Golden Knights,Los Angeles Kings,6.0,3.0,REG,5,3,2,8,2,0
+2021020540,20212022,2,2021-12-29T03:30:00Z,US/Pacific,SAP Center at San Jose,Arizona Coyotes,San Jose Sharks,7.0,8.0,SO,5,5,0,2,8,0
+2021020541,20212022,2,2021-12-30T00:00:00Z,America/New_York,KeyBank Center,New Jersey Devils,Buffalo Sabres,4.0,3.0,REG,2,5,3,1,8,1
+2021020544,20212022,2,2021-12-30T00:00:00Z,US/Eastern,FLA Live Arena,New York Rangers,Florida Panthers,3.0,4.0,REG,4,5,1,6,3,1
+2021020546,20212022,2,2021-12-30T00:00:00Z,US/Eastern,Capital One Arena,Nashville Predators,Washington Capitals,3.0,5.0,REG,5,3,2,8,2,0
+2021020547,20212022,2,2021-12-30T01:30:00Z,US/Central,Enterprise Center,Edmonton Oilers,St. Louis Blues,2.0,4.0,REG,6,2,2,4,6,0
+2021020551,20212022,2,2021-12-30T03:00:00Z,US/Pacific,Climate Pledge Arena,Philadelphia Flyers,Seattle Kraken,3.0,2.0,OT,4,4,2,4,5,1
+2021020550,20212022,2,2021-12-30T03:30:00Z,America/Los_Angeles,Honda Center,Vancouver Canucks,Anaheim Ducks,2.0,1.0,OT,6,1,3,8,2,0
+2021020552,20212022,2,2021-12-31T00:00:00Z,US/Eastern,FLA Live Arena,Tampa Bay Lightning,Florida Panthers,3.0,9.0,REG,5,4,1,9,1,0
+2021020554,20212022,2,2021-12-31T00:00:00Z,US/Eastern,PNC Arena,Montréal Canadiens,Carolina Hurricanes,0.0,4.0,REG,6,4,0,2,6,2
+2021020555,20212022,2,2021-12-31T00:00:00Z,US/Eastern,Nationwide Arena,Nashville Predators,Columbus Blue Jackets,3.0,4.0,SO,2,7,1,8,2,0
+2021020553,20212022,2,2021-12-31T00:30:00Z,America/New_York,UBS Arena,Buffalo Sabres,New York Islanders,1.0,4.0,REG,3,3,4,2,6,2
+2021020558,20212022,2,2021-12-31T03:00:00Z,US/Pacific,Climate Pledge Arena,Calgary Flames,Seattle Kraken,6.0,4.0,REG,3,4,3,5,4,1
+2021020556,20212022,2,2021-12-31T03:30:00Z,America/Los_Angeles,Crypto.com Arena,Vancouver Canucks,Los Angeles Kings,1.0,2.0,SO,5,4,1,9,1,0
+2021020557,20212022,2,2021-12-31T03:30:00Z,US/Pacific,SAP Center at San Jose,Philadelphia Flyers,San Jose Sharks,2.0,3.0,OT,5,5,0,5,4,1
+2021020562,20212022,2,2021-12-31T18:00:00Z,US/Eastern,Prudential Center,Edmonton Oilers,New Jersey Devils,5.0,6.0,OT,2,7,1,3,7,0
+2021020565,20212022,2,2021-12-31T20:00:00Z,US/Pacific,T-Mobile Arena,Anaheim Ducks,Vegas Golden Knights,1.0,3.0,REG,8,2,0,5,1,4
+2021020561,20212022,2,2022-01-01T00:00:00Z,US/Eastern,Amalie Arena,New York Rangers,Tampa Bay Lightning,4.0,3.0,SO,8,2,0,5,4,1
+2021020560,20212022,2,2022-01-01T00:30:00Z,America/Detroit,Little Caesars Arena,Washington Capitals,Detroit Red Wings,3.0,1.0,REG,6,4,0,5,3,2
+2021020566,20212022,2,2022-01-01T18:00:00Z,US/Eastern,TD Garden,Buffalo Sabres,Boston Bruins,3.0,4.0,OT,4,4,2,2,6,2
+2021020568,20212022,2,2022-01-01T18:00:00Z,US/Eastern,FLA Live Arena,Montréal Canadiens,Florida Panthers,2.0,5.0,REG,6,3,1,1,7,2
+2021020570,20212022,2,2022-01-01T18:00:00Z,US/Eastern,Nationwide Arena,Carolina Hurricanes,Columbus Blue Jackets,7.0,4.0,REG,3,6,1,7,3,0
+2021020569,20212022,2,2022-01-01T19:00:00Z,America/New_York,UBS Arena,Edmonton Oilers,New York Islanders,2.0,3.0,OT,4,2,4,2,7,1
+2021020571,20212022,2,2022-01-01T19:00:00Z,US/Central,Bridgestone Arena,Chicago Blackhawks,Nashville Predators,1.0,6.0,REG,7,2,1,4,4,2
+2021020567,20212022,2,2022-01-02T00:00:00Z,America/Toronto,Scotiabank Arena,Ottawa Senators,Toronto Maple Leafs,0.0,6.0,REG,7,2,1,5,4,1
+2021020572,20212022,2,2022-01-02T00:00:00Z,US/Central,Target Field,St. Louis Blues,Minnesota Wild,6.0,4.0,REG,6,3,1,6,2,2
+2021020574,20212022,2,2022-01-02T03:00:00Z,US/Pacific,Climate Pledge Arena,Vancouver Canucks,Seattle Kraken,5.0,2.0,REG,2,5,3,8,1,1
+2021020573,20212022,2,2022-01-02T03:30:00Z,America/Los_Angeles,Crypto.com Arena,Philadelphia Flyers,Los Angeles Kings,3.0,6.0,REG,6,3,1,5,3,2
+2021020576,20212022,2,2022-01-02T17:30:00Z,America/New_York,Madison Square Garden,Tampa Bay Lightning,New York Rangers,0.0,4.0,REG,5,4,1,7,2,1
+2021020575,20212022,2,2022-01-02T18:00:00Z,America/Detroit,Little Caesars Arena,Boston Bruins,Detroit Red Wings,5.0,1.0,REG,5,5,0,5,3,2
+2021020577,20212022,2,2022-01-02T18:00:00Z,US/Eastern,PPG Paints Arena,San Jose Sharks,Pittsburgh Penguins,5.0,8.0,REG,7,2,1,5,5,0
+2021020578,20212022,2,2022-01-02T20:00:00Z,US/Eastern,Capital One Arena,New Jersey Devils,Washington Capitals,4.0,3.0,OT,6,2,2,3,6,1
+2021020580,20212022,2,2022-01-02T20:00:00Z,America/Denver,Ball Arena,Anaheim Ducks,Colorado Avalanche,2.0,4.0,REG,7,2,1,4,2,4
+2021020582,20212022,2,2022-01-02T21:00:00Z,US/Pacific,T-Mobile Arena,Winnipeg Jets,Vegas Golden Knights,5.0,4.0,OT,8,2,0,5,4,1
+2021020579,20212022,2,2022-01-03T00:00:00Z,America/Chicago,United Center,Calgary Flames,Chicago Blackhawks,5.0,1.0,REG,4,4,2,5,4,1
+2021020585,20212022,2,2022-01-04T00:00:00Z,America/New_York,Madison Square Garden,Edmonton Oilers,New York Rangers,1.0,4.0,REG,5,4,1,2,6,2
+2021020586,20212022,2,2022-01-05T00:00:00Z,US/Eastern,TD Garden,New Jersey Devils,Boston Bruins,3.0,5.0,REG,5,3,2,4,6,0
+2021020589,20212022,2,2022-01-05T00:00:00Z,US/Eastern,FLA Live Arena,Calgary Flames,Florida Panthers,2.0,6.0,REG,6,3,1,5,4,1
+2021020590,20212022,2,2022-01-05T00:00:00Z,US/Eastern,Nationwide Arena,Tampa Bay Lightning,Columbus Blue Jackets,7.0,2.0,REG,3,6,1,6,3,1
+2021020588,20212022,2,2022-01-05T00:30:00Z,America/Detroit,Little Caesars Arena,San Jose Sharks,Detroit Red Wings,2.0,6.0,REG,4,6,0,4,6,0
+2021020591,20212022,2,2022-01-05T01:30:00Z,America/Chicago,United Center,Colorado Avalanche,Chicago Blackhawks,4.0,3.0,OT,3,5,2,7,2,1
+2021020592,20212022,2,2022-01-05T02:00:00Z,America/Phoenix,Gila River Arena,Winnipeg Jets,Arizona Coyotes,3.0,1.0,REG,2,7,1,5,4,1
+2021020593,20212022,2,2022-01-05T03:00:00Z,US/Pacific,T-Mobile Arena,Nashville Predators,Vegas Golden Knights,3.0,2.0,REG,7,2,1,8,1,1
+2021020594,20212022,2,2022-01-05T03:00:00Z,America/Los_Angeles,Honda Center,Philadelphia Flyers,Anaheim Ducks,1.0,4.0,REG,4,3,3,5,3,2
+2021020596,20212022,2,2022-01-06T00:00:00Z,America/Toronto,Scotiabank Arena,Edmonton Oilers,Toronto Maple Leafs,2.0,4.0,REG,7,2,1,2,6,2
+2021020597,20212022,2,2022-01-06T00:30:00Z,US/Eastern,PPG Paints Arena,St. Louis Blues,Pittsburgh Penguins,3.0,5.0,REG,8,1,1,7,1,2
+2021020599,20212022,2,2022-01-07T00:00:00Z,US/Eastern,TD Garden,Minnesota Wild,Boston Bruins,3.0,2.0,REG,6,2,2,5,4,1
+2021020600,20212022,2,2022-01-07T00:00:00Z,America/New_York,KeyBank Center,San Jose Sharks,Buffalo Sabres,3.0,2.0,REG,2,5,3,4,6,0
+2021020602,20212022,2,2022-01-07T00:00:00Z,US/Eastern,Amalie Arena,Calgary Flames,Tampa Bay Lightning,1.0,4.0,REG,6,3,1,5,4,1
+2021020603,20212022,2,2022-01-07T00:00:00Z,US/Eastern,Prudential Center,Columbus Blue Jackets,New Jersey Devils,1.0,3.0,REG,3,7,0,3,6,1
+2021020604,20212022,2,2022-01-07T00:00:00Z,US/Eastern,Wells Fargo Center,Pittsburgh Penguins,Philadelphia Flyers,6.0,2.0,REG,5,3,2,9,1,0
+2021020605,20212022,2,2022-01-07T01:30:00Z,US/Central,American Airlines Center,Florida Panthers,Dallas Stars,5.0,6.0,SO,5,5,0,6,3,1
+2021020606,20212022,2,2022-01-07T02:00:00Z,America/Denver,Ball Arena,Winnipeg Jets,Colorado Avalanche,1.0,7.0,REG,8,1,1,6,3,1
+2021020607,20212022,2,2022-01-07T02:00:00Z,America/Phoenix,Gila River Arena,Chicago Blackhawks,Arizona Coyotes,4.0,6.0,REG,2,7,1,3,4,3
+2021020608,20212022,2,2022-01-07T03:00:00Z,US/Pacific,T-Mobile Arena,New York Rangers,Vegas Golden Knights,1.0,5.0,REG,7,2,1,5,4,1
+2021020610,20212022,2,2022-01-07T03:30:00Z,America/Los_Angeles,Crypto.com Arena,Nashville Predators,Los Angeles Kings,4.0,2.0,REG,6,3,1,8,1,1
+2021020612,20212022,2,2022-01-08T00:00:00Z,US/Eastern,PNC Arena,Calgary Flames,Carolina Hurricanes,3.0,6.0,REG,8,2,0,4,5,1
+2021020613,20212022,2,2022-01-08T01:00:00Z,US/Central,Enterprise Center,Washington Capitals,St. Louis Blues,1.0,5.0,REG,7,2,1,6,2,2
+2021020619,20212022,2,2022-01-08T19:00:00Z,US/Central,American Airlines Center,Pittsburgh Penguins,Dallas Stars,2.0,3.0,REG,5,5,0,10,0,0
+2021020615,20212022,2,2022-01-09T00:00:00Z,US/Eastern,Amalie Arena,Boston Bruins,Tampa Bay Lightning,5.0,2.0,REG,6,3,1,5,3,2
+2021020616,20212022,2,2022-01-09T00:00:00Z,US/Eastern,Wells Fargo Center,San Jose Sharks,Philadelphia Flyers,3.0,2.0,OT,5,3,2,5,5,0
+2021020617,20212022,2,2022-01-09T00:00:00Z,US/Eastern,PNC Arena,Florida Panthers,Carolina Hurricanes,4.0,3.0,OT,9,1,0,5,3,2
+2021020618,20212022,2,2022-01-09T00:00:00Z,US/Eastern,Nationwide Arena,New Jersey Devils,Columbus Blue Jackets,3.0,4.0,REG,3,6,1,4,6,0
+2021020622,20212022,2,2022-01-09T00:00:00Z,America/Denver,Ball Arena,Toronto Maple Leafs,Colorado Avalanche,4.0,5.0,OT,8,1,1,7,2,1
+2021020620,20212022,2,2022-01-09T01:00:00Z,US/Central,Xcel Energy Center,Washington Capitals,Minnesota Wild,2.0,3.0,SO,5,4,1,5,3,2
+2021020624,20212022,2,2022-01-09T01:00:00Z,America/Phoenix,Gila River Arena,Nashville Predators,Arizona Coyotes,4.0,2.0,REG,2,7,1,8,1,1
+2021020626,20212022,2,2022-01-09T03:00:00Z,US/Pacific,T-Mobile Arena,Chicago Blackhawks,Vegas Golden Knights,2.0,1.0,REG,7,2,1,2,5,3
+2021020627,20212022,2,2022-01-09T03:00:00Z,America/Los_Angeles,Honda Center,New York Rangers,Anaheim Ducks,4.0,1.0,REG,5,3,2,5,4,1
+2021020628,20212022,2,2022-01-09T03:30:00Z,America/Los_Angeles,Crypto.com Arena,Detroit Red Wings,Los Angeles Kings,0.0,4.0,REG,6,3,1,4,6,0
+2021020629,20212022,2,2022-01-09T19:00:00Z,US/Central,Enterprise Center,Dallas Stars,St. Louis Blues,1.0,2.0,REG,7,2,1,5,5,0
+2021020609,20212022,2,2022-01-10T01:00:00Z,America/Los_Angeles,Honda Center,Detroit Red Wings,Anaheim Ducks,3.0,4.0,SO,4,4,2,3,7,0
+2021020632,20212022,2,2022-01-11T00:00:00Z,US/Eastern,Capital One Arena,Boston Bruins,Washington Capitals,7.0,3.0,REG,4,3,3,6,3,1
+2021020634,20212022,2,2022-01-11T02:00:00Z,America/Denver,Ball Arena,Seattle Kraken,Colorado Avalanche,3.0,4.0,REG,9,1,0,2,6,2
+2021020636,20212022,2,2022-01-11T03:30:00Z,America/Los_Angeles,Crypto.com Arena,New York Rangers,Los Angeles Kings,1.0,3.0,REG,6,3,1,5,4,1
+2021020637,20212022,2,2022-01-12T00:00:00Z,America/New_York,KeyBank Center,Tampa Bay Lightning,Buffalo Sabres,6.0,1.0,REG,2,5,3,6,3,1
+2021020638,20212022,2,2022-01-12T00:00:00Z,US/Eastern,FLA Live Arena,Vancouver Canucks,Florida Panthers,2.0,5.0,REG,6,3,1,8,1,1
+2021020640,20212022,2,2022-01-12T00:00:00Z,US/Eastern,Nationwide Arena,Chicago Blackhawks,Columbus Blue Jackets,4.0,2.0,REG,3,6,1,3,4,3
+2021020641,20212022,2,2022-01-12T01:00:00Z,US/Central,Bridgestone Arena,Colorado Avalanche,Nashville Predators,4.0,5.0,OT,8,1,1,9,1,0
+2021020643,20212022,2,2022-01-12T03:00:00Z,US/Pacific,T-Mobile Arena,Toronto Maple Leafs,Vegas Golden Knights,4.0,3.0,SO,6,3,1,6,2,2
+2021020644,20212022,2,2022-01-12T03:00:00Z,America/Los_Angeles,Honda Center,Pittsburgh Penguins,Anaheim Ducks,4.0,1.0,REG,4,4,2,9,1,0
+2021020645,20212022,2,2022-01-12T03:30:00Z,US/Pacific,SAP Center at San Jose,Detroit Red Wings,San Jose Sharks,2.0,3.0,OT,5,5,0,3,6,1
+2021021000,20212022,2,2022-01-13T00:00:00Z,US/Eastern,TD Garden,Montréal Canadiens,Boston Bruins,1.0,5.0,REG,7,3,0,1,7,2
+2021020647,20212022,2,2022-01-13T01:30:00Z,US/Central,American Airlines Center,Seattle Kraken,Dallas Stars,2.0,5.0,REG,4,6,0,1,7,2
+2021020649,20212022,2,2022-01-13T03:00:00Z,America/Phoenix,Gila River Arena,Toronto Maple Leafs,Arizona Coyotes,1.0,2.0,REG,2,7,1,6,2,2
+2021020650,20212022,2,2022-01-14T00:00:00Z,US/Eastern,TD Garden,Philadelphia Flyers,Boston Bruins,2.0,3.0,REG,7,3,0,4,3,3
+2021020652,20212022,2,2022-01-14T00:00:00Z,US/Eastern,Amalie Arena,Vancouver Canucks,Tampa Bay Lightning,2.0,4.0,REG,6,3,1,8,1,1
+2021020654,20212022,2,2022-01-14T00:00:00Z,US/Eastern,PNC Arena,Columbus Blue Jackets,Carolina Hurricanes,6.0,0.0,REG,8,1,1,3,6,1
+2021020651,20212022,2,2022-01-14T00:30:00Z,America/Detroit,Little Caesars Arena,Winnipeg Jets,Detroit Red Wings,3.0,0.0,REG,3,5,2,5,4,1
+2021020653,20212022,2,2022-01-14T00:30:00Z,America/New_York,UBS Arena,New Jersey Devils,New York Islanders,2.0,3.0,REG,5,2,3,4,6,0
+2021020656,20212022,2,2022-01-14T01:00:00Z,US/Central,Enterprise Center,Seattle Kraken,St. Louis Blues,1.0,2.0,REG,7,2,1,1,7,2
+2021020657,20212022,2,2022-01-14T01:00:00Z,US/Central,Bridgestone Arena,Buffalo Sabres,Nashville Predators,4.0,1.0,REG,8,1,1,2,5,3
+2021020655,20212022,2,2022-01-14T01:30:00Z,America/Chicago,United Center,Montréal Canadiens,Chicago Blackhawks,2.0,3.0,OT,3,4,3,1,7,2
+2021020658,20212022,2,2022-01-14T02:00:00Z,US/Mountain,Scotiabank Saddledome,Ottawa Senators,Calgary Flames,4.0,1.0,REG,3,6,1,5,4,1
+2021020659,20212022,2,2022-01-14T03:30:00Z,America/Los_Angeles,Crypto.com Arena,Pittsburgh Penguins,Los Angeles Kings,2.0,6.0,REG,6,3,1,9,1,0
+2021020660,20212022,2,2022-01-14T03:30:00Z,US/Pacific,SAP Center at San Jose,New York Rangers,San Jose Sharks,3.0,0.0,REG,6,4,0,5,4,1
+2021020661,20212022,2,2022-01-15T00:00:00Z,US/Eastern,FLA Live Arena,Dallas Stars,Florida Panthers,1.0,7.0,REG,6,3,1,5,5,0
+2021020662,20212022,2,2022-01-15T01:00:00Z,US/Central,Xcel Energy Center,Anaheim Ducks,Minnesota Wild,3.0,7.0,REG,5,4,1,4,4,2
+2021020663,20212022,2,2022-01-15T02:00:00Z,America/Denver,Ball Arena,Arizona Coyotes,Colorado Avalanche,3.0,4.0,SO,8,1,1,3,6,1
+2021020665,20212022,2,2022-01-15T18:00:00Z,US/Eastern,TD Garden,Nashville Predators,Boston Bruins,3.0,4.0,OT,7,3,0,7,2,1
+2021020672,20212022,2,2022-01-15T18:00:00Z,US/Eastern,PNC Arena,Vancouver Canucks,Carolina Hurricanes,1.0,4.0,REG,7,2,1,7,2,1
+2021020670,20212022,2,2022-01-15T19:00:00Z,America/New_York,UBS Arena,Washington Capitals,New York Islanders,2.0,0.0,REG,6,2,2,4,3,3
+2021020669,20212022,2,2022-01-15T23:00:00Z,US/Eastern,FLA Live Arena,Columbus Blue Jackets,Florida Panthers,2.0,9.0,REG,7,2,1,4,6,0
+2021020667,20212022,2,2022-01-16T00:00:00Z,America/Detroit,Little Caesars Arena,Buffalo Sabres,Detroit Red Wings,0.0,4.0,REG,3,5,2,3,4,3
+2021020668,20212022,2,2022-01-16T00:00:00Z,US/Eastern,Amalie Arena,Dallas Stars,Tampa Bay Lightning,1.0,3.0,REG,6,3,1,5,5,0
+2021020671,20212022,2,2022-01-16T00:00:00Z,US/Eastern,Wells Fargo Center,New York Rangers,Philadelphia Flyers,3.0,2.0,REG,3,4,3,6,3,1
+2021020674,20212022,2,2022-01-16T00:00:00Z,US/Central,Enterprise Center,Toronto Maple Leafs,St. Louis Blues,6.0,5.0,REG,7,2,1,6,3,1
+2021020673,20212022,2,2022-01-16T01:30:00Z,America/Chicago,United Center,Anaheim Ducks,Chicago Blackhawks,0.0,3.0,REG,4,3,3,3,5,2
+2021020677,20212022,2,2022-01-16T02:00:00Z,America/Phoenix,Gila River Arena,Colorado Avalanche,Arizona Coyotes,5.0,0.0,REG,3,5,2,8,1,1
+2021020635,20212022,2,2022-01-16T03:00:00Z,America/Edmonton,Rogers Place,Ottawa Senators,Edmonton Oilers,6.0,4.0,REG,2,6,2,6,3,1
+2021020679,20212022,2,2022-01-16T03:00:00Z,US/Pacific,Climate Pledge Arena,Los Angeles Kings,Seattle Kraken,3.0,1.0,REG,1,7,2,7,3,0
+2021020678,20212022,2,2022-01-16T03:30:00Z,US/Pacific,SAP Center at San Jose,Pittsburgh Penguins,San Jose Sharks,2.0,1.0,OT,5,5,0,8,2,0
+2021020680,20212022,2,2022-01-16T19:00:00Z,US/Eastern,Capital One Arena,Vancouver Canucks,Washington Capitals,4.0,2.0,REG,4,3,3,6,3,1
+2021020682,20212022,2,2022-01-17T18:00:00Z,America/New_York,KeyBank Center,Detroit Red Wings,Buffalo Sabres,3.0,2.0,OT,3,5,2,3,5,2
+2021020686,20212022,2,2022-01-17T20:00:00Z,America/Denver,Ball Arena,Minnesota Wild,Colorado Avalanche,3.0,4.0,SO,8,1,1,5,4,1
+2021020687,20212022,2,2022-01-17T21:00:00Z,America/Phoenix,Gila River Arena,Montréal Canadiens,Arizona Coyotes,2.0,5.0,REG,3,5,2,1,7,2
+2021020689,20212022,2,2022-01-17T21:00:00Z,US/Pacific,SAP Center at San Jose,Los Angeles Kings,San Jose Sharks,2.0,6.0,REG,5,4,1,7,3,0
+2021020690,20212022,2,2022-01-17T22:00:00Z,US/Pacific,Climate Pledge Arena,Chicago Blackhawks,Seattle Kraken,2.0,3.0,SO,1,8,1,4,3,3
+2021020684,20212022,2,2022-01-18T00:30:00Z,America/New_York,UBS Arena,Philadelphia Flyers,New York Islanders,1.0,4.0,REG,6,3,1,2,5,3
+2021020685,20212022,2,2022-01-18T01:00:00Z,US/Central,Enterprise Center,Nashville Predators,St. Louis Blues,3.0,5.0,REG,7,3,0,6,2,2
+2021020688,20212022,2,2022-01-18T03:00:00Z,US/Pacific,T-Mobile Arena,Pittsburgh Penguins,Vegas Golden Knights,5.0,3.0,REG,5,3,2,8,2,0
+2021020340,20212022,2,2022-01-19T00:00:00Z,US/Eastern,Wells Fargo Center,New York Islanders,Philadelphia Flyers,4.0,3.0,SO,2,6,2,6,3,1
+2021020691,20212022,2,2022-01-19T00:00:00Z,US/Eastern,TD Garden,Carolina Hurricanes,Boston Bruins,7.0,1.0,REG,8,2,0,7,2,1
+2021020692,20212022,2,2022-01-19T00:00:00Z,US/Eastern,Canadian Tire Centre,Buffalo Sabres,Ottawa Senators,3.0,1.0,REG,6,3,1,2,5,3
+2021020695,20212022,2,2022-01-19T00:00:00Z,US/Eastern,Capital One Arena,Winnipeg Jets,Washington Capitals,3.0,4.0,OT,4,4,2,5,4,1
+2021020696,20212022,2,2022-01-19T01:00:00Z,US/Central,Bridgestone Arena,Vancouver Canucks,Nashville Predators,3.0,1.0,REG,5,3,2,6,3,1
+2021020697,20212022,2,2022-01-19T01:30:00Z,US/Central,American Airlines Center,Montréal Canadiens,Dallas Stars,5.0,3.0,REG,5,5,0,1,7,2
+2021020698,20212022,2,2022-01-19T02:00:00Z,US/Mountain,Scotiabank Saddledome,Florida Panthers,Calgary Flames,1.0,5.0,REG,2,7,1,8,1,1
+2021020700,20212022,2,2022-01-19T03:30:00Z,America/Los_Angeles,Crypto.com Arena,Tampa Bay Lightning,Los Angeles Kings,6.0,4.0,REG,7,3,0,6,3,1
+2021020701,20212022,2,2022-01-20T00:00:00Z,US/Eastern,Prudential Center,Arizona Coyotes,New Jersey Devils,4.0,1.0,REG,4,6,0,4,4,2
+2021020702,20212022,2,2022-01-20T00:30:00Z,America/New_York,Madison Square Garden,Toronto Maple Leafs,New York Rangers,3.0,6.0,REG,6,3,1,7,2,1
+2021020703,20212022,2,2022-01-20T03:00:00Z,America/Los_Angeles,Honda Center,Colorado Avalanche,Anaheim Ducks,2.0,0.0,REG,2,6,2,8,1,1
+2021020704,20212022,2,2022-01-21T00:00:00Z,US/Eastern,TD Garden,Washington Capitals,Boston Bruins,3.0,4.0,REG,8,2,0,4,4,2
+2021020705,20212022,2,2022-01-21T00:00:00Z,America/New_York,KeyBank Center,Dallas Stars,Buffalo Sabres,5.0,4.0,REG,2,5,3,5,5,0
+2021020706,20212022,2,2022-01-21T00:00:00Z,US/Eastern,Wells Fargo Center,Columbus Blue Jackets,Philadelphia Flyers,2.0,1.0,REG,1,6,3,3,7,0
+2021020707,20212022,2,2022-01-21T00:00:00Z,US/Eastern,PPG Paints Arena,Ottawa Senators,Pittsburgh Penguins,4.0,6.0,REG,8,2,0,5,4,1
+2021020708,20212022,2,2022-01-21T01:00:00Z,US/Central,Bridgestone Arena,Winnipeg Jets,Nashville Predators,2.0,5.0,REG,5,3,2,5,3,2
+2021020709,20212022,2,2022-01-21T02:00:00Z,America/Edmonton,Rogers Place,Florida Panthers,Edmonton Oilers,6.0,0.0,REG,2,6,2,8,1,1
+2021020711,20212022,2,2022-01-21T02:30:00Z,America/Los_Angeles,Crypto.com Arena,Colorado Avalanche,Los Angeles Kings,4.0,1.0,REG,6,4,0,9,0,1
+2021020710,20212022,2,2022-01-21T03:00:00Z,US/Pacific,T-Mobile Arena,Montréal Canadiens,Vegas Golden Knights,3.0,4.0,OT,4,4,2,2,6,2
+2021020712,20212022,2,2022-01-21T03:00:00Z,US/Pacific,Climate Pledge Arena,San Jose Sharks,Seattle Kraken,2.0,3.0,REG,1,8,1,6,3,1
+2021020715,20212022,2,2022-01-22T00:00:00Z,US/Eastern,PNC Arena,New York Rangers,Carolina Hurricanes,3.0,6.0,REG,7,2,1,7,3,0
+2021020716,20212022,2,2022-01-22T00:00:00Z,US/Eastern,Nationwide Arena,Pittsburgh Penguins,Columbus Blue Jackets,5.0,2.0,REG,4,6,0,8,2,0
+2021020713,20212022,2,2022-01-22T00:30:00Z,America/Detroit,Little Caesars Arena,Dallas Stars,Detroit Red Wings,5.0,4.0,OT,4,4,2,6,4,0
+2021020714,20212022,2,2022-01-22T00:30:00Z,America/New_York,UBS Arena,Arizona Coyotes,New York Islanders,0.0,4.0,REG,7,2,1,5,3,2
+2021020717,20212022,2,2022-01-22T01:30:00Z,America/Chicago,United Center,Minnesota Wild,Chicago Blackhawks,5.0,1.0,REG,4,3,3,4,4,2
+2021020718,20212022,2,2022-01-22T03:00:00Z,America/Vancouver,Rogers Arena,Florida Panthers,Vancouver Canucks,2.0,1.0,SO,6,3,1,8,1,1
+2021020719,20212022,2,2022-01-22T03:00:00Z,America/Los_Angeles,Honda Center,Tampa Bay Lightning,Anaheim Ducks,1.0,5.0,REG,2,7,1,6,3,1
+2021020720,20212022,2,2022-01-22T03:00:00Z,US/Pacific,Climate Pledge Arena,St. Louis Blues,Seattle Kraken,5.0,0.0,REG,2,7,1,7,3,0
+2021020722,20212022,2,2022-01-22T18:00:00Z,America/New_York,KeyBank Center,Philadelphia Flyers,Buffalo Sabres,3.0,6.0,REG,2,6,2,0,7,3
+2021020721,20212022,2,2022-01-22T20:00:00Z,US/Eastern,TD Garden,Winnipeg Jets,Boston Bruins,2.0,3.0,REG,8,2,0,4,4,2
+2021020724,20212022,2,2022-01-23T00:00:00Z,US/Eastern,Prudential Center,Carolina Hurricanes,New Jersey Devils,4.0,7.0,REG,4,6,0,8,1,1
+2021020725,20212022,2,2022-01-23T00:00:00Z,America/New_York,Madison Square Garden,Arizona Coyotes,New York Rangers,3.0,7.0,REG,7,3,0,4,4,2
+2021020726,20212022,2,2022-01-23T00:00:00Z,US/Eastern,Capital One Arena,Ottawa Senators,Washington Capitals,2.0,3.0,OT,4,4,2,4,5,1
+2021020729,20212022,2,2022-01-23T00:00:00Z,America/Denver,Ball Arena,Montréal Canadiens,Colorado Avalanche,2.0,3.0,OT,9,0,1,2,5,3
+2021021211,20212022,2,2022-01-23T00:00:00Z,America/New_York,UBS Arena,Toronto Maple Leafs,New York Islanders,3.0,1.0,REG,7,2,1,6,3,1
+2021020727,20212022,2,2022-01-23T01:30:00Z,US/Central,Bridgestone Arena,Detroit Red Wings,Nashville Predators,1.0,4.0,REG,6,3,1,3,4,3
+2021020728,20212022,2,2022-01-23T02:00:00Z,US/Central,Xcel Energy Center,Chicago Blackhawks,Minnesota Wild,3.0,4.0,OT,4,4,2,4,4,2
+2021020730,20212022,2,2022-01-23T03:00:00Z,America/Edmonton,Rogers Place,Calgary Flames,Edmonton Oilers,3.0,5.0,REG,2,6,2,3,6,1
+2021020731,20212022,2,2022-01-23T03:30:00Z,US/Pacific,SAP Center at San Jose,Tampa Bay Lightning,San Jose Sharks,7.0,1.0,REG,5,4,1,6,3,1
+2021020733,20212022,2,2022-01-23T18:00:00Z,US/Eastern,PPG Paints Arena,Winnipeg Jets,Pittsburgh Penguins,2.0,3.0,SO,8,2,0,4,5,1
+2021020734,20212022,2,2022-01-23T23:00:00Z,US/Eastern,Nationwide Arena,Ottawa Senators,Columbus Blue Jackets,2.0,1.0,REG,4,6,0,4,4,2
+2021020732,20212022,2,2022-01-24T00:00:00Z,US/Eastern,Prudential Center,Los Angeles Kings,New Jersey Devils,3.0,2.0,REG,5,5,0,6,4,0
+2021020736,20212022,2,2022-01-24T02:00:00Z,US/Pacific,Climate Pledge Arena,Florida Panthers,Seattle Kraken,3.0,5.0,REG,2,7,1,8,1,1
+2021020735,20212022,2,2022-01-24T03:00:00Z,America/Vancouver,Rogers Arena,St. Louis Blues,Vancouver Canucks,3.0,1.0,REG,5,3,2,7,3,0
+2021020737,20212022,2,2022-01-25T00:00:00Z,US/Eastern,TD Garden,Anaheim Ducks,Boston Bruins,5.0,3.0,REG,8,2,0,3,7,0
+2021020738,20212022,2,2022-01-25T00:00:00Z,America/New_York,Madison Square Garden,Los Angeles Kings,New York Rangers,2.0,3.0,SO,7,3,0,6,4,0
+2021020739,20212022,2,2022-01-25T00:00:00Z,US/Eastern,Wells Fargo Center,Dallas Stars,Philadelphia Flyers,3.0,1.0,REG,0,8,2,6,4,0
+2021020740,20212022,2,2022-01-25T00:00:00Z,US/Eastern,Capital One Arena,Vegas Golden Knights,Washington Capitals,1.0,0.0,REG,4,4,2,4,4,2
+2021020741,20212022,2,2022-01-25T01:00:00Z,US/Central,Xcel Energy Center,Montréal Canadiens,Minnesota Wild,2.0,8.0,REG,5,3,2,2,4,4
+2021020742,20212022,2,2022-01-25T02:00:00Z,America/Denver,Ball Arena,Chicago Blackhawks,Colorado Avalanche,0.0,2.0,REG,9,0,1,4,3,3
+2021020743,20212022,2,2022-01-25T02:00:00Z,US/Mountain,Scotiabank Saddledome,St. Louis Blues,Calgary Flames,1.0,7.0,REG,3,6,1,8,2,0
+2021020744,20212022,2,2022-01-26T00:00:00Z,US/Eastern,Canadian Tire Centre,Buffalo Sabres,Ottawa Senators,0.0,5.0,REG,4,4,2,3,5,2
+2021020745,20212022,2,2022-01-26T00:00:00Z,US/Eastern,Prudential Center,Dallas Stars,New Jersey Devils,5.0,1.0,REG,5,5,0,6,4,0
+2021020747,20212022,2,2022-01-26T00:00:00Z,US/Eastern,PPG Paints Arena,Arizona Coyotes,Pittsburgh Penguins,3.0,6.0,REG,8,2,0,4,5,1
+2021020748,20212022,2,2022-01-26T00:00:00Z,US/Eastern,PNC Arena,Vegas Golden Knights,Carolina Hurricanes,3.0,4.0,OT,7,2,1,5,3,2
+2021020746,20212022,2,2022-01-26T00:30:00Z,America/New_York,UBS Arena,Philadelphia Flyers,New York Islanders,3.0,4.0,REG,7,2,1,0,8,2
+2021020749,20212022,2,2022-01-26T01:00:00Z,America/Winnipeg,Canada Life Centre,Florida Panthers,Winnipeg Jets,5.0,3.0,REG,4,4,2,7,2,1
+2021020750,20212022,2,2022-01-26T03:00:00Z,America/Vancouver,Rogers Arena,Edmonton Oilers,Vancouver Canucks,3.0,2.0,OT,4,4,2,3,5,2
+2021020751,20212022,2,2022-01-26T03:00:00Z,US/Pacific,Climate Pledge Arena,Nashville Predators,Seattle Kraken,4.0,2.0,REG,3,7,0,6,3,1
+2021020752,20212022,2,2022-01-27T00:00:00Z,America/Toronto,Scotiabank Arena,Anaheim Ducks,Toronto Maple Leafs,3.0,4.0,SO,7,2,1,4,6,0
+2021020754,20212022,2,2022-01-27T00:00:00Z,US/Eastern,Capital One Arena,San Jose Sharks,Washington Capitals,4.0,1.0,REG,3,5,2,4,5,1
+2021020755,20212022,2,2022-01-27T00:00:00Z,US/Eastern,Nationwide Arena,Calgary Flames,Columbus Blue Jackets,6.0,0.0,REG,3,7,0,4,6,0
+2021020753,20212022,2,2022-01-27T00:30:00Z,America/Detroit,Little Caesars Arena,Chicago Blackhawks,Detroit Red Wings,8.0,5.0,REG,3,4,3,4,3,3
+2021020756,20212022,2,2022-01-27T03:00:00Z,America/Denver,Ball Arena,Boston Bruins,Colorado Avalanche,3.0,4.0,OT,9,0,1,7,3,0
+2021020757,20212022,2,2022-01-28T00:00:00Z,America/Montreal,Centre Bell,Anaheim Ducks,Montréal Canadiens,5.0,4.0,REG,1,5,4,4,5,1
+2021020758,20212022,2,2022-01-28T00:00:00Z,US/Eastern,Canadian Tire Centre,Carolina Hurricanes,Ottawa Senators,3.0,2.0,SO,4,4,2,7,2,1
+2021020759,20212022,2,2022-01-28T00:00:00Z,US/Eastern,Amalie Arena,New Jersey Devils,Tampa Bay Lightning,2.0,3.0,REG,7,3,0,4,6,0
+2021020760,20212022,2,2022-01-28T00:00:00Z,US/Eastern,FLA Live Arena,Vegas Golden Knights,Florida Panthers,1.0,4.0,REG,7,2,1,4,3,3
+2021020761,20212022,2,2022-01-28T00:00:00Z,America/New_York,UBS Arena,Los Angeles Kings,New York Islanders,3.0,2.0,REG,7,2,1,5,4,1
+2021020762,20212022,2,2022-01-28T00:00:00Z,US/Eastern,PPG Paints Arena,Seattle Kraken,Pittsburgh Penguins,2.0,1.0,OT,8,2,0,3,7,0
+2021020763,20212022,2,2022-01-28T00:00:00Z,US/Eastern,Nationwide Arena,New York Rangers,Columbus Blue Jackets,3.0,5.0,REG,3,7,0,7,3,0
+2021020764,20212022,2,2022-01-28T01:00:00Z,US/Central,Enterprise Center,Calgary Flames,St. Louis Blues,1.0,5.0,REG,7,3,0,5,5,0
+2021020765,20212022,2,2022-01-28T01:00:00Z,America/Winnipeg,Canada Life Centre,Vancouver Canucks,Winnipeg Jets,5.0,1.0,REG,4,4,2,3,4,3
+2021020766,20212022,2,2022-01-28T02:00:00Z,America/Edmonton,Rogers Place,Nashville Predators,Edmonton Oilers,2.0,3.0,SO,3,5,2,6,3,1
+2021020768,20212022,2,2022-01-29T00:00:00Z,US/Eastern,PPG Paints Arena,Detroit Red Wings,Pittsburgh Penguins,3.0,2.0,SO,7,2,1,3,4,3
+2021020767,20212022,2,2022-01-29T01:00:00Z,America/New_York,Madison Square Garden,Minnesota Wild,New York Rangers,3.0,2.0,REG,6,4,0,6,2,2
+2021020769,20212022,2,2022-01-29T01:30:00Z,America/Chicago,United Center,Colorado Avalanche,Chicago Blackhawks,6.0,4.0,REG,5,3,2,9,0,1
+2021020770,20212022,2,2022-01-29T02:00:00Z,US/Central,American Airlines Center,Washington Capitals,Dallas Stars,5.0,0.0,REG,6,4,0,3,6,1
+2021020771,20212022,2,2022-01-29T02:00:00Z,America/Phoenix,Gila River Arena,Boston Bruins,Arizona Coyotes,2.0,1.0,REG,4,5,1,7,2,1
+2021020773,20212022,2,2022-01-29T17:30:00Z,US/Eastern,Canadian Tire Centre,Anaheim Ducks,Ottawa Senators,2.0,1.0,REG,4,3,3,4,5,1
+2021020778,20212022,2,2022-01-29T18:00:00Z,US/Eastern,Wells Fargo Center,Los Angeles Kings,Philadelphia Flyers,3.0,4.0,OT,0,8,2,6,3,1
+2021020780,20212022,2,2022-01-29T20:00:00Z,US/Central,Enterprise Center,Winnipeg Jets,St. Louis Blues,4.0,1.0,REG,7,3,0,3,5,2
+2021020776,20212022,2,2022-01-29T23:00:00Z,US/Eastern,FLA Live Arena,San Jose Sharks,Florida Panthers,4.0,5.0,OT,8,2,0,5,4,1
+2021020772,20212022,2,2022-01-30T00:00:00Z,America/Montreal,Centre Bell,Edmonton Oilers,Montréal Canadiens,7.0,2.0,REG,1,6,3,3,5,2
+2021020774,20212022,2,2022-01-30T00:00:00Z,America/Detroit,Little Caesars Arena,Toronto Maple Leafs,Detroit Red Wings,7.0,4.0,REG,3,4,3,7,2,1
+2021020775,20212022,2,2022-01-30T00:00:00Z,US/Eastern,Amalie Arena,Vegas Golden Knights,Tampa Bay Lightning,3.0,2.0,SO,8,2,0,3,4,3
+2021020779,20212022,2,2022-01-30T00:00:00Z,US/Eastern,PNC Arena,New Jersey Devils,Carolina Hurricanes,1.0,2.0,REG,7,2,1,3,7,0
+2021020782,20212022,2,2022-01-30T02:00:00Z,America/Phoenix,Gila River Arena,Buffalo Sabres,Arizona Coyotes,3.0,1.0,REG,3,6,1,3,5,2
+2021020781,20212022,2,2022-01-30T03:00:00Z,US/Mountain,Scotiabank Saddledome,Vancouver Canucks,Calgary Flames,0.0,1.0,OT,4,6,0,4,4,2
+2021020785,20212022,2,2022-01-30T18:00:00Z,America/New_York,Madison Square Garden,Seattle Kraken,New York Rangers,2.0,3.0,REG,6,4,0,4,6,0
+2021020786,20212022,2,2022-01-30T18:00:00Z,US/Eastern,PPG Paints Arena,Los Angeles Kings,Pittsburgh Penguins,4.0,3.0,REG,7,1,2,5,3,2
+2021020787,20212022,2,2022-01-30T22:00:00Z,US/Eastern,PNC Arena,San Jose Sharks,Carolina Hurricanes,1.0,2.0,REG,7,2,1,5,3,2
+2021020783,20212022,2,2022-01-31T00:00:00Z,America/Montreal,Centre Bell,Columbus Blue Jackets,Montréal Canadiens,6.0,3.0,REG,1,6,3,4,6,0
+2021020789,20212022,2,2022-01-31T00:00:00Z,US/Central,American Airlines Center,Boston Bruins,Dallas Stars,1.0,6.0,REG,5,5,0,7,2,1
+2021020784,20212022,2,2022-01-31T00:30:00Z,America/New_York,UBS Arena,Minnesota Wild,New York Islanders,4.0,3.0,REG,7,3,0,7,2,1
+2021020790,20212022,2,2022-01-31T01:00:00Z,America/Denver,Ball Arena,Buffalo Sabres,Colorado Avalanche,1.0,4.0,REG,9,0,1,4,5,1
+2021020793,20212022,2,2022-02-01T00:00:00Z,US/Eastern,Nationwide Arena,Florida Panthers,Columbus Blue Jackets,8.0,4.0,REG,5,5,0,8,2,0
+2021020683,20212022,2,2022-02-01T00:30:00Z,America/Toronto,Scotiabank Arena,New Jersey Devils,Toronto Maple Leafs,4.0,6.0,REG,7,2,1,2,8,0
+2021020791,20212022,2,2022-02-01T00:30:00Z,US/Eastern,Canadian Tire Centre,Edmonton Oilers,Ottawa Senators,2.0,3.0,OT,4,4,2,4,4,2
+2021020792,20212022,2,2022-02-01T00:30:00Z,America/Detroit,Little Caesars Arena,Anaheim Ducks,Detroit Red Wings,1.0,2.0,OT,3,4,3,5,4,1
+2021020794,20212022,2,2022-02-01T00:30:00Z,America/Chicago,United Center,Vancouver Canucks,Chicago Blackhawks,3.0,1.0,REG,5,3,2,3,4,3
+2021020795,20212022,2,2022-02-02T00:00:00Z,US/Eastern,TD Garden,Seattle Kraken,Boston Bruins,2.0,3.0,REG,6,3,1,4,6,0
+2021020797,20212022,2,2022-02-02T00:00:00Z,US/Eastern,Amalie Arena,San Jose Sharks,Tampa Bay Lightning,2.0,3.0,OT,7,2,1,4,4,2
+2021020798,20212022,2,2022-02-02T00:00:00Z,US/Eastern,Prudential Center,Toronto Maple Leafs,New Jersey Devils,7.0,1.0,REG,2,8,0,7,2,1
+2021020800,20212022,2,2022-02-02T00:00:00Z,America/New_York,Madison Square Garden,Florida Panthers,New York Rangers,2.0,5.0,REG,6,4,0,8,2,0
+2021020801,20212022,2,2022-02-02T00:00:00Z,US/Eastern,Wells Fargo Center,Winnipeg Jets,Philadelphia Flyers,1.0,3.0,REG,1,7,2,3,5,2
+2021020802,20212022,2,2022-02-02T00:00:00Z,US/Eastern,PPG Paints Arena,Washington Capitals,Pittsburgh Penguins,4.0,3.0,OT,6,2,2,4,5,1
+2021020799,20212022,2,2022-02-02T00:30:00Z,America/New_York,UBS Arena,Ottawa Senators,New York Islanders,1.0,4.0,REG,6,4,0,5,3,2
+2021020803,20212022,2,2022-02-02T01:00:00Z,US/Central,Bridgestone Arena,Vancouver Canucks,Nashville Predators,2.0,4.0,REG,5,3,2,4,3,3
+2021020804,20212022,2,2022-02-02T01:30:00Z,US/Central,American Airlines Center,Calgary Flames,Dallas Stars,4.0,3.0,REG,6,4,0,4,6,0
+2021020805,20212022,2,2022-02-02T02:00:00Z,America/Denver,Ball Arena,Arizona Coyotes,Colorado Avalanche,3.0,2.0,SO,10,0,0,3,6,1
+2021020806,20212022,2,2022-02-02T03:00:00Z,US/Pacific,T-Mobile Arena,Buffalo Sabres,Vegas Golden Knights,2.0,5.0,REG,4,4,2,4,5,1
+2021020777,20212022,2,2022-02-03T00:00:00Z,America/New_York,UBS Arena,Seattle Kraken,New York Islanders,3.0,0.0,REG,6,4,0,4,6,0
+2021020808,20212022,2,2022-02-03T00:00:00Z,US/Eastern,Capital One Arena,Edmonton Oilers,Washington Capitals,5.0,3.0,REG,5,5,0,4,4,2
+2021020807,20212022,2,2022-02-03T00:30:00Z,America/Detroit,Little Caesars Arena,Los Angeles Kings,Detroit Red Wings,5.0,3.0,REG,4,4,2,5,3,2
+2021020809,20212022,2,2022-02-03T02:30:00Z,America/Chicago,United Center,Minnesota Wild,Chicago Blackhawks,5.0,0.0,REG,4,4,2,8,1,1
+2021020810,20212022,2,2022-02-03T02:30:00Z,America/Phoenix,Gila River Arena,Calgary Flames,Arizona Coyotes,4.0,2.0,REG,3,6,1,5,5,0
+2021020583,20212022,2,2022-02-08T00:00:00Z,America/Toronto,Scotiabank Arena,Carolina Hurricanes,Toronto Maple Leafs,3.0,4.0,OT,7,2,1,7,2,1
+2021021128,20212022,2,2022-02-08T00:00:00Z,US/Eastern,Canadian Tire Centre,New Jersey Devils,Ottawa Senators,1.0,4.0,REG,4,4,2,1,9,0
+2021020510,20212022,2,2022-02-09T00:00:00Z,US/Eastern,Canadian Tire Centre,Carolina Hurricanes,Ottawa Senators,3.0,4.0,REG,4,4,2,7,2,1
+2021020523,20212022,2,2022-02-09T00:00:00Z,US/Eastern,TD Garden,Pittsburgh Penguins,Boston Bruins,4.0,2.0,REG,6,3,1,6,1,3
+2021020666,20212022,2,2022-02-09T00:00:00Z,America/Montreal,Centre Bell,New Jersey Devils,Montréal Canadiens,7.0,1.0,REG,1,6,3,1,9,0
+2021021293,20212022,2,2022-02-09T00:00:00Z,US/Eastern,Capital One Arena,Columbus Blue Jackets,Washington Capitals,5.0,4.0,REG,5,5,0,4,6,0
+2021020531,20212022,2,2022-02-09T01:00:00Z,America/Winnipeg,Canada Life Centre,Minnesota Wild,Winnipeg Jets,0.0,2.0,REG,2,6,2,9,0,1
+2021020664,20212022,2,2022-02-09T02:00:00Z,America/Edmonton,Rogers Place,Vegas Golden Knights,Edmonton Oilers,4.0,0.0,REG,5,4,1,5,3,2
+2021020487,20212022,2,2022-02-09T03:00:00Z,America/Vancouver,Rogers Arena,Arizona Coyotes,Vancouver Canucks,1.0,5.0,REG,4,3,3,3,7,0
+2021020694,20212022,2,2022-02-10T00:00:00Z,US/Eastern,Wells Fargo Center,Detroit Red Wings,Philadelphia Flyers,6.0,3.0,REG,2,7,1,4,5,1
+2021020530,20212022,2,2022-02-10T01:00:00Z,US/Central,American Airlines Center,Nashville Predators,Dallas Stars,3.0,4.0,REG,5,5,0,5,3,2
+2021020699,20212022,2,2022-02-10T01:00:00Z,America/Edmonton,Rogers Place,Chicago Blackhawks,Edmonton Oilers,4.0,1.0,REG,5,4,1,3,5,2
+2021020676,20212022,2,2022-02-10T02:30:00Z,US/Mountain,Scotiabank Saddledome,Vegas Golden Knights,Calgary Flames,0.0,6.0,REG,6,4,0,5,3,2
+2021020503,20212022,2,2022-02-10T03:00:00Z,US/Pacific,Climate Pledge Arena,Arizona Coyotes,Seattle Kraken,5.0,2.0,REG,5,5,0,3,7,0
+2021020598,20212022,2,2022-02-10T03:30:00Z,America/Vancouver,Rogers Arena,New York Islanders,Vancouver Canucks,6.0,3.0,REG,5,2,3,5,5,0
+2021020489,20212022,2,2022-02-11T00:00:00Z,America/New_York,KeyBank Center,Columbus Blue Jackets,Buffalo Sabres,4.0,3.0,OT,4,5,1,5,5,0
+2021020494,20212022,2,2022-02-11T00:00:00Z,US/Eastern,TD Garden,Carolina Hurricanes,Boston Bruins,6.0,0.0,REG,5,4,1,7,2,1
+2021020559,20212022,2,2022-02-11T00:00:00Z,US/Eastern,Canadian Tire Centre,Pittsburgh Penguins,Ottawa Senators,2.0,0.0,REG,5,3,2,6,1,3
+2021020587,20212022,2,2022-02-11T00:00:00Z,America/Montreal,Centre Bell,Washington Capitals,Montréal Canadiens,5.0,2.0,REG,1,6,3,4,6,0
+2021020529,20212022,2,2022-02-11T01:00:00Z,US/Central,Enterprise Center,New Jersey Devils,St. Louis Blues,7.0,4.0,REG,7,3,0,2,8,0
+2021020462,20212022,2,2022-02-11T02:00:00Z,US/Mountain,Scotiabank Saddledome,Toronto Maple Leafs,Calgary Flames,2.0,5.0,REG,7,3,0,8,2,0
+2021020477,20212022,2,2022-02-11T02:00:00Z,America/Denver,Ball Arena,Tampa Bay Lightning,Colorado Avalanche,2.0,3.0,REG,9,0,1,7,2,1
+2021020506,20212022,2,2022-02-12T01:30:00Z,US/Central,American Airlines Center,Winnipeg Jets,Dallas Stars,3.0,4.0,OT,6,4,0,3,5,2
+2021020623,20212022,2,2022-02-12T02:00:00Z,America/Edmonton,Rogers Place,New York Islanders,Edmonton Oilers,1.0,3.0,REG,5,4,1,6,4,0
+2021020519,20212022,2,2022-02-12T02:30:00Z,America/Phoenix,Gila River Arena,Tampa Bay Lightning,Arizona Coyotes,4.0,3.0,REG,3,7,0,7,2,1
+2021021033,20212022,2,2022-02-12T03:00:00Z,America/Los_Angeles,Honda Center,Seattle Kraken,Anaheim Ducks,4.0,3.0,REG,4,4,2,5,5,0
+2021020811,20212022,2,2022-02-12T17:00:00Z,America/Detroit,Little Caesars Arena,Philadelphia Flyers,Detroit Red Wings,2.0,4.0,REG,5,4,1,2,7,1
+2021020543,20212022,2,2022-02-12T17:30:00Z,US/Eastern,Canadian Tire Centre,Boston Bruins,Ottawa Senators,2.0,0.0,REG,5,3,2,4,5,1
+2021020630,20212022,2,2022-02-12T17:30:00Z,America/Montreal,Centre Bell,Columbus Blue Jackets,Montréal Canadiens,2.0,1.0,REG,1,7,2,5,5,0
+2021020479,20212022,2,2022-02-13T00:00:00Z,America/Vancouver,Rogers Arena,Toronto Maple Leafs,Vancouver Canucks,2.0,3.0,REG,4,3,3,7,3,0
+2021020499,20212022,2,2022-02-13T00:00:00Z,US/Central,Bridgestone Arena,Winnipeg Jets,Nashville Predators,5.0,2.0,REG,4,4,2,2,5,3
+2021020445,20212022,2,2022-02-13T01:00:00Z,US/Central,Xcel Energy Center,Carolina Hurricanes,Minnesota Wild,2.0,3.0,REG,8,1,1,7,2,1
+2021020788,20212022,2,2022-02-13T01:00:00Z,US/Central,Enterprise Center,Chicago Blackhawks,St. Louis Blues,1.0,5.0,REG,6,4,0,3,5,2
+2021020642,20212022,2,2022-02-13T03:00:00Z,US/Mountain,Scotiabank Saddledome,New York Islanders,Calgary Flames,2.0,5.0,REG,8,2,0,5,5,0
+2021020526,20212022,2,2022-02-13T17:30:00Z,US/Eastern,Capital One Arena,Ottawa Senators,Washington Capitals,4.0,1.0,REG,5,5,0,5,4,1
+2021020614,20212022,2,2022-02-13T17:30:00Z,America/Montreal,Centre Bell,Buffalo Sabres,Montréal Canadiens,5.0,3.0,REG,1,7,2,3,5,2
+2021020817,20212022,2,2022-02-13T18:30:00Z,US/Eastern,Prudential Center,Pittsburgh Penguins,New Jersey Devils,4.0,2.0,REG,3,7,0,6,1,3
+2021020563,20212022,2,2022-02-13T19:00:00Z,US/Central,American Airlines Center,Colorado Avalanche,Dallas Stars,4.0,0.0,REG,7,3,0,9,0,1
+2021020517,20212022,2,2022-02-15T01:00:00Z,US/Central,Xcel Energy Center,Detroit Red Wings,Minnesota Wild,4.0,7.0,REG,8,1,1,5,4,1
+2021020488,20212022,2,2022-02-15T02:00:00Z,US/Pacific,Climate Pledge Arena,Toronto Maple Leafs,Seattle Kraken,6.0,2.0,REG,5,5,0,7,3,0
+2021020548,20212022,2,2022-02-15T02:00:00Z,America/Winnipeg,Canada Life Centre,Chicago Blackhawks,Winnipeg Jets,3.0,1.0,REG,3,5,2,2,6,2
+2021020522,20212022,2,2022-02-15T03:30:00Z,US/Pacific,SAP Center at San Jose,Edmonton Oilers,San Jose Sharks,3.0,0.0,REG,3,4,3,6,3,1
+2021020495,20212022,2,2022-02-16T00:00:00Z,US/Eastern,Canadian Tire Centre,St. Louis Blues,Ottawa Senators,5.0,2.0,REG,5,4,1,6,4,0
+2021020514,20212022,2,2022-02-16T00:00:00Z,US/Eastern,PPG Paints Arena,Philadelphia Flyers,Pittsburgh Penguins,4.0,5.0,OT,6,1,3,2,7,1
+2021020524,20212022,2,2022-02-16T00:00:00Z,America/New_York,KeyBank Center,New York Islanders,Buffalo Sabres,3.0,6.0,REG,4,4,2,4,6,0
+2021020631,20212022,2,2022-02-16T00:00:00Z,US/Eastern,Prudential Center,Tampa Bay Lightning,New Jersey Devils,6.0,3.0,REG,2,8,0,7,2,1
+2021021263,20212022,2,2022-02-16T00:00:00Z,America/New_York,Madison Square Garden,Boston Bruins,New York Rangers,1.0,2.0,SO,7,3,0,5,4,1
+2021021095,20212022,2,2022-02-16T01:00:00Z,US/Central,Bridgestone Arena,Washington Capitals,Nashville Predators,4.0,1.0,REG,4,4,2,4,6,0
+2021020478,20212022,2,2022-02-16T02:00:00Z,US/Mountain,Scotiabank Saddledome,Columbus Blue Jackets,Calgary Flames,2.0,6.0,REG,8,2,0,6,4,0
+2021020549,20212022,2,2022-02-16T02:00:00Z,America/Denver,Ball Arena,Dallas Stars,Colorado Avalanche,4.0,1.0,REG,9,0,1,7,3,0
+2021020507,20212022,2,2022-02-16T03:30:00Z,America/Los_Angeles,Crypto.com Arena,Edmonton Oilers,Los Angeles Kings,5.0,2.0,REG,5,3,2,7,2,1
+2021020633,20212022,2,2022-02-17T00:00:00Z,America/Winnipeg,Canada Life Centre,Minnesota Wild,Winnipeg Jets,3.0,6.0,REG,3,5,2,8,1,1
+2021020527,20212022,2,2022-02-17T00:30:00Z,US/Eastern,PNC Arena,Florida Panthers,Carolina Hurricanes,3.0,2.0,OT,6,3,1,7,3,0
+2021020500,20212022,2,2022-02-17T02:30:00Z,US/Mountain,Scotiabank Saddledome,Anaheim Ducks,Calgary Flames,2.0,6.0,REG,9,1,0,4,4,2
+2021020535,20212022,2,2022-02-17T03:00:00Z,US/Pacific,T-Mobile Arena,Colorado Avalanche,Vegas Golden Knights,2.0,0.0,REG,5,3,2,8,1,1
+2021020496,20212022,2,2022-02-18T00:00:00Z,US/Eastern,Wells Fargo Center,Washington Capitals,Philadelphia Flyers,5.0,3.0,REG,2,6,2,5,5,0
+2021020525,20212022,2,2022-02-18T00:00:00Z,America/New_York,Madison Square Garden,Detroit Red Wings,New York Rangers,3.0,2.0,SO,7,3,0,4,5,1
+2021020542,20212022,2,2022-02-18T00:00:00Z,America/Toronto,Scotiabank Arena,Pittsburgh Penguins,Toronto Maple Leafs,1.0,4.0,REG,7,3,0,6,1,3
+2021020796,20212022,2,2022-02-18T00:00:00Z,America/Montreal,Centre Bell,St. Louis Blues,Montréal Canadiens,2.0,3.0,OT,0,8,2,6,4,0
+2021021228,20212022,2,2022-02-18T00:00:00Z,America/New_York,KeyBank Center,Ottawa Senators,Buffalo Sabres,3.0,1.0,REG,5,4,1,4,5,1
+2021021006,20212022,2,2022-02-18T00:30:00Z,America/New_York,UBS Arena,Boston Bruins,New York Islanders,1.0,4.0,REG,3,7,0,4,4,2
+2021020621,20212022,2,2022-02-18T01:00:00Z,America/Winnipeg,Canada Life Centre,Seattle Kraken,Winnipeg Jets,3.0,5.0,REG,4,4,2,4,6,0
+2021020538,20212022,2,2022-02-18T01:30:00Z,America/Chicago,United Center,Columbus Blue Jackets,Chicago Blackhawks,7.0,4.0,REG,3,6,1,5,5,0
+2021020493,20212022,2,2022-02-18T02:00:00Z,America/Edmonton,Rogers Place,Anaheim Ducks,Edmonton Oilers,3.0,7.0,REG,7,2,1,4,4,2
+2021020502,20212022,2,2022-02-18T03:30:00Z,US/Pacific,SAP Center at San Jose,Vancouver Canucks,San Jose Sharks,5.0,4.0,OT,2,5,3,4,3,3
+2021020485,20212022,2,2022-02-19T00:00:00Z,US/Eastern,PNC Arena,Nashville Predators,Carolina Hurricanes,3.0,5.0,REG,5,3,2,4,5,1
+2021020476,20212022,2,2022-02-19T01:00:00Z,US/Central,Xcel Energy Center,Florida Panthers,Minnesota Wild,6.0,2.0,REG,8,2,0,7,3,0
+2021020516,20212022,2,2022-02-19T01:30:00Z,America/Chicago,United Center,Dallas Stars,Chicago Blackhawks,1.0,0.0,SO,3,6,1,7,3,0
+2021020521,20212022,2,2022-02-19T03:00:00Z,US/Pacific,T-Mobile Arena,Los Angeles Kings,Vegas Golden Knights,4.0,3.0,OT,5,4,1,4,4,2
+2021020504,20212022,2,2022-02-19T18:00:00Z,America/New_York,KeyBank Center,Colorado Avalanche,Buffalo Sabres,5.0,3.0,REG,4,5,1,8,1,1
+2021020681,20212022,2,2022-02-19T21:00:00Z,America/Winnipeg,Canada Life Centre,Edmonton Oilers,Winnipeg Jets,4.0,2.0,REG,5,4,1,7,2,1
+2021020481,20212022,2,2022-02-20T00:00:00Z,US/Eastern,Canadian Tire Centre,Boston Bruins,Ottawa Senators,3.0,2.0,OT,5,5,0,3,5,2
+2021020509,20212022,2,2022-02-20T00:00:00Z,America/Toronto,Scotiabank Arena,St. Louis Blues,Toronto Maple Leafs,6.0,3.0,REG,8,2,0,6,3,1
+2021020533,20212022,2,2022-02-20T02:00:00Z,America/Phoenix,Gila River Arena,Los Angeles Kings,Arizona Coyotes,5.0,3.0,REG,2,8,0,5,3,2
+2021020518,20212022,2,2022-02-20T03:00:00Z,US/Mountain,Scotiabank Saddledome,Seattle Kraken,Calgary Flames,1.0,2.0,REG,9,1,0,4,6,0
+2021020520,20212022,2,2022-02-20T03:00:00Z,America/Vancouver,Rogers Arena,Anaheim Ducks,Vancouver Canucks,7.0,4.0,REG,5,3,2,4,4,2
+2021021304,20212022,2,2022-02-20T18:00:00Z,US/Eastern,PPG Paints Arena,Carolina Hurricanes,Pittsburgh Penguins,4.0,3.0,REG,5,2,3,6,2,2
+2021020491,20212022,2,2022-02-20T19:00:00Z,America/New_York,UBS Arena,Montréal Canadiens,New York Islanders,3.0,2.0,SO,4,6,0,1,8,1
+2021020498,20212022,2,2022-02-20T20:00:00Z,America/Chicago,United Center,Florida Panthers,Chicago Blackhawks,5.0,2.0,REG,3,6,1,8,2,0
+2021020263,20212022,2,2022-02-20T22:00:00Z,US/Eastern,Canadian Tire Centre,New York Rangers,Ottawa Senators,2.0,1.0,REG,5,4,1,6,3,1
+2021020515,20212022,2,2022-02-20T23:00:00Z,US/Eastern,Nationwide Arena,Buffalo Sabres,Columbus Blue Jackets,3.0,7.0,REG,6,4,0,4,5,1
+2021020581,20212022,2,2022-02-21T00:00:00Z,America/Phoenix,Gila River Arena,Dallas Stars,Arizona Coyotes,1.0,3.0,REG,2,8,0,7,3,0
+2021020648,20212022,2,2022-02-21T01:00:00Z,America/Edmonton,Rogers Place,Minnesota Wild,Edmonton Oilers,7.0,3.0,REG,7,2,1,7,3,0
+2021021161,20212022,2,2022-02-21T01:00:00Z,US/Pacific,SAP Center at San Jose,Vegas Golden Knights,San Jose Sharks,4.0,1.0,REG,2,4,4,5,3,2
+2021020508,20212022,2,2022-02-21T18:00:00Z,US/Eastern,TD Garden,Colorado Avalanche,Boston Bruins,1.0,5.0,REG,4,4,2,8,1,1
+2021020639,20212022,2,2022-02-21T20:00:00Z,US/Eastern,Wells Fargo Center,Carolina Hurricanes,Philadelphia Flyers,4.0,3.0,OT,2,7,1,6,2,2
+2021020564,20212022,2,2022-02-21T21:00:00Z,US/Mountain,Scotiabank Saddledome,Winnipeg Jets,Calgary Flames,1.0,3.0,REG,9,1,0,5,4,1
+2021020601,20212022,2,2022-02-22T00:00:00Z,America/Montreal,Centre Bell,Toronto Maple Leafs,Montréal Canadiens,2.0,5.0,REG,2,8,0,7,3,0
+2021020534,20212022,2,2022-02-22T03:00:00Z,America/Vancouver,Rogers Arena,Seattle Kraken,Vancouver Canucks,2.0,5.0,REG,5,3,2,3,7,0
+2021020511,20212022,2,2022-02-23T00:00:00Z,US/Eastern,FLA Live Arena,Nashville Predators,Florida Panthers,6.0,4.0,REG,8,2,0,4,5,1
+2021020528,20212022,2,2022-02-23T00:00:00Z,US/Eastern,Nationwide Arena,Toronto Maple Leafs,Columbus Blue Jackets,3.0,4.0,OT,7,3,0,6,4,0
+2021020584,20212022,2,2022-02-23T00:00:00Z,US/Eastern,Canadian Tire Centre,Minnesota Wild,Ottawa Senators,3.0,4.0,REG,4,5,1,7,3,0
+2021020848,20212022,2,2022-02-23T00:00:00Z,US/Eastern,Wells Fargo Center,St. Louis Blues,Philadelphia Flyers,4.0,1.0,REG,2,6,2,6,3,1
+2021020536,20212022,2,2022-02-23T03:00:00Z,America/Los_Angeles,Honda Center,San Jose Sharks,Anaheim Ducks,3.0,4.0,SO,5,3,2,2,5,3
+2021020595,20212022,2,2022-02-23T03:00:00Z,US/Pacific,Climate Pledge Arena,New York Islanders,Seattle Kraken,5.0,2.0,REG,3,7,0,3,6,1
+2021020490,20212022,2,2022-02-24T00:30:00Z,America/Detroit,Little Caesars Arena,Colorado Avalanche,Detroit Red Wings,5.0,2.0,REG,5,5,0,7,2,1
+2021020812,20212022,2,2022-02-24T00:30:00Z,US/Eastern,Amalie Arena,Edmonton Oilers,Tampa Bay Lightning,3.0,5.0,REG,7,2,1,6,3,1
+2021020813,20212022,2,2022-02-24T00:30:00Z,US/Central,American Airlines Center,Winnipeg Jets,Dallas Stars,2.0,3.0,OT,6,4,0,5,4,1
+2021021273,20212022,2,2022-02-24T00:30:00Z,America/Montreal,Centre Bell,Buffalo Sabres,Montréal Canadiens,0.0,4.0,REG,3,7,0,3,6,1
+2021020814,20212022,2,2022-02-24T03:00:00Z,America/Phoenix,Gila River Arena,Los Angeles Kings,Arizona Coyotes,3.0,2.0,REG,3,7,0,6,2,2
+2021020497,20212022,2,2022-02-25T00:00:00Z,US/Eastern,PPG Paints Arena,New Jersey Devils,Pittsburgh Penguins,6.0,1.0,REG,4,3,3,2,8,0
+2021020815,20212022,2,2022-02-25T00:00:00Z,America/Toronto,Scotiabank Arena,Minnesota Wild,Toronto Maple Leafs,1.0,3.0,REG,5,4,1,6,4,0
+2021020816,20212022,2,2022-02-25T00:00:00Z,US/Eastern,FLA Live Arena,Columbus Blue Jackets,Florida Panthers,6.0,3.0,REG,7,3,0,8,2,0
+2021020818,20212022,2,2022-02-25T00:00:00Z,America/New_York,Madison Square Garden,Washington Capitals,New York Rangers,1.0,4.0,REG,6,3,1,5,5,0
+2021020819,20212022,2,2022-02-25T01:30:00Z,US/Central,Bridgestone Arena,Dallas Stars,Nashville Predators,1.0,2.0,SO,5,4,1,6,4,0
+2021020820,20212022,2,2022-02-25T03:00:00Z,America/Vancouver,Rogers Arena,Calgary Flames,Vancouver Canucks,1.0,7.0,REG,6,3,1,10,0,0
+2021020822,20212022,2,2022-02-25T03:00:00Z,US/Pacific,Climate Pledge Arena,Boston Bruins,Seattle Kraken,3.0,2.0,OT,2,8,0,5,4,1
+2021020821,20212022,2,2022-02-25T03:30:00Z,US/Pacific,SAP Center at San Jose,New York Islanders,San Jose Sharks,3.0,4.0,SO,1,5,4,4,5,1
+2021020823,20212022,2,2022-02-26T00:00:00Z,US/Eastern,PNC Arena,Columbus Blue Jackets,Carolina Hurricanes,0.0,4.0,REG,6,2,2,8,2,0
+2021020825,20212022,2,2022-02-26T01:00:00Z,US/Central,Enterprise Center,Buffalo Sabres,St. Louis Blues,3.0,5.0,REG,6,3,1,3,6,1
+2021020824,20212022,2,2022-02-26T01:30:00Z,America/Chicago,United Center,New Jersey Devils,Chicago Blackhawks,5.0,8.0,REG,3,6,1,3,7,0
+2021020826,20212022,2,2022-02-26T02:00:00Z,America/Denver,Ball Arena,Winnipeg Jets,Colorado Avalanche,3.0,6.0,REG,7,2,1,4,4,2
+2021020827,20212022,2,2022-02-26T02:30:00Z,America/Phoenix,Gila River Arena,Vegas Golden Knights,Arizona Coyotes,1.0,3.0,REG,3,7,0,5,3,2
+2021020828,20212022,2,2022-02-26T03:00:00Z,America/Los_Angeles,Honda Center,Los Angeles Kings,Anaheim Ducks,4.0,1.0,REG,5,3,2,7,1,2
+2021020831,20212022,2,2022-02-26T17:30:00Z,US/Eastern,FLA Live Arena,Edmonton Oilers,Florida Panthers,4.0,3.0,REG,7,3,0,6,4,0
+2021020832,20212022,2,2022-02-26T17:30:00Z,US/Eastern,Wells Fargo Center,Washington Capitals,Philadelphia Flyers,1.0,2.0,REG,2,6,2,5,5,0
+2021020833,20212022,2,2022-02-26T20:00:00Z,US/Eastern,PPG Paints Arena,New York Rangers,Pittsburgh Penguins,0.0,1.0,REG,4,4,2,7,2,1
+2021020830,20212022,2,2022-02-27T00:00:00Z,US/Eastern,Canadian Tire Centre,Montréal Canadiens,Ottawa Senators,2.0,1.0,REG,5,4,1,4,6,0
+2021020834,20212022,2,2022-02-27T00:30:00Z,US/Central,Nissan Stadium,Tampa Bay Lightning,Nashville Predators,3.0,2.0,REG,5,4,1,7,2,1
+2021021275,20212022,2,2022-02-27T00:30:00Z,America/Detroit,Little Caesars Arena,Toronto Maple Leafs,Detroit Red Wings,10.0,7.0,REG,5,5,0,5,4,1
+2021020835,20212022,2,2022-02-27T03:00:00Z,US/Mountain,Scotiabank Saddledome,Minnesota Wild,Calgary Flames,3.0,7.0,REG,9,1,0,5,5,0
+2021020836,20212022,2,2022-02-27T03:00:00Z,US/Pacific,T-Mobile Arena,Colorado Avalanche,Vegas Golden Knights,3.0,2.0,REG,4,4,2,7,2,1
+2021020838,20212022,2,2022-02-27T03:00:00Z,US/Pacific,SAP Center at San Jose,Boston Bruins,San Jose Sharks,3.0,1.0,REG,2,4,4,5,4,1
+2021020837,20212022,2,2022-02-27T03:30:00Z,America/Los_Angeles,Crypto.com Arena,New York Islanders,Los Angeles Kings,2.0,5.0,REG,7,1,2,4,4,2
+2021020840,20212022,2,2022-02-27T18:00:00Z,US/Eastern,PNC Arena,Edmonton Oilers,Carolina Hurricanes,1.0,2.0,REG,6,2,2,6,4,0
+2021020843,20212022,2,2022-02-27T19:00:00Z,US/Central,American Airlines Center,Buffalo Sabres,Dallas Stars,2.0,4.0,REG,6,3,1,2,7,1
+2021020842,20212022,2,2022-02-27T20:00:00Z,America/Chicago,United Center,St. Louis Blues,Chicago Blackhawks,4.0,0.0,REG,3,6,1,6,3,1
+2021020844,20212022,2,2022-02-27T21:00:00Z,America/Phoenix,Gila River Arena,Winnipeg Jets,Arizona Coyotes,5.0,3.0,REG,4,6,0,4,4,2
+2021020841,20212022,2,2022-02-27T23:00:00Z,US/Eastern,Nationwide Arena,Pittsburgh Penguins,Columbus Blue Jackets,3.0,2.0,REG,7,3,0,5,4,1
+2021020839,20212022,2,2022-02-28T00:30:00Z,America/New_York,Madison Square Garden,Vancouver Canucks,New York Rangers,5.0,2.0,REG,6,3,1,6,3,1
+2021020845,20212022,2,2022-02-28T01:30:00Z,America/Los_Angeles,Honda Center,New York Islanders,Anaheim Ducks,4.0,0.0,REG,4,4,2,3,5,2
+2021020846,20212022,2,2022-02-28T03:00:00Z,US/Pacific,SAP Center at San Jose,Seattle Kraken,San Jose Sharks,1.0,3.0,REG,2,4,4,2,7,1
+2021020847,20212022,2,2022-03-01T00:30:00Z,US/Eastern,Prudential Center,Vancouver Canucks,New Jersey Devils,2.0,7.0,REG,3,7,0,7,3,0
+2021020849,20212022,2,2022-03-01T00:30:00Z,US/Eastern,Capital One Arena,Toronto Maple Leafs,Washington Capitals,5.0,3.0,REG,5,5,0,5,4,1
+2021020850,20212022,2,2022-03-01T03:30:00Z,America/Los_Angeles,Crypto.com Arena,Boston Bruins,Los Angeles Kings,7.0,0.0,REG,8,1,1,6,3,1
+2021020852,20212022,2,2022-03-02T00:00:00Z,US/Eastern,Amalie Arena,Ottawa Senators,Tampa Bay Lightning,2.0,5.0,REG,7,2,1,4,5,1
+2021020853,20212022,2,2022-03-02T00:00:00Z,US/Eastern,Wells Fargo Center,Edmonton Oilers,Philadelphia Flyers,3.0,0.0,REG,3,5,2,6,4,0
+2021020854,20212022,2,2022-03-02T00:00:00Z,US/Eastern,Nationwide Arena,New Jersey Devils,Columbus Blue Jackets,3.0,4.0,REG,7,3,0,4,6,0
+2021020851,20212022,2,2022-03-02T00:30:00Z,America/Detroit,Little Caesars Arena,Carolina Hurricanes,Detroit Red Wings,3.0,4.0,OT,5,5,0,6,2,2
+2021020855,20212022,2,2022-03-02T01:00:00Z,US/Central,Xcel Energy Center,Calgary Flames,Minnesota Wild,5.0,1.0,REG,4,6,0,9,1,0
+2021020856,20212022,2,2022-03-02T01:00:00Z,America/Winnipeg,Canada Life Centre,Montréal Canadiens,Winnipeg Jets,4.0,8.0,REG,4,4,2,5,5,0
+2021020857,20212022,2,2022-03-02T02:00:00Z,America/Denver,Ball Arena,New York Islanders,Colorado Avalanche,3.0,5.0,REG,7,2,1,4,4,2
+2021020858,20212022,2,2022-03-02T03:00:00Z,US/Pacific,T-Mobile Arena,San Jose Sharks,Vegas Golden Knights,1.0,3.0,REG,4,5,1,2,4,4
+2021020859,20212022,2,2022-03-02T03:00:00Z,America/Los_Angeles,Honda Center,Boston Bruins,Anaheim Ducks,3.0,4.0,REG,4,5,1,6,3,1
+2021020860,20212022,2,2022-03-03T00:30:00Z,America/Toronto,Scotiabank Arena,Buffalo Sabres,Toronto Maple Leafs,5.0,1.0,REG,5,4,1,2,7,1
+2021020861,20212022,2,2022-03-03T00:30:00Z,America/New_York,Madison Square Garden,St. Louis Blues,New York Rangers,3.0,5.0,REG,5,4,1,7,2,1
+2021020862,20212022,2,2022-03-03T01:30:00Z,US/Central,American Airlines Center,Los Angeles Kings,Dallas Stars,3.0,4.0,REG,6,3,1,7,2,1
+2021020863,20212022,2,2022-03-03T03:00:00Z,US/Pacific,Climate Pledge Arena,Nashville Predators,Seattle Kraken,3.0,4.0,REG,2,7,1,4,5,1
+2021020864,20212022,2,2022-03-04T00:00:00Z,US/Eastern,Amalie Arena,Pittsburgh Penguins,Tampa Bay Lightning,5.0,1.0,REG,8,1,1,6,3,1
+2021020865,20212022,2,2022-03-04T00:00:00Z,US/Eastern,FLA Live Arena,Ottawa Senators,Florida Panthers,0.0,3.0,REG,6,4,0,3,6,1
+2021020867,20212022,2,2022-03-04T00:00:00Z,US/Eastern,Wells Fargo Center,Minnesota Wild,Philadelphia Flyers,5.0,4.0,REG,3,5,2,3,7,0
+2021020868,20212022,2,2022-03-04T00:00:00Z,US/Eastern,Capital One Arena,Carolina Hurricanes,Washington Capitals,0.0,4.0,REG,4,6,0,6,2,2
+2021020866,20212022,2,2022-03-04T00:30:00Z,America/New_York,UBS Arena,Vancouver Canucks,New York Islanders,4.0,3.0,REG,3,5,2,6,4,0
+2021020869,20212022,2,2022-03-04T01:30:00Z,America/Chicago,United Center,Edmonton Oilers,Chicago Blackhawks,3.0,4.0,OT,3,6,1,7,3,0
+2021020870,20212022,2,2022-03-04T02:00:00Z,US/Mountain,Scotiabank Saddledome,Montréal Canadiens,Calgary Flames,5.0,4.0,OT,9,1,0,5,5,0
+2021020871,20212022,2,2022-03-04T02:00:00Z,America/Phoenix,Gila River Arena,Colorado Avalanche,Arizona Coyotes,1.0,2.0,REG,4,6,0,8,2,0
+2021020872,20212022,2,2022-03-04T02:00:00Z,US/Pacific,T-Mobile Arena,Boston Bruins,Vegas Golden Knights,5.0,2.0,REG,5,4,1,6,3,1
+2021020873,20212022,2,2022-03-05T00:00:00Z,America/New_York,KeyBank Center,Minnesota Wild,Buffalo Sabres,4.0,5.0,REG,3,6,1,4,6,0
+2021020874,20212022,2,2022-03-05T00:00:00Z,US/Eastern,Amalie Arena,Detroit Red Wings,Tampa Bay Lightning,1.0,3.0,REG,7,2,1,5,5,0
+2021020875,20212022,2,2022-03-05T00:00:00Z,America/New_York,Madison Square Garden,New Jersey Devils,New York Rangers,1.0,3.0,REG,6,3,1,4,6,0
+2021020876,20212022,2,2022-03-05T00:00:00Z,US/Eastern,PNC Arena,Pittsburgh Penguins,Carolina Hurricanes,2.0,3.0,OT,6,2,2,7,3,0
+2021020877,20212022,2,2022-03-05T00:00:00Z,US/Eastern,Nationwide Arena,Los Angeles Kings,Columbus Blue Jackets,4.0,3.0,OT,7,3,0,7,3,0
+2021020878,20212022,2,2022-03-05T01:00:00Z,America/Winnipeg,Canada Life Centre,Dallas Stars,Winnipeg Jets,4.0,3.0,OT,5,4,1,7,2,1
+2021020879,20212022,2,2022-03-05T03:00:00Z,America/Los_Angeles,Honda Center,Vegas Golden Knights,Anaheim Ducks,5.0,4.0,REG,4,5,1,4,5,1
+2021020882,20212022,2,2022-03-05T17:30:00Z,America/New_York,UBS Arena,St. Louis Blues,New York Islanders,1.0,2.0,REG,3,5,2,6,3,1
+2021020883,20212022,2,2022-03-05T20:00:00Z,US/Eastern,Wells Fargo Center,Chicago Blackhawks,Philadelphia Flyers,3.0,4.0,REG,2,6,2,4,5,1
+2021020888,20212022,2,2022-03-05T21:00:00Z,America/Phoenix,Gila River Arena,Ottawa Senators,Arizona Coyotes,5.0,8.0,REG,4,6,0,3,6,1
+2021020881,20212022,2,2022-03-05T23:00:00Z,US/Eastern,FLA Live Arena,Detroit Red Wings,Florida Panthers,2.0,6.0,REG,6,4,0,5,5,0
+2021020880,20212022,2,2022-03-06T00:00:00Z,America/Toronto,Scotiabank Arena,Vancouver Canucks,Toronto Maple Leafs,6.0,4.0,REG,5,4,1,7,3,0
+2021020884,20212022,2,2022-03-06T00:00:00Z,US/Eastern,Capital One Arena,Seattle Kraken,Washington Capitals,2.0,5.0,REG,4,6,0,2,7,1
+2021020885,20212022,2,2022-03-06T00:00:00Z,US/Eastern,Nationwide Arena,Boston Bruins,Columbus Blue Jackets,5.0,4.0,SO,6,3,1,7,2,1
+2021020887,20212022,2,2022-03-06T00:00:00Z,America/Edmonton,Rogers Place,Montréal Canadiens,Edmonton Oilers,5.0,2.0,REG,6,3,1,6,4,0
+2021020889,20212022,2,2022-03-06T01:00:00Z,US/Pacific,SAP Center at San Jose,Nashville Predators,San Jose Sharks,8.0,0.0,REG,2,5,3,3,6,1
+2021020886,20212022,2,2022-03-06T03:00:00Z,America/Denver,Ball Arena,Calgary Flames,Colorado Avalanche,4.0,3.0,OT,7,3,0,8,1,1
+2021020890,20212022,2,2022-03-06T18:00:00Z,America/New_York,KeyBank Center,Los Angeles Kings,Buffalo Sabres,3.0,0.0,REG,4,6,0,7,3,0
+2021020891,20212022,2,2022-03-06T18:00:00Z,US/Eastern,Prudential Center,St. Louis Blues,New Jersey Devils,2.0,3.0,OT,4,6,0,6,3,1
+2021020894,20212022,2,2022-03-06T21:00:00Z,US/Central,Xcel Energy Center,Dallas Stars,Minnesota Wild,6.0,3.0,REG,3,7,0,7,2,1
+2021020892,20212022,2,2022-03-07T00:00:00Z,US/Eastern,PNC Arena,Seattle Kraken,Carolina Hurricanes,2.0,3.0,REG,6,2,2,2,7,1
+2021020893,20212022,2,2022-03-07T00:00:00Z,America/Chicago,United Center,Tampa Bay Lightning,Chicago Blackhawks,6.0,3.0,REG,4,5,1,7,2,1
+2021020895,20212022,2,2022-03-07T00:00:00Z,America/Winnipeg,Canada Life Centre,New York Rangers,Winnipeg Jets,4.0,1.0,REG,4,4,2,7,2,1
+2021020896,20212022,2,2022-03-07T01:00:00Z,US/Pacific,T-Mobile Arena,Ottawa Senators,Vegas Golden Knights,1.0,2.0,REG,4,5,1,3,6,1
+2021020897,20212022,2,2022-03-07T01:00:00Z,America/Los_Angeles,Honda Center,San Jose Sharks,Anaheim Ducks,2.0,3.0,OT,3,6,1,2,5,3
+2021020898,20212022,2,2022-03-08T00:00:00Z,US/Eastern,TD Garden,Los Angeles Kings,Boston Bruins,3.0,2.0,OT,7,2,1,7,3,0
+2021020899,20212022,2,2022-03-08T00:00:00Z,America/New_York,KeyBank Center,Florida Panthers,Buffalo Sabres,6.0,1.0,REG,3,7,0,6,4,0
+2021020901,20212022,2,2022-03-08T00:00:00Z,US/Eastern,Nationwide Arena,Toronto Maple Leafs,Columbus Blue Jackets,5.0,4.0,REG,5,3,2,5,4,1
+2021020900,20212022,2,2022-03-08T00:30:00Z,America/New_York,UBS Arena,Colorado Avalanche,New York Islanders,5.0,4.0,REG,4,4,2,6,3,1
+2021020532,20212022,2,2022-03-08T02:30:00Z,US/Mountain,Scotiabank Saddledome,Edmonton Oilers,Calgary Flames,1.0,3.0,REG,8,1,1,5,4,1
+2021020904,20212022,2,2022-03-09T00:00:00Z,US/Eastern,Prudential Center,Colorado Avalanche,New Jersey Devils,3.0,5.0,REG,5,5,0,7,2,1
+2021020905,20212022,2,2022-03-09T00:00:00Z,US/Eastern,Wells Fargo Center,Vegas Golden Knights,Philadelphia Flyers,1.0,2.0,REG,2,6,2,4,5,1
+2021020906,20212022,2,2022-03-09T00:00:00Z,US/Eastern,PPG Paints Arena,Florida Panthers,Pittsburgh Penguins,4.0,3.0,REG,6,3,1,6,4,0
+2021020902,20212022,2,2022-03-09T00:30:00Z,America/Toronto,Scotiabank Arena,Seattle Kraken,Toronto Maple Leafs,4.0,6.0,REG,5,4,1,1,8,1
+2021020903,20212022,2,2022-03-09T00:30:00Z,America/Detroit,Little Caesars Arena,Arizona Coyotes,Detroit Red Wings,9.0,2.0,REG,4,6,0,5,5,0
+2021020908,20212022,2,2022-03-09T01:00:00Z,US/Central,Enterprise Center,Ottawa Senators,St. Louis Blues,4.0,1.0,REG,6,2,2,2,7,1
+2021020909,20212022,2,2022-03-09T01:00:00Z,US/Central,Bridgestone Arena,Dallas Stars,Nashville Predators,1.0,2.0,REG,4,6,0,7,2,1
+2021020910,20212022,2,2022-03-09T01:00:00Z,US/Central,Xcel Energy Center,New York Rangers,Minnesota Wild,2.0,5.0,REG,2,8,0,7,2,1
+2021020911,20212022,2,2022-03-09T01:00:00Z,America/Winnipeg,Canada Life Centre,Tampa Bay Lightning,Winnipeg Jets,4.0,7.0,REG,4,4,2,8,2,0
+2021020907,20212022,2,2022-03-09T01:30:00Z,America/Chicago,United Center,Anaheim Ducks,Chicago Blackhawks,3.0,8.0,REG,3,6,1,4,6,0
+2021020912,20212022,2,2022-03-09T02:00:00Z,US/Mountain,Scotiabank Saddledome,Washington Capitals,Calgary Flames,5.0,4.0,REG,8,1,1,5,5,0
+2021020913,20212022,2,2022-03-10T01:00:00Z,America/Edmonton,Rogers Place,Washington Capitals,Edmonton Oilers,3.0,4.0,OT,4,5,1,6,4,0
+2021020914,20212022,2,2022-03-10T03:30:00Z,America/Vancouver,Rogers Arena,Montréal Canadiens,Vancouver Canucks,3.0,5.0,REG,7,3,0,7,3,0
+2021020915,20212022,2,2022-03-11T00:00:00Z,US/Eastern,TD Garden,Chicago Blackhawks,Boston Bruins,3.0,4.0,REG,7,2,1,4,5,1
+2021020916,20212022,2,2022-03-11T00:00:00Z,America/New_York,KeyBank Center,Vegas Golden Knights,Buffalo Sabres,1.0,3.0,REG,2,8,0,4,5,1
+2021020917,20212022,2,2022-03-11T00:00:00Z,America/Toronto,Scotiabank Arena,Arizona Coyotes,Toronto Maple Leafs,5.0,4.0,OT,5,4,1,6,4,0
+2021020918,20212022,2,2022-03-11T00:00:00Z,US/Eastern,Canadian Tire Centre,Seattle Kraken,Ottawa Senators,3.0,4.0,OT,3,6,1,1,8,1
+2021020919,20212022,2,2022-03-11T00:00:00Z,America/Detroit,Little Caesars Arena,Minnesota Wild,Detroit Red Wings,6.0,5.0,SO,4,6,0,3,7,0
+2021020920,20212022,2,2022-03-11T00:00:00Z,US/Eastern,FLA Live Arena,Philadelphia Flyers,Florida Panthers,3.0,6.0,REG,7,3,0,3,5,2
+2021020921,20212022,2,2022-03-11T00:00:00Z,US/Eastern,Prudential Center,Winnipeg Jets,New Jersey Devils,2.0,1.0,REG,5,5,0,4,4,2
+2021020923,20212022,2,2022-03-11T00:00:00Z,US/Eastern,PNC Arena,Colorado Avalanche,Carolina Hurricanes,0.0,2.0,REG,7,1,2,6,3,1
+2021020693,20212022,2,2022-03-11T00:30:00Z,America/New_York,UBS Arena,Columbus Blue Jackets,New York Islanders,0.0,6.0,REG,4,4,2,5,3,2
+2021020924,20212022,2,2022-03-11T01:00:00Z,US/Central,Enterprise Center,New York Rangers,St. Louis Blues,2.0,6.0,REG,5,3,2,6,3,1
+2021020925,20212022,2,2022-03-11T01:00:00Z,US/Central,Bridgestone Arena,Anaheim Ducks,Nashville Predators,1.0,4.0,REG,4,6,0,4,6,0
+2021020926,20212022,2,2022-03-11T02:00:00Z,US/Mountain,Scotiabank Saddledome,Tampa Bay Lightning,Calgary Flames,1.0,4.0,REG,7,2,1,7,3,0
+2021020927,20212022,2,2022-03-11T03:30:00Z,America/Los_Angeles,Crypto.com Arena,San Jose Sharks,Los Angeles Kings,4.0,3.0,OT,8,2,0,2,5,3
+2021020929,20212022,2,2022-03-12T00:00:00Z,US/Eastern,PPG Paints Arena,Vegas Golden Knights,Pittsburgh Penguins,2.0,5.0,REG,5,4,1,4,5,1
+2021020930,20212022,2,2022-03-12T00:00:00Z,US/Eastern,Nationwide Arena,Minnesota Wild,Columbus Blue Jackets,2.0,3.0,SO,4,4,2,4,6,0
+2021020928,20212022,2,2022-03-12T00:30:00Z,America/New_York,UBS Arena,Winnipeg Jets,New York Islanders,2.0,5.0,REG,4,4,2,4,4,2
+2021020931,20212022,2,2022-03-12T03:00:00Z,America/Vancouver,Rogers Arena,Washington Capitals,Vancouver Canucks,4.0,3.0,OT,8,2,0,5,4,1
+2021020937,20212022,2,2022-03-12T17:30:00Z,US/Central,Bridgestone Arena,St. Louis Blues,Nashville Predators,7.0,4.0,REG,5,5,0,5,3,2
+2021020936,20212022,2,2022-03-12T20:00:00Z,US/Eastern,PNC Arena,Philadelphia Flyers,Carolina Hurricanes,1.0,3.0,REG,8,1,1,3,5,2
+2021020932,20212022,2,2022-03-13T00:00:00Z,US/Eastern,TD Garden,Arizona Coyotes,Boston Bruins,2.0,3.0,REG,8,1,1,6,4,0
+2021020933,20212022,2,2022-03-13T00:00:00Z,America/Montreal,Centre Bell,Seattle Kraken,Montréal Canadiens,4.0,3.0,SO,7,3,0,1,7,2
+2021020934,20212022,2,2022-03-13T00:00:00Z,US/Eastern,Canadian Tire Centre,Chicago Blackhawks,Ottawa Senators,6.0,3.0,REG,3,6,1,3,6,1
+2021020935,20212022,2,2022-03-13T00:00:00Z,US/Eastern,Prudential Center,Anaheim Ducks,New Jersey Devils,1.0,2.0,SO,4,6,0,4,6,0
+2021020939,20212022,2,2022-03-13T00:00:00Z,US/Mountain,Scotiabank Saddledome,Detroit Red Wings,Calgary Flames,0.0,3.0,REG,7,2,1,3,6,1
+2021020938,20212022,2,2022-03-13T01:00:00Z,US/Central,American Airlines Center,New York Rangers,Dallas Stars,7.0,4.0,REG,7,2,1,5,4,1
+2021020941,20212022,2,2022-03-13T02:30:00Z,US/Pacific,SAP Center at San Jose,Los Angeles Kings,San Jose Sharks,0.0,5.0,REG,3,4,3,7,2,1
+2021020940,20212022,2,2022-03-13T03:00:00Z,America/Edmonton,Rogers Place,Tampa Bay Lightning,Edmonton Oilers,1.0,4.0,REG,4,5,1,7,3,0
+2021020945,20212022,2,2022-03-13T17:00:00Z,US/Eastern,PPG Paints Arena,Carolina Hurricanes,Pittsburgh Penguins,2.0,4.0,REG,5,4,1,8,1,1
+2021020942,20212022,2,2022-03-13T20:00:00Z,America/Toronto,Tim Hortons Field,Toronto Maple Leafs,Buffalo Sabres,2.0,5.0,REG,3,7,0,5,3,2
+2021020944,20212022,2,2022-03-13T23:00:00Z,US/Eastern,Wells Fargo Center,Montréal Canadiens,Philadelphia Flyers,4.0,3.0,OT,3,6,1,7,2,1
+2021020946,20212022,2,2022-03-13T23:00:00Z,US/Eastern,Nationwide Arena,Vegas Golden Knights,Columbus Blue Jackets,4.0,6.0,REG,4,4,2,4,6,0
+2021020947,20212022,2,2022-03-13T23:00:00Z,US/Central,Enterprise Center,Winnipeg Jets,St. Louis Blues,4.0,3.0,OT,6,3,1,4,4,2
+2021020948,20212022,2,2022-03-13T23:00:00Z,US/Central,Xcel Energy Center,Nashville Predators,Minnesota Wild,6.0,2.0,REG,3,6,1,5,5,0
+2021020943,20212022,2,2022-03-13T23:30:00Z,America/New_York,UBS Arena,Anaheim Ducks,New York Islanders,3.0,4.0,REG,5,4,1,4,5,1
+2021020949,20212022,2,2022-03-14T00:00:00Z,America/Denver,Ball Arena,Calgary Flames,Colorado Avalanche,0.0,3.0,REG,5,4,1,7,2,1
+2021020950,20212022,2,2022-03-14T02:00:00Z,America/Vancouver,Rogers Arena,Tampa Bay Lightning,Vancouver Canucks,2.0,1.0,REG,7,2,1,6,4,0
+2021020951,20212022,2,2022-03-14T02:00:00Z,America/Los_Angeles,Crypto.com Arena,Florida Panthers,Los Angeles Kings,2.0,3.0,SO,6,3,1,7,3,0
+2021020952,20212022,2,2022-03-14T23:30:00Z,US/Eastern,Canadian Tire Centre,Arizona Coyotes,Ottawa Senators,5.0,3.0,REG,3,7,0,6,4,0
+2021020953,20212022,2,2022-03-15T23:00:00Z,America/Toronto,Scotiabank Arena,Dallas Stars,Toronto Maple Leafs,0.0,4.0,REG,5,3,2,6,3,1
+2021020954,20212022,2,2022-03-15T23:00:00Z,America/Montreal,Centre Bell,Arizona Coyotes,Montréal Canadiens,6.0,3.0,REG,7,2,1,7,3,0
+2021020955,20212022,2,2022-03-15T23:00:00Z,America/New_York,Madison Square Garden,Anaheim Ducks,New York Rangers,3.0,4.0,OT,6,4,0,3,6,1
+2021020956,20212022,2,2022-03-15T23:00:00Z,US/Eastern,Capital One Arena,New York Islanders,Washington Capitals,3.0,4.0,SO,6,3,1,5,4,1
+2021020958,20212022,2,2022-03-16T00:00:00Z,US/Central,Bridgestone Arena,Pittsburgh Penguins,Nashville Predators,1.0,4.0,REG,6,4,0,5,4,1
+2021020959,20212022,2,2022-03-16T00:00:00Z,America/Winnipeg,Canada Life Centre,Vegas Golden Knights,Winnipeg Jets,3.0,7.0,REG,5,3,2,3,7,0
+2021020957,20212022,2,2022-03-16T00:30:00Z,America/Chicago,United Center,Boston Bruins,Chicago Blackhawks,2.0,1.0,OT,4,5,1,8,1,1
+2021020960,20212022,2,2022-03-16T01:00:00Z,America/Edmonton,Rogers Place,Detroit Red Wings,Edmonton Oilers,5.0,7.0,REG,4,5,1,2,7,1
+2021020961,20212022,2,2022-03-16T02:00:00Z,America/Vancouver,Rogers Arena,New Jersey Devils,Vancouver Canucks,3.0,6.0,REG,6,3,1,5,5,0
+2021020962,20212022,2,2022-03-16T02:30:00Z,America/Los_Angeles,Crypto.com Arena,Colorado Avalanche,Los Angeles Kings,3.0,0.0,REG,6,3,1,6,3,1
+2021020963,20212022,2,2022-03-16T02:30:00Z,US/Pacific,SAP Center at San Jose,Florida Panthers,San Jose Sharks,3.0,2.0,OT,4,4,2,6,3,1
+2021020964,20212022,2,2022-03-16T23:30:00Z,US/Eastern,Canadian Tire Centre,Columbus Blue Jackets,Ottawa Senators,4.0,1.0,REG,3,7,0,4,4,2
+2021020965,20212022,2,2022-03-16T23:30:00Z,US/Central,Xcel Energy Center,Boston Bruins,Minnesota Wild,2.0,4.0,REG,3,6,1,8,1,1
+2021020966,20212022,2,2022-03-17T02:00:00Z,US/Mountain,Scotiabank Saddledome,New Jersey Devils,Calgary Flames,3.0,6.0,REG,6,3,1,5,5,0
+2021020967,20212022,2,2022-03-17T02:00:00Z,US/Pacific,Climate Pledge Arena,Tampa Bay Lightning,Seattle Kraken,4.0,1.0,REG,2,6,2,6,4,0
+2021020328,20212022,2,2022-03-17T23:00:00Z,America/New_York,Madison Square Garden,New York Islanders,New York Rangers,2.0,1.0,REG,6,4,0,5,4,1
+2021020968,20212022,2,2022-03-17T23:00:00Z,America/Toronto,Scotiabank Arena,Carolina Hurricanes,Toronto Maple Leafs,2.0,3.0,REG,6,3,1,7,2,1
+2021020969,20212022,2,2022-03-17T23:00:00Z,America/Montreal,Centre Bell,Dallas Stars,Montréal Canadiens,4.0,3.0,OT,6,3,1,5,4,1
+2021020970,20212022,2,2022-03-17T23:00:00Z,US/Eastern,Wells Fargo Center,Nashville Predators,Philadelphia Flyers,4.0,5.0,REG,3,5,2,7,3,0
+2021020971,20212022,2,2022-03-17T23:00:00Z,US/Eastern,Nationwide Arena,Washington Capitals,Columbus Blue Jackets,7.0,2.0,REG,4,4,2,6,3,1
+2021020972,20212022,2,2022-03-18T00:00:00Z,US/Central,Enterprise Center,Pittsburgh Penguins,St. Louis Blues,3.0,2.0,SO,5,3,2,5,4,1
+2021020973,20212022,2,2022-03-18T01:00:00Z,America/Edmonton,Rogers Place,Buffalo Sabres,Edmonton Oilers,1.0,6.0,REG,5,4,1,4,6,0
+2021020974,20212022,2,2022-03-18T02:00:00Z,America/Vancouver,Rogers Arena,Detroit Red Wings,Vancouver Canucks,1.0,0.0,REG,7,2,1,2,7,1
+2021020976,20212022,2,2022-03-18T02:00:00Z,America/Los_Angeles,Crypto.com Arena,San Jose Sharks,Los Angeles Kings,0.0,3.0,REG,5,4,1,4,3,3
+2021020975,20212022,2,2022-03-18T02:30:00Z,US/Pacific,T-Mobile Arena,Florida Panthers,Vegas Golden Knights,3.0,5.0,REG,3,7,0,6,3,1
+2021020977,20212022,2,2022-03-18T23:00:00Z,US/Eastern,Canadian Tire Centre,Philadelphia Flyers,Ottawa Senators,1.0,3.0,REG,2,8,0,4,5,1
+2021020978,20212022,2,2022-03-18T23:00:00Z,US/Eastern,PNC Arena,Washington Capitals,Carolina Hurricanes,4.0,3.0,SO,6,3,1,6,3,1
+2021020979,20212022,2,2022-03-19T00:00:00Z,America/Winnipeg,Canada Life Centre,Boston Bruins,Winnipeg Jets,4.0,2.0,REG,6,3,1,7,2,1
+2021020980,20212022,2,2022-03-19T01:00:00Z,US/Mountain,Scotiabank Saddledome,Buffalo Sabres,Calgary Flames,1.0,0.0,OT,7,2,1,4,6,0
+2021020981,20212022,2,2022-03-19T02:00:00Z,America/Los_Angeles,Honda Center,Florida Panthers,Anaheim Ducks,3.0,0.0,REG,2,6,2,6,3,1
+2021020982,20212022,2,2022-03-19T02:30:00Z,US/Pacific,SAP Center at San Jose,Colorado Avalanche,San Jose Sharks,5.0,3.0,REG,4,4,2,6,3,1
+2021020985,20212022,2,2022-03-19T18:00:00Z,America/New_York,UBS Arena,Dallas Stars,New York Islanders,2.0,4.0,REG,6,3,1,6,3,1
+2021020988,20212022,2,2022-03-19T18:00:00Z,US/Central,Xcel Energy Center,Chicago Blackhawks,Minnesota Wild,1.0,3.0,REG,4,5,1,4,5,1
+2021020989,20212022,2,2022-03-19T19:00:00Z,America/Edmonton,Rogers Place,New Jersey Devils,Edmonton Oilers,3.0,6.0,REG,6,3,1,4,6,0
+2021020992,20212022,2,2022-03-19T20:00:00Z,US/Pacific,T-Mobile Arena,Los Angeles Kings,Vegas Golden Knights,1.0,5.0,REG,4,6,0,5,4,1
+2021020986,20212022,2,2022-03-19T21:00:00Z,US/Eastern,Nationwide Arena,St. Louis Blues,Columbus Blue Jackets,4.0,5.0,REG,4,4,2,4,3,3
+2021020991,20212022,2,2022-03-19T21:00:00Z,America/Phoenix,Gila River Arena,Pittsburgh Penguins,Arizona Coyotes,4.0,1.0,REG,7,3,0,6,3,1
+2021020983,20212022,2,2022-03-19T23:00:00Z,America/Montreal,Centre Bell,Ottawa Senators,Montréal Canadiens,1.0,5.0,REG,5,3,2,3,7,0
+2021020987,20212022,2,2022-03-19T23:00:00Z,US/Central,Bridgestone Arena,Toronto Maple Leafs,Nashville Predators,3.0,6.0,REG,6,4,0,6,3,1
+2021020984,20212022,2,2022-03-20T00:00:00Z,US/Eastern,Amalie Arena,New York Rangers,Tampa Bay Lightning,2.0,1.0,REG,6,4,0,5,5,0
+2021020990,20212022,2,2022-03-20T02:00:00Z,America/Vancouver,Rogers Arena,Calgary Flames,Vancouver Canucks,5.0,2.0,REG,6,3,1,6,2,2
+2021020993,20212022,2,2022-03-20T02:00:00Z,US/Pacific,Climate Pledge Arena,Detroit Red Wings,Seattle Kraken,2.0,4.0,REG,2,6,2,2,7,1
+2021020994,20212022,2,2022-03-20T18:00:00Z,US/Eastern,Wells Fargo Center,New York Islanders,Philadelphia Flyers,1.0,2.0,REG,4,5,1,6,3,1
+2021020995,20212022,2,2022-03-20T21:00:00Z,US/Eastern,Capital One Arena,Dallas Stars,Washington Capitals,3.0,2.0,REG,7,2,1,5,4,1
+2021020996,20212022,2,2022-03-20T22:00:00Z,US/Eastern,PNC Arena,New York Rangers,Carolina Hurricanes,2.0,0.0,REG,5,3,2,6,4,0
+2021020997,20212022,2,2022-03-20T23:00:00Z,America/Chicago,United Center,Winnipeg Jets,Chicago Blackhawks,6.0,4.0,REG,4,5,1,6,3,1
+2021020999,20212022,2,2022-03-20T23:00:00Z,US/Pacific,SAP Center at San Jose,Arizona Coyotes,San Jose Sharks,2.0,4.0,REG,3,5,2,7,3,0
+2021020998,20212022,2,2022-03-21T02:00:00Z,America/Vancouver,Rogers Arena,Buffalo Sabres,Vancouver Canucks,3.0,2.0,OT,5,4,1,5,5,0
+2021020646,20212022,2,2022-03-21T23:00:00Z,America/Montreal,Centre Bell,Boston Bruins,Montréal Canadiens,3.0,2.0,OT,5,3,2,7,2,1
+2021021001,20212022,2,2022-03-22T00:00:00Z,US/Central,Xcel Energy Center,Vegas Golden Knights,Minnesota Wild,0.0,3.0,REG,5,4,1,4,6,0
+2021021002,20212022,2,2022-03-22T01:30:00Z,America/Denver,Ball Arena,Edmonton Oilers,Colorado Avalanche,2.0,3.0,OT,6,3,1,6,3,1
+2021021003,20212022,2,2022-03-22T02:00:00Z,America/Los_Angeles,Honda Center,Nashville Predators,Anaheim Ducks,6.0,3.0,REG,2,6,2,6,4,0
+2021021005,20212022,2,2022-03-22T23:00:00Z,US/Eastern,Prudential Center,New York Rangers,New Jersey Devils,4.0,7.0,REG,4,6,0,7,3,0
+2021021007,20212022,2,2022-03-22T23:00:00Z,US/Eastern,PPG Paints Arena,Columbus Blue Jackets,Pittsburgh Penguins,1.0,5.0,REG,7,2,1,5,3,2
+2021021008,20212022,2,2022-03-22T23:00:00Z,US/Eastern,Capital One Arena,St. Louis Blues,Washington Capitals,5.0,2.0,REG,7,2,1,3,4,3
+2021021009,20212022,2,2022-03-22T23:00:00Z,US/Eastern,PNC Arena,Tampa Bay Lightning,Carolina Hurricanes,2.0,3.0,REG,4,4,2,5,5,0
+2021021004,20212022,2,2022-03-22T23:30:00Z,America/Detroit,Little Caesars Arena,Philadelphia Flyers,Detroit Red Wings,3.0,6.0,REG,2,7,1,4,5,1
+2021021021,20212022,2,2022-03-22T23:30:00Z,America/New_York,UBS Arena,Ottawa Senators,New York Islanders,0.0,3.0,REG,6,3,1,3,7,0
+2021021011,20212022,2,2022-03-23T00:00:00Z,America/Winnipeg,Canada Life Centre,Vegas Golden Knights,Winnipeg Jets,0.0,4.0,REG,6,3,1,4,6,0
+2021021010,20212022,2,2022-03-23T00:30:00Z,US/Central,American Airlines Center,Edmonton Oilers,Dallas Stars,3.0,5.0,REG,6,4,0,6,2,2
+2021021012,20212022,2,2022-03-23T01:00:00Z,US/Mountain,Scotiabank Saddledome,San Jose Sharks,Calgary Flames,4.0,3.0,REG,6,2,2,4,4,2
+2021021017,20212022,2,2022-03-23T02:00:00Z,America/Phoenix,Gila River Arena,Seattle Kraken,Arizona Coyotes,4.0,2.0,REG,6,4,0,3,5,2
+2021021013,20212022,2,2022-03-23T02:30:00Z,America/Los_Angeles,Crypto.com Arena,Nashville Predators,Los Angeles Kings,1.0,6.0,REG,5,4,1,7,3,0
+2021021015,20212022,2,2022-03-23T23:00:00Z,America/Toronto,Scotiabank Arena,New Jersey Devils,Toronto Maple Leafs,2.0,3.0,REG,5,4,1,4,6,0
+2021021014,20212022,2,2022-03-23T23:30:00Z,America/New_York,KeyBank Center,Pittsburgh Penguins,Buffalo Sabres,3.0,4.0,SO,6,4,0,7,2,1
+2021021016,20212022,2,2022-03-24T01:30:00Z,America/Denver,Ball Arena,Vancouver Canucks,Colorado Avalanche,3.0,1.0,REG,6,3,1,4,4,2
+2021021018,20212022,2,2022-03-24T02:00:00Z,America/Los_Angeles,Honda Center,Chicago Blackhawks,Anaheim Ducks,4.0,2.0,REG,2,6,2,3,6,1
+2021021019,20212022,2,2022-03-24T23:00:00Z,US/Eastern,TD Garden,Tampa Bay Lightning,Boston Bruins,2.0,3.0,REG,7,2,1,4,6,0
+2021021020,20212022,2,2022-03-24T23:00:00Z,America/Montreal,Centre Bell,Florida Panthers,Montréal Canadiens,4.0,3.0,REG,4,3,3,7,2,1
+2021021022,20212022,2,2022-03-24T23:00:00Z,US/Eastern,PNC Arena,Dallas Stars,Carolina Hurricanes,4.0,3.0,SO,5,4,1,6,4,0
+2021020545,20212022,2,2022-03-24T23:30:00Z,America/New_York,UBS Arena,Detroit Red Wings,New York Islanders,2.0,5.0,REG,7,2,1,3,6,1
+2021020675,20212022,2,2022-03-25T00:00:00Z,America/Winnipeg,Canada Life Centre,Ottawa Senators,Winnipeg Jets,5.0,2.0,REG,6,3,1,3,7,0
+2021021023,20212022,2,2022-03-25T00:00:00Z,US/Central,Enterprise Center,Philadelphia Flyers,St. Louis Blues,5.0,2.0,REG,3,4,3,4,5,1
+2021021024,20212022,2,2022-03-25T00:00:00Z,US/Central,Xcel Energy Center,Vancouver Canucks,Minnesota Wild,2.0,3.0,OT,6,3,1,5,3,2
+2021021025,20212022,2,2022-03-25T01:00:00Z,America/Edmonton,Rogers Place,San Jose Sharks,Edmonton Oilers,2.0,5.0,REG,5,3,2,4,4,2
+2021021026,20212022,2,2022-03-25T02:00:00Z,US/Pacific,T-Mobile Arena,Nashville Predators,Vegas Golden Knights,1.0,6.0,REG,3,7,0,7,3,0
+2021021027,20212022,2,2022-03-25T02:00:00Z,America/Los_Angeles,Crypto.com Arena,Chicago Blackhawks,Los Angeles Kings,4.0,3.0,SO,6,3,1,4,5,1
+2021021028,20212022,2,2022-03-25T23:00:00Z,America/New_York,KeyBank Center,Washington Capitals,Buffalo Sabres,4.0,3.0,SO,7,3,0,7,2,1
+2021021029,20212022,2,2022-03-25T23:00:00Z,America/New_York,Madison Square Garden,Pittsburgh Penguins,New York Rangers,1.0,5.0,REG,6,4,0,6,2,2
+2021021030,20212022,2,2022-03-26T00:00:00Z,America/Winnipeg,Canada Life Centre,Columbus Blue Jackets,Winnipeg Jets,3.0,4.0,OT,6,4,0,4,4,2
+2021021031,20212022,2,2022-03-26T01:00:00Z,America/Denver,Ball Arena,Philadelphia Flyers,Colorado Avalanche,3.0,6.0,REG,5,4,1,5,4,1
+2021021032,20212022,2,2022-03-26T01:00:00Z,US/Mountain,Scotiabank Saddledome,Arizona Coyotes,Calgary Flames,2.0,4.0,REG,6,3,1,6,4,0
+2021021034,20212022,2,2022-03-26T16:30:00Z,US/Eastern,TD Garden,New York Islanders,Boston Bruins,3.0,6.0,REG,8,1,1,7,2,1
+2021021037,20212022,2,2022-03-26T16:30:00Z,America/Detroit,Little Caesars Arena,Tampa Bay Lightning,Detroit Red Wings,2.0,1.0,OT,2,7,1,4,6,0
+2021021043,20212022,2,2022-03-26T19:00:00Z,US/Pacific,T-Mobile Arena,Chicago Blackhawks,Vegas Golden Knights,4.0,5.0,OT,3,7,0,4,5,1
+2021021035,20212022,2,2022-03-26T23:00:00Z,America/Montreal,Centre Bell,Toronto Maple Leafs,Montréal Canadiens,2.0,4.0,REG,4,3,3,5,4,1
+2021021036,20212022,2,2022-03-26T23:00:00Z,US/Eastern,Canadian Tire Centre,Florida Panthers,Ottawa Senators,4.0,3.0,SO,4,6,0,8,1,1
+2021021038,20212022,2,2022-03-26T23:00:00Z,US/Eastern,Capital One Arena,New Jersey Devils,Washington Capitals,3.0,4.0,REG,7,2,1,4,6,0
+2021021040,20212022,2,2022-03-26T23:00:00Z,US/Central,American Airlines Center,Vancouver Canucks,Dallas Stars,4.0,1.0,REG,6,4,0,4,3,3
+2021021039,20212022,2,2022-03-27T00:00:00Z,US/Central,Enterprise Center,Carolina Hurricanes,St. Louis Blues,7.0,2.0,REG,3,4,3,5,3,2
+2021021041,20212022,2,2022-03-27T00:00:00Z,US/Central,Xcel Energy Center,Columbus Blue Jackets,Minnesota Wild,2.0,3.0,OT,6,3,1,4,4,2
+2021021042,20212022,2,2022-03-27T02:00:00Z,US/Mountain,Scotiabank Saddledome,Edmonton Oilers,Calgary Flames,5.0,9.0,REG,6,3,1,6,3,1
+2021021044,20212022,2,2022-03-27T02:30:00Z,America/Los_Angeles,Crypto.com Arena,Seattle Kraken,Los Angeles Kings,2.0,4.0,REG,5,3,2,4,5,1
+2021021045,20212022,2,2022-03-27T02:30:00Z,US/Pacific,SAP Center at San Jose,Anaheim Ducks,San Jose Sharks,1.0,4.0,REG,4,4,2,1,7,2
+2021021048,20212022,2,2022-03-27T18:00:00Z,America/New_York,UBS Arena,Tampa Bay Lightning,New York Islanders,4.0,1.0,REG,7,2,1,4,6,0
+2021021049,20212022,2,2022-03-27T21:00:00Z,America/New_York,Madison Square Garden,Buffalo Sabres,New York Rangers,4.0,5.0,OT,6,4,0,6,3,1
+2021021050,20212022,2,2022-03-27T21:00:00Z,US/Eastern,PPG Paints Arena,Detroit Red Wings,Pittsburgh Penguins,2.0,11.0,REG,5,3,2,2,6,2
+2021021051,20212022,2,2022-03-27T22:00:00Z,US/Central,Bridgestone Arena,Philadelphia Flyers,Nashville Predators,4.0,5.0,REG,6,4,0,4,5,1
+2021021052,20212022,2,2022-03-27T22:00:00Z,US/Central,Xcel Energy Center,Colorado Avalanche,Minnesota Wild,2.0,3.0,OT,7,2,1,6,3,1
+2021021046,20212022,2,2022-03-27T23:00:00Z,America/Toronto,Scotiabank Arena,Florida Panthers,Toronto Maple Leafs,2.0,5.0,REG,5,4,1,8,1,1
+2021021047,20212022,2,2022-03-27T23:00:00Z,US/Eastern,Prudential Center,Montréal Canadiens,New Jersey Devils,2.0,3.0,SO,4,6,0,4,3,3
+2021021053,20212022,2,2022-03-27T23:00:00Z,America/Winnipeg,Canada Life Centre,Arizona Coyotes,Winnipeg Jets,1.0,2.0,OT,7,3,0,5,5,0
+2021021054,20212022,2,2022-03-28T23:00:00Z,US/Eastern,Capital One Arena,Carolina Hurricanes,Washington Capitals,6.0,1.0,REG,7,2,1,5,3,2
+2021021056,20212022,2,2022-03-28T23:30:00Z,US/Central,Enterprise Center,Vancouver Canucks,St. Louis Blues,1.0,4.0,REG,3,4,3,4,3,3
+2021021055,20212022,2,2022-03-29T00:30:00Z,America/Chicago,United Center,Buffalo Sabres,Chicago Blackhawks,6.0,5.0,REG,4,4,2,5,3,2
+2021021057,20212022,2,2022-03-29T01:30:00Z,America/Edmonton,Rogers Place,Arizona Coyotes,Edmonton Oilers,1.0,6.0,REG,6,3,1,4,5,1
+2021021058,20212022,2,2022-03-29T02:30:00Z,America/Los_Angeles,Crypto.com Arena,Seattle Kraken,Los Angeles Kings,6.0,1.0,REG,5,3,2,4,5,1
+2021021059,20212022,2,2022-03-29T23:00:00Z,US/Eastern,TD Garden,Toronto Maple Leafs,Boston Bruins,6.0,4.0,REG,8,1,1,6,3,1
+2021021060,20212022,2,2022-03-29T23:00:00Z,US/Eastern,Amalie Arena,Carolina Hurricanes,Tampa Bay Lightning,3.0,4.0,OT,4,6,0,5,3,2
+2021021061,20212022,2,2022-03-29T23:00:00Z,US/Eastern,FLA Live Arena,Montréal Canadiens,Florida Panthers,4.0,7.0,REG,7,2,1,3,3,4
+2021021062,20212022,2,2022-03-29T23:00:00Z,US/Eastern,PPG Paints Arena,New York Rangers,Pittsburgh Penguins,3.0,2.0,REG,6,3,1,6,4,0
+2021021063,20212022,2,2022-03-29T23:00:00Z,US/Eastern,Nationwide Arena,New York Islanders,Columbus Blue Jackets,4.0,3.0,REG,4,4,2,6,3,1
+2021021064,20212022,2,2022-03-30T00:00:00Z,US/Central,Bridgestone Arena,Ottawa Senators,Nashville Predators,1.0,4.0,REG,6,4,0,4,5,1
+2021021065,20212022,2,2022-03-30T00:00:00Z,US/Central,Xcel Energy Center,Philadelphia Flyers,Minnesota Wild,1.0,4.0,REG,8,1,1,3,6,1
+2021021066,20212022,2,2022-03-30T01:00:00Z,US/Mountain,Scotiabank Saddledome,Colorado Avalanche,Calgary Flames,2.0,1.0,REG,6,3,1,6,3,1
+2021021067,20212022,2,2022-03-30T02:00:00Z,America/Los_Angeles,Honda Center,Dallas Stars,Anaheim Ducks,3.0,2.0,REG,1,7,2,5,5,0
+2021021068,20212022,2,2022-03-30T23:00:00Z,America/New_York,KeyBank Center,Winnipeg Jets,Buffalo Sabres,3.0,2.0,SO,6,2,2,7,3,0
+2021021069,20212022,2,2022-03-30T23:30:00Z,America/Detroit,Little Caesars Arena,New York Rangers,Detroit Red Wings,5.0,4.0,OT,2,6,2,7,3,0
+2021021070,20212022,2,2022-03-31T01:30:00Z,America/Edmonton,Rogers Place,Los Angeles Kings,Edmonton Oilers,3.0,4.0,SO,7,2,1,4,4,2
+2021021071,20212022,2,2022-03-31T02:00:00Z,America/Vancouver,Rogers Arena,St. Louis Blues,Vancouver Canucks,4.0,3.0,REG,3,4,3,4,4,2
+2021021072,20212022,2,2022-03-31T02:00:00Z,America/Phoenix,Gila River Arena,San Jose Sharks,Arizona Coyotes,2.0,5.0,REG,3,6,1,5,3,2
+2021021073,20212022,2,2022-03-31T02:00:00Z,US/Pacific,Climate Pledge Arena,Vegas Golden Knights,Seattle Kraken,3.0,0.0,REG,4,5,1,4,6,0
+2021021074,20212022,2,2022-03-31T23:00:00Z,US/Eastern,TD Garden,New Jersey Devils,Boston Bruins,1.0,8.0,REG,7,2,1,4,6,0
+2021021075,20212022,2,2022-03-31T23:00:00Z,America/Toronto,Scotiabank Arena,Winnipeg Jets,Toronto Maple Leafs,3.0,7.0,REG,6,3,1,7,3,0
+2021021076,20212022,2,2022-03-31T23:00:00Z,US/Eastern,FLA Live Arena,Chicago Blackhawks,Florida Panthers,0.0,4.0,REG,7,2,1,4,4,2
+2021021077,20212022,2,2022-03-31T23:00:00Z,America/New_York,UBS Arena,Columbus Blue Jackets,New York Islanders,2.0,5.0,REG,6,3,1,4,4,2
+2021021078,20212022,2,2022-03-31T23:00:00Z,US/Eastern,PNC Arena,Montréal Canadiens,Carolina Hurricanes,0.0,4.0,REG,4,3,3,3,3,4
+2021021079,20212022,2,2022-04-01T00:00:00Z,US/Central,Xcel Energy Center,Pittsburgh Penguins,Minnesota Wild,4.0,3.0,OT,8,1,1,6,3,1
+2021021080,20212022,2,2022-04-01T01:00:00Z,America/Denver,Ball Arena,San Jose Sharks,Colorado Avalanche,2.0,4.0,REG,6,3,1,5,4,1
+2021021081,20212022,2,2022-04-01T01:00:00Z,US/Mountain,Scotiabank Saddledome,Los Angeles Kings,Calgary Flames,3.0,2.0,SO,6,3,1,4,4,2
+2021021082,20212022,2,2022-04-01T02:00:00Z,America/Los_Angeles,Honda Center,Dallas Stars,Anaheim Ducks,3.0,2.0,OT,0,8,2,5,5,0
+2021021083,20212022,2,2022-04-01T23:00:00Z,America/New_York,KeyBank Center,Nashville Predators,Buffalo Sabres,3.0,4.0,REG,6,1,3,6,4,0
+2021021085,20212022,2,2022-04-01T23:00:00Z,US/Eastern,Amalie Arena,Chicago Blackhawks,Tampa Bay Lightning,2.0,5.0,REG,5,5,0,3,5,2
+2021021086,20212022,2,2022-04-01T23:00:00Z,America/New_York,Madison Square Garden,New York Islanders,New York Rangers,3.0,0.0,REG,8,2,0,6,3,1
+2021021084,20212022,2,2022-04-01T23:30:00Z,America/Detroit,Little Caesars Arena,Ottawa Senators,Detroit Red Wings,5.0,2.0,REG,2,5,3,3,6,1
+2021021087,20212022,2,2022-04-02T01:00:00Z,America/Edmonton,Rogers Place,St. Louis Blues,Edmonton Oilers,5.0,6.0,OT,7,2,1,5,3,2
+2021021089,20212022,2,2022-04-02T02:00:00Z,US/Pacific,Climate Pledge Arena,Vegas Golden Knights,Seattle Kraken,5.0,2.0,REG,4,5,1,5,5,0
+2021021088,20212022,2,2022-04-02T02:30:00Z,America/Phoenix,Gila River Arena,Anaheim Ducks,Arizona Coyotes,5.0,0.0,REG,3,6,1,0,7,3
+2021021092,20212022,2,2022-04-02T16:30:00Z,US/Eastern,Prudential Center,Florida Panthers,New Jersey Devils,7.0,6.0,OT,3,7,0,7,2,1
+2021021097,20212022,2,2022-04-02T19:00:00Z,America/Denver,Ball Arena,Pittsburgh Penguins,Colorado Avalanche,2.0,3.0,REG,7,2,1,6,3,1
+2021021090,20212022,2,2022-04-02T23:00:00Z,US/Eastern,TD Garden,Columbus Blue Jackets,Boston Bruins,2.0,5.0,REG,8,2,0,4,4,2
+2021021091,20212022,2,2022-04-02T23:00:00Z,US/Eastern,Amalie Arena,Montréal Canadiens,Tampa Bay Lightning,5.0,4.0,SO,6,4,0,3,4,3
+2021021093,20212022,2,2022-04-02T23:00:00Z,US/Eastern,Wells Fargo Center,Toronto Maple Leafs,Philadelphia Flyers,6.0,3.0,REG,3,6,1,6,3,1
+2021021094,20212022,2,2022-04-02T23:00:00Z,US/Eastern,PNC Arena,Minnesota Wild,Carolina Hurricanes,3.0,1.0,REG,4,3,3,7,1,2
+2021021096,20212022,2,2022-04-02T23:00:00Z,America/Winnipeg,Canada Life Centre,Los Angeles Kings,Winnipeg Jets,3.0,2.0,REG,7,3,0,5,3,2
+2021021098,20212022,2,2022-04-03T02:00:00Z,US/Mountain,Scotiabank Saddledome,St. Louis Blues,Calgary Flames,6.0,4.0,REG,5,3,2,4,3,3
+2021021099,20212022,2,2022-04-03T02:30:00Z,US/Pacific,SAP Center at San Jose,Dallas Stars,San Jose Sharks,5.0,4.0,REG,4,5,1,6,4,0
+2021021100,20212022,2,2022-04-03T17:00:00Z,America/New_York,KeyBank Center,Florida Panthers,Buffalo Sabres,5.0,3.0,REG,6,1,3,7,2,1
+2021021101,20212022,2,2022-04-03T17:00:00Z,US/Eastern,Canadian Tire Centre,Detroit Red Wings,Ottawa Senators,2.0,5.0,REG,3,6,1,2,6,2
+2021021102,20212022,2,2022-04-03T20:00:00Z,US/Eastern,Prudential Center,New York Islanders,New Jersey Devils,4.0,3.0,REG,3,6,1,7,3,0
+2021021103,20212022,2,2022-04-03T23:00:00Z,America/New_York,Madison Square Garden,Philadelphia Flyers,New York Rangers,4.0,3.0,SO,7,3,0,3,6,1
+2021021104,20212022,2,2022-04-03T23:00:00Z,US/Eastern,Capital One Arena,Minnesota Wild,Washington Capitals,5.0,1.0,REG,6,3,1,8,1,1
+2021021105,20212022,2,2022-04-03T23:00:00Z,America/Chicago,United Center,Arizona Coyotes,Chicago Blackhawks,3.0,2.0,OT,3,5,2,3,6,1
+2021021106,20212022,2,2022-04-03T23:00:00Z,America/Vancouver,Rogers Arena,Vegas Golden Knights,Vancouver Canucks,3.0,2.0,OT,3,5,2,6,4,0
+2021021107,20212022,2,2022-04-04T00:00:00Z,America/Los_Angeles,Honda Center,Edmonton Oilers,Anaheim Ducks,6.0,1.0,REG,1,6,3,7,2,1
+2021021108,20212022,2,2022-04-04T01:00:00Z,US/Pacific,Climate Pledge Arena,Dallas Stars,Seattle Kraken,1.0,4.0,REG,4,5,1,7,3,0
+2021021110,20212022,2,2022-04-04T23:00:00Z,US/Eastern,Nationwide Arena,Boston Bruins,Columbus Blue Jackets,3.0,2.0,OT,3,5,2,8,2,0
+2021021109,20212022,2,2022-04-04T23:30:00Z,US/Eastern,Amalie Arena,Toronto Maple Leafs,Tampa Bay Lightning,6.0,2.0,REG,6,3,1,7,3,0
+2021021111,20212022,2,2022-04-05T00:00:00Z,US/Central,Enterprise Center,Arizona Coyotes,St. Louis Blues,1.0,5.0,REG,4,3,3,3,6,1
+2021021112,20212022,2,2022-04-05T02:30:00Z,America/Los_Angeles,Crypto.com Arena,Calgary Flames,Los Angeles Kings,3.0,2.0,REG,5,3,2,4,4,2
+2021021113,20212022,2,2022-04-05T23:00:00Z,America/New_York,KeyBank Center,Carolina Hurricanes,Buffalo Sabres,2.0,4.0,REG,5,2,3,4,3,3
+2021021114,20212022,2,2022-04-05T23:00:00Z,America/Montreal,Centre Bell,Ottawa Senators,Montréal Canadiens,6.0,3.0,REG,3,4,3,4,5,1
+2021021116,20212022,2,2022-04-05T23:00:00Z,US/Eastern,FLA Live Arena,Toronto Maple Leafs,Florida Panthers,6.0,7.0,OT,8,2,0,8,2,0
+2021021117,20212022,2,2022-04-05T23:00:00Z,US/Eastern,Prudential Center,New York Rangers,New Jersey Devils,3.0,1.0,REG,2,7,1,6,3,1
+2021021118,20212022,2,2022-04-05T23:00:00Z,US/Eastern,Wells Fargo Center,Columbus Blue Jackets,Philadelphia Flyers,4.0,2.0,REG,4,6,0,2,5,3
+2021021119,20212022,2,2022-04-05T23:00:00Z,US/Eastern,PPG Paints Arena,Colorado Avalanche,Pittsburgh Penguins,6.0,4.0,REG,5,4,1,8,1,1
+2021021115,20212022,2,2022-04-05T23:30:00Z,America/Detroit,Little Caesars Arena,Boston Bruins,Detroit Red Wings,3.0,5.0,REG,2,6,2,8,2,0
+2021021120,20212022,2,2022-04-06T00:00:00Z,US/Central,Bridgestone Arena,Minnesota Wild,Nashville Predators,2.0,6.0,REG,6,4,0,9,0,1
+2021021121,20212022,2,2022-04-06T00:30:00Z,US/Central,American Airlines Center,New York Islanders,Dallas Stars,2.0,3.0,REG,7,3,0,7,3,0
+2021021122,20212022,2,2022-04-06T02:30:00Z,US/Pacific,SAP Center at San Jose,Edmonton Oilers,San Jose Sharks,2.0,1.0,OT,3,6,1,7,2,1
+2021021123,20212022,2,2022-04-06T23:30:00Z,US/Eastern,Capital One Arena,Tampa Bay Lightning,Washington Capitals,3.0,4.0,REG,6,4,0,5,4,1
+2021021125,20212022,2,2022-04-06T23:30:00Z,America/Winnipeg,Canada Life Centre,Detroit Red Wings,Winnipeg Jets,3.0,1.0,REG,6,4,0,3,5,2
+2021021124,20212022,2,2022-04-07T00:00:00Z,US/Central,Enterprise Center,Seattle Kraken,St. Louis Blues,1.0,4.0,REG,5,3,2,5,4,1
+2021021126,20212022,2,2022-04-07T02:00:00Z,US/Pacific,T-Mobile Arena,Vancouver Canucks,Vegas Golden Knights,5.0,1.0,REG,7,3,0,3,4,3
+2021021127,20212022,2,2022-04-07T02:00:00Z,America/Los_Angeles,Honda Center,Calgary Flames,Anaheim Ducks,4.0,2.0,REG,1,7,2,5,3,2
+2021020250,20212022,2,2022-04-07T23:00:00Z,US/Eastern,Canadian Tire Centre,Nashville Predators,Ottawa Senators,3.0,2.0,REG,5,4,1,6,4,0
+2021020512,20212022,2,2022-04-07T23:00:00Z,US/Eastern,Prudential Center,Montréal Canadiens,New Jersey Devils,7.0,4.0,REG,2,7,1,3,4,3
+2021021129,20212022,2,2022-04-07T23:00:00Z,America/New_York,Madison Square Garden,Pittsburgh Penguins,New York Rangers,0.0,3.0,REG,7,2,1,5,4,1
+2021021131,20212022,2,2022-04-07T23:00:00Z,US/Eastern,Nationwide Arena,Philadelphia Flyers,Columbus Blue Jackets,4.0,1.0,REG,2,5,3,3,7,0
+2021021130,20212022,2,2022-04-07T23:30:00Z,US/Eastern,PNC Arena,Buffalo Sabres,Carolina Hurricanes,3.0,5.0,REG,4,3,3,6,1,3
+2021021132,20212022,2,2022-04-08T00:30:00Z,America/Chicago,United Center,Seattle Kraken,Chicago Blackhawks,2.0,0.0,REG,2,5,3,5,5,0
+2021021133,20212022,2,2022-04-08T00:30:00Z,US/Central,American Airlines Center,Toronto Maple Leafs,Dallas Stars,4.0,3.0,OT,7,3,0,7,2,1
+2021021134,20212022,2,2022-04-08T02:00:00Z,America/Phoenix,Gila River Arena,Vancouver Canucks,Arizona Coyotes,5.0,1.0,REG,2,7,1,3,4,3
+2021021135,20212022,2,2022-04-08T02:30:00Z,America/Los_Angeles,Crypto.com Arena,Edmonton Oilers,Los Angeles Kings,3.0,2.0,REG,5,3,2,7,2,1
+2021021136,20212022,2,2022-04-08T02:30:00Z,US/Pacific,SAP Center at San Jose,Calgary Flames,San Jose Sharks,4.0,2.0,REG,3,6,1,5,3,2
+2021021137,20212022,2,2022-04-08T23:00:00Z,US/Eastern,Amalie Arena,Boston Bruins,Tampa Bay Lightning,2.0,1.0,OT,4,5,1,7,3,0
+2021021138,20212022,2,2022-04-08T23:00:00Z,US/Eastern,FLA Live Arena,Buffalo Sabres,Florida Panthers,3.0,4.0,REG,8,2,0,5,2,3
+2021021139,20212022,2,2022-04-08T23:00:00Z,US/Eastern,PNC Arena,New York Islanders,Carolina Hurricanes,2.0,1.0,REG,5,3,2,6,4,0
+2021021140,20212022,2,2022-04-09T00:00:00Z,US/Central,Enterprise Center,Minnesota Wild,St. Louis Blues,3.0,4.0,OT,6,3,1,8,1,1
+2021021141,20212022,2,2022-04-09T00:00:00Z,America/Winnipeg,Canada Life Centre,Colorado Avalanche,Winnipeg Jets,5.0,4.0,OT,5,5,0,8,1,1
+2021021149,20212022,2,2022-04-09T18:00:00Z,US/Central,American Airlines Center,New Jersey Devils,Dallas Stars,3.0,1.0,REG,7,2,1,2,7,1
+2021021146,20212022,2,2022-04-09T19:00:00Z,US/Eastern,PPG Paints Arena,Washington Capitals,Pittsburgh Penguins,6.0,3.0,REG,4,5,1,6,4,0
+2021021148,20212022,2,2022-04-09T22:00:00Z,US/Central,Bridgestone Arena,Florida Panthers,Nashville Predators,4.0,1.0,REG,6,4,0,9,1,0
+2021021142,20212022,2,2022-04-09T23:00:00Z,America/Toronto,Scotiabank Arena,Montréal Canadiens,Toronto Maple Leafs,2.0,3.0,REG,7,2,1,4,4,2
+2021021143,20212022,2,2022-04-09T23:00:00Z,America/Detroit,Little Caesars Arena,Columbus Blue Jackets,Detroit Red Wings,5.0,4.0,OT,3,5,2,2,5,3
+2021021144,20212022,2,2022-04-09T23:00:00Z,America/New_York,Madison Square Garden,Ottawa Senators,New York Rangers,1.0,5.0,REG,7,2,1,5,4,1
+2021021154,20212022,2,2022-04-09T23:00:00Z,US/Pacific,Climate Pledge Arena,Calgary Flames,Seattle Kraken,4.0,1.0,REG,5,5,0,6,3,1
+2021021145,20212022,2,2022-04-09T23:30:00Z,US/Eastern,Wells Fargo Center,Anaheim Ducks,Philadelphia Flyers,5.0,3.0,REG,4,6,0,1,7,2
+2021021147,20212022,2,2022-04-10T00:00:00Z,US/Central,Enterprise Center,New York Islanders,St. Louis Blues,1.0,6.0,REG,7,2,1,7,3,0
+2021021151,20212022,2,2022-04-10T02:00:00Z,America/Edmonton,Rogers Place,Colorado Avalanche,Edmonton Oilers,2.0,1.0,SO,7,2,1,8,1,1
+2021021152,20212022,2,2022-04-10T02:00:00Z,America/Vancouver,Rogers Arena,San Jose Sharks,Vancouver Canucks,2.0,4.0,REG,4,3,3,3,6,1
+2021021153,20212022,2,2022-04-10T02:00:00Z,US/Pacific,T-Mobile Arena,Arizona Coyotes,Vegas Golden Knights,1.0,6.0,REG,7,3,0,2,7,1
+2021021158,20212022,2,2022-04-10T17:30:00Z,US/Eastern,Capital One Arena,Boston Bruins,Washington Capitals,2.0,4.0,REG,6,4,0,8,2,0
+2021021157,20212022,2,2022-04-10T20:00:00Z,US/Eastern,PPG Paints Arena,Nashville Predators,Pittsburgh Penguins,2.0,3.0,OT,3,6,1,6,4,0
+2021021150,20212022,2,2022-04-10T21:00:00Z,US/Central,Xcel Energy Center,Los Angeles Kings,Minnesota Wild,3.0,6.0,REG,7,1,2,4,4,2
+2021021156,20212022,2,2022-04-10T21:00:00Z,US/Eastern,Amalie Arena,Buffalo Sabres,Tampa Bay Lightning,0.0,5.0,REG,4,4,2,4,3,3
+2021021159,20212022,2,2022-04-10T22:00:00Z,US/Eastern,PNC Arena,Anaheim Ducks,Carolina Hurricanes,2.0,5.0,REG,5,3,2,2,7,1
+2021021160,20212022,2,2022-04-10T23:00:00Z,America/Chicago,United Center,Dallas Stars,Chicago Blackhawks,6.0,4.0,REG,2,6,2,6,3,1
+2021021155,20212022,2,2022-04-10T23:30:00Z,US/Eastern,Canadian Tire Centre,Winnipeg Jets,Ottawa Senators,4.0,3.0,REG,4,5,1,5,4,1
+2021021162,20212022,2,2022-04-11T23:00:00Z,America/Montreal,Centre Bell,Winnipeg Jets,Montréal Canadiens,4.0,2.0,REG,3,5,2,5,4,1
+2021021164,20212022,2,2022-04-12T23:00:00Z,US/Eastern,TD Garden,St. Louis Blues,Boston Bruins,4.0,2.0,REG,7,3,0,7,2,1
+2021021165,20212022,2,2022-04-12T23:00:00Z,America/Toronto,Scotiabank Arena,Buffalo Sabres,Toronto Maple Leafs,5.0,2.0,REG,8,1,1,3,4,3
+2021021167,20212022,2,2022-04-12T23:00:00Z,US/Eastern,FLA Live Arena,Anaheim Ducks,Florida Panthers,2.0,3.0,OT,9,1,0,2,7,1
+2021021168,20212022,2,2022-04-12T23:00:00Z,America/New_York,Madison Square Garden,Carolina Hurricanes,New York Rangers,4.0,2.0,REG,7,2,1,5,3,2
+2021021170,20212022,2,2022-04-12T23:00:00Z,US/Eastern,Capital One Arena,Philadelphia Flyers,Washington Capitals,2.0,9.0,REG,6,4,0,3,7,0
+2021020922,20212022,2,2022-04-12T23:30:00Z,America/New_York,UBS Arena,Pittsburgh Penguins,New York Islanders,4.0,5.0,SO,6,4,0,3,6,1
+2021021166,20212022,2,2022-04-12T23:30:00Z,America/Detroit,Little Caesars Arena,Ottawa Senators,Detroit Red Wings,4.0,1.0,REG,3,4,3,4,5,1
+2021021163,20212022,2,2022-04-13T00:00:00Z,US/Central,Xcel Energy Center,Edmonton Oilers,Minnesota Wild,1.0,5.0,REG,7,1,2,7,2,1
+2021021188,20212022,2,2022-04-13T00:00:00Z,US/Central,Bridgestone Arena,San Jose Sharks,Nashville Predators,0.0,1.0,OT,5,4,1,3,6,1
+2021021187,20212022,2,2022-04-13T00:30:00Z,America/Chicago,United Center,Los Angeles Kings,Chicago Blackhawks,5.0,2.0,REG,2,6,2,4,4,2
+2021021174,20212022,2,2022-04-13T01:00:00Z,US/Mountain,Scotiabank Saddledome,Seattle Kraken,Calgary Flames,3.0,5.0,REG,6,3,1,5,5,0
+2021021173,20212022,2,2022-04-13T01:30:00Z,US/Central,American Airlines Center,Tampa Bay Lightning,Dallas Stars,0.0,1.0,REG,6,3,1,5,3,2
+2021021175,20212022,2,2022-04-13T02:00:00Z,America/Vancouver,Rogers Arena,Vegas Golden Knights,Vancouver Canucks,4.0,5.0,OT,5,2,3,7,3,0
+2021021176,20212022,2,2022-04-13T02:00:00Z,America/Phoenix,Gila River Arena,New Jersey Devils,Arizona Coyotes,6.0,2.0,REG,2,7,1,3,6,1
+2021021177,20212022,2,2022-04-13T23:00:00Z,US/Eastern,Wells Fargo Center,New York Rangers,Philadelphia Flyers,4.0,0.0,REG,3,7,0,7,2,1
+2021021178,20212022,2,2022-04-13T23:00:00Z,US/Eastern,Nationwide Arena,Montréal Canadiens,Columbus Blue Jackets,1.0,5.0,REG,2,5,3,3,6,1
+2021021180,20212022,2,2022-04-14T01:30:00Z,America/Denver,Ball Arena,Los Angeles Kings,Colorado Avalanche,3.0,9.0,REG,8,1,1,4,4,2
+2021021181,20212022,2,2022-04-14T23:00:00Z,US/Eastern,TD Garden,Ottawa Senators,Boston Bruins,3.0,2.0,REG,6,4,0,5,4,1
+2021021182,20212022,2,2022-04-14T23:00:00Z,America/New_York,KeyBank Center,St. Louis Blues,Buffalo Sabres,6.0,2.0,REG,4,4,2,8,1,1
+2021021183,20212022,2,2022-04-14T23:00:00Z,America/Toronto,Scotiabank Arena,Washington Capitals,Toronto Maple Leafs,3.0,7.0,REG,7,2,1,6,4,0
+2021021184,20212022,2,2022-04-14T23:00:00Z,US/Eastern,Amalie Arena,Anaheim Ducks,Tampa Bay Lightning,3.0,4.0,OT,5,3,2,2,6,2
+2021021185,20212022,2,2022-04-14T23:00:00Z,US/Eastern,PPG Paints Arena,New York Islanders,Pittsburgh Penguins,3.0,6.0,REG,3,6,1,6,4,0
+2021021186,20212022,2,2022-04-14T23:00:00Z,US/Eastern,PNC Arena,Detroit Red Wings,Carolina Hurricanes,3.0,0.0,REG,6,3,1,2,5,3
+2021021172,20212022,2,2022-04-15T00:00:00Z,US/Central,Bridgestone Arena,Edmonton Oilers,Nashville Predators,4.0,0.0,REG,5,4,1,7,2,1
+2021021189,20212022,2,2022-04-15T00:00:00Z,US/Central,American Airlines Center,Minnesota Wild,Dallas Stars,3.0,2.0,OT,6,3,1,7,1,2
+2021021171,20212022,2,2022-04-15T00:30:00Z,America/Chicago,United Center,San Jose Sharks,Chicago Blackhawks,4.0,5.0,SO,2,6,2,2,6,2
+2021021190,20212022,2,2022-04-15T01:00:00Z,America/Denver,Ball Arena,New Jersey Devils,Colorado Avalanche,1.0,3.0,REG,8,1,1,3,6,1
+2021021191,20212022,2,2022-04-15T01:00:00Z,US/Mountain,Scotiabank Saddledome,Vegas Golden Knights,Calgary Flames,6.0,1.0,REG,7,2,1,6,3,1
+2021021192,20212022,2,2022-04-15T02:00:00Z,America/Vancouver,Rogers Arena,Arizona Coyotes,Vancouver Canucks,1.0,7.0,REG,6,2,2,2,7,1
+2021021193,20212022,2,2022-04-15T23:00:00Z,America/Montreal,Centre Bell,New York Islanders,Montréal Canadiens,3.0,0.0,REG,3,6,1,6,4,0
+2021021194,20212022,2,2022-04-15T23:00:00Z,US/Eastern,FLA Live Arena,Winnipeg Jets,Florida Panthers,1.0,6.0,REG,9,1,0,5,4,1
+2021021196,20212022,2,2022-04-16T16:30:00Z,US/Eastern,TD Garden,Pittsburgh Penguins,Boston Bruins,1.0,2.0,REG,5,5,0,4,5,1
+2021021201,20212022,2,2022-04-16T16:30:00Z,America/New_York,Madison Square Garden,Detroit Red Wings,New York Rangers,0.0,4.0,REG,7,2,1,3,4,3
+2021021203,20212022,2,2022-04-16T16:30:00Z,US/Central,Bridgestone Arena,Chicago Blackhawks,Nashville Predators,3.0,4.0,REG,5,4,1,2,6,2
+2021021202,20212022,2,2022-04-16T19:00:00Z,US/Central,Enterprise Center,Minnesota Wild,St. Louis Blues,5.0,6.0,OT,9,0,1,7,1,2
+2021021195,20212022,2,2022-04-16T20:00:00Z,America/Edmonton,Rogers Place,Vegas Golden Knights,Edmonton Oilers,0.0,4.0,REG,7,2,1,7,2,1
+2021021197,20212022,2,2022-04-16T23:00:00Z,America/New_York,KeyBank Center,Philadelphia Flyers,Buffalo Sabres,3.0,4.0,REG,4,5,1,2,8,0
+2021021198,20212022,2,2022-04-16T23:00:00Z,America/Montreal,Centre Bell,Washington Capitals,Montréal Canadiens,8.0,4.0,REG,2,7,1,6,4,0
+2021021199,20212022,2,2022-04-16T23:00:00Z,US/Eastern,Canadian Tire Centre,Toronto Maple Leafs,Ottawa Senators,5.0,4.0,OT,5,4,1,8,1,1
+2021021200,20212022,2,2022-04-16T23:00:00Z,US/Eastern,Amalie Arena,Winnipeg Jets,Tampa Bay Lightning,4.0,7.0,REG,5,3,2,5,4,1
+2021021204,20212022,2,2022-04-17T00:00:00Z,US/Central,American Airlines Center,San Jose Sharks,Dallas Stars,1.0,2.0,REG,6,2,2,1,6,3
+2021021205,20212022,2,2022-04-17T01:00:00Z,America/Denver,Ball Arena,Carolina Hurricanes,Colorado Avalanche,4.0,7.0,REG,9,0,1,5,4,1
+2021021206,20212022,2,2022-04-17T02:00:00Z,US/Mountain,Scotiabank Saddledome,Arizona Coyotes,Calgary Flames,1.0,9.0,REG,6,3,1,2,7,1
+2021021209,20212022,2,2022-04-17T02:00:00Z,US/Pacific,Climate Pledge Arena,New Jersey Devils,Seattle Kraken,3.0,4.0,SO,4,6,0,3,6,1
+2021021208,20212022,2,2022-04-17T02:30:00Z,America/Los_Angeles,Crypto.com Arena,Columbus Blue Jackets,Los Angeles Kings,1.0,2.0,REG,4,5,1,3,4,3
+2021021210,20212022,2,2022-04-17T17:00:00Z,America/Detroit,Little Caesars Arena,Florida Panthers,Detroit Red Wings,6.0,1.0,REG,3,5,2,9,1,0
+2021021212,20212022,2,2022-04-17T21:00:00Z,US/Eastern,Wells Fargo Center,Buffalo Sabres,Philadelphia Flyers,5.0,3.0,REG,2,8,0,4,5,1
+2021021213,20212022,2,2022-04-17T22:00:00Z,US/Central,Bridgestone Arena,St. Louis Blues,Nashville Predators,8.0,3.0,REG,6,3,1,9,0,1
+2021021214,20212022,2,2022-04-17T22:00:00Z,US/Central,Xcel Energy Center,San Jose Sharks,Minnesota Wild,4.0,5.0,OT,6,1,3,1,6,3
+2021020723,20212022,2,2022-04-17T23:30:00Z,America/Toronto,Scotiabank Arena,New York Islanders,Toronto Maple Leafs,2.0,4.0,REG,8,1,1,7,3,0
+2021021215,20212022,2,2022-04-18T00:30:00Z,America/Los_Angeles,Honda Center,Columbus Blue Jackets,Anaheim Ducks,4.0,6.0,REG,2,5,3,3,5,2
+2021020436,20212022,2,2022-04-19T00:00:00Z,America/Chicago,United Center,Calgary Flames,Chicago Blackhawks,5.0,2.0,REG,1,7,2,6,3,1
+2021021216,20212022,2,2022-04-19T01:00:00Z,America/Denver,Ball Arena,Washington Capitals,Colorado Avalanche,3.0,2.0,REG,9,0,1,7,3,0
+2021020611,20212022,2,2022-04-19T02:00:00Z,US/Pacific,Climate Pledge Arena,Ottawa Senators,Seattle Kraken,2.0,4.0,REG,4,6,0,5,4,1
+2021021218,20212022,2,2022-04-19T02:00:00Z,America/Phoenix,Gila River Arena,Carolina Hurricanes,Arizona Coyotes,5.0,3.0,REG,2,8,0,4,5,1
+2021021219,20212022,2,2022-04-19T02:00:00Z,US/Pacific,T-Mobile Arena,New Jersey Devils,Vegas Golden Knights,3.0,2.0,REG,7,2,1,3,5,2
+2021021217,20212022,2,2022-04-19T02:30:00Z,America/Vancouver,Rogers Arena,Dallas Stars,Vancouver Canucks,2.0,6.0,REG,6,2,2,6,2,2
+2021021220,20212022,2,2022-04-19T23:00:00Z,America/Toronto,Scotiabank Arena,Philadelphia Flyers,Toronto Maple Leafs,2.0,5.0,REG,8,1,1,2,8,0
+2021021221,20212022,2,2022-04-19T23:00:00Z,America/Montreal,Centre Bell,Minnesota Wild,Montréal Canadiens,2.0,0.0,REG,2,8,0,6,1,3
+2021021222,20212022,2,2022-04-19T23:00:00Z,US/Eastern,Amalie Arena,Detroit Red Wings,Tampa Bay Lightning,4.0,3.0,REG,5,3,2,3,5,2
+2021021224,20212022,2,2022-04-19T23:00:00Z,America/New_York,Madison Square Garden,Winnipeg Jets,New York Rangers,0.0,3.0,REG,7,2,1,4,5,1
+2021021223,20212022,2,2022-04-19T23:30:00Z,America/New_York,UBS Arena,Florida Panthers,New York Islanders,3.0,2.0,OT,6,4,0,10,0,0
+2021020443,20212022,2,2022-04-20T00:00:00Z,US/Central,Bridgestone Arena,Calgary Flames,Nashville Predators,2.0,3.0,SO,5,4,1,7,2,1
+2021021225,20212022,2,2022-04-20T00:00:00Z,US/Central,Enterprise Center,Boston Bruins,St. Louis Blues,3.0,2.0,OT,9,0,1,5,5,0
+2021020625,20212022,2,2022-04-20T02:00:00Z,America/Vancouver,Rogers Arena,Ottawa Senators,Vancouver Canucks,4.0,3.0,SO,7,2,1,5,4,1
+2021021226,20212022,2,2022-04-20T02:00:00Z,America/Los_Angeles,Honda Center,Los Angeles Kings,Anaheim Ducks,2.0,1.0,REG,3,4,3,4,5,1
+2021021227,20212022,2,2022-04-20T02:30:00Z,US/Pacific,SAP Center at San Jose,Columbus Blue Jackets,San Jose Sharks,2.0,3.0,REG,0,6,4,3,6,1
+2021021229,20212022,2,2022-04-21T00:30:00Z,America/Edmonton,Rogers Place,Dallas Stars,Edmonton Oilers,2.0,5.0,REG,8,1,1,5,3,2
+2021021230,20212022,2,2022-04-21T02:00:00Z,America/Phoenix,Gila River Arena,Chicago Blackhawks,Arizona Coyotes,4.0,3.0,OT,2,8,0,1,8,1
+2021021231,20212022,2,2022-04-21T02:00:00Z,US/Pacific,T-Mobile Arena,Washington Capitals,Vegas Golden Knights,3.0,4.0,OT,6,3,1,7,3,0
+2021021232,20212022,2,2022-04-21T02:00:00Z,US/Pacific,Climate Pledge Arena,Colorado Avalanche,Seattle Kraken,2.0,3.0,REG,5,5,0,9,1,0
+2021021233,20212022,2,2022-04-21T23:00:00Z,America/Montreal,Centre Bell,Philadelphia Flyers,Montréal Canadiens,6.0,3.0,REG,2,8,0,2,8,0
+2021021235,20212022,2,2022-04-21T23:00:00Z,US/Eastern,FLA Live Arena,Detroit Red Wings,Florida Panthers,2.0,5.0,REG,10,0,0,4,5,1
+2021021236,20212022,2,2022-04-21T23:00:00Z,US/Eastern,Prudential Center,Buffalo Sabres,New Jersey Devils,5.0,2.0,REG,3,5,2,5,5,0
+2021021238,20212022,2,2022-04-21T23:00:00Z,US/Eastern,PPG Paints Arena,Boston Bruins,Pittsburgh Penguins,0.0,4.0,REG,3,6,1,6,4,0
+2021021239,20212022,2,2022-04-21T23:00:00Z,US/Eastern,PNC Arena,Winnipeg Jets,Carolina Hurricanes,2.0,4.0,REG,5,5,0,3,6,1
+2021021237,20212022,2,2022-04-21T23:30:00Z,America/New_York,UBS Arena,New York Rangers,New York Islanders,6.0,3.0,REG,5,4,1,7,2,1
+2021021234,20212022,2,2022-04-22T00:00:00Z,US/Eastern,Amalie Arena,Toronto Maple Leafs,Tampa Bay Lightning,1.0,8.0,REG,4,4,2,8,1,1
+2021021240,20212022,2,2022-04-22T00:00:00Z,US/Central,Xcel Energy Center,Vancouver Canucks,Minnesota Wild,3.0,6.0,REG,7,1,2,6,2,2
+2021021241,20212022,2,2022-04-22T01:00:00Z,US/Mountain,Scotiabank Saddledome,Dallas Stars,Calgary Flames,2.0,4.0,REG,7,2,1,4,4,2
+2021021242,20212022,2,2022-04-22T02:30:00Z,America/Los_Angeles,Crypto.com Arena,Chicago Blackhawks,Los Angeles Kings,1.0,4.0,REG,5,4,1,2,7,1
+2021021243,20212022,2,2022-04-22T02:30:00Z,US/Pacific,SAP Center at San Jose,St. Louis Blues,San Jose Sharks,3.0,1.0,REG,1,5,4,9,0,1
+2021021244,20212022,2,2022-04-22T23:00:00Z,US/Eastern,Nationwide Arena,Ottawa Senators,Columbus Blue Jackets,2.0,1.0,SO,3,6,1,5,4,1
+2021021245,20212022,2,2022-04-23T00:00:00Z,US/Central,Xcel Energy Center,Seattle Kraken,Minnesota Wild,3.0,6.0,REG,7,1,2,5,5,0
+2021021246,20212022,2,2022-04-23T01:00:00Z,America/Edmonton,Rogers Place,Colorado Avalanche,Edmonton Oilers,3.0,6.0,REG,8,1,1,8,2,0
+2021021247,20212022,2,2022-04-23T02:30:00Z,America/Phoenix,Gila River Arena,Washington Capitals,Arizona Coyotes,2.0,0.0,REG,1,8,1,6,3,1
+2021021249,20212022,2,2022-04-23T16:30:00Z,America/New_York,KeyBank Center,New York Islanders,Buffalo Sabres,3.0,5.0,REG,5,5,0,4,5,1
+2021021251,20212022,2,2022-04-23T16:30:00Z,America/Detroit,Little Caesars Arena,Pittsburgh Penguins,Detroit Red Wings,7.0,2.0,REG,4,5,1,4,5,1
+2021021254,20212022,2,2022-04-23T16:30:00Z,US/Eastern,Prudential Center,Carolina Hurricanes,New Jersey Devils,3.0,2.0,OT,3,5,2,5,5,0
+2021021248,20212022,2,2022-04-23T19:00:00Z,US/Eastern,TD Garden,New York Rangers,Boston Bruins,1.0,3.0,REG,5,5,0,7,2,1
+2021021250,20212022,2,2022-04-23T23:00:00Z,US/Eastern,Canadian Tire Centre,Montréal Canadiens,Ottawa Senators,4.0,6.0,REG,5,4,1,2,8,0
+2021021252,20212022,2,2022-04-23T23:00:00Z,US/Eastern,Amalie Arena,Nashville Predators,Tampa Bay Lightning,2.0,6.0,REG,4,4,2,5,4,1
+2021021253,20212022,2,2022-04-23T23:00:00Z,US/Eastern,FLA Live Arena,Toronto Maple Leafs,Florida Panthers,2.0,3.0,OT,10,0,0,7,2,1
+2021021255,20212022,2,2022-04-24T00:00:00Z,US/Central,American Airlines Center,Seattle Kraken,Dallas Stars,2.0,3.0,REG,4,4,2,5,5,0
+2021021259,20212022,2,2022-04-24T00:00:00Z,US/Pacific,SAP Center at San Jose,Chicago Blackhawks,San Jose Sharks,1.0,4.0,REG,1,5,4,2,7,1
+2021021256,20212022,2,2022-04-24T02:00:00Z,US/Mountain,Scotiabank Saddledome,Vancouver Canucks,Calgary Flames,3.0,6.0,REG,8,1,1,6,2,2
+2021021257,20212022,2,2022-04-24T02:00:00Z,America/Phoenix,Gila River Arena,St. Louis Blues,Arizona Coyotes,5.0,4.0,OT,1,8,1,9,0,1
+2021021258,20212022,2,2022-04-24T02:30:00Z,America/Los_Angeles,Crypto.com Arena,Anaheim Ducks,Los Angeles Kings,2.0,4.0,REG,6,4,0,3,4,3
+2021021261,20212022,2,2022-04-24T17:00:00Z,US/Eastern,Prudential Center,Detroit Red Wings,New Jersey Devils,3.0,0.0,REG,3,5,2,4,5,1
+2021021262,20212022,2,2022-04-24T17:00:00Z,America/New_York,UBS Arena,Carolina Hurricanes,New York Islanders,5.0,2.0,REG,3,6,1,6,4,0
+2021021266,20212022,2,2022-04-24T17:00:00Z,US/Eastern,Nationwide Arena,Edmonton Oilers,Columbus Blue Jackets,2.0,5.0,REG,3,5,2,8,1,1
+2021021264,20212022,2,2022-04-24T20:00:00Z,US/Eastern,Wells Fargo Center,Pittsburgh Penguins,Philadelphia Flyers,1.0,4.0,REG,3,7,0,4,5,1
+2021020471,20212022,2,2022-04-24T23:00:00Z,America/Montreal,Centre Bell,Boston Bruins,Montréal Canadiens,5.0,3.0,REG,1,9,0,5,5,0
+2021021260,20212022,2,2022-04-24T23:00:00Z,US/Eastern,FLA Live Arena,Tampa Bay Lightning,Florida Panthers,8.0,4.0,REG,10,0,0,5,4,1
+2021021265,20212022,2,2022-04-24T23:00:00Z,US/Eastern,Capital One Arena,Toronto Maple Leafs,Washington Capitals,4.0,3.0,SO,7,2,1,6,2,2
+2021021268,20212022,2,2022-04-24T23:00:00Z,America/Winnipeg,Canada Life Centre,Colorado Avalanche,Winnipeg Jets,1.0,4.0,REG,2,7,1,7,3,0
+2021021267,20212022,2,2022-04-25T00:00:00Z,US/Central,Bridgestone Arena,Minnesota Wild,Nashville Predators,5.0,4.0,OT,5,4,1,7,1,2
+2021021270,20212022,2,2022-04-25T00:30:00Z,America/Los_Angeles,Honda Center,St. Louis Blues,Anaheim Ducks,6.0,3.0,REG,3,5,2,9,0,1
+2021021269,20212022,2,2022-04-25T02:00:00Z,US/Pacific,T-Mobile Arena,San Jose Sharks,Vegas Golden Knights,5.0,4.0,SO,6,3,1,2,4,4
+2021021271,20212022,2,2022-04-26T00:00:00Z,America/Chicago,United Center,Philadelphia Flyers,Chicago Blackhawks,1.0,3.0,REG,2,7,1,3,7,0
+2021020829,20212022,2,2022-04-26T23:00:00Z,America/Toronto,Scotiabank Arena,Detroit Red Wings,Toronto Maple Leafs,0.0,3.0,REG,7,2,1,4,5,1
+2021021272,20212022,2,2022-04-26T23:00:00Z,US/Eastern,TD Garden,Florida Panthers,Boston Bruins,2.0,4.0,REG,5,5,0,9,1,0
+2021021274,20212022,2,2022-04-26T23:00:00Z,US/Eastern,Canadian Tire Centre,New Jersey Devils,Ottawa Senators,4.0,5.0,OT,5,4,1,3,5,2
+2021021276,20212022,2,2022-04-26T23:00:00Z,US/Eastern,Amalie Arena,Columbus Blue Jackets,Tampa Bay Lightning,1.0,4.0,REG,6,3,1,4,4,2
+2021021277,20212022,2,2022-04-26T23:00:00Z,America/New_York,Madison Square Garden,Carolina Hurricanes,New York Rangers,4.0,3.0,REG,7,2,1,7,3,0
+2021021278,20212022,2,2022-04-26T23:00:00Z,US/Eastern,PPG Paints Arena,Edmonton Oilers,Pittsburgh Penguins,5.0,1.0,REG,4,5,1,7,2,1
+2021021279,20212022,2,2022-04-26T23:00:00Z,US/Eastern,Capital One Arena,New York Islanders,Washington Capitals,4.0,1.0,REG,7,1,2,3,6,1
+2021021280,20212022,2,2022-04-27T00:00:00Z,US/Central,Bridgestone Arena,Calgary Flames,Nashville Predators,5.0,4.0,OT,4,4,2,8,1,1
+2021021282,20212022,2,2022-04-27T00:00:00Z,US/Central,Xcel Energy Center,Arizona Coyotes,Minnesota Wild,5.0,3.0,REG,8,0,2,0,8,2
+2021021281,20212022,2,2022-04-27T00:30:00Z,US/Central,American Airlines Center,Vegas Golden Knights,Dallas Stars,2.0,3.0,SO,4,4,2,5,3,2
+2021021283,20212022,2,2022-04-27T01:30:00Z,America/Denver,Ball Arena,St. Louis Blues,Colorado Avalanche,3.0,5.0,REG,6,4,0,9,0,1
+2021021284,20212022,2,2022-04-27T02:00:00Z,America/Vancouver,Rogers Arena,Seattle Kraken,Vancouver Canucks,2.0,5.0,REG,6,2,2,5,5,0
+2021021285,20212022,2,2022-04-27T02:30:00Z,US/Pacific,SAP Center at San Jose,Anaheim Ducks,San Jose Sharks,5.0,2.0,REG,3,4,3,2,6,2
+2021020505,20212022,2,2022-04-27T23:30:00Z,America/New_York,Madison Square Garden,Montréal Canadiens,New York Rangers,4.0,3.0,REG,7,3,0,1,9,0
+2021021288,20212022,2,2022-04-27T23:30:00Z,America/Winnipeg,Canada Life Centre,Philadelphia Flyers,Winnipeg Jets,0.0,4.0,REG,3,6,1,3,7,0
+2021021286,20212022,2,2022-04-28T00:30:00Z,America/Chicago,United Center,Vegas Golden Knights,Chicago Blackhawks,3.0,4.0,SO,3,7,0,4,3,3
+2021021287,20212022,2,2022-04-28T00:30:00Z,US/Central,American Airlines Center,Arizona Coyotes,Dallas Stars,4.0,3.0,OT,5,4,1,1,7,2
+2021021289,20212022,2,2022-04-28T02:00:00Z,US/Pacific,Climate Pledge Arena,Los Angeles Kings,Seattle Kraken,5.0,3.0,REG,4,6,0,6,4,0
+2021020513,20212022,2,2022-04-28T23:00:00Z,America/New_York,UBS Arena,Washington Capitals,New York Islanders,1.0,5.0,REG,3,6,1,6,2,2
+2021021290,20212022,2,2022-04-28T23:00:00Z,US/Eastern,TD Garden,Buffalo Sabres,Boston Bruins,0.0,5.0,REG,6,4,0,6,4,0
+2021021291,20212022,2,2022-04-28T23:00:00Z,US/Eastern,Canadian Tire Centre,Florida Panthers,Ottawa Senators,4.0,0.0,REG,6,3,1,8,2,0
+2021021294,20212022,2,2022-04-28T23:00:00Z,US/Eastern,PNC Arena,New Jersey Devils,Carolina Hurricanes,3.0,6.0,REG,7,3,0,3,4,3
+2021021305,20212022,2,2022-04-28T23:00:00Z,US/Eastern,Nationwide Arena,Tampa Bay Lightning,Columbus Blue Jackets,2.0,5.0,REG,4,5,1,7,2,1
+2021021295,20212022,2,2022-04-29T00:00:00Z,US/Central,Xcel Energy Center,Calgary Flames,Minnesota Wild,2.0,3.0,OT,8,1,1,8,1,1
+2021021296,20212022,2,2022-04-29T01:00:00Z,America/Denver,Ball Arena,Nashville Predators,Colorado Avalanche,5.0,4.0,SO,6,4,0,3,4,3
+2021021297,20212022,2,2022-04-29T01:00:00Z,America/Edmonton,Rogers Place,San Jose Sharks,Edmonton Oilers,4.0,5.0,OT,7,2,1,3,4,3
+2021021310,20212022,2,2022-04-29T02:00:00Z,America/Vancouver,Rogers Arena,Los Angeles Kings,Vancouver Canucks,2.0,3.0,OT,7,2,1,6,4,0
+2021021169,20212022,2,2022-04-29T23:00:00Z,US/Eastern,PPG Paints Arena,Columbus Blue Jackets,Pittsburgh Penguins,3.0,5.0,REG,4,5,1,4,5,1
+2021021298,20212022,2,2022-04-29T23:00:00Z,America/New_York,KeyBank Center,Chicago Blackhawks,Buffalo Sabres,2.0,3.0,OT,5,5,0,4,6,0
+2021021299,20212022,2,2022-04-29T23:00:00Z,America/Toronto,Scotiabank Arena,Boston Bruins,Toronto Maple Leafs,2.0,5.0,REG,7,2,1,6,4,0
+2021021300,20212022,2,2022-04-29T23:00:00Z,America/Montreal,Centre Bell,Florida Panthers,Montréal Canadiens,2.0,10.0,REG,1,9,0,8,2,0
+2021021301,20212022,2,2022-04-29T23:00:00Z,US/Eastern,Prudential Center,Detroit Red Wings,New Jersey Devils,5.0,3.0,REG,3,4,3,3,6,1
+2021021302,20212022,2,2022-04-29T23:00:00Z,America/New_York,Madison Square Garden,Washington Capitals,New York Rangers,2.0,3.0,REG,6,4,0,5,3,2
+2021021303,20212022,2,2022-04-29T23:00:00Z,US/Eastern,Wells Fargo Center,Ottawa Senators,Philadelphia Flyers,4.0,2.0,REG,2,8,0,6,3,1
+2021021292,20212022,2,2022-04-29T23:30:00Z,America/New_York,UBS Arena,Tampa Bay Lightning,New York Islanders,6.0,4.0,REG,4,5,1,7,3,0
+2021021306,20212022,2,2022-04-30T00:00:00Z,US/Central,Enterprise Center,Vegas Golden Knights,St. Louis Blues,7.0,4.0,REG,8,1,1,3,3,4
+2021021308,20212022,2,2022-04-30T00:00:00Z,US/Central,Xcel Energy Center,Colorado Avalanche,Minnesota Wild,1.0,4.0,REG,8,1,1,5,4,1
+2021021309,20212022,2,2022-04-30T00:00:00Z,America/Winnipeg,Canada Life Centre,Calgary Flames,Winnipeg Jets,1.0,3.0,REG,4,5,1,7,1,2
+2021021307,20212022,2,2022-04-30T00:30:00Z,US/Central,American Airlines Center,Anaheim Ducks,Dallas Stars,2.0,4.0,REG,5,3,2,3,5,2
+2021021207,20212022,2,2022-04-30T01:00:00Z,America/Edmonton,Rogers Place,Vancouver Canucks,Edmonton Oilers,2.0,3.0,SO,7,2,1,7,2,1
+2021021312,20212022,2,2022-04-30T02:00:00Z,US/Pacific,Climate Pledge Arena,San Jose Sharks,Seattle Kraken,0.0,3.0,REG,4,6,0,3,3,4
+2021021311,20212022,2,2022-04-30T02:30:00Z,America/Phoenix,Gila River Arena,Nashville Predators,Arizona Coyotes,4.0,5.0,REG,2,6,2,4,3,3
+2021021179,20212022,2,2022-05-01T18:00:00Z,America/Winnipeg,Canada Life Centre,Seattle Kraken,Winnipeg Jets,3.0,4.0,REG,5,4,1,4,6,0
+2021030131,20212022,3,2022-05-02T23:00:00Z,US/Eastern,PNC Arena,Boston Bruins,Carolina Hurricanes,1.0,5.0,REG,8,2,0,6,4,0
+2021030121,20212022,3,2022-05-02T23:30:00Z,America/Toronto,Scotiabank Arena,Tampa Bay Lightning,Toronto Maple Leafs,0.0,5.0,REG,7,2,1,7,3,0
+2021030161,20212022,3,2022-05-03T01:30:00Z,US/Central,Xcel Energy Center,St. Louis Blues,Minnesota Wild,4.0,0.0,REG,8,1,1,7,2,1
+2021030181,20212022,3,2022-05-03T02:00:00Z,America/Edmonton,Rogers Place,Los Angeles Kings,Edmonton Oilers,4.0,3.0,REG,7,2,1,6,3,1
+2021030141,20212022,3,2022-05-03T23:00:00Z,America/New_York,Madison Square Garden,Pittsburgh Penguins,New York Rangers,4.0,3.0,OT,6,4,0,5,4,1
+2021030111,20212022,3,2022-05-03T23:30:00Z,US/Eastern,FLA Live Arena,Washington Capitals,Florida Panthers,4.0,2.0,REG,7,3,0,4,4,2
+2021030151,20212022,3,2022-05-04T01:30:00Z,America/Denver,Ball Arena,Nashville Predators,Colorado Avalanche,2.0,7.0,REG,4,5,1,4,4,2
+2021030171,20212022,3,2022-05-04T02:00:00Z,US/Mountain,Scotiabank Saddledome,Dallas Stars,Calgary Flames,0.0,1.0,REG,6,2,2,5,3,2
+2021030132,20212022,3,2022-05-04T23:00:00Z,US/Eastern,PNC Arena,Boston Bruins,Carolina Hurricanes,2.0,5.0,REG,8,2,0,6,4,0
+2021030122,20212022,3,2022-05-04T23:30:00Z,America/Toronto,Scotiabank Arena,Tampa Bay Lightning,Toronto Maple Leafs,5.0,3.0,REG,8,1,1,7,3,0
+2021030162,20212022,3,2022-05-05T01:30:00Z,US/Central,Xcel Energy Center,St. Louis Blues,Minnesota Wild,2.0,6.0,REG,7,2,1,7,2,1
+2021030182,20212022,3,2022-05-05T02:00:00Z,America/Edmonton,Rogers Place,Los Angeles Kings,Edmonton Oilers,0.0,6.0,REG,7,3,0,7,2,1
+2021030142,20212022,3,2022-05-05T23:00:00Z,America/New_York,Madison Square Garden,Pittsburgh Penguins,New York Rangers,2.0,5.0,REG,5,4,1,6,3,1
+2021030112,20212022,3,2022-05-05T23:30:00Z,US/Eastern,FLA Live Arena,Washington Capitals,Florida Panthers,1.0,5.0,REG,6,4,0,4,4,2
+2021030152,20212022,3,2022-05-06T01:30:00Z,America/Denver,Ball Arena,Nashville Predators,Colorado Avalanche,1.0,2.0,OT,4,5,1,3,5,2
+2021030172,20212022,3,2022-05-06T02:00:00Z,US/Mountain,Scotiabank Saddledome,Dallas Stars,Calgary Flames,2.0,0.0,REG,6,2,2,4,4,2
+2021030133,20212022,3,2022-05-06T23:00:00Z,US/Eastern,TD Garden,Carolina Hurricanes,Boston Bruins,2.0,4.0,REG,6,4,0,8,2,0
+2021030123,20212022,3,2022-05-06T23:30:00Z,US/Eastern,Amalie Arena,Toronto Maple Leafs,Tampa Bay Lightning,5.0,2.0,REG,7,3,0,7,2,1
+2021030163,20212022,3,2022-05-07T01:30:00Z,US/Central,Enterprise Center,Minnesota Wild,St. Louis Blues,5.0,1.0,REG,6,3,1,8,2,0
+2021030183,20212022,3,2022-05-07T02:00:00Z,America/Los_Angeles,Crypto.com Arena,Edmonton Oilers,Los Angeles Kings,8.0,2.0,REG,7,2,1,8,2,0
+2021030113,20212022,3,2022-05-07T17:00:00Z,US/Eastern,Capital One Arena,Florida Panthers,Washington Capitals,1.0,6.0,REG,4,4,2,6,4,0
+2021030153,20212022,3,2022-05-07T20:30:00Z,US/Central,Bridgestone Arena,Colorado Avalanche,Nashville Predators,7.0,3.0,REG,3,4,3,4,5,1
+2021030143,20212022,3,2022-05-07T23:00:00Z,US/Eastern,PPG Paints Arena,New York Rangers,Pittsburgh Penguins,4.0,7.0,REG,5,4,1,6,3,1
+2021030173,20212022,3,2022-05-08T01:30:00Z,US/Central,American Airlines Center,Calgary Flames,Dallas Stars,2.0,4.0,REG,5,4,1,6,2,2
+2021030134,20212022,3,2022-05-08T16:30:00Z,US/Eastern,TD Garden,Carolina Hurricanes,Boston Bruins,2.0,5.0,REG,6,4,0,8,2,0
+2021030164,20212022,3,2022-05-08T20:30:00Z,US/Central,Enterprise Center,Minnesota Wild,St. Louis Blues,2.0,5.0,REG,5,4,1,8,2,0
+2021030124,20212022,3,2022-05-08T23:00:00Z,US/Eastern,Amalie Arena,Toronto Maple Leafs,Tampa Bay Lightning,3.0,7.0,REG,6,4,0,7,2,1
+2021030184,20212022,3,2022-05-09T02:00:00Z,America/Los_Angeles,Crypto.com Arena,Edmonton Oilers,Los Angeles Kings,0.0,4.0,REG,6,3,1,8,2,0
+2021030114,20212022,3,2022-05-09T23:00:00Z,US/Eastern,Capital One Arena,Florida Panthers,Washington Capitals,3.0,2.0,OT,4,4,2,5,5,0
+2021030144,20212022,3,2022-05-09T23:00:00Z,US/Eastern,PPG Paints Arena,New York Rangers,Pittsburgh Penguins,2.0,7.0,REG,6,4,0,5,4,1
+2021030154,20212022,3,2022-05-10T01:30:00Z,US/Central,Bridgestone Arena,Colorado Avalanche,Nashville Predators,5.0,3.0,REG,2,5,3,4,5,1
+2021030174,20212022,3,2022-05-10T01:30:00Z,US/Central,American Airlines Center,Calgary Flames,Dallas Stars,4.0,1.0,REG,5,4,1,5,3,2
+2021030135,20212022,3,2022-05-10T23:00:00Z,US/Eastern,PNC Arena,Boston Bruins,Carolina Hurricanes,1.0,5.0,REG,8,2,0,6,4,0
+2021030125,20212022,3,2022-05-10T23:30:00Z,America/Toronto,Scotiabank Arena,Tampa Bay Lightning,Toronto Maple Leafs,3.0,4.0,REG,6,3,1,7,3,0
+2021030165,20212022,3,2022-05-11T01:30:00Z,US/Central,Xcel Energy Center,St. Louis Blues,Minnesota Wild,5.0,2.0,REG,7,3,0,5,4,1
+2021030185,20212022,3,2022-05-11T02:00:00Z,America/Edmonton,Rogers Place,Los Angeles Kings,Edmonton Oilers,5.0,4.0,OT,7,3,0,7,2,1
+2021030145,20212022,3,2022-05-11T23:00:00Z,America/New_York,Madison Square Garden,Pittsburgh Penguins,New York Rangers,3.0,5.0,REG,4,5,1,6,4,0
+2021030115,20212022,3,2022-05-11T23:30:00Z,US/Eastern,FLA Live Arena,Washington Capitals,Florida Panthers,3.0,5.0,REG,5,5,0,3,4,3
+2021030175,20212022,3,2022-05-12T01:30:00Z,US/Mountain,Scotiabank Saddledome,Dallas Stars,Calgary Flames,1.0,3.0,REG,5,3,2,5,4,1
+2021030136,20212022,3,2022-05-12T23:00:00Z,US/Eastern,TD Garden,Carolina Hurricanes,Boston Bruins,2.0,5.0,REG,6,4,0,8,2,0
+2021030126,20212022,3,2022-05-12T23:30:00Z,US/Eastern,Amalie Arena,Toronto Maple Leafs,Tampa Bay Lightning,3.0,4.0,OT,6,4,0,6,3,1
+2021030166,20212022,3,2022-05-13T01:30:00Z,US/Central,Enterprise Center,Minnesota Wild,St. Louis Blues,1.0,5.0,REG,6,4,0,6,4,0
+2021030186,20212022,3,2022-05-13T02:00:00Z,America/Los_Angeles,Crypto.com Arena,Edmonton Oilers,Los Angeles Kings,4.0,2.0,REG,7,2,1,6,3,1
+2021030146,20212022,3,2022-05-13T23:00:00Z,US/Eastern,PPG Paints Arena,New York Rangers,Pittsburgh Penguins,5.0,3.0,REG,6,4,0,4,5,1
+2021030116,20212022,3,2022-05-13T23:30:00Z,US/Eastern,Capital One Arena,Florida Panthers,Washington Capitals,4.0,3.0,OT,3,5,2,5,5,0
+2021030176,20212022,3,2022-05-14T01:30:00Z,US/Central,American Airlines Center,Calgary Flames,Dallas Stars,2.0,4.0,REG,5,4,1,6,3,1
+2021030137,20212022,3,2022-05-14T20:30:00Z,US/Eastern,PNC Arena,Boston Bruins,Carolina Hurricanes,2.0,3.0,REG,7,3,0,6,4,0
+2021030127,20212022,3,2022-05-14T23:00:00Z,America/Toronto,Scotiabank Arena,Tampa Bay Lightning,Toronto Maple Leafs,2.0,1.0,REG,6,2,2,6,4,0
+2021030187,20212022,3,2022-05-15T02:00:00Z,America/Edmonton,Rogers Place,Los Angeles Kings,Edmonton Oilers,0.0,2.0,REG,6,3,1,6,3,1
+2021030147,20212022,3,2022-05-15T23:00:00Z,America/New_York,Madison Square Garden,Pittsburgh Penguins,New York Rangers,3.0,4.0,OT,4,5,1,5,5,0
+2021030177,20212022,3,2022-05-16T01:30:00Z,US/Mountain,Scotiabank Saddledome,Dallas Stars,Calgary Flames,2.0,3.0,OT,5,4,1,6,3,1
+2021030211,20212022,3,2022-05-17T23:00:00Z,US/Eastern,FLA Live Arena,Tampa Bay Lightning,Florida Panthers,4.0,1.0,REG,5,5,0,6,4,0
+2021030231,20212022,3,2022-05-18T01:30:00Z,America/Denver,Ball Arena,St. Louis Blues,Colorado Avalanche,2.0,3.0,OT,5,4,1,6,4,0
+2021030221,20212022,3,2022-05-18T23:00:00Z,US/Eastern,PNC Arena,New York Rangers,Carolina Hurricanes,1.0,2.0,OT,7,3,0,5,4,1
+2021030241,20212022,3,2022-05-19T01:30:00Z,US/Mountain,Scotiabank Saddledome,Edmonton Oilers,Calgary Flames,6.0,9.0,REG,5,4,1,7,2,1
+2021030212,20212022,3,2022-05-19T23:00:00Z,US/Eastern,FLA Live Arena,Tampa Bay Lightning,Florida Panthers,2.0,1.0,REG,5,5,0,6,4,0
+2021030232,20212022,3,2022-05-20T01:30:00Z,America/Denver,Ball Arena,St. Louis Blues,Colorado Avalanche,4.0,1.0,REG,6,3,1,5,4,1
+2021030222,20212022,3,2022-05-21T00:00:00Z,US/Eastern,PNC Arena,New York Rangers,Carolina Hurricanes,0.0,2.0,REG,7,3,0,5,3,2
+2021030242,20212022,3,2022-05-21T02:30:00Z,US/Mountain,Scotiabank Saddledome,Edmonton Oilers,Calgary Flames,5.0,3.0,REG,5,4,1,6,3,1
+2021030233,20212022,3,2022-05-22T00:00:00Z,US/Central,Enterprise Center,Colorado Avalanche,St. Louis Blues,5.0,2.0,REG,5,4,1,6,3,1
+2021030213,20212022,3,2022-05-22T17:30:00Z,US/Eastern,Amalie Arena,Florida Panthers,Tampa Bay Lightning,1.0,5.0,REG,7,3,0,5,5,0
+2021030223,20212022,3,2022-05-22T19:30:00Z,America/New_York,Madison Square Garden,Carolina Hurricanes,New York Rangers,1.0,3.0,REG,5,3,2,7,3,0
+2021030243,20212022,3,2022-05-23T00:00:00Z,America/Edmonton,Rogers Place,Calgary Flames,Edmonton Oilers,1.0,4.0,REG,6,3,1,5,5,0
+2021030214,20212022,3,2022-05-23T23:00:00Z,US/Eastern,Amalie Arena,Florida Panthers,Tampa Bay Lightning,0.0,2.0,REG,7,3,0,4,6,0
+2021030234,20212022,3,2022-05-24T01:30:00Z,US/Central,Enterprise Center,Colorado Avalanche,St. Louis Blues,6.0,3.0,REG,5,4,1,7,2,1
+2021030224,20212022,3,2022-05-24T23:00:00Z,America/New_York,Madison Square Garden,Carolina Hurricanes,New York Rangers,1.0,4.0,REG,5,3,2,6,4,0
+2021030244,20212022,3,2022-05-25T01:30:00Z,America/Edmonton,Rogers Place,Calgary Flames,Edmonton Oilers,3.0,5.0,REG,6,3,1,5,5,0
+2021030235,20212022,3,2022-05-26T00:00:00Z,America/Denver,Ball Arena,St. Louis Blues,Colorado Avalanche,5.0,4.0,OT,7,2,1,5,4,1
+2021030225,20212022,3,2022-05-26T23:00:00Z,US/Eastern,PNC Arena,New York Rangers,Carolina Hurricanes,1.0,3.0,REG,5,5,0,6,3,1
+2021030245,20212022,3,2022-05-27T01:30:00Z,US/Mountain,Scotiabank Saddledome,Edmonton Oilers,Calgary Flames,5.0,4.0,OT,4,6,0,7,2,1
+2021030236,20212022,3,2022-05-28T00:00:00Z,US/Central,Enterprise Center,Colorado Avalanche,St. Louis Blues,3.0,2.0,REG,5,4,1,7,2,1
+2021030226,20212022,3,2022-05-29T00:00:00Z,America/New_York,Madison Square Garden,Carolina Hurricanes,New York Rangers,2.0,5.0,REG,5,4,1,5,5,0
+2021030227,20212022,3,2022-05-31T00:00:00Z,US/Eastern,PNC Arena,New York Rangers,Carolina Hurricanes,6.0,2.0,REG,5,5,0,6,3,1
+2021030321,20212022,3,2022-06-01T00:00:00Z,America/Denver,Ball Arena,Edmonton Oilers,Colorado Avalanche,6.0,8.0,REG,8,1,1,7,2,1
+2021030311,20212022,3,2022-06-02T00:00:00Z,America/New_York,Madison Square Garden,Tampa Bay Lightning,New York Rangers,2.0,6.0,REG,7,2,1,8,2,0
+2021030322,20212022,3,2022-06-03T00:00:00Z,America/Denver,Ball Arena,Edmonton Oilers,Colorado Avalanche,0.0,4.0,REG,8,1,1,6,3,1
+2021030312,20212022,3,2022-06-04T00:00:00Z,America/New_York,Madison Square Garden,Tampa Bay Lightning,New York Rangers,2.0,3.0,REG,7,2,1,7,3,0
+2021030323,20212022,3,2022-06-05T00:00:00Z,America/Edmonton,Rogers Place,Colorado Avalanche,Edmonton Oilers,4.0,2.0,REG,6,3,1,8,1,1
+2021030313,20212022,3,2022-06-05T19:00:00Z,US/Eastern,Amalie Arena,New York Rangers,Tampa Bay Lightning,2.0,3.0,REG,7,3,0,7,2,1
+2021030324,20212022,3,2022-06-07T00:00:00Z,America/Edmonton,Rogers Place,Colorado Avalanche,Edmonton Oilers,6.0,5.0,OT,6,4,0,8,1,1
+2021030314,20212022,3,2022-06-08T00:00:00Z,US/Eastern,Amalie Arena,New York Rangers,Tampa Bay Lightning,1.0,4.0,REG,7,3,0,6,3,1
+2021030315,20212022,3,2022-06-10T00:00:00Z,America/New_York,Madison Square Garden,Tampa Bay Lightning,New York Rangers,3.0,1.0,REG,6,4,0,8,2,0
+2021030316,20212022,3,2022-06-12T00:00:00Z,US/Eastern,Amalie Arena,New York Rangers,Tampa Bay Lightning,1.0,2.0,REG,8,2,0,6,4,0
+2021030411,20212022,3,2022-06-16T00:00:00Z,America/Denver,Ball Arena,Tampa Bay Lightning,Colorado Avalanche,3.0,4.0,OT,8,1,1,8,2,0
+2021030412,20212022,3,2022-06-19T00:00:00Z,America/Denver,Ball Arena,Tampa Bay Lightning,Colorado Avalanche,0.0,7.0,REG,8,1,1,7,2,1
+2021030413,20212022,3,2022-06-21T00:00:00Z,US/Eastern,Amalie Arena,Colorado Avalanche,Tampa Bay Lightning,2.0,6.0,REG,6,3,1,9,0,1
+2021030414,20212022,3,2022-06-23T00:00:00Z,US/Eastern,Amalie Arena,Colorado Avalanche,Tampa Bay Lightning,3.0,2.0,OT,6,3,1,8,1,1
+2021030415,20212022,3,2022-06-25T00:00:00Z,America/Denver,Ball Arena,Tampa Bay Lightning,Colorado Avalanche,3.0,2.0,REG,8,1,1,5,3,2
+2021030416,20212022,3,2022-06-27T00:00:00Z,US/Eastern,Amalie Arena,Colorado Avalanche,Tampa Bay Lightning,2.0,1.0,REG,6,2,2,8,2,0
