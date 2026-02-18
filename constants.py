@@ -89,6 +89,8 @@ home_team_losses_col = 'homeTeamLosses'
 away_team_losses_col = 'awayTeamLosses'
 home_team_otls_col = 'homeTeamOTLs'
 away_team_otls_col = 'awayTeamOTLs'
+home_team_id_col = 'homeTeamId'
+away_team_id_col = 'awayTeamId'
 
 date_format_yyyy_mm_dd = '%Y-%m-%d'
 div_1_val = 'div_1'
@@ -108,7 +110,7 @@ feature_cols = [game_id_col, season_col, game_type_col, game_month_col, game_tim
                 home_team_prev_10_wins_col, home_team_prev_10_losses_col, home_team_prev_10_otl_col,
                 away_team_prev_10_wins_col, away_team_prev_10_losses_col, away_team_prev_10_otl_col,
                 home_team_wins_col, home_team_losses_col, home_team_otls_col, away_team_wins_col, away_team_losses_col,
-                away_team_otls_col]
+                away_team_otls_col, home_team_id_col, away_team_id_col]
 predict_cols = [away_team_score_col, home_team_score_col, last_period_col]
 tiebreaker_cols = ['totalPoints', 'pointsPercentage', 'totalRegWins', 'totalRegOTWins', 'totalWins', 'goalDifferential', 'totalGoalsFor']
 final_standings_col_order = ['conferenceName', 'conferenceSeed', 'divisionName', 'divisionSeed', 'playoffSeed', 'teamName', 'totalGames',
@@ -157,4 +159,39 @@ team_colors = {
     'Vegas Golden Knights': 'dark_grey',
     'Washington Capitals': 'red',
     'Winnipeg Jets': 'light_grey'
+}
+
+team_ids = {
+    'Anaheim Ducks': 1,
+    'Boston Bruins': 2,
+    'Buffalo Sabres': 3,
+    'Calgary Flames': 4,
+    'Carolina Hurricanes': 5,
+    'Chicago Blackhawks': 6,
+    'Colorado Avalanche': 7,
+    'Columbus Blue Jackets': 8,
+    'Dallas Stars': 9,
+    'Detroit Red Wings': 10,
+    'Edmonton Oilers': 11,
+    'Florida Panthers': 12,
+    'Los Angeles Kings': 13,
+    'Minnesota Wild': 14,
+    'Montréal Canadiens': 15,
+    'Nashville Predators': 16,
+    'New Jersey Devils': 17,
+    'New York Islanders': 18,
+    'New York Rangers': 19,
+    'Ottawa Senators': 20,
+    'Philadelphia Flyers': 21,
+    'Pittsburgh Penguins': 22,
+    'San Jose Sharks': 23,
+    'Seattle Kraken': 24,
+    'St. Louis Blues': 25,
+    'Tampa Bay Lightning': 26,
+    'Toronto Maple Leafs': 27,
+    'Utah Mammoth': 28,
+    'Vancouver Canucks': 29,
+    'Vegas Golden Knights': 30,
+    'Washington Capitals': 31,
+    'Winnipeg Jets': 32
 }

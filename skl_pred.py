@@ -202,6 +202,8 @@ def feature_preprocessing(season_sched, debug=False):
     encoder = OrdinalEncoder()
     season_sched[cons.venue_timezone_col] = encoder.fit_transform(season_sched[[cons.venue_timezone_col]]).astype(int)
     season_sched[cons.venue_col] = encoder.fit_transform(season_sched[[cons.venue_col]]).astype(int)
+    season_sched[cons.home_team_id_col] = season_sched[cons.home_team_name_col].map(cons.team_ids)
+    season_sched[cons.away_team_id_col] = season_sched[cons.away_team_name_col].map(cons.team_ids)
 
     # change the season column to a string type
     season_sched[cons.season_col] = season_sched[cons.season_col].astype(str)
@@ -529,8 +531,7 @@ if __name__ == "__main__":
 
     ######################
     # create season schedule dataframe for inputted season
-    # create_season_df('20222023', from_csv=False, to_csv=True)
-    # create_season_df('20212022', from_csv=False, to_csv=True)
+    # create_season_df('20252026', from_csv=False, to_csv=True)
 
     ######################
     # create a single season prediction wiuth saving the results as csv files
