@@ -6,7 +6,7 @@ import pandas as pd
 import constants as cons
 from tabulate import tabulate
 from termcolor import colored
-from skl_utils import prev10_result, season_result
+from skl_utils import prev10_result, prevN_gfpg, season_result, season_gfpg
 from sklearn.preprocessing import OrdinalEncoder
 from sklearn.ensemble import RandomForestRegressor
 
@@ -190,6 +190,22 @@ def feature_preprocessing(season_sched, debug=False):
     # calculate the number of OTLs in the previous 10 games for the away team in all matchups
     if debug: print('\t... [feature_creation] away prev 10 OTLs ...')
     prev10_result(season_sched, cons.away_team_prev_10_otl_col, cons.away_team_name_col)
+
+    # calculate goals for in the previous 10 games for the home team in all matchups
+    if debug: print('\t... [feature_creation] home prev 10 goals for ...')
+    prevN_gfpg(10, season_sched, cons.home_team_prev_n_goals_for_col, cons.home_team_name_col)
+
+    # calculate goals for in the previous 10 games for the away team in all matchups
+    if debug: print('\t... [feature_creation] away prev 10 goals for ...')
+    prevN_gfpg(10, season_sched, cons.away_team_prev_n_goals_for_col, cons.away_team_name_col)
+
+    # calculate goals for for the home team in all matchups
+    if debug: print('\t... [feature_creation] home goals for ...')
+    season_gfpg(season_sched, cons.home_team_goals_for_col, cons.home_team_name_col)
+
+    # calculate goals for for the away team in all matchups
+    if debug: print('\t... [feature_creation] away goals for ...')
+    season_gfpg(season_sched, cons.away_team_goals_for_col, cons.away_team_name_col)
 
     # convert the 'startTimeUTC' column to datetime and extract the relevant features
     season_sched[cons.starttime_utc_col] = pd.to_datetime(season_sched[cons.starttime_utc_col])
@@ -531,7 +547,7 @@ if __name__ == "__main__":
 
     ######################
     # create season schedule dataframe for inputted season
-    # create_season_df('20252026', from_csv=False, to_csv=True)
+    create_season_df('20252026', from_csv=False, to_csv=True)
 
     ######################
     # create a single season prediction wiuth saving the results as csv files
@@ -541,4 +557,4 @@ if __name__ == "__main__":
 
     ######################
     # create playoff spot predictions for current season based on n simulations
-    playoff_spot_predictions(n=20)
+    # playoff_spot_predictions(n=20)
