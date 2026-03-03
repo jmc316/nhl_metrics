@@ -1,3 +1,4 @@
-- add past seasons to the training data
 - generate charts displaying each team's point pace before predictions versus after predictions
-- add rolling average features (points percentage, goals for / against)
+- features to add: 
+    - powerplay/penalty kill percentage
+    - shots for, against

@@ -3,9 +3,47 @@ import numpy as np
 import constants as cons
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.preprocessing import OrdinalEncoder
+from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import mean_squared_error, r2_score
 
-from skl_utils import prev10_result, prev10_result, prevN_gfpg, season_gfpg, season_result
+from skl_utils import prevN_result, prevN_gfpg, season_gfpg, season_result
+import skl_utils as sku
+
+
+def create_feature_df():
+
+    feature_df = create_feature_set()
+
+    feature_df = feature_type_prep(feature_df)
+
+    ### CREATE FEATURES INDEPENDENT OF PREDICT SET RESULTS###
+    # these features are not dependent on the outcome of games
+    # can be created for all completed and future games at the start of the season
+    feature_df = sched_feature_add(feature_df)
+
+    ### CREATE FEATURES MAPPED FROM OTHER COLUMNS ###
+    # these features are not dependent on the outcome of games, but they are derived from other columns
+    feature_df = sched_feature_map(feature_df)
+
+    ### CREATE FEATURES DEPENDENT ON PREDICT SET RESULTS ###
+    # these features are dependent on the outcome of games
+    # can only be created one day at a time after predicting
+    feature_df = predict_season(feature_df)
+
+
+def create_feature_set():
+    # a list of schedule files that have already been generated
+    season_sched_list = [file for file in os.listdir(cons.season_sched_folder) if file.endswith(cons.season_sched_filename)]
+
+    data_df = pd.DataFrame()
+
+    for filename in season_sched_list:
+        if data_df.empty:
+            data_df = create_season_df(filename[:8], from_csv=True, to_csv=False)
+        else:
+            data_df = pd.concat([data_df, create_season_df(filename[:8], from_csv=True, to_csv=False)], ignore_index=True)
+
+    return data_df
 
 
 def create_season_df(season_name, from_csv=True, to_csv=False, debug=False):
@@ -88,31 +126,8 @@ def create_season_df(season_name, from_csv=True, to_csv=False, debug=False):
     return season_sched
 
 
-def create_feature_df():
-
-    feature_df = create_feature_set()
-
-    feature_df = feature_type_prep(feature_df)
-
-    ### CREATE FEATURES INDEPENDENT OF PREDICT SET RESULTS###
-    # these features are not dependent on the outcome of games
-    # can be created for all completed and future games at the start of the season
-    feature_df = sched_feature_add(feature_df)
-
-    ### CREATE FEATURES MAPPED FROM OTHER COLUMNS ###
-    # these features are not dependent on the outcome of games, but they are derived from other columns
-    feature_df = sched_feature_map(feature_df)
-
-    ### CREATE FEATURES DEPENDENT ON PREDICT SET RESULTS ###
-    # these features are dependent on the outcome of games
-    # can only be created one day at a time after predicting
-    feature_df = predict_season(feature_df)
-
-
 def predict_season(feature_df):
 
-    # filter dataframe on all completed games and first scheduled game day after
-    feature_df[cons.game_date_col] = feature_df[cons.starttime_utc_col].dt.date
     next_game_date = feature_df.loc[feature_df[cons.away_team_score_col].isna(), cons.game_date_col].min()
     feature_df_filt = feature_df[feature_df[cons.game_date_col] <= next_game_date]
 
@@ -136,100 +151,171 @@ def predict_season(feature_df):
         feature_df_filt = make_predictions(feature_df_filt)
         feature_df = pd.concat([feature_df_filt, feature_df.loc[feature_df[cons.game_date_col] > next_game_date]], ignore_index=True)
 
-    print()
+    feature_df.to_csv('results.csv', index=False)
+
+    print('Season predictions complete.')
 
 
-def make_predictions(feature_df):
+def make_predictions(data_df):
 
-    print('\tTraining model and generating predictions...')
+    # data_df.drop(columns=[cons.game_id_col, cons.game_time_col, cons.venue_timezone_col, cons.game_type_col, cons.season_name_col], inplace=True)
+    # data_df.drop(columns=[cons.game_date_col], inplace=True)
 
-    # handle missing values by dropping rows with missing target values and training the model on the remaining data
-    feature_df = feature_df.replace({None: np.nan}, inplace=True) 
-    train_df = feature_df.dropna()
+    label_encoder = LabelEncoder()
+    categorical_df = data_df.select_dtypes(include=['object', 'str']).apply(label_encoder.fit_transform)
+    numerical_df = data_df.select_dtypes(exclude=['object', 'str'])
+    encoded_df = pd.concat([numerical_df, categorical_df], axis=1)
+    encoded_df.replace({None: np.nan}, inplace=True) 
 
-    # train a random forest regressor on the training data
-    X_train = train_df[cons.feature_cols]
-    y_train = train_df[cons.predict_cols]
-    model = RandomForestRegressor()
-    model.fit(X_train, y_train)
+    x_train_df = encoded_df.loc[encoded_df[cons.home_team_score_col].notna(), encoded_df.columns.difference(cons.predict_cols)]
+    y_train_df = encoded_df.loc[encoded_df[cons.home_team_score_col].notna(), cons.predict_cols]
+    x_predict_df = encoded_df.loc[encoded_df[cons.home_team_score_col].isna(), encoded_df.columns.difference(cons.predict_cols)]
 
-    # Identify rows with missing 'target' values and predict
-    to_predict = feature_df[feature_df[cons.last_period_col].isna()]
-    X_to_predict = to_predict[cons.feature_cols]
-    predictions = model.predict(X_to_predict)
+    model = RandomForestRegressor(n_estimators=1000, random_state=0, oob_score=True)
 
-    # Add predictions back into the original DataFrame as ints
-    to_predict[cons.predict_cols] = predictions.astype(int)
-    feature_df.update(to_predict)
+    model.fit(x_train_df.values, y_train_df.values)
 
-    return feature_df
+    oob_score = model.oob_score_
+    print(f'Out-of-Bag Score: {oob_score}')
+
+    trainset_predictions = model.predict(x_train_df.values)
+
+    mse = mean_squared_error(y_train_df.values, trainset_predictions)
+    print(f'Mean Squared Error: {mse}')
+
+    r2 = r2_score(y_train_df.values, trainset_predictions)
+    print(f'R-squared: {r2}')
+
+    predictset_predictions = model.predict(x_predict_df.values)
+
+    predict_df = data_df[data_df[cons.last_period_col].isna()]
+    predict_df[cons.predict_cols] = predictset_predictions
+    predict_df['awayTeamScore_int'] = predict_df[cons.away_team_score_col].round().astype(int)
+    predict_df['homeTeamScore_int'] = predict_df[cons.home_team_score_col].round().astype(int)
+    predict_df['lastPeriod'] = np.where(predict_df['homeTeamScore_int'] == predict_df['awayTeamScore_int'], 'OT', 'REG')
+
+    data_df.update(predict_df[cons.predict_cols])
+
+    # importances = model.feature_importances_
+    # importance_df = pd.DataFrame({'feature': x_train_df.columns, 'importance': importances})
+    # print(importance_df.sort_values(by='importance', ascending=False))
+
+    return data_df
 
 
 def dependent_feature_add(feature_df, backfill=True, debug=True):
 
     # calculate the number of wins for the home team in all matchups
-    if debug: print('\t\t... [feature_creation] home wins ...')
-    feature_df = season_result(feature_df, backfill, cons.home_team_wins_col, cons.home_team_name_col)
+    # if debug: print('\t\t... [sub_feature_creation] home team wins ...')
+    # feature_df = season_result(feature_df, backfill, cons.home_team_wins_col, cons.home_team_name_col)
 
-    # calculate the number of losses for the home team in all matchups
-    if debug: print('\t\t... [feature_creation] home losses ...')
-    feature_df = season_result(feature_df, backfill, cons.home_team_losses_col, cons.home_team_name_col)
+    # # calculate the number of losses for the home team in all matchups
+    # if debug: print('\t\t... [sub_feature_creation] home team losses ...')
+    # feature_df = season_result(feature_df, backfill, cons.home_team_losses_col, cons.home_team_name_col)
 
-    # calculate the number of OTLs for the home team in all matchups
-    if debug: print('\t\t... [feature_creation] home OTLs ...')
-    feature_df = season_result(feature_df, backfill, cons.home_team_otls_col, cons.home_team_name_col)
+    # # calculate the number of OTLs for the home team in all matchups
+    # if debug: print('\t\t... [sub_feature_creation] home team OTLs ...')
+    # feature_df = season_result(feature_df, backfill, cons.home_team_otls_col, cons.home_team_name_col)
 
-    # calculate the number of wins for the away team in all matchups
-    if debug: print('\t\t... [feature_creation] away wins ...')
-    feature_df = season_result(feature_df, backfill, cons.away_team_wins_col, cons.away_team_name_col)
+    # # calculate the points percentage of the home team in all matchups
+    # if debug: print('\t\t... [feature_creation] home team points percentage ...')
+    # if 'home_points_percentage' not in feature_df.columns:
+    #     feature_df['home_points_percentage'] = (feature_df[cons.home_team_wins_col] * 2 + feature_df[cons.home_team_otls_col]) / ((feature_df[cons.home_team_wins_col] + feature_df[cons.home_team_otls_col] + feature_df[cons.home_team_losses_col]) * 2)
+    # else:
+    #     feature_df_new = feature_df.loc[feature_df['home_points_percentage'].isna()]
+    #     feature_df_new['home_points_percentage'] = (feature_df_new[cons.home_team_wins_col] * 2 + feature_df_new[cons.home_team_otls_col]) / ((feature_df_new[cons.home_team_wins_col] + feature_df_new[cons.home_team_otls_col] + feature_df_new[cons.home_team_losses_col]) * 2)
+    #     feature_df.update(feature_df_new['home_points_percentage'])
+    # feature_df.drop(columns=[cons.home_team_wins_col, cons.home_team_otls_col, cons.home_team_losses_col], inplace=True)
 
-    # calculate the number of losses for the away team in all matchups
-    if debug: print('\t\t... [feature_creation] away losses ...')
-    feature_df = season_result(feature_df, backfill, cons.away_team_losses_col, cons.away_team_name_col)
+    # # calculate the number of wins for the away team in all matchups
+    # if debug: print('\t\t... [sub_feature_creation] away team wins ...')
+    # feature_df = season_result(feature_df, backfill, cons.away_team_wins_col, cons.away_team_name_col)
 
-    # calculate the number of OTLs for the away team in all matchups
-    if debug: print('\t\t... [feature_creation] away OTLs ...')
-    feature_df = season_result(feature_df, backfill, cons.away_team_otls_col, cons.away_team_name_col)
+    # # calculate the number of losses for the away team in all matchups
+    # if debug: print('\t\t... [sub_feature_creation] away team losses ...')
+    # feature_df = season_result(feature_df, backfill, cons.away_team_losses_col, cons.away_team_name_col)
 
-    # calculate the number of wins in the previous 10 games for the home team in all matchups
-    if debug: print('\t\t... [feature_creation] home prev 10 wins ...')
-    feature_df = prev10_result(feature_df, backfill, cons.home_team_prev_10_wins_col, cons.home_team_name_col)
+    # # calculate the number of OTLs for the away team in all matchups
+    # if debug: print('\t\t... [sub_feature_creation] away team OTLs ...')
+    # feature_df = season_result(feature_df, backfill, cons.away_team_otls_col, cons.away_team_name_col)
 
-    # calculate the number of losses in the previous 10 games for the home team in all matchups
-    if debug: print('\t\t... [feature_creation] home prev 10 losses ...')
-    feature_df = prev10_result(feature_df, backfill, cons.home_team_prev_10_losses_col, cons.home_team_name_col)
+    # # calculate the points percentage of the away team in all matchups
+    # if debug: print('\t\t... [feature_creation] away team points percentage ...')
+    # if 'away_points_percentage' not in feature_df.columns:
+    #     feature_df['away_points_percentage'] = (feature_df[cons.away_team_wins_col] * 2 + feature_df[cons.away_team_otls_col]) / ((feature_df[cons.away_team_wins_col] + feature_df[cons.away_team_otls_col] + feature_df[cons.away_team_losses_col]) * 2)
+    # else:
+    #     feature_df_new = feature_df.loc[feature_df['away_points_percentage'].isna()]
+    #     feature_df_new['away_points_percentage'] = (feature_df_new[cons.away_team_wins_col] * 2 + feature_df_new[cons.away_team_otls_col]) / ((feature_df_new[cons.away_team_wins_col] + feature_df_new[cons.away_team_otls_col] + feature_df_new[cons.away_team_losses_col]) * 2)
+    #     feature_df.update(feature_df_new['away_points_percentage'])
+    # feature_df.drop(columns=[cons.away_team_wins_col, cons.away_team_otls_col, cons.away_team_losses_col], inplace=True)
 
-    # calculate the number of OTLs in the previous 10 games for the home team in all matchups
-    if debug: print('\t\t... [feature_creation] home prev 10 OTLs ...')
-    feature_df = prev10_result(feature_df, backfill, cons.home_team_prev_10_otl_col, cons.home_team_name_col)
+    # calculate the number of wins in the previous 7 games for the home team in all matchups
+    if debug: print('\t\t... [sub_feature_creation] home team prev 7 wins ...')
+    feature_df = prevN_result(feature_df, backfill, 'homeTeamPrev7Wins', cons.home_team_name_col, 7)
 
-    # calculate the number of wins in the previous 10 games for the away team in all matchups
-    if debug: print('\t\t... [feature_creation] away prev 10 wins ...')
-    feature_df = prev10_result(feature_df, backfill, cons.away_team_prev_10_wins_col, cons.away_team_name_col)
+    # calculate the number of losses in the previous 7 games for the home team in all matchups
+    if debug: print('\t\t... [sub_feature_creation] home team prev 7 losses ...')
+    feature_df = prevN_result(feature_df, backfill, 'homeTeamPrev7Losses', cons.home_team_name_col, 7)
 
-    # calculate the number of losses in the previous 10 games for the away team in all matchups
-    if debug: print('\t\t... [feature_creation] away prev 10 losses ...')
-    feature_df = prev10_result(feature_df, backfill, cons.away_team_prev_10_losses_col, cons.away_team_name_col)
+    # calculate the number of OTLs in the previous 7 games for the home team in all matchups
+    if debug: print('\t\t... [sub_feature_creation] home team prev 7 OTLs ...')
+    feature_df = prevN_result(feature_df, backfill, 'homeTeamPrev7OTLs', cons.home_team_name_col, 7)
 
-    # calculate the number of OTLs in the previous 10 games for the away team in all matchups
-    if debug: print('\t\t... [feature_creation] away prev 10 OTLs ...')
-    feature_df = prev10_result(feature_df, backfill, cons.away_team_prev_10_otl_col, cons.away_team_name_col)
+    # calculate the points percentage in the previous 7 games for the home team in all matchups
+    if debug: print('\t\t... [feature_creation] home team prev 7 points percentage ...')
+    if 'home_team_prev_7_points_percentage' not in feature_df.columns:
+        feature_df['home_team_prev_7_points_percentage'] = (feature_df['homeTeamPrev7Wins'] * 2 + feature_df['homeTeamPrev7OTLs']) / ((feature_df['homeTeamPrev7Wins'] + feature_df['homeTeamPrev7OTLs'] + feature_df['homeTeamPrev7Losses']) * 2)
+    else:
+        feature_df_new = feature_df.loc[feature_df['home_team_prev_7_points_percentage'].isna()]
+        feature_df_new['home_team_prev_7_points_percentage'] = (feature_df_new['homeTeamPrev7Wins'] * 2 + feature_df_new['homeTeamPrev7OTLs']) / ((feature_df_new['homeTeamPrev7Wins'] + feature_df_new['homeTeamPrev7OTLs'] + feature_df_new['homeTeamPrev7Losses']) * 2)
+        feature_df.update(feature_df_new['home_team_prev_7_points_percentage'])
+    feature_df.drop(columns=['homeTeamPrev7Wins', 'homeTeamPrev7OTLs', 'homeTeamPrev7Losses'], inplace=True)
 
-    # calculate goals for in the previous 10 games for the home team in all matchups
-    if debug: print('\t\t... [feature_creation] home prev 10 goals for ...')
-    feature_df = prevN_gfpg(10, feature_df, backfill, cons.home_team_prev_n_goals_for_col, cons.home_team_name_col)
+    # calculate the number of wins in the previous 3 games for the home team in all matchups
+    if debug: print('\t\t... [sub_feature_creation] home team prev 3 wins ...')
+    feature_df = prevN_result(feature_df, backfill, 'homeTeamPrev3Wins', cons.home_team_name_col, 3)
 
-    # calculate goals for in the previous 10 games for the away team in all matchups
-    if debug: print('\t\t... [feature_creation] away prev 10 goals for ...')
-    feature_df = prevN_gfpg(10, feature_df, backfill, cons.away_team_prev_n_goals_for_col, cons.away_team_name_col)
+    # calculate the number of losses in the previous 3 games for the home team in all matchups
+    if debug: print('\t\t... [sub_feature_creation] home team prev 3 losses ...')
+    feature_df = prevN_result(feature_df, backfill, 'homeTeamPrev3Losses', cons.home_team_name_col, 3)
 
-    # calculate goals for for the home team in all matchups
-    if debug: print('\t\t... [feature_creation] home goals for ...')
-    feature_df = season_gfpg(feature_df, backfill, cons.home_team_goals_for_col, cons.home_team_name_col)
+    # calculate the number of OTLs in the previous 3 games for the home team in all matchups
+    if debug: print('\t\t... [sub_feature_creation] home team prev 3 OTLs ...')
+    feature_df = prevN_result(feature_df, backfill, 'homeTeamPrev3OTLs', cons.home_team_name_col, 3)
 
-    # calculate goals for for the away team in all matchups
-    if debug: print('\t\t... [feature_creation] away goals for ...')
-    feature_df = season_gfpg(feature_df, backfill, cons.away_team_goals_for_col, cons.away_team_name_col)
+    # calculate the points percentage in the previous 3 games for the home team in all matchups
+    if debug: print('\t\t... [feature_creation] home team prev 3 points percentage ...')
+    if 'home_team_prev_3_points_percentage' not in feature_df.columns:
+        feature_df['home_team_prev_3_points_percentage'] = (feature_df['homeTeamPrev3Wins'] * 2 + feature_df['homeTeamPrev3OTLs']) / ((feature_df['homeTeamPrev3Wins'] + feature_df['homeTeamPrev3OTLs'] + feature_df['homeTeamPrev3Losses']) * 2)
+    else:
+        feature_df_new = feature_df.loc[feature_df['home_team_prev_3_points_percentage'].isna()]
+        feature_df_new['home_team_prev_3_points_percentage'] = (feature_df_new['homeTeamPrev3Wins'] * 2 + feature_df_new['homeTeamPrev3OTLs']) / ((feature_df_new['homeTeamPrev3Wins'] + feature_df_new['homeTeamPrev3OTLs'] + feature_df_new['homeTeamPrev3Losses']) * 2)
+        feature_df.update(feature_df_new['home_team_prev_3_points_percentage'])
+    feature_df.drop(columns=['homeTeamPrev3Wins', 'homeTeamPrev3OTLs', 'homeTeamPrev3Losses'], inplace=True)
+
+    # calculate goals for in the previous 3 games for the home team in all matchups
+    if debug: print('\t\t... [feature_creation] home team prev 3 goals for ...')
+    feature_df = prevN_gfpg(3, feature_df, backfill, cons.home_team_prev_n_goals_for_col, cons.home_team_name_col)
+
+    # calculate goals for in the previous 3 games for the away team in all matchups
+    if debug: print('\t\t... [feature_creation] away team prev 3 goals for ...')
+    feature_df = prevN_gfpg(3, feature_df, backfill, cons.away_team_prev_n_goals_for_col, cons.away_team_name_col)
+
+        # calculate goals for in the previous 7 games for the home team in all matchups
+    if debug: print('\t\t... [feature_creation] home team prev 7 goals for ...')
+    feature_df = prevN_gfpg(7, feature_df, backfill, cons.home_team_prev_n_goals_for_col, cons.home_team_name_col)
+
+    # calculate goals for in the previous 7 games for the away team in all matchups
+    if debug: print('\t\t... [feature_creation] away team prev 7 goals for ...')
+    feature_df = prevN_gfpg(7, feature_df, backfill, cons.away_team_prev_n_goals_for_col, cons.away_team_name_col)
+
+    # # calculate goals for for the home team in all matchups
+    # if debug: print('\t\t... [feature_creation] home goals for ...')
+    # feature_df = season_gfpg(feature_df, backfill, cons.home_team_goals_for_col, cons.home_team_name_col)
+
+    # # calculate goals for for the away team in all matchups
+    # if debug: print('\t\t... [feature_creation] away goals for ...')
+    # feature_df = season_gfpg(feature_df, backfill, cons.away_team_goals_for_col, cons.away_team_name_col)
 
     return feature_df
 
@@ -237,11 +323,12 @@ def dependent_feature_add(feature_df, backfill=True, debug=True):
 def sched_feature_add(feature_df):
 
     # convert the 'startTimeUTC' column to datetime and extract the relevant features
-    feature_df[cons.starttime_utc_col] = pd.to_datetime(feature_df[cons.starttime_utc_col])
+    feature_df[cons.starttime_utc_col] = pd.to_datetime(feature_df[cons.starttime_utc_col]).dt.tz_convert('US/Eastern')
     # feature_df[cons.game_year_col] = feature_df[cons.starttime_utc_col].dt.year
-    feature_df[cons.game_month_col] = feature_df[cons.starttime_utc_col].dt.month
-    # feature_df[cons.game_day_col] = feature_df[cons.starttime_utc_col].dt.day
+    # feature_df[cons.game_month_col] = feature_df[cons.starttime_utc_col].dt.month
+    feature_df[cons.game_date_col] = feature_df[cons.starttime_utc_col].dt.date
     feature_df[cons.game_time_col] = feature_df[cons.starttime_utc_col].dt.hour * 60 + feature_df[cons.starttime_utc_col].dt.minute
+    feature_df.drop(columns=[cons.starttime_utc_col], inplace=True)
 
     return feature_df
 
@@ -249,17 +336,17 @@ def sched_feature_add(feature_df):
 def sched_feature_map(feature_df):
 
     # add feature columns for team ids
-    feature_df[cons.home_team_id_col] = feature_df[cons.home_team_name_col].map(cons.team_id_map)
-    feature_df[cons.away_team_id_col] = feature_df[cons.away_team_name_col].map(cons.team_id_map)
+    # feature_df[cons.home_team_id_col] = feature_df[cons.home_team_name_col].map(cons.team_id_map)
+    # feature_df[cons.away_team_id_col] = feature_df[cons.away_team_name_col].map(cons.team_id_map)
 
     # encode the categorical features using ordinal encoding
-    encoder = OrdinalEncoder()
-    feature_df[cons.venue_timezone_col] = encoder.fit_transform(feature_df[[cons.venue_timezone_col]]).astype(int)
-    feature_df[cons.venue_col] = encoder.fit_transform(feature_df[[cons.venue_col]]).astype(int)
+    # encoder = OrdinalEncoder()
+    # feature_df[cons.venue_timezone_col] = encoder.fit_transform(feature_df[[cons.venue_timezone_col]]).astype(int)
+    # feature_df[cons.venue_col] = encoder.fit_transform(feature_df[[cons.venue_col]]).astype(int)
 
     # encode the target variable 'lastPeriod' using a mapping of the period types to integers
-    feature_df[cons.last_period_col] = feature_df.loc[
-        feature_df[cons.last_period_col].notna(), cons.last_period_col].map(cons.last_period_map).astype(int)
+    # feature_df[cons.last_period_col] = feature_df.loc[
+    #     feature_df[cons.last_period_col].notna(), cons.last_period_col].map(cons.last_period_map).astype(int)
 
     return feature_df
 
@@ -271,27 +358,15 @@ def feature_type_prep(feature_df):
     return feature_df
 
 
-def create_feature_set():
-    # a list of schedule files that have already been generated
-    season_sched_list = [file for file in os.listdir(cons.season_sched_folder) if file.endswith(cons.season_sched_filename)]
-
-    data_df = pd.DataFrame()
-
-    for filename in season_sched_list:
-        if data_df.empty:
-            data_df = create_season_df(filename[:8], from_csv=True, to_csv=False)
-        else:
-            data_df = pd.concat([data_df, create_season_df(filename[:8], from_csv=True, to_csv=False)], ignore_index=True)
-
-    return data_df
-
-
 if __name__ == "__main__":
+
+    feature_df = create_feature_df()
 
     ######################
     # create season schedule dataframe for inputted season
     # create_season_df('20252026', from_csv=False, to_csv=True, debug=True)
-    feature_df = create_feature_df()
+    # data_df = pd.read_csv('data_df.csv')
+    # make_predictions(data_df)
     # season_results_points = assign_game_points(season_results)
     # final_standings = generate_final_standings(season_results_points)
 

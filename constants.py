@@ -112,12 +112,12 @@ cen_div_val = 'Central'
 season_stdt = '09-23'
 season_enddt = '06-30'
 
-feature_cols = [game_id_col, season_name_col, game_type_col, game_month_col, game_time_col, venue_timezone_col, venue_col,
+feature_cols = [game_id_col, season_name_col, game_type_col, game_time_col, venue_timezone_col, venue_col,
                  home_team_prev_10_wins_col, home_team_prev_10_losses_col, home_team_prev_10_otl_col,
                  away_team_prev_10_wins_col, away_team_prev_10_losses_col, away_team_prev_10_otl_col,
-                 home_team_wins_col, home_team_losses_col, home_team_otls_col, away_team_wins_col, away_team_losses_col,
-                 home_team_prev_n_goals_for_col+'10', away_team_prev_n_goals_for_col+'10', home_team_goals_for_col, away_team_goals_for_col,
-                 away_team_otls_col, home_team_id_col, away_team_id_col]
+                 home_team_wins_col, home_team_losses_col, home_team_otls_col, away_team_wins_col, away_team_losses_col, away_team_otls_col,
+                 home_team_prev_n_goals_for_col+'7', away_team_prev_n_goals_for_col+'7', home_team_prev_n_goals_for_col+'3', away_team_prev_n_goals_for_col+'3',
+                 game_date_col]
 predict_cols = [away_team_score_col, home_team_score_col, last_period_col]
 tiebreaker_cols = ['totalPoints', 'pointsPercentage', 'totalRegWins', 'totalRegOTWins', 'totalWins', 'goalDifferential', 'totalGoalsFor']
 final_standings_col_order = ['conferenceName', 'conferenceSeed', 'divisionName', 'divisionSeed', 'playoffSeed', 'teamName', 'totalGames',
