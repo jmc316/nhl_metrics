@@ -2,3 +2,4 @@
 - features to add: 
     - powerplay/penalty kill percentage
     - shots for, against
+- reduce decisiveness of model

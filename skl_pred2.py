@@ -1,7 +1,7 @@
 import os
 import random
 import numpy as np
-import tabulate
+from tabulate import tabulate
 import constants as cons
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
