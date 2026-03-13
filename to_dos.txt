@@ -1,5 +1,3 @@
 - generate charts displaying each team's point pace before predictions versus after predictions
 - features to add: 
-    - powerplay/penalty kill percentage
-    - shots for, against
-- reduce decisiveness of model
+    - starting goalie

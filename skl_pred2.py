@@ -8,7 +8,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import mean_squared_error, r2_score
 
-from skl_utils import prevN_result, prevN_gfpg, season_gfpg, season_result
+from skl_utils import days_since_last_played, prevN_result, prevN_gfpg, season_gfpg, season_result
 import skl_utils as sku
 import utils as ut
 
@@ -185,7 +185,8 @@ def make_predictions(data_df, oob_list, mse_list, rsq_list):
     y_train_df = encoded_df.loc[encoded_df[cons.home_team_score_col].notna(), cons.predict_cols]
     x_predict_df = encoded_df.loc[encoded_df[cons.home_team_score_col].isna(), encoded_df.columns.difference(cons.predict_cols)]
 
-    model = RandomForestRegressor(n_estimators=100, random_state=0, oob_score=True)
+
+    model = ut.init_model()
 
     model.fit(x_train_df.values, y_train_df.values)
 
@@ -333,6 +334,14 @@ def dependent_feature_add(feature_df, backfill=True, debug=True):
     # # calculate goals for for the away team in all matchups
     # if debug: print('\t\t... [feature_creation] away goals for ...')
     # feature_df = season_gfpg(feature_df, backfill, cons.away_team_goals_for_col, cons.away_team_name_col)
+
+    # calculate days since last played game for the home team in all matchups
+    if debug: print('\t\t... [feature_creation] home team days since last game ...')
+    feature_df = days_since_last_played(feature_df, cons.home_team_days_since_last_game_col, cons.home_team_name_col)
+
+    # calculate days since last played game for the away team in all matchups
+    if debug: print('\t\t... [feature_creation] away team days since last game ...')
+    feature_df = days_since_last_played(feature_df, cons.away_team_days_since_last_game_col, cons.away_team_name_col)
 
     return feature_df
 
@@ -617,7 +626,7 @@ def playoff_probabilities_printer(count_df):
 
 if __name__ == "__main__":
 
-    # feature_df = create_feature_df()
+    feature_df = create_feature_df()
 
     ######################
     # create season schedule dataframe for inputted season
@@ -635,4 +644,6 @@ if __name__ == "__main__":
 
     ######################
     # create playoff spot predictions for current season based on n simulations
-    playoff_spot_predictions(n=20)
+    # playoff_spot_predictions(n=20)
+
+    pass

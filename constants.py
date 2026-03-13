@@ -97,6 +97,8 @@ away_team_prev_n_goals_for_col = 'awayTeamPrevGoalsFor_'
 home_team_goals_for_col = 'homeTeamGoalsFor'
 away_team_goals_for_col = 'awayTeamGoalsFor'
 game_date_col = 'gameDate'
+home_team_days_since_last_game_col = 'homeTeamDaysSinceLastGame'
+away_team_days_since_last_game_col = 'awayTeamDaysSinceLastGame'
 
 date_format_yyyy_mm_dd = '%Y-%m-%d'
 div_1_val = 'div_1'

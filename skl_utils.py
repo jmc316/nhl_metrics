@@ -182,23 +182,37 @@ def season_gfpg(data_df, backfill, target_col, home_away_team_col):
     return data_df
 
 
-def model_analysis(model, df_data):
+def days_since_last_played(feature_df, target_col, team_col):
 
-    importances = model.feature_importances_
-    importance_df = pd.DataFrame({'feature': cons.feature_cols, 'importance': importances})
-    print(importance_df.sort_values(by='importance', ascending=False))
+    # calculate days since last game regardless of home/away team
+    feature_df[cons.game_date_col+'_dt'] = pd.to_datetime(feature_df[cons.game_date_col], errors='coerce')
 
-    result = permutation_importance(
-        model, X_test, y_test, n_repeats=10, random_state=42, n_jobs=2
+    row_id_col = '_row_id'
+    team_col_name = 'team'
+    source_col_name = 'source_col'
+    days_col_name = 'days_since_last_game'
+
+    base_df = feature_df[[cons.game_date_col+'_dt', cons.home_team_name_col, cons.away_team_name_col]].reset_index()
+    base_df.rename(columns={'index': row_id_col}, inplace=True)
+
+    home_games = base_df[[row_id_col, cons.game_date_col+'_dt', cons.home_team_name_col]].rename(
+        columns={cons.home_team_name_col: team_col_name}
     )
+    home_games[source_col_name] = cons.home_team_name_col
 
-    sorted_importances_idx = result.importances_mean.argsort()
-    importances = pd.DataFrame(
-        result.importances[sorted_importances_idx].T,
-        columns=X.columns[sorted_importances_idx],
+    away_games = base_df[[row_id_col, cons.game_date_col+'_dt', cons.away_team_name_col]].rename(
+        columns={cons.away_team_name_col: team_col_name}
     )
-    ax = importances.plot.box(vert=False, whis=10)
-    ax.set_title("Permutation Importances (test set)")
-    ax.axvline(x=0, color="k", linestyle="--")
-    ax.set_xlabel("Decrease in accuracy score")
-    ax.figure.tight_layout()
+    away_games[source_col_name] = cons.away_team_name_col
+
+    all_team_games = pd.concat([home_games, away_games], ignore_index=True)
+    all_team_games.sort_values(by=[team_col_name, cons.game_date_col+'_dt', row_id_col], inplace=True)
+    all_team_games[days_col_name] = all_team_games.groupby(team_col_name)[cons.game_date_col+'_dt'].diff().dt.days
+
+    feature_df[target_col] = all_team_games.loc[
+        all_team_games[source_col_name] == team_col
+    ].set_index(row_id_col)[days_col_name].reindex(feature_df.index)
+
+    feature_df.drop(columns=[cons.game_date_col+'_dt'], inplace=True)
+
+    return feature_df
