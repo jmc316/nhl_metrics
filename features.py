@@ -374,7 +374,7 @@ def days_since_last_played(data_df, target_col, team_col):
         all_team_games[source_col_name] == team_col
     ].set_index(row_id_col)[days_col_name].reindex(base_df.index)
 
-    base_df.drop(columns=[cons.game_date_col+'_dt', cons.home_team_name_col, cons.away_team_name_col, '_row_id'], inplace=True)
+    base_df.drop(columns=[cons.game_date_col+'_dt', cons.home_team_name_col, cons.away_team_name_col, '_row_id', cons.season_name_col], inplace=True)
     data_df.drop(columns=[cons.game_date_col+'_dt'], inplace=True)
     if target_col in data_df.columns:
         data_df.drop(columns=[target_col], inplace=True)
