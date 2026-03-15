@@ -8,8 +8,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import mean_squared_error, r2_score
 
-from skl_utils import days_since_last_played, prevN_result, prevN_gfpg, season_gfpg, season_result
-import skl_utils as sku
+from skl_utils import days_since_last_played, prevN_result, prevN_gfpg, season_gfpg, season_result, hav_dist_7days
 import utils as ut
 
 
@@ -152,7 +151,7 @@ def predict_season(feature_df):
     #   2. make predictions for scheduled rows 
     #   3. re-create feature dataframe with added predictions and features
     for next_game_date in feature_df.loc[feature_df[cons.away_team_score_col].isna(), cons.game_date_col].unique():
-        # print(f'\tPredicting games for {next_game_date.strftime("%Y-%m-%d")}...')
+        print(f'\tPredicting games for {next_game_date.strftime("%Y-%m-%d")}...')
         feature_df_filt = feature_df[feature_df[cons.game_date_col] <= next_game_date]
         feature_df_filt = dependent_feature_add(feature_df_filt, backfill=False, debug=False)
         feature_df_filt = make_predictions(feature_df_filt, oob_list, mse_list, rsq_list)
@@ -342,6 +341,19 @@ def dependent_feature_add(feature_df, backfill=True, debug=True):
     # calculate days since last played game for the away team in all matchups
     if debug: print('\t\t... [feature_creation] away team days since last game ...')
     feature_df = days_since_last_played(feature_df, cons.away_team_days_since_last_game_col, cons.away_team_name_col)
+
+    geoloc_df = pd.read_csv('util_data/venue_geolocations.csv', dtype={'venue': str, 'latitude': float, 'longitude': float})
+    feature_df = feature_df.merge(geoloc_df, how='left', left_on=cons.venue_col, right_on=cons.venue_col)
+
+    # calculate the haversine distance for the last 7 days for the home team in all matchups
+    if debug: print('\t\t... [feature_creation] home team travel distance in last 7 days ...')
+    feature_df = hav_dist_7days(feature_df, cons.home_team_travel_distance_7days_col, cons.home_team_name_col, backfill)
+
+    # calculate the haversine distance for the last 7 days for the away team in all matchups
+    if debug: print('\t\t... [feature_creation] away team travel distance in last 7 days ...')
+    feature_df = hav_dist_7days(feature_df, cons.away_team_travel_distance_7days_col, cons.away_team_name_col, backfill)
+
+    feature_df.drop(columns=[cons.venue_col+'_lat', cons.venue_col+'_long'], inplace=True)
 
     return feature_df
 

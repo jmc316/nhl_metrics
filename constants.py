@@ -99,6 +99,8 @@ away_team_goals_for_col = 'awayTeamGoalsFor'
 game_date_col = 'gameDate'
 home_team_days_since_last_game_col = 'homeTeamDaysSinceLastGame'
 away_team_days_since_last_game_col = 'awayTeamDaysSinceLastGame'
+home_team_travel_distance_7days_col = 'homeTeamTravelDistance7Days'
+away_team_travel_distance_7days_col = 'awayTeamTravelDistance7Days'
 
 date_format_yyyy_mm_dd = '%Y-%m-%d'
 div_1_val = 'div_1'
