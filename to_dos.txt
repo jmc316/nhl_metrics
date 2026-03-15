@@ -3,5 +3,6 @@
     - save historical features in a dataframe? Like the schedule dataframes but with extra columns
 - features to add: 
     - starting goalie
+    - injury score
 - model observations:
-    - HEAVILY favoring home teams
+    - HEAVILY favoring home teams and statistically better teams

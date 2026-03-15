@@ -6,48 +6,48 @@ import constants as cons
 def dependent_feature_add(feature_df, backfill=True, debug=True):
 
     # calculate the number of wins for the home team in all matchups
-    # if debug: print('\t\t... [sub_feature_creation] home team wins ...')
-    # feature_df = season_result(feature_df, backfill, cons.home_team_wins_col, cons.home_team_name_col)
+    if debug: print('\t\t... [sub_feature_creation] home team wins ...')
+    feature_df = season_result(feature_df, backfill, cons.home_team_wins_col, cons.home_team_name_col)
 
-    # # calculate the number of losses for the home team in all matchups
-    # if debug: print('\t\t... [sub_feature_creation] home team losses ...')
-    # feature_df = season_result(feature_df, backfill, cons.home_team_losses_col, cons.home_team_name_col)
+    # calculate the number of losses for the home team in all matchups
+    if debug: print('\t\t... [sub_feature_creation] home team losses ...')
+    feature_df = season_result(feature_df, backfill, cons.home_team_losses_col, cons.home_team_name_col)
 
-    # # calculate the number of OTLs for the home team in all matchups
-    # if debug: print('\t\t... [sub_feature_creation] home team OTLs ...')
-    # feature_df = season_result(feature_df, backfill, cons.home_team_otls_col, cons.home_team_name_col)
+    # calculate the number of OTLs for the home team in all matchups
+    if debug: print('\t\t... [sub_feature_creation] home team OTLs ...')
+    feature_df = season_result(feature_df, backfill, cons.home_team_otls_col, cons.home_team_name_col)
 
-    # # calculate the points percentage of the home team in all matchups
-    # if debug: print('\t\t... [feature_creation] home team points percentage ...')
-    # if 'home_points_percentage' not in feature_df.columns:
-    #     feature_df['home_points_percentage'] = (feature_df[cons.home_team_wins_col] * 2 + feature_df[cons.home_team_otls_col]) / ((feature_df[cons.home_team_wins_col] + feature_df[cons.home_team_otls_col] + feature_df[cons.home_team_losses_col]) * 2)
-    # else:
-    #     feature_df_new = feature_df.loc[feature_df['home_points_percentage'].isna()]
-    #     feature_df_new['home_points_percentage'] = (feature_df_new[cons.home_team_wins_col] * 2 + feature_df_new[cons.home_team_otls_col]) / ((feature_df_new[cons.home_team_wins_col] + feature_df_new[cons.home_team_otls_col] + feature_df_new[cons.home_team_losses_col]) * 2)
-    #     feature_df.update(feature_df_new['home_points_percentage'])
-    # feature_df.drop(columns=[cons.home_team_wins_col, cons.home_team_otls_col, cons.home_team_losses_col], inplace=True)
+    # calculate the points percentage of the home team in all matchups
+    if debug: print('\t\t... [feature_creation] home team points percentage ...')
+    if 'home_points_percentage' not in feature_df.columns:
+        feature_df['home_points_percentage'] = (feature_df[cons.home_team_wins_col] * 2 + feature_df[cons.home_team_otls_col]) / ((feature_df[cons.home_team_wins_col] + feature_df[cons.home_team_otls_col] + feature_df[cons.home_team_losses_col]) * 2)
+    else:
+        feature_df_new = feature_df.loc[feature_df['home_points_percentage'].isna()]
+        feature_df_new['home_points_percentage'] = (feature_df_new[cons.home_team_wins_col] * 2 + feature_df_new[cons.home_team_otls_col]) / ((feature_df_new[cons.home_team_wins_col] + feature_df_new[cons.home_team_otls_col] + feature_df_new[cons.home_team_losses_col]) * 2)
+        feature_df.update(feature_df_new['home_points_percentage'])
+    feature_df.drop(columns=[cons.home_team_wins_col, cons.home_team_otls_col, cons.home_team_losses_col], inplace=True)
 
-    # # calculate the number of wins for the away team in all matchups
-    # if debug: print('\t\t... [sub_feature_creation] away team wins ...')
-    # feature_df = season_result(feature_df, backfill, cons.away_team_wins_col, cons.away_team_name_col)
+    # calculate the number of wins for the away team in all matchups
+    if debug: print('\t\t... [sub_feature_creation] away team wins ...')
+    feature_df = season_result(feature_df, backfill, cons.away_team_wins_col, cons.away_team_name_col)
 
-    # # calculate the number of losses for the away team in all matchups
-    # if debug: print('\t\t... [sub_feature_creation] away team losses ...')
-    # feature_df = season_result(feature_df, backfill, cons.away_team_losses_col, cons.away_team_name_col)
+    # calculate the number of losses for the away team in all matchups
+    if debug: print('\t\t... [sub_feature_creation] away team losses ...')
+    feature_df = season_result(feature_df, backfill, cons.away_team_losses_col, cons.away_team_name_col)
 
-    # # calculate the number of OTLs for the away team in all matchups
-    # if debug: print('\t\t... [sub_feature_creation] away team OTLs ...')
-    # feature_df = season_result(feature_df, backfill, cons.away_team_otls_col, cons.away_team_name_col)
+    # calculate the number of OTLs for the away team in all matchups
+    if debug: print('\t\t... [sub_feature_creation] away team OTLs ...')
+    feature_df = season_result(feature_df, backfill, cons.away_team_otls_col, cons.away_team_name_col)
 
-    # # calculate the points percentage of the away team in all matchups
-    # if debug: print('\t\t... [feature_creation] away team points percentage ...')
-    # if 'away_points_percentage' not in feature_df.columns:
-    #     feature_df['away_points_percentage'] = (feature_df[cons.away_team_wins_col] * 2 + feature_df[cons.away_team_otls_col]) / ((feature_df[cons.away_team_wins_col] + feature_df[cons.away_team_otls_col] + feature_df[cons.away_team_losses_col]) * 2)
-    # else:
-    #     feature_df_new = feature_df.loc[feature_df['away_points_percentage'].isna()]
-    #     feature_df_new['away_points_percentage'] = (feature_df_new[cons.away_team_wins_col] * 2 + feature_df_new[cons.away_team_otls_col]) / ((feature_df_new[cons.away_team_wins_col] + feature_df_new[cons.away_team_otls_col] + feature_df_new[cons.away_team_losses_col]) * 2)
-    #     feature_df.update(feature_df_new['away_points_percentage'])
-    # feature_df.drop(columns=[cons.away_team_wins_col, cons.away_team_otls_col, cons.away_team_losses_col], inplace=True)
+    # calculate the points percentage of the away team in all matchups
+    if debug: print('\t\t... [feature_creation] away team points percentage ...')
+    if 'away_points_percentage' not in feature_df.columns:
+        feature_df['away_points_percentage'] = (feature_df[cons.away_team_wins_col] * 2 + feature_df[cons.away_team_otls_col]) / ((feature_df[cons.away_team_wins_col] + feature_df[cons.away_team_otls_col] + feature_df[cons.away_team_losses_col]) * 2)
+    else:
+        feature_df_new = feature_df.loc[feature_df['away_points_percentage'].isna()]
+        feature_df_new['away_points_percentage'] = (feature_df_new[cons.away_team_wins_col] * 2 + feature_df_new[cons.away_team_otls_col]) / ((feature_df_new[cons.away_team_wins_col] + feature_df_new[cons.away_team_otls_col] + feature_df_new[cons.away_team_losses_col]) * 2)
+        feature_df.update(feature_df_new['away_points_percentage'])
+    feature_df.drop(columns=[cons.away_team_wins_col, cons.away_team_otls_col, cons.away_team_losses_col], inplace=True)
 
     # calculate the number of wins in the previous 7 games for the home team in all matchups
     if debug: print('\t\t... [sub_feature_creation] home team prev 7 wins ...')

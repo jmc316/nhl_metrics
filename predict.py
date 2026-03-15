@@ -23,6 +23,10 @@ def predict_season(to_csv):
     next_game_date = feature_df.loc[feature_df[cons.away_team_score_col].isna(), cons.game_date_col].min()
     feature_df_filt = feature_df[feature_df[cons.game_date_col] <= next_game_date]
 
+    # check to see if historical feature data for seasons in the input data already exists
+    # if complete historical data exists, change next_game_date to first date with missing features
+    ### TO-DO
+
     # add dependent features to filtered dataframe
     feature_df_filt = ft.dependent_feature_add(feature_df_filt, backfill=True)
 
