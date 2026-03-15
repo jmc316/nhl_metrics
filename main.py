@@ -1,5 +1,5 @@
-import terminal_ui as tui
 import constants as cons
+import terminal_ui as tui
 
 
 def main():
@@ -14,6 +14,7 @@ def main():
 
     # call the function associated with the user's choice
     func_map[main_ui.get_response()]()
+
 
 if __name__ == "__main__":
     main()

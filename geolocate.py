@@ -1,9 +1,10 @@
 import pandas as pd
 import constants as cons
+
 from time import sleep
+from predict import create_df_set
 from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
-from skl_pred2 import create_feature_set
 
 def geolocate_venues(feature_df, venue_col):
 
@@ -43,7 +44,7 @@ def geolocate_venues(feature_df, venue_col):
 
 if __name__ == "__main__":
     # create the feature set
-    feature_df = create_feature_set()
+    feature_df = create_df_set()
 
     # geolocate the venues
     geoloc_df = geolocate_venues(feature_df, cons.venue_col)

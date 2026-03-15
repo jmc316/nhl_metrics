@@ -1,3 +1,7 @@
 - generate charts displaying each team's point pace before predictions versus after predictions
+- optimize historical feature creation
+    - save historical features in a dataframe? Like the schedule dataframes but with extra columns
 - features to add: 
     - starting goalie
+- model observations:
+    - HEAVILY favoring home teams

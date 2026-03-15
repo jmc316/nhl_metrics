@@ -1,259 +1,92 @@
 import pandas as pd
 import constants as cons
-import haversine as hs
+import numpy as np
+
+from sklearn.preprocessing import LabelEncoder
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error, r2_score
 
 
-def prevN_result(data_df, backfill, target_col, home_away_team_col, n):
-    
-    # create dataframe to loop through
-    if backfill:
-        data_df_target = data_df.copy()
-    else:
-        data_df_target = data_df.loc[data_df[cons.last_period_col].isna()]
+def make_predictions(data_df, oob_list, mse_list, rsq_list):
 
-    # initialize the target column with zeros
-    data_df_target.loc[data_df_target[cons.last_period_col].isna(), target_col] = 0
+    # data_df.drop(columns=[cons.game_id_col, cons.game_time_col, cons.venue_timezone_col, cons.game_type_col, cons.season_name_col], inplace=True)
+    # data_df.drop(columns=[cons.game_date_col], inplace=True)
 
-    # iterate through each row in the DataFrame and calculate the number of results in the previous n games for the specified team
-    for idx, row in data_df_target.iterrows():
-        team = row[home_away_team_col]
-        game_date = row[cons.game_date_col]
-        prev_games = data_df.loc[
-            (data_df[cons.game_date_col] < game_date) &
-            ((data_df[cons.home_team_name_col] == team) | (data_df[cons.away_team_name_col] == team))
-        ].tail(n)
-        if 'Wins' in target_col:
-            target_df = prev_games.loc[
-                ((prev_games[cons.home_team_name_col] == team) &
-                 (prev_games[cons.home_team_score_col] > prev_games[cons.away_team_score_col])) |
-                ((prev_games[cons.away_team_name_col] == team) &
-                 (prev_games[cons.away_team_score_col] > prev_games[cons.home_team_score_col]))
-            ].shape[0]
-        elif 'Losses' in target_col:
-            target_df = prev_games.loc[
-                ((prev_games[cons.home_team_name_col] == team) &
-                 (prev_games[cons.home_team_score_col] < prev_games[cons.away_team_score_col]) &
-                 (prev_games[cons.last_period_col] == 'REG')) |
-                ((prev_games[cons.away_team_name_col] == team) &
-                 (prev_games[cons.away_team_score_col] < prev_games[cons.home_team_score_col]) &
-                 (prev_games[cons.last_period_col] == 'REG'))
-            ].shape[0]
-        elif 'OTL' in target_col:
-            target_df = prev_games.loc[
-                ((prev_games[cons.home_team_name_col] == team) &
-                 (prev_games[cons.home_team_score_col] < prev_games[cons.away_team_score_col]) &
-                 (prev_games[cons.last_period_col] != 'REG')) |
-                ((prev_games[cons.away_team_name_col] == team) &
-                 (prev_games[cons.away_team_score_col] < prev_games[cons.home_team_score_col]) &
-                 (prev_games[cons.last_period_col] != 'REG'))
-            ].shape[0]
-        data_df_target.at[idx, target_col] = target_df
+    label_encoder = LabelEncoder()
+    categorical_df = data_df.select_dtypes(include=['object', 'str']).apply(label_encoder.fit_transform)
+    numerical_df = data_df.select_dtypes(exclude=['object', 'str'])
+    encoded_df = pd.concat([numerical_df, categorical_df], axis=1)
+    encoded_df.replace({None: np.nan}, inplace=True) 
 
-    if backfill:
-        data_df = data_df_target
-    else:
-        data_df = pd.concat([data_df.loc[data_df[cons.last_period_col].notna()], data_df_target], ignore_index=True)
+    x_train_df = encoded_df.loc[encoded_df[cons.home_team_score_col].notna(), encoded_df.columns.difference(cons.predict_cols)]
+    y_train_df = encoded_df.loc[encoded_df[cons.home_team_score_col].notna(), cons.predict_cols]
+    x_predict_df = encoded_df.loc[encoded_df[cons.home_team_score_col].isna(), encoded_df.columns.difference(cons.predict_cols)]
 
-    return data_df
+    model = init_model()
 
+    model.fit(x_train_df.values, y_train_df.values)
 
-def season_result(data_df, backfill, target_col, home_away_team_col):
-    
-    # create dataframe to loop through
-    if backfill:
-        data_df_target = data_df.copy()
-    else:
-        data_df_target = data_df.loc[data_df[cons.last_period_col].isna()]
+    oob_score = model.oob_score_
+    # print(f'Out-of-Bag Score: {oob_score}')
+    oob_list.append(oob_score)
 
-    # initialize the target column with zeros
-    data_df_target.loc[data_df_target[cons.last_period_col].isna(), target_col] = 0
+    trainset_predictions = model.predict(x_train_df.values)
 
-    # iterate through each row in the DataFrame and calculate the number of results in the previous 10 games for the specified team
-    for idx, row in data_df_target.iterrows():
-        team = row[home_away_team_col]
-        game_date = row[cons.game_date_col]
-        season_games = data_df.loc[
-            (data_df[cons.game_date_col] < game_date) &
-            ((data_df[cons.home_team_name_col] == team) | (data_df[cons.away_team_name_col] == team))
-        ]
-        if 'Wins' in target_col:
-            target_df = season_games.loc[
-                ((season_games[cons.home_team_name_col] == team) &
-                 (season_games[cons.home_team_score_col] > season_games[cons.away_team_score_col])) |
-                ((season_games[cons.away_team_name_col] == team) &
-                 (season_games[cons.away_team_score_col] > season_games[cons.home_team_score_col]))
-            ].shape[0]
-        elif 'Losses' in target_col:
-            target_df = season_games.loc[
-                ((season_games[cons.home_team_name_col] == team) &
-                 (season_games[cons.home_team_score_col] < season_games[cons.away_team_score_col]) &
-                 (season_games[cons.last_period_col] == 'REG')) |
-                ((season_games[cons.away_team_name_col] == team) &
-                 (season_games[cons.away_team_score_col] < season_games[cons.home_team_score_col]) &
-                 (season_games[cons.last_period_col] == 'REG'))
-            ].shape[0]
-        elif 'OTL' in target_col:
-            target_df = season_games.loc[
-                ((season_games[cons.home_team_name_col] == team) &
-                 (season_games[cons.home_team_score_col] < season_games[cons.away_team_score_col]) &
-                 (season_games[cons.last_period_col] != 'REG')) |
-                ((season_games[cons.away_team_name_col] == team) &
-                 (season_games[cons.away_team_score_col] < season_games[cons.home_team_score_col]) &
-                 (season_games[cons.last_period_col] != 'REG'))
-            ].shape[0]
-        data_df_target.at[idx, target_col] = target_df
+    mse = mean_squared_error(y_train_df.values, trainset_predictions)
+    # print(f'Mean Squared Error: {mse}')
+    mse_list.append(mse)
 
-    if backfill:
-        data_df = data_df_target
-    else:
-        data_df = pd.concat([data_df.loc[data_df[cons.last_period_col].notna()], data_df_target], ignore_index=True)
+    r2 = r2_score(y_train_df.values, trainset_predictions)
+    # print(f'R-squared: {r2}')
+    rsq_list.append(r2)
+
+    predictset_predictions = model.predict(x_predict_df.values)
+
+    predict_df = data_df[data_df[cons.last_period_col].isna()]
+    predict_df[cons.predict_cols] = predictset_predictions
+    predict_df['awayTeamScore_int'] = predict_df[cons.away_team_score_col].round().astype(int)
+    predict_df['homeTeamScore_int'] = predict_df[cons.home_team_score_col].round().astype(int)
+    predict_df['lastPeriod'] = np.where(predict_df['homeTeamScore_int'] == predict_df['awayTeamScore_int'], 'OT', 'REG')
+
+    data_df.update(predict_df[cons.predict_cols])
+
+    # importances = model.feature_importances_
+    # importance_df = pd.DataFrame({'feature': x_train_df.columns, 'importance': importances})
+    # print(importance_df.sort_values(by='importance', ascending=False))
 
     return data_df
 
 
-def prevN_gfpg(n, data_df, backfill, target_col, home_away_team_col):
+def init_model():
+
+    """
+    SciKit Learn RandomForestRegressor parameters:
+    - n_estimators:  The number of trees in the forest (default is 100)
+    - criterion:  The function to measure the quality of a split (default is 'squared_error' for regression)
+    - max_depth:  The maximum depth of the tree (default is None, which means nodes are expanded until all leaves are pure or until all leaves contain less than min_samples_split samples)
+    - min_samples_split:  The minimum number of samples required to split an internal node (default is 2)
+    - min_samples_leaf:  The minimum number of samples required to be at a leaf node (default is 1)
+    - min_weight_fraction_leaf:  The minimum weighted fraction of the sum total of weights (of all the input samples) required to be at a leaf node (default is 0.0)
+    - max_features:  The number of features to consider when looking for the best split (default is 'auto')
+    - max_leaf_nodes:  Grow trees with max_leaf_nodes in best-first fashion. Best nodes are defined as relative reduction in impurity. If None then unlimited number of leaf nodes (default is None)
+    - min_impurity_decrease:  A node will be split if this split induces a decrease of the impurity greater than or equal to this value (default is 0.0)
+    - max_features:  The number of features to consider when looking for the best split (default is 'auto')
+    - bootstrap:  Whether bootstrap samples are used when building trees (default is True)
+    - oob_score:  Whether to use out-of-bag samples to estimate the generalization score (default is False)
+    - n_jobs:  The number of jobs to run in parallel (default is None, which means 1)
+    - random_state:  Controls the randomness of the estimator (default is None)
+    - verbose:  Controls the verbosity when fitting and predicting (default is 0)
+    - warm_start:  When set to True, reuse the solution of the previous call to fit and add more estimators to the ensemble (default is False)
+    - ccp_alpha:  Complexity parameter used for Minimal Cost-Complexity Pruning. The subtree with the largest cost complexity that is smaller than ccp_alpha will be chosen. (default is 0.0)
+    - max_samples:  If bootstrap is True, the number of samples to draw from X to train each base estimator (default is None, which means draw X.shape[0] samples)
+    - monotonic_cst:  Monotonic constraints (default is None)
+    """
+
+    """
+    Project-specific notes for model parameter tuning
     
-    # initialize the target column with zeros
-    target_col = target_col + str(n)
-    
-    # create dataframe to loop through
-    if backfill:
-        data_df_target = data_df.copy()
-    else:
-        data_df_target = data_df.loc[data_df[cons.last_period_col].isna()]
+    """
 
-    # initialize the target column with zeros
-    data_df_target.loc[data_df_target[cons.last_period_col].isna(), target_col] = 0
+    model = RandomForestRegressor(n_estimators=100, oob_score=True)
 
-    # iterate through each row in the DataFrame and calculate the number of results in the previous 10 games for the specified team
-    for idx, row in data_df_target.iterrows():
-        team = row[home_away_team_col]
-        game_date = row[cons.game_date_col]
-        prev_games = data_df.loc[
-            (data_df[cons.game_date_col] < game_date) &
-            ((data_df[cons.home_team_name_col] == team) | (data_df[cons.away_team_name_col] == team))
-        ].tail(n)
-        target_df = prev_games.loc[
-            (prev_games[cons.home_team_name_col] == team)
-        ][cons.home_team_score_col].sum() + prev_games.loc[
-            (prev_games[cons.away_team_name_col] == team)
-        ][cons.away_team_score_col].sum()
-        data_df_target.at[idx, target_col] = target_df
-
-    if backfill:
-        data_df = data_df_target
-    else:
-        data_df = pd.concat([data_df.loc[data_df[cons.last_period_col].notna()], data_df_target], ignore_index=True)
-
-    return data_df
-
-
-def season_gfpg(data_df, backfill, target_col, home_away_team_col):
-    
-    # create dataframe to loop through
-    if backfill:
-        data_df_target = data_df.copy()
-    else:
-        data_df_target = data_df.loc[data_df[cons.last_period_col].isna()]
-
-    # initialize the target column with zeros
-    data_df_target.loc[data_df_target[cons.last_period_col].isna(), target_col] = 0
-
-    # iterate through each row in the DataFrame and calculate the number of results in the previous 10 games for the specified team
-    for idx, row in data_df_target.iterrows():
-        team = row[home_away_team_col]
-        game_date = row[cons.game_date_col]
-        season_games = data_df.loc[
-            (data_df[cons.game_date_col] < game_date) &
-            ((data_df[cons.home_team_name_col] == team) | (data_df[cons.away_team_name_col] == team))
-        ]
-        target_df = season_games.loc[
-            (season_games[cons.home_team_name_col] == team)
-        ][cons.home_team_score_col].sum() + season_games.loc[
-            (season_games[cons.away_team_name_col] == team)
-        ][cons.away_team_score_col].sum()
-        data_df_target.at[idx, target_col] = target_df
-
-    if backfill:
-        data_df = data_df_target
-    else:
-        data_df = pd.concat([data_df.loc[data_df[cons.last_period_col].notna()], data_df_target], ignore_index=True)
-
-    return data_df
-
-
-def days_since_last_played(data_df, target_col, team_col):
-
-    # calculate days since last game regardless of home/away team
-    data_df[cons.game_date_col+'_dt'] = pd.to_datetime(data_df[cons.game_date_col], errors='coerce')
-
-    row_id_col = '_row_id'
-    team_col_name = 'team'
-    source_col_name = 'source_col'
-    days_col_name = 'days_since_last_game'
-
-    base_df = data_df[[cons.game_date_col+'_dt', cons.home_team_name_col, cons.away_team_name_col]].reset_index()
-    base_df.rename(columns={'index': row_id_col}, inplace=True)
-
-    home_games = base_df[[row_id_col, cons.game_date_col+'_dt', cons.home_team_name_col]].rename(
-        columns={cons.home_team_name_col: team_col_name}
-    )
-    home_games[source_col_name] = cons.home_team_name_col
-
-    away_games = base_df[[row_id_col, cons.game_date_col+'_dt', cons.away_team_name_col]].rename(
-        columns={cons.away_team_name_col: team_col_name}
-    )
-    away_games[source_col_name] = cons.away_team_name_col
-
-    all_team_games = pd.concat([home_games, away_games], ignore_index=True)
-    all_team_games.sort_values(by=[team_col_name, cons.game_date_col+'_dt', row_id_col], inplace=True)
-    all_team_games[days_col_name] = all_team_games.groupby(team_col_name)[cons.game_date_col+'_dt'].diff().dt.days
-
-    base_df[target_col] = all_team_games.loc[
-        all_team_games[source_col_name] == team_col
-    ].set_index(row_id_col)[days_col_name].reindex(base_df.index)
-
-    base_df.drop(columns=[cons.game_date_col+'_dt', cons.home_team_name_col, cons.away_team_name_col, '_row_id'], inplace=True)
-    data_df.drop(columns=[cons.game_date_col+'_dt'], inplace=True)
-    if target_col in data_df.columns:
-        data_df.drop(columns=[target_col], inplace=True)
-
-    data_df = data_df.merge(base_df, how='left', left_on=data_df.index, right_on=base_df.index)
-    data_df.drop(columns=['key_0'], inplace=True)
-
-    return data_df
-
-
-def hav_dist_7days(data_df, target_col, team_col, backfill):
-
-    # create dataframe to loop through
-    if backfill:
-        data_df_target = data_df.copy()
-    else:
-        data_df_target = data_df.loc[data_df[cons.last_period_col].isna()] 
-
-    # calculate the haversine distance for the last 7 days for the specified team in all matchups
-    data_df_target[target_col] = None
-    for idx, row in data_df_target.iterrows():
-        team = row[team_col]
-        game_date = row[cons.game_date_col]
-        team_games = data_df.loc[
-            (data_df[cons.game_date_col] < game_date) &
-            ((data_df[cons.home_team_name_col] == team) | (data_df[cons.away_team_name_col] == team))
-        ].tail(7)
-        distances = []
-        for _, game in team_games.iterrows():
-            if pd.notna(game[cons.venue_col+'_lat']) and pd.notna(game[cons.venue_col+'_long']):
-                distance = hs.haversine((row[cons.venue_col+'_lat'], row[cons.venue_col+'_long']), (game[cons.venue_col+'_lat'], game[cons.venue_col+'_long']))
-                distances.append(distance)
-        if distances:
-            data_df_target.at[idx, target_col] = sum(distances) / len(distances)
-        else:
-            data_df_target.at[idx, target_col] = None
-
-    if backfill:
-        data_df = data_df_target
-    else:
-        data_df = pd.concat([data_df.loc[data_df[cons.last_period_col].notna()], data_df_target], ignore_index=True)
-    
-    return data_df
+    return model
