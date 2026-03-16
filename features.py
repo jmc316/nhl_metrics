@@ -172,7 +172,7 @@ def prevN_result(data_df, backfill, target_col, home_away_team_col, n):
         game_date = row[cons.game_date_col]
         season = row[cons.season_name_col]
         prev_games = data_df.loc[
-            (data_df[cons.game_date_col] < game_date) &
+            (pd.to_datetime(data_df[cons.game_date_col]).dt.date < game_date) &
             (data_df[cons.season_name_col] == season) &
             ((data_df[cons.home_team_name_col] == team) | (data_df[cons.away_team_name_col] == team))
         ].tail(n)
@@ -228,7 +228,7 @@ def season_result(data_df, backfill, target_col, home_away_team_col):
         game_date = row[cons.game_date_col]
         season = row[cons.season_name_col]
         season_games = data_df.loc[
-            (data_df[cons.game_date_col] < game_date) &
+            (pd.to_datetime(data_df[cons.game_date_col]).dt.date < game_date) &
             (data_df[cons.season_name_col] == season) &
             ((data_df[cons.home_team_name_col] == team) | (data_df[cons.away_team_name_col] == team))
         ]
@@ -287,7 +287,7 @@ def prevN_gfpg(n, data_df, backfill, target_col, home_away_team_col):
         game_date = row[cons.game_date_col]
         season = row[cons.season_name_col]
         prev_games = data_df.loc[
-            (data_df[cons.game_date_col] < game_date) &
+            (pd.to_datetime(data_df[cons.game_date_col]).dt.date < game_date) &
             (data_df[cons.season_name_col] == season) &
             ((data_df[cons.home_team_name_col] == team) | (data_df[cons.away_team_name_col] == team))
         ].tail(n)
@@ -323,7 +323,7 @@ def season_gfpg(data_df, backfill, target_col, home_away_team_col):
         game_date = row[cons.game_date_col]
         season = row[cons.season_name_col]
         season_games = data_df.loc[
-            (data_df[cons.game_date_col] < game_date) &
+            (pd.to_datetime(data_df[cons.game_date_col]).dt.date < game_date) &
             (data_df[cons.season_name_col] == season) &
             ((data_df[cons.home_team_name_col] == team) | (data_df[cons.away_team_name_col] == team))
         ]
@@ -400,7 +400,7 @@ def hav_dist_7days(data_df, target_col, team_col, backfill):
         game_date = row[cons.game_date_col]
         season = row[cons.season_name_col]
         team_games = data_df.loc[
-            (data_df[cons.game_date_col] < game_date) &
+            (pd.to_datetime(data_df[cons.game_date_col]).dt.date < game_date) &
             (data_df[cons.season_name_col] == season) &
             ((data_df[cons.home_team_name_col] == team) | (data_df[cons.away_team_name_col] == team))
         ].tail(7)

@@ -25,13 +25,31 @@ def predict_season(to_csv):
 
     # check to see if historical feature data for seasons in the input data already exists
     # if complete historical data exists, change next_game_date to first date with missing features
-    ### TO-DO
+    feature_df_filt_load = pd.DataFrame()
+    for season in feature_df_filt[cons.season_name_col].unique():
+        if feature_df_filt.loc[feature_df_filt[cons.season_name_col] == season, cons.last_period_col].notna().all():
+            if os.path.exists(f'output/season_feature_sets/{season}_feature_data.csv'):
+                print(f'Historical feature data for {season[:4]}-{season[4:]} season already exists. Loading from file...')
+                season_feature_df = pd.read_csv(f'output/season_feature_sets/{season}_feature_data.csv')
+                feature_df_filt_load = pd.concat([feature_df_filt_load, season_feature_df], ignore_index=True)
+                continue
+
+        print(f'Historical feature data for {season[:4]}-{season[4:]} season does not exist... ')
+        feature_df_filt_load = pd.concat([feature_df_filt_load, feature_df_filt[feature_df_filt[cons.season_name_col] == season]], ignore_index=True)
 
     # add dependent features to filtered dataframe
-    feature_df_filt = ft.dependent_feature_add(feature_df_filt, backfill=True)
+    feature_df_filt = ft.dependent_feature_add(feature_df_filt_load, backfill=False)
+
+    # save the feature dataframe with added features for the first game day to predict to a CSV file for future use; this will allow us to skip the feature engineering process for this game day in future runs and go straight to making predictions
+    if to_csv:
+        feature_df_filt[cons.season_name_col] = feature_df_filt[cons.season_name_col].astype(str)
+        for season in feature_df_filt[cons.season_name_col].unique():
+            if feature_df_filt.loc[feature_df_filt[cons.season_name_col] == season, cons.last_period_col].notna().all():
+                print(f'Saving feature data for {season[:4]}-{season[4:]} season to CSV file...')
+                feature_df_filt.loc[feature_df_filt[cons.season_name_col] == season].to_csv(f'output/season_feature_sets/{season}_feature_data.csv', index=False)
 
     # make predictions for first scheduled game day after completed games and add to filtered dataframe
-    feature_df_filt = sklu.make_predictions(feature_df_filt, oob_list, mse_list, rsq_list)
+    feature_df_filt = sklu.make_predictions(feature_df_filt, oob_list, mse_list, rsq_list, load_model=True)
 
     # re-create feature dataframe with added predictions and features
     feature_df = pd.concat([feature_df_filt, feature_df.loc[feature_df[cons.game_date_col] > next_game_date]], ignore_index=True)
@@ -53,7 +71,10 @@ def predict_season(to_csv):
     print(f'Average R-squared: {np.mean(rsq_list)}')
     print('Season predictions complete.')
 
-    feature_df.to_csv('output/season_prediction.csv', index=False)
+    if to_csv:
+        feature_df.to_csv('output/season_prediction.csv', index=False)
+
+    return feature_df
 
 
 def create_df_set():
@@ -166,7 +187,7 @@ def playoff_spot_predictions(n=100):
     # this will allow us to calculate the probabilities of each team making the playoffs and their likely seed
     for i in range(n):
         print(f'\nSimulation {i+1} of {n}...')
-        season_results = predict_season()
+        season_results = predict_season(False)
         season_results_points = nhlu.assign_game_points(season_results)
         final_standings = nhlu.generate_final_standings(season_results_points)
 
@@ -198,10 +219,8 @@ if __name__ == "__main__":
 
     ######################
     # create one set of predictions
-    feature_df = predict_season(True)
+    # feature_df = predict_season(True)
 
     ######################
     # # create playoff spot predictions for current season based on n simulations
-    # playoff_spot_predictions(n=20)
-
-    pass
+    playoff_spot_predictions(n=2)
