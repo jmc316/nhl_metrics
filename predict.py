@@ -223,4 +223,4 @@ if __name__ == "__main__":
 
     ######################
     # # create playoff spot predictions for current season based on n simulations
-    playoff_spot_predictions(n=2)
+    playoff_spot_predictions(n=20)

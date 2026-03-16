@@ -7,7 +7,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 
 
-def make_predictions(data_df, oob_list, mse_list, rsq_list, load_model=False, save_model=True):
+def make_predictions(data_df, oob_list, mse_list, rsq_list, load_model=False, save_model=False):
 
     # data_df.drop(columns=[cons.game_id_col, cons.game_time_col, cons.venue_timezone_col, cons.game_type_col, cons.season_name_col], inplace=True)
     # data_df.drop(columns=[cons.game_date_col], inplace=True)
