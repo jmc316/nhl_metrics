@@ -1,5 +1,7 @@
 - generate charts displaying each team's point pace before predictions versus after predictions
 - type handling on input
+- saving of playoff chances data, incorporate into user ui
+- creation of admin ui
 
 - optimize historical feature creation
     - save historical features in a dataframe? Like the schedule dataframes but with extra columns
