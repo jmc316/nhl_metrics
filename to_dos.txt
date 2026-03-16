@@ -1,5 +1,6 @@
 - generate charts displaying each team's point pace before predictions versus after predictions
 - type handling on input
+- overall optimization
 - saving of playoff chances data, incorporate into user ui
 - creation of admin ui
 
