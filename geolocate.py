@@ -1,6 +1,7 @@
 import pandas as pd
 import constants as cons
 
+from file_utils import fileSave
 from time import sleep
 from predict import create_df_set
 from geopy.geocoders import Nominatim
@@ -8,7 +9,7 @@ from geopy.extra.rate_limiter import RateLimiter
 
 def geolocate_venues(feature_df, venue_col):
 
-    geolocator = Nominatim(user_agent="nhl_metrics_app", timeout=10) 
+    geolocator = Nominatim(user_agent='nhl_metrics_app', timeout=10) 
     geocode = RateLimiter(geolocator.geocode, min_delay_seconds=1)
 
     geoloc_df = pd.DataFrame(columns=[venue_col, venue_col+'_lat', venue_col+'_long'])
@@ -50,4 +51,4 @@ if __name__ == "__main__":
     geoloc_df = geolocate_venues(feature_df, cons.venue_col)
 
     # save the geolocation data to a csv file
-    geoloc_df.to_csv('util_data/venue_geolocations.csv', index=False)
+    fileSave(geoloc_df, cons.util_data_folder, cons.venue_geolocations_filename)

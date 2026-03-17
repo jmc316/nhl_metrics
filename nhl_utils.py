@@ -3,6 +3,7 @@ import pandas as pd
 import constants as cons
 import terminal_ui as tui
 
+from file_utils import fileLoad, fileSave
 from tabulate import tabulate
 from constants import nhl_client
 
@@ -25,43 +26,43 @@ def nhl_team_standings():
     # Fetch the standings
     league_df = pd.DataFrame(nhl_client.standings.league_standings()['standings'])
 
-    for col in league_df.columns:
-        if isinstance(league_df[col], np.int64):
-            league_df[col] = league_df[col].astype(int)
+    # for col in league_df.columns:
+    #     if isinstance(league_df[col], np.int64):
+    #         league_df[col] = league_df[col].astype(int)
 
     # eastern conference playoff seeding
     east_conf_spots = league_df.loc[
-        (league_df['conferenceName']=='Eastern')].sort_values(by=['wildcardSequence', 'divisionName'])
+        (league_df[cons.conference_name_col]=='Eastern')].sort_values(by=[cons.wildcard_sequence_col, cons.division_name_col])
     
     # western conference playoff seeding
     west_conf_spots = league_df.loc[
-        (league_df['conferenceName']=='Western')].sort_values(by=['wildcardSequence', 'divisionName'])
+        (league_df[cons.conference_name_col]=='Western')].sort_values(by=[cons.wildcard_sequence_col, cons.division_name_col])
 
     print('--- Eastern Conference Wild Card ---')
     for _, team in east_conf_spots.iterrows():
-        if team['wildcardSequence'] == 2:
-            print(team['wildcardSequence'], team['teamName']['default'], '\t', team['points'])
+        if team[cons.wildcard_sequence_col] == 2:
+            print(team[cons.wildcard_sequence_col], team[cons.team_name_col][cons.default_col], '\t', team['points'])
             print('------------')
-        elif team['divisionSequence'] == 3:
-            print(team['divisionSequence'], team['teamName']['default'], '\t', team['points'])
+        elif team[cons.division_sequence_col] == 3:
+            print(team[cons.division_sequence_col], team[cons.team_name_col][cons.default_col], '\t', team['points'])
             print('------------')
-        elif team['wildcardSequence'] == 0:
-            print(team['divisionSequence'], team['teamName']['default'], '\t', team['points'])
+        elif team[cons.wildcard_sequence_col] == 0:
+            print(team[cons.division_sequence_col], team[cons.team_name_col][cons.default_col], '\t', team['points'])
         else:
-            print(team['wildcardSequence'], team['teamName']['default'], '\t', team['points'])
+            print(team[cons.wildcard_sequence_col], team[cons.team_name_col][cons.default_col], '\t', team['points'])
 
     print('\n--- Western Conference Wild Card ---')
     for _, team in west_conf_spots.iterrows():
-        if team['wildcardSequence'] == 2:
-            print(team['wildcardSequence'], team['teamName']['default'], '\t', team['points'])
+        if team[cons.wildcard_sequence_col] == 2:
+            print(team[cons.wildcard_sequence_col], team[cons.team_name_col][cons.default_col], '\t', team['points'])
             print('------------')
-        elif team['divisionSequence'] == 3:
-            print(team['divisionSequence'], team['teamName']['default'], '\t', team['points'])
+        elif team[cons.division_sequence_col] == 3:
+            print(team[cons.division_sequence_col], team[cons.team_name_col][cons.default_col], '\t', team['points'])
             print('------------')
-        elif team['wildcardSequence'] == 0:
-            print(team['divisionSequence'], team['teamName']['default'], '\t', team['points'])
+        elif team[cons.wildcard_sequence_col] == 0:
+            print(team[cons.division_sequence_col], team[cons.team_name_col][cons.default_col], '\t', team['points'])
         else:
-            print(team['wildcardSequence'], team['teamName']['default'], '\t', team['points'])
+            print(team[cons.wildcard_sequence_col], team[cons.team_name_col][cons.default_col], '\t', team['points'])
 
     print()
 
@@ -86,12 +87,12 @@ def team_info():
             print(f'\t\t... {ex} ...')
             continue
         
-    teams_df.rename(columns={'name': 'teamName'}, inplace=True)
+    teams_df.rename(columns={'name': cons.team_name_col}, inplace=True)
 
-    teams_df['conferenceName'] = teams_df['conference'].apply(lambda x: x['name'])
-    teams_df['divisionName'] = teams_df['division'].apply(lambda x: x['name'])
+    teams_df[cons.conference_name_col] = teams_df['conference'].apply(lambda x: x['name'])
+    teams_df[cons.division_name_col] = teams_df['division'].apply(lambda x: x['name'])
 
-    teams_df = teams_df[['teamName', 'conferenceName', 'divisionName']]
+    teams_df = teams_df[[cons.team_name_col, cons.conference_name_col, cons.division_name_col]]
 
     return teams_df
 
@@ -116,7 +117,7 @@ def assign_game_points(season_results, to_csv=False):
         col_order = [cons.game_id_col, cons.season_col, cons.starttime_utc_col, cons.home_team_name_col,
                      cons.away_team_name_col, cons.home_team_score_col, cons.away_team_score_col,
                      cons.last_period_col, cons.home_team_points_col, cons.away_team_points_col]
-        season_results[col_order].to_csv(cons.output_folder + cons.season_sched_pred_filename, index=False)
+        fileSave(season_results[col_order], cons.output_folder, cons.season_sched_pred_filename)
 
     return season_results
 
@@ -155,12 +156,12 @@ def generate_final_standings(season_results, to_csv=False, load_csv=False):
 
     # if the final standings CSV file already exists in the output folder, load it instead of re-generating the standings from the season results dataframe
     if load_csv:
-        season_results = pd.read_csv(cons.output_folder + cons.season_sched_pred_filename)
+        season_results = fileLoad(cons.output_folder, cons.season_sched_pred_filename)
 
     print('\tGenerating final standings...')
 
     # filter the final schedule on the current season
-    season_results[cons.season_name_col] = season_results[cons.season_name_col].astype(str)
+    # season_results[cons.season_name_col] = season_results[cons.season_name_col].astype(str)
     current_season = str(int(max(season_results[cons.season_name_col].str[4:]))-1) + max(season_results[cons.season_name_col].str[4:])
     season_results = season_results.loc[season_results[cons.season_name_col] == current_season]
 
@@ -293,7 +294,7 @@ def generate_final_standings(season_results, to_csv=False, load_csv=False):
 
     # save the updated season schedule with predictions to a new CSV file
     if to_csv:
-        final_standings.to_csv(cons.output_folder + cons.final_standings_filename, index=False)
+        fileSave(final_standings, cons.output_folder, cons.final_standings_filename)
 
     return final_standings
 

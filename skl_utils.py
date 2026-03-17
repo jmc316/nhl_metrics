@@ -7,13 +7,13 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 
 
-def make_predictions(data_df, oob_list, mse_list, rsq_list, load_model=False, save_model=False):
+def make_predictions(data_df, oob_list, mse_list, rsq_list, load_model=False, save_model=True):
 
     # data_df.drop(columns=[cons.game_id_col, cons.game_time_col, cons.venue_timezone_col, cons.game_type_col, cons.season_name_col], inplace=True)
     # data_df.drop(columns=[cons.game_date_col], inplace=True)
 
     data_df[cons.game_date_col] = pd.to_datetime(data_df[cons.game_date_col]).dt.date
-    data_df[cons.season_name_col] = data_df[cons.season_name_col].astype(str)
+    # data_df[cons.season_name_col] = data_df[cons.season_name_col].astype(str)
 
     label_encoder = LabelEncoder()
     categorical_df = data_df.select_dtypes(include=['object', 'str']).apply(label_encoder.fit_transform)
@@ -26,7 +26,7 @@ def make_predictions(data_df, oob_list, mse_list, rsq_list, load_model=False, sa
     x_predict_df = encoded_df.loc[encoded_df[cons.home_team_score_col].isna(), encoded_df.columns.difference(cons.predict_cols)]
 
     if load_model:
-        model = pd.read_pickle('model_files/skl_rf_model.pkl')
+        model = pd.read_pickle(f'{cons.model_files_folder}{cons.sklearn_model_filename}')
     else:
         model = init_model()
 
@@ -37,7 +37,7 @@ def make_predictions(data_df, oob_list, mse_list, rsq_list, load_model=False, sa
         oob_list.append(oob_score)
 
     if save_model:
-        pd.to_pickle(model, 'model_files/skl_rf_model.pkl')
+        pd.to_pickle(model, f'{cons.model_files_folder}{cons.sklearn_model_filename}')
 
     trainset_predictions = model.predict(x_train_df.values)
 
@@ -55,7 +55,7 @@ def make_predictions(data_df, oob_list, mse_list, rsq_list, load_model=False, sa
     predict_df[cons.predict_cols] = predictset_predictions
     predict_df['awayTeamScore_int'] = predict_df[cons.away_team_score_col].round().astype(int)
     predict_df['homeTeamScore_int'] = predict_df[cons.home_team_score_col].round().astype(int)
-    predict_df['lastPeriod'] = np.where(predict_df['homeTeamScore_int'] == predict_df['awayTeamScore_int'], 'OT', 'REG')
+    predict_df[cons.last_period_col] = np.where(predict_df['homeTeamScore_int'] == predict_df['awayTeamScore_int'], 'OT', 'REG')
 
     data_df.update(predict_df[cons.predict_cols])
 

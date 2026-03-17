@@ -16,16 +16,16 @@ team_stats_options = {
     'Individual Team Stats': ['team_stats', 'nhl_individual_team_stats'],
 }
 
-last_period_map = {'REG': 0, 'OT': 1, 'SO': 2}
-shootout_rate = 20
+# last_period_map = {'REG': 0, 'OT': 1, 'SO': 2}
+# shootout_rate = 20
 
 game_id_col = 'gameId'
 season_col = 'season'
 season_name_col = 'seasonName'
 starttime_utc_col = 'startTimeUTC'
-game_year_col = 'gameYear'
-game_month_col = 'gameMonth'
-game_day_col = 'gameDay'
+# game_year_col = 'gameYear'
+# game_month_col = 'gameMonth'
+# game_day_col = 'gameDay'
 game_time_col = 'gameTimeUTC'
 venue_timezone_col = 'venueTimezone'
 venue_col = 'venue'
@@ -64,6 +64,8 @@ away_team_goals_against_col = 'awayTeamGoalsAgainst'
 goal_diff_col = 'goalDifferential'
 points_percentage_col = 'pointsPercentage'
 division_name_col = 'divisionName'
+wildcard_sequence_col = 'wildcardSequence'
+division_sequence_col = 'divisionSequence'
 conference_name_col = 'conferenceName'
 division_seed_col = 'divisionSeed'
 conference_seed_col = 'conferenceSeed'
@@ -84,23 +86,25 @@ home_team_prev_10_losses_col = 'homeTeamPrev10Losses'
 away_team_prev_10_losses_col = 'awayTeamPrev10Losses'
 home_team_prev_10_otl_col = 'homeTeamPrev10OTLs'
 away_team_prev_10_otl_col = 'awayTeamPrev10OTLs'
-home_team_wins_col = 'homeTeamWins'
-away_team_wins_col = 'awayTeamWins'
-home_team_losses_col = 'homeTeamLosses'
-away_team_losses_col = 'awayTeamLosses'
-home_team_otls_col = 'homeTeamOTLs'
-away_team_otls_col = 'awayTeamOTLs'
-home_team_id_col = 'homeTeamId'
-away_team_id_col = 'awayTeamId'
+# home_team_id_col = 'homeTeamId'
+# away_team_id_col = 'awayTeamId'
 home_team_prev_n_goals_for_col = 'homeTeamPrevGoalsFor_'
 away_team_prev_n_goals_for_col = 'awayTeamPrevGoalsFor_'
-home_team_goals_for_col = 'homeTeamGoalsFor'
-away_team_goals_for_col = 'awayTeamGoalsFor'
 game_date_col = 'gameDate'
 home_team_days_since_last_game_col = 'homeTeamDaysSinceLastGame'
 away_team_days_since_last_game_col = 'awayTeamDaysSinceLastGame'
 home_team_travel_distance_7days_col = 'homeTeamTravelDistance7Days'
 away_team_travel_distance_7days_col = 'awayTeamTravelDistance7Days'
+home_team_points_percentage_col = 'homeTeamPointsPercentage'
+away_team_points_percentage_col = 'awayTeamPointsPercentage'
+home_team_prev_n_wins_col = 'homeTeamPrevWins_'
+away_team_prev_n_wins_col = 'awayTeamPrevWins_'
+home_team_prev_n_losses_col = 'homeTeamPrevLosses_'
+away_team_prev_n_losses_col = 'awayTeamPrevLosses_'
+home_team_prev_n_otls_col = 'homeTeamPrevOTLs_'
+away_team_prev_n_otls_col = 'awayTeamPrevOTLs_'
+home_team_prev_n_points_percentage_col = 'homeTeamPrevPointsPercentage_'
+away_team_prev_n_points_percentage_col = 'awayTeamPrevPointsPercentage_'
 
 date_format_yyyy_mm_dd = '%Y-%m-%d'
 div_1_val = 'div_1'
@@ -116,12 +120,6 @@ cen_div_val = 'Central'
 season_stdt = '09-23'
 season_enddt = '06-30'
 
-feature_cols = [game_id_col, season_name_col, game_type_col, game_time_col, venue_timezone_col, venue_col,
-                 home_team_prev_10_wins_col, home_team_prev_10_losses_col, home_team_prev_10_otl_col,
-                 away_team_prev_10_wins_col, away_team_prev_10_losses_col, away_team_prev_10_otl_col,
-                 home_team_wins_col, home_team_losses_col, home_team_otls_col, away_team_wins_col, away_team_losses_col, away_team_otls_col,
-                 home_team_prev_n_goals_for_col+'7', away_team_prev_n_goals_for_col+'7', home_team_prev_n_goals_for_col+'3', away_team_prev_n_goals_for_col+'3',
-                 game_date_col]
 predict_cols = [away_team_score_col, home_team_score_col, last_period_col]
 tiebreaker_cols = ['totalPoints', 'pointsPercentage', 'totalRegWins', 'totalRegOTWins', 'totalWins', 'goalDifferential', 'totalGoalsFor']
 final_standings_col_order = ['conferenceName', 'conferenceSeed', 'divisionName', 'divisionSeed', 'playoffSeed', 'teamName', 'totalGames',
@@ -131,11 +129,18 @@ final_standings_col_order = ['conferenceName', 'conferenceSeed', 'divisionName',
 
 
 output_folder = 'output/'
+util_data_folder = 'util_data/'
+model_files_folder = 'model_files/'
 season_sched_folder = output_folder + 'season_schedules/'
+season_feature_sets_folder = output_folder + 'season_feature_sets/'
 season_sched_filename = 'season_sched.csv'
 season_sched_pred_filename = 'season_sched_pred.csv'
+season_prediction_filename = 'season_prediction.csv'
 season_sched_pred_points_filename = 'season_sched_pred_points.csv'
 final_standings_filename = 'final_standings.csv'
+venue_geolocations_filename = 'venue_geolocations.csv'
+feature_data_filename_suffix = '_feature_data.csv'
+sklearn_model_filename = 'skl_rf_model.pkl'
 
 team_colors = {
     'Anaheim Ducks': 'cyan',
@@ -172,37 +177,37 @@ team_colors = {
     'Winnipeg Jets': 'light_grey'
 }
 
-team_id_map = {
-    'Anaheim Ducks': 1,
-    'Boston Bruins': 2,
-    'Buffalo Sabres': 3,
-    'Calgary Flames': 4,
-    'Carolina Hurricanes': 5,
-    'Chicago Blackhawks': 6,
-    'Colorado Avalanche': 7,
-    'Columbus Blue Jackets': 8,
-    'Dallas Stars': 9,
-    'Detroit Red Wings': 10,
-    'Edmonton Oilers': 11,
-    'Florida Panthers': 12,
-    'Los Angeles Kings': 13,
-    'Minnesota Wild': 14,
-    'Montréal Canadiens': 15,
-    'Nashville Predators': 16,
-    'New Jersey Devils': 17,
-    'New York Islanders': 18,
-    'New York Rangers': 19,
-    'Ottawa Senators': 20,
-    'Philadelphia Flyers': 21,
-    'Pittsburgh Penguins': 22,
-    'San Jose Sharks': 23,
-    'Seattle Kraken': 24,
-    'St. Louis Blues': 25,
-    'Tampa Bay Lightning': 26,
-    'Toronto Maple Leafs': 27,
-    'Utah Mammoth': 28,
-    'Vancouver Canucks': 29,
-    'Vegas Golden Knights': 30,
-    'Washington Capitals': 31,
-    'Winnipeg Jets': 32
-}
+# team_id_map = {
+#     'Anaheim Ducks': 1,
+#     'Boston Bruins': 2,
+#     'Buffalo Sabres': 3,
+#     'Calgary Flames': 4,
+#     'Carolina Hurricanes': 5,
+#     'Chicago Blackhawks': 6,
+#     'Colorado Avalanche': 7,
+#     'Columbus Blue Jackets': 8,
+#     'Dallas Stars': 9,
+#     'Detroit Red Wings': 10,
+#     'Edmonton Oilers': 11,
+#     'Florida Panthers': 12,
+#     'Los Angeles Kings': 13,
+#     'Minnesota Wild': 14,
+#     'Montréal Canadiens': 15,
+#     'Nashville Predators': 16,
+#     'New Jersey Devils': 17,
+#     'New York Islanders': 18,
+#     'New York Rangers': 19,
+#     'Ottawa Senators': 20,
+#     'Philadelphia Flyers': 21,
+#     'Pittsburgh Penguins': 22,
+#     'San Jose Sharks': 23,
+#     'Seattle Kraken': 24,
+#     'St. Louis Blues': 25,
+#     'Tampa Bay Lightning': 26,
+#     'Toronto Maple Leafs': 27,
+#     'Utah Mammoth': 28,
+#     'Vancouver Canucks': 29,
+#     'Vegas Golden Knights': 30,
+#     'Washington Capitals': 31,
+#     'Winnipeg Jets': 32
+# }
