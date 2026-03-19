@@ -117,7 +117,7 @@ cen_div_val = 'Central'
 season_stdt = '09-23'
 season_enddt = '06-30'
 
-predict_cols = [away_team_score_col, home_team_score_col, last_period_col]
+predict_cols = [home_team_score_col, away_team_score_col, last_period_col]
 tiebreaker_cols = ['totalPoints', 'pointsPercentage', 'totalRegWins', 'totalRegOTWins', 'totalWins', 'goalDifferential', 'totalGoalsFor']
 final_standings_col_order = ['conferenceName', 'conferenceSeed', 'divisionName', 'divisionSeed', 'playoffSeed', 'teamName', 'totalGames',
                  'totalWins', 'totalLosses', 'totalOTLs', 'totalPoints', 'pointsPercentage', 'totalRegWins', 'totalRegOTWins',
@@ -131,12 +131,13 @@ season_sched_folder = output_folder + 'season_schedules/'
 season_feature_sets_folder = output_folder + 'season_feature_sets/'
 season_sched_filename = 'season_sched.csv'
 season_sched_pred_filename = 'season_sched_pred.csv'
-season_prediction_filename = 'season_prediction.csv'
+season_prediction_filename = 'season_prediction'
 season_sched_pred_points_filename = 'season_sched_pred_points.csv'
 final_standings_filename = 'final_standings.csv'
 venue_geolocations_filename = 'venue_geolocations.csv'
 feature_data_filename_suffix = '_feature_data.csv'
 sklearn_model_filename = 'skl_rf_model.pkl'
+playoff_spot_prediction_filename = 'playoff_predictions_{n}.csv'
 
 team_colors = {
     'Anaheim Ducks': 'cyan',

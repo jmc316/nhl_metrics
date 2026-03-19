@@ -8,6 +8,7 @@ import nhl_utils as nhlu
 import skl_utils as sklu
 
 from file_utils import csvLoad, csvSave
+from analyze import game_result_comparison
 
 
 def predict_season(to_csv, set_model_random_state):
@@ -17,6 +18,8 @@ def predict_season(to_csv, set_model_random_state):
 
     # add features that are not dependent on the prediction set results
     feature_df = ft.datetime_feature_add(sched_df)
+
+    cons.last_actual_game_date = sched_df.loc[sched_df[cons.away_team_score_col].notna(), cons.game_date_col].max()
 
     # initialize empty metrics lists to store the out-of-bag score, mean squared error, and R-squared for each prediction iteration
     oob_list, mse_list, rsq_list = [], [], []
@@ -53,6 +56,7 @@ def predict_season(to_csv, set_model_random_state):
                 csvSave(feature_df_filt.loc[feature_df_filt[cons.season_name_col] == season], cons.season_feature_sets_folder, f'{season}{cons.feature_data_filename_suffix}')
 
     # make predictions for first scheduled game day after completed games and add to filtered dataframe
+    print(f'\tPredicting games for {next_game_date.strftime("%Y-%m-%d")}...')
     feature_df_filt = sklu.make_predictions(feature_df_filt, oob_list, mse_list, rsq_list, set_model_random_state, load_model=False, save_model=True)
 
     # re-create feature dataframe with added predictions and features
@@ -76,7 +80,7 @@ def predict_season(to_csv, set_model_random_state):
     print('Season predictions complete.\n')
 
     if to_csv:
-        csvSave(feature_df, cons.output_folder, cons.season_prediction_filename)
+        csvSave(feature_df, cons.output_folder, cons.season_prediction_filename+'_'+cons.last_actual_game_date.strftime(cons.date_format_yyyy_mm_dd)+'.csv')
 
     return feature_df
 
@@ -165,8 +169,6 @@ def create_season_df(season_name, from_csv=True, to_csv=False, debug=False):
                     weekly_sched[cons.home_team_score_col] = None
                     weekly_sched[cons.last_period_col] = None
 
-                # weekly_sched[cons.season_name_col] = weekly_sched[cons.season_name_col].astype(str)
-
                 # concatenate this week's schedule to the season schedule dataframe
                 season_sched = pd.concat([season_sched, weekly_sched], ignore_index=True)
 
@@ -210,23 +212,26 @@ def playoff_spot_predictions(n=100):
 
     nhlu.playoff_probabilities_printer(count_df)
 
+    csvSave(count_df, cons.output_folder, cons.playoff_spot_prediction_filename.format(n=n))
+
     return count_df
 
 
 if __name__ == "__main__":
 
     ######################
-    # # create season schedule dataframe for inputted seasons
-    # season_names = ['20212022', '20222023', '20232024', '20242025']
+    # create season schedule dataframe for inputted seasons
+    # season_names = ['20252026'] # ['20212022', '20222023', '20232024', '20242025', '20252026']
     # for season in season_names:
     #     create_season_df(season, from_csv=False, to_csv=True, debug=True)
 
     ######################
     # create one set of predictions
     feature_df = predict_season(to_csv=True, set_model_random_state=True)
+    game_result_comparison(feature_df)
     season_results_df = nhlu.generate_final_standings(nhlu.assign_game_points(feature_df), to_csv=True)
     nhlu.nhl_team_standings(season_results_df)
 
     ######################
-    # # create playoff spot predictions for current season based on n simulations
-    # playoff_spot_predictions(n=20)
+    # create playoff spot predictions for current season based on n simulations
+    # playoff_spot_predictions(n=10)

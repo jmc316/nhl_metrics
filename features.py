@@ -1,7 +1,9 @@
-import pandas as pd
-import numpy as np
 import bisect
+
+import numpy as np
+import pandas as pd
 import constants as cons
+
 from file_utils import csvLoad
 
 

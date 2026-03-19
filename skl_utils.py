@@ -43,19 +43,7 @@ def make_predictions(data_df, oob_list, mse_list, rsq_list, set_model_random_sta
     if debug: print('\t\tMaking predictions...')
     trainset_predictions = model.predict(x_train_df.values)
 
-    if debug: print('\t\tcalculating metrics...')
-
-    oob_score = model.oob_score_
-    if debug: print(f'\t\t\tOut-of-Bag Score: {oob_score}')
-    oob_list.append(oob_score)
-
-    mse = mean_squared_error(y_train_df.values, trainset_predictions)
-    if debug: print(f'\t\t\tMean Squared Error: {mse}')
-    mse_list.append(mse)
-
-    r2 = r2_score(y_train_df.values, trainset_predictions)
-    if debug: print(f'\t\t\tR-squared: {r2}')
-    rsq_list.append(r2)
+    trainset_metrics(model, y_train_df, trainset_predictions, oob_list, mse_list, rsq_list, debug)
 
     # make predictions on the prediction set
     predictset_predictions = model.predict(x_predict_df.values)
@@ -109,3 +97,47 @@ def init_model(random_state_in=None):
                                   )
 
     return model
+
+
+def trainset_metrics(model, y_train_df, trainset_predictions, oob_list, mse_list, rsq_list, debug=False):
+    
+    if debug: print('\t\tcalculating metrics...')
+
+    oob_score = model.oob_score_
+    if debug: print(f'\t\t\tOut-of-Bag Score: {oob_score}')
+    oob_list.append(oob_score)
+
+    mse = mean_squared_error(y_train_df.values, trainset_predictions)
+    if debug: print(f'\t\t\tMean Squared Error: {mse}')
+    mse_list.append(mse)
+
+    r2 = r2_score(y_train_df.values, trainset_predictions)
+    if debug: print(f'\t\t\tR-squared: {r2}')
+    rsq_list.append(r2)
+
+    games_correct, total_games, accuracy = game_outcome_metrics(y_train_df, trainset_predictions)
+    if debug: print(f'\t\t\tGames Correct: {games_correct}/{total_games} ({accuracy:.2%})')
+
+    return oob_list, mse_list, rsq_list
+
+
+def game_outcome_metrics(y_train_df, trainset_predictions):
+
+    game_results_df = pd.DataFrame({
+        'home_team_score_actual': y_train_df[cons.home_team_score_col],
+        'home_team_score_predicted': trainset_predictions[:, 0],
+        'away_team_score_actual': y_train_df[cons.away_team_score_col],
+        'away_team_score_predicted': trainset_predictions[:, 1]
+    })
+
+    game_results_df['correct_outcome'] = np.where(
+        (game_results_df['home_team_score_actual'] > game_results_df['away_team_score_actual']) &
+        (game_results_df['home_team_score_predicted'] > game_results_df['away_team_score_predicted']) |
+        (game_results_df['home_team_score_actual'] < game_results_df['away_team_score_actual']) &
+        (game_results_df['home_team_score_predicted'] < game_results_df['away_team_score_predicted']) |
+        (game_results_df['home_team_score_actual'] == game_results_df['away_team_score_actual']) &
+        (game_results_df['home_team_score_predicted'] == game_results_df['away_team_score_predicted']),
+        1, 0
+        )
+    
+    return (sum(game_results_df['correct_outcome']), len(game_results_df), sum(game_results_df['correct_outcome']) / len(game_results_df))

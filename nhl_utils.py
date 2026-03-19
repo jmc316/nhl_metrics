@@ -3,9 +3,9 @@ import pandas as pd
 import constants as cons
 import terminal_ui as tui
 
-from file_utils import csvLoad, csvSave
 from tabulate import tabulate
 from constants import nhl_client
+from file_utils import csvLoad, csvSave
 
 
 def nhl_team_stats():

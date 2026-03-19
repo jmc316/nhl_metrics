@@ -15,3 +15,4 @@
     - mid-season playoff tree/series predictions
     - full season playoff chances
     - full season playoff predictions
+    - gambling interaction with how much money the model would be winning?
