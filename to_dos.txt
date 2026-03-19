@@ -9,7 +9,6 @@
 - admin data analysis features to add:
     - generate charts displaying each team's point pace before predictions versus after predictions
     - overall model evaluation / score
-    - add ability to print wildcard standings after a season prediction
 
 - codebase features to add:
     - mid-season playoff chances (partially done)
