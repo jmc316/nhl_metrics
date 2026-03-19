@@ -53,9 +53,7 @@ def make_predictions(data_df, oob_list, mse_list, rsq_list, load_model=False, sa
 
     predict_df = data_df[data_df[cons.last_period_col].isna()]
     predict_df[cons.predict_cols] = predictset_predictions
-    predict_df['awayTeamScore_int'] = predict_df[cons.away_team_score_col].round().astype(int)
-    predict_df['homeTeamScore_int'] = predict_df[cons.home_team_score_col].round().astype(int)
-    predict_df[cons.last_period_col] = np.where(predict_df['homeTeamScore_int'] == predict_df['awayTeamScore_int'], 'OT', 'REG')
+    predict_df[cons.last_period_col] = np.where(abs(predict_df['homeTeamScore_int'] - predict_df['awayTeamScore_int']) < cons.ot_score_diff, 'OT', 'REG')
 
     data_df.update(predict_df[cons.predict_cols])
 

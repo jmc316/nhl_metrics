@@ -16,16 +16,13 @@ team_stats_options = {
     'Individual Team Stats': ['team_stats', 'nhl_individual_team_stats'],
 }
 
-# last_period_map = {'REG': 0, 'OT': 1, 'SO': 2}
-# shootout_rate = 20
+ot_score_diff = 0.25
+max_single_season_games = 110
 
 game_id_col = 'gameId'
 season_col = 'season'
 season_name_col = 'seasonName'
 starttime_utc_col = 'startTimeUTC'
-# game_year_col = 'gameYear'
-# game_month_col = 'gameMonth'
-# game_day_col = 'gameDay'
 game_time_col = 'gameTimeUTC'
 venue_timezone_col = 'venueTimezone'
 venue_col = 'venue'
@@ -86,10 +83,10 @@ home_team_prev_10_losses_col = 'homeTeamPrev10Losses'
 away_team_prev_10_losses_col = 'awayTeamPrev10Losses'
 home_team_prev_10_otl_col = 'homeTeamPrev10OTLs'
 away_team_prev_10_otl_col = 'awayTeamPrev10OTLs'
-# home_team_id_col = 'homeTeamId'
-# away_team_id_col = 'awayTeamId'
 home_team_prev_n_goals_for_col = 'homeTeamPrevGoalsFor_'
 away_team_prev_n_goals_for_col = 'awayTeamPrevGoalsFor_'
+home_team_prev_n_goals_against_col = 'homeTeamPrevGoalsAgainst_'
+away_team_prev_n_goals_against_col = 'awayTeamPrevGoalsAgainst_'
 game_date_col = 'gameDate'
 home_team_days_since_last_game_col = 'homeTeamDaysSinceLastGame'
 away_team_days_since_last_game_col = 'awayTeamDaysSinceLastGame'
@@ -176,38 +173,3 @@ team_colors = {
     'Washington Capitals': 'red',
     'Winnipeg Jets': 'light_grey'
 }
-
-# team_id_map = {
-#     'Anaheim Ducks': 1,
-#     'Boston Bruins': 2,
-#     'Buffalo Sabres': 3,
-#     'Calgary Flames': 4,
-#     'Carolina Hurricanes': 5,
-#     'Chicago Blackhawks': 6,
-#     'Colorado Avalanche': 7,
-#     'Columbus Blue Jackets': 8,
-#     'Dallas Stars': 9,
-#     'Detroit Red Wings': 10,
-#     'Edmonton Oilers': 11,
-#     'Florida Panthers': 12,
-#     'Los Angeles Kings': 13,
-#     'Minnesota Wild': 14,
-#     'Montréal Canadiens': 15,
-#     'Nashville Predators': 16,
-#     'New Jersey Devils': 17,
-#     'New York Islanders': 18,
-#     'New York Rangers': 19,
-#     'Ottawa Senators': 20,
-#     'Philadelphia Flyers': 21,
-#     'Pittsburgh Penguins': 22,
-#     'San Jose Sharks': 23,
-#     'Seattle Kraken': 24,
-#     'St. Louis Blues': 25,
-#     'Tampa Bay Lightning': 26,
-#     'Toronto Maple Leafs': 27,
-#     'Utah Mammoth': 28,
-#     'Vancouver Canucks': 29,
-#     'Vegas Golden Knights': 30,
-#     'Washington Capitals': 31,
-#     'Winnipeg Jets': 32
-# }

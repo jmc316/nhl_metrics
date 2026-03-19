@@ -26,10 +26,6 @@ def nhl_team_standings():
     # Fetch the standings
     league_df = pd.DataFrame(nhl_client.standings.league_standings()['standings'])
 
-    # for col in league_df.columns:
-    #     if isinstance(league_df[col], np.int64):
-    #         league_df[col] = league_df[col].astype(int)
-
     # eastern conference playoff seeding
     east_conf_spots = league_df.loc[
         (league_df[cons.conference_name_col]=='Eastern')].sort_values(by=[cons.wildcard_sequence_col, cons.division_name_col])

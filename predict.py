@@ -223,7 +223,7 @@ if __name__ == "__main__":
 
     ######################
     # create one set of predictions
-    feature_df = predict_season(True)
+    feature_df = predict_season(to_csv=True)
 
     ######################
     # # create playoff spot predictions for current season based on n simulations
