@@ -181,4 +181,7 @@ cython_debug/
 .cursorindexingignore
 
 # output csv files
-output/
+/output
+
+# model files
+/model_files

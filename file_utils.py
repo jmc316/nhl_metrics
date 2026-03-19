@@ -1,11 +1,12 @@
 import os
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 import constants as cons
 
 
-def fileLoad(folder, filename):
+# standardized universal csv loading function
+def csvLoad(folder, filename):
 
     filepath = os.path.join(folder, filename)
     dfdata = pd.read_csv(filepath)
@@ -23,10 +24,38 @@ def fileLoad(folder, filename):
     return dfdata
 
 
-def fileSave(dfdata, folder, filename):
+# standardized universal csv saving function
+def csvSave(dfdata, folder, filename):
 
-    if not os.path.exists(folder):
-        os.makedirs(folder)
+    try:
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+
+        filepath = os.path.join(folder, filename)
+        dfdata.to_csv(filepath, index=False)
+
+    except Exception as ex:
+        print(f'Error saving CSV file: {ex}')
+
+
+# standardized universal pickle loading function
+def pklLoad(folder, filename):
 
     filepath = os.path.join(folder, filename)
-    dfdata.to_csv(filepath, index=False)
+    data = pd.read_pickle(filepath)
+
+    return data
+
+
+# standardized universal pickle saving function
+def pklSave(data, folder, filename):
+
+    try:
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+
+        filepath = os.path.join(folder, filename)
+        pd.to_pickle(data, filepath)
+
+    except Exception as ex:
+        print(f'Error saving pickle file: {ex}')

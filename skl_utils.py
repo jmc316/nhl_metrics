@@ -1,60 +1,66 @@
+import numpy as np
 import pandas as pd
 import constants as cons
-import numpy as np
 
+from file_utils import pklLoad, pklSave
 from sklearn.preprocessing import LabelEncoder
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 
 
-def make_predictions(data_df, oob_list, mse_list, rsq_list, load_model=False, save_model=True):
+def make_predictions(data_df, oob_list, mse_list, rsq_list, debug=False, load_model=True, save_model=False):
 
-    # data_df.drop(columns=[cons.game_id_col, cons.game_time_col, cons.venue_timezone_col, cons.game_type_col, cons.season_name_col], inplace=True)
-    # data_df.drop(columns=[cons.game_date_col], inplace=True)
-
-    data_df[cons.game_date_col] = pd.to_datetime(data_df[cons.game_date_col]).dt.date
-    # data_df[cons.season_name_col] = data_df[cons.season_name_col].astype(str)
-
+    # encode categorical variables using label encoding, and keep numerical variables as is
     label_encoder = LabelEncoder()
     categorical_df = data_df.select_dtypes(include=['object', 'str']).apply(label_encoder.fit_transform)
     numerical_df = data_df.select_dtypes(exclude=['object', 'str'])
     encoded_df = pd.concat([numerical_df, categorical_df], axis=1)
     encoded_df.replace({None: np.nan}, inplace=True) 
 
+    # split the data into training and prediction sets based on the presence of the target variable (home team score)
     x_train_df = encoded_df.loc[encoded_df[cons.home_team_score_col].notna(), encoded_df.columns.difference(cons.predict_cols)]
     y_train_df = encoded_df.loc[encoded_df[cons.home_team_score_col].notna(), cons.predict_cols]
     x_predict_df = encoded_df.loc[encoded_df[cons.home_team_score_col].isna(), encoded_df.columns.difference(cons.predict_cols)]
 
+    # initialize or load the model, fit it to the training data, and make predictions on the prediction set
     if load_model:
-        model = pd.read_pickle(f'{cons.model_files_folder}{cons.sklearn_model_filename}')
+        if debug: print('\t\tLoading existing model...')
+        model = pklLoad(cons.model_files_folder, cons.sklearn_model_filename)
     else:
+        if debug: print('\t\tCreating new model...')
         model = init_model()
 
         model.fit(x_train_df.values, y_train_df.values)
 
-        oob_score = model.oob_score_
-        # print(f'Out-of-Bag Score: {oob_score}')
-        oob_list.append(oob_score)
-
+    # save the model to a file for future use
     if save_model:
-        pd.to_pickle(model, f'{cons.model_files_folder}{cons.sklearn_model_filename}')
+        pklSave(model, cons.model_files_folder, cons.sklearn_model_filename)
 
+    # make predictions on the training set to calculate metrics
+    if debug: print('\t\tMaking predictions...')
     trainset_predictions = model.predict(x_train_df.values)
 
+    if debug: print('\t\tcalculating metrics...')
+
+    oob_score = model.oob_score_
+    if debug: print(f'\t\t\tOut-of-Bag Score: {oob_score}')
+    oob_list.append(oob_score)
+
     mse = mean_squared_error(y_train_df.values, trainset_predictions)
-    # print(f'Mean Squared Error: {mse}')
+    if debug: print(f'\t\t\tMean Squared Error: {mse}')
     mse_list.append(mse)
 
     r2 = r2_score(y_train_df.values, trainset_predictions)
-    # print(f'R-squared: {r2}')
+    if debug: print(f'\t\t\tR-squared: {r2}')
     rsq_list.append(r2)
 
+    # make predictions on the prediction set
     predictset_predictions = model.predict(x_predict_df.values)
 
+    # update the original data_df with the predictions for the target variables and determine the last period based on the predicted scores
     predict_df = data_df[data_df[cons.last_period_col].isna()]
     predict_df[cons.predict_cols] = predictset_predictions
-    predict_df[cons.last_period_col] = np.where(abs(predict_df['homeTeamScore_int'] - predict_df['awayTeamScore_int']) < cons.ot_score_diff, 'OT', 'REG')
-
+    predict_df[cons.last_period_col] = np.where(abs(predict_df[cons.home_team_score_col] - predict_df[cons.away_team_score_col]) < cons.ot_score_diff, 'OT', 'REG')
     data_df.update(predict_df[cons.predict_cols])
 
     # importances = model.feature_importances_

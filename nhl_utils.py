@@ -3,7 +3,7 @@ import pandas as pd
 import constants as cons
 import terminal_ui as tui
 
-from file_utils import fileLoad, fileSave
+from file_utils import csvLoad, csvSave
 from tabulate import tabulate
 from constants import nhl_client
 
@@ -95,7 +95,7 @@ def team_info():
     
 def assign_game_points(season_results, to_csv=False):
 
-    print('\tAssigning game points...')
+    print('Assigning game points...')
 
     # assign points to each team based on the predicted scores and last period type
     # (2 points for a win in regulation, 1 point for an OT/SO loss, 0 points for a regulation loss)
@@ -113,7 +113,7 @@ def assign_game_points(season_results, to_csv=False):
         col_order = [cons.game_id_col, cons.season_col, cons.starttime_utc_col, cons.home_team_name_col,
                      cons.away_team_name_col, cons.home_team_score_col, cons.away_team_score_col,
                      cons.last_period_col, cons.home_team_points_col, cons.away_team_points_col]
-        fileSave(season_results[col_order], cons.output_folder, cons.season_sched_pred_filename)
+        csvSave(season_results[col_order], cons.output_folder, cons.season_sched_pred_filename)
 
     return season_results
 
@@ -152,9 +152,9 @@ def generate_final_standings(season_results, to_csv=False, load_csv=False):
 
     # if the final standings CSV file already exists in the output folder, load it instead of re-generating the standings from the season results dataframe
     if load_csv:
-        season_results = fileLoad(cons.output_folder, cons.season_sched_pred_filename)
+        season_results = csvLoad(cons.output_folder, cons.season_sched_pred_filename)
 
-    print('\tGenerating final standings...')
+    print('Generating final standings...')
 
     # filter the final schedule on the current season
     # season_results[cons.season_name_col] = season_results[cons.season_name_col].astype(str)
@@ -179,15 +179,15 @@ def generate_final_standings(season_results, to_csv=False, load_csv=False):
     wins_df = home_away_accumulation(home_wins, away_wins, 'Wins', keep_segregated_cols=True)
 
     # calculate total losses for each team
-    home_losses = season_results.loc[(season_results[cons.last_period_col]==0) &
+    home_losses = season_results.loc[(season_results[cons.last_period_col]=='REG') &
                                      (season_results[cons.home_team_score_col] < season_results[cons.away_team_score_col])].groupby(
                                          cons.home_team_name_col).size().reset_index(name=cons.home_team_losses_col)
-    away_losses = season_results.loc[(season_results[cons.last_period_col]==0) &
+    away_losses = season_results.loc[(season_results[cons.last_period_col]=='REG') &
                                      (season_results[cons.away_team_score_col] < season_results[cons.home_team_score_col])].groupby(
                                          cons.away_team_name_col).size().reset_index(name=cons.away_team_losses_col)
     losses_df = home_away_accumulation(home_losses, away_losses, 'Losses', keep_segregated_cols=True)
 
-    # calculate total OT/SO losses for each team
+    # calculate total OT/SO losses for each team 
     home_otls = season_results.loc[(season_results[cons.last_period_col]=='OT') &
                                    (season_results[cons.home_team_score_col] < season_results[cons.away_team_score_col])].groupby(
                                        cons.home_team_name_col).size().reset_index(name=cons.home_team_otls_col)
@@ -290,7 +290,7 @@ def generate_final_standings(season_results, to_csv=False, load_csv=False):
 
     # save the updated season schedule with predictions to a new CSV file
     if to_csv:
-        fileSave(final_standings, cons.output_folder, cons.final_standings_filename)
+        csvSave(final_standings, cons.output_folder, cons.final_standings_filename)
 
     return final_standings
 

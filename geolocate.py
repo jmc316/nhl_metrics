@@ -1,7 +1,7 @@
 import pandas as pd
 import constants as cons
 
-from file_utils import fileSave
+from file_utils import csvSave
 from time import sleep
 from predict import create_df_set
 from geopy.geocoders import Nominatim
@@ -51,4 +51,4 @@ if __name__ == "__main__":
     geoloc_df = geolocate_venues(feature_df, cons.venue_col)
 
     # save the geolocation data to a csv file
-    fileSave(geoloc_df, cons.util_data_folder, cons.venue_geolocations_filename)
+    csvSave(geoloc_df, cons.util_data_folder, cons.venue_geolocations_filename)

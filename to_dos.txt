@@ -1,15 +1,18 @@
-- generate charts displaying each team's point pace before predictions versus after predictions
-- type handling on input
-- overall runtime optimization
-    - similar features can be done in same loops, etc
-- feature creation methods merge
-- saving of playoff chances data, incorporate into user ui
-- creation of admin ui
+- ui features to add:
+    - admin ui
+    - fill out user ui with new codebase features
 
-- optimize historical feature creation
-    - save historical features in a dataframe? Like the schedule dataframes but with extra columns
-- features to add: 
+- model features to add: 
     - starting goalie
     - injury score
-- model observations:
-    - HEAVILY favoring home teams and statistically better teams
+
+- admin data analysis features to add:
+    - generate charts displaying each team's point pace before predictions versus after predictions
+    - overall model evaluation / score
+    - add ability to print wildcard standings after a season prediction
+
+- codebase features to add:
+    - mid-season playoff chances (partially done)
+    - mid-season playoff tree/series predictions
+    - full season playoff chances
+    - full season playoff predictions
