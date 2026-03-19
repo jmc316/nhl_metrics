@@ -8,7 +8,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 
 
-def make_predictions(data_df, oob_list, mse_list, rsq_list, debug=False, load_model=True, save_model=False):
+def make_predictions(data_df, oob_list, mse_list, rsq_list, set_model_random_state, debug=False, load_model=True, save_model=False):
 
     # encode categorical variables using label encoding, and keep numerical variables as is
     label_encoder = LabelEncoder()
@@ -28,7 +28,10 @@ def make_predictions(data_df, oob_list, mse_list, rsq_list, debug=False, load_mo
         model = pklLoad(cons.model_files_folder, cons.sklearn_model_filename)
     else:
         if debug: print('\t\tCreating new model...')
-        model = init_model()
+        if set_model_random_state:
+            model = init_model(random_state_in=42)
+        else:
+            model = init_model()
 
         model.fit(x_train_df.values, y_train_df.values)
 
@@ -70,7 +73,7 @@ def make_predictions(data_df, oob_list, mse_list, rsq_list, debug=False, load_mo
     return data_df
 
 
-def init_model():
+def init_model(random_state_in=None):
 
     """
     SciKit Learn RandomForestRegressor parameters:
@@ -100,6 +103,9 @@ def init_model():
     
     """
 
-    model = RandomForestRegressor(n_estimators=100, oob_score=True)
+    model = RandomForestRegressor(n_estimators=100,
+                                  random_state=random_state_in,
+                                  oob_score=True
+                                  )
 
     return model

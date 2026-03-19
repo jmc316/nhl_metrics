@@ -121,8 +121,7 @@ predict_cols = [away_team_score_col, home_team_score_col, last_period_col]
 tiebreaker_cols = ['totalPoints', 'pointsPercentage', 'totalRegWins', 'totalRegOTWins', 'totalWins', 'goalDifferential', 'totalGoalsFor']
 final_standings_col_order = ['conferenceName', 'conferenceSeed', 'divisionName', 'divisionSeed', 'playoffSeed', 'teamName', 'totalGames',
                  'totalWins', 'totalLosses', 'totalOTLs', 'totalPoints', 'pointsPercentage', 'totalRegWins', 'totalRegOTWins',
-                 'totalGoalsFor', 'totalGoalsAgainst', 'goalDifferential', 'totalHomeWins', 'totalHomeLosses',
-                 'totalHomeOTLs', 'totalAwayWins', 'totalAwayLosses', 'totalAwayOTLs', 'totalSOWins', 'totalSOLosses']
+                 'goalDifferential', 'totalGoalsFor']
 
 
 output_folder = 'output/'

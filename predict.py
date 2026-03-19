@@ -10,7 +10,7 @@ import skl_utils as sklu
 from file_utils import csvLoad, csvSave
 
 
-def predict_season(to_csv):
+def predict_season(to_csv, set_model_random_state):
 
     # create the schedule dataframe from all seasons and games
     sched_df = create_df_set()
@@ -53,7 +53,7 @@ def predict_season(to_csv):
                 csvSave(feature_df_filt.loc[feature_df_filt[cons.season_name_col] == season], cons.season_feature_sets_folder, f'{season}{cons.feature_data_filename_suffix}')
 
     # make predictions for first scheduled game day after completed games and add to filtered dataframe
-    feature_df_filt = sklu.make_predictions(feature_df_filt, oob_list, mse_list, rsq_list, load_model=False, save_model=True)
+    feature_df_filt = sklu.make_predictions(feature_df_filt, oob_list, mse_list, rsq_list, set_model_random_state, load_model=False, save_model=True)
 
     # re-create feature dataframe with added predictions and features
     feature_df = pd.concat([feature_df_filt, feature_df.loc[feature_df[cons.game_date_col] > next_game_date]], ignore_index=True)
@@ -66,7 +66,7 @@ def predict_season(to_csv):
         print(f'\tPredicting games for {next_game_date.strftime("%Y-%m-%d")}...')
         feature_df_filt = feature_df[feature_df[cons.game_date_col] <= next_game_date]
         feature_df_filt = ft.dependent_feature_add(feature_df_filt, backfill=False, debug=False)
-        feature_df_filt = sklu.make_predictions(feature_df_filt, oob_list, mse_list, rsq_list, load_model=True, save_model=False)
+        feature_df_filt = sklu.make_predictions(feature_df_filt, oob_list, mse_list, rsq_list, set_model_random_state, load_model=True, save_model=False)
         feature_df = pd.concat([feature_df_filt, feature_df.loc[feature_df[cons.game_date_col] > next_game_date]], ignore_index=True)
 
     print()
@@ -191,7 +191,7 @@ def playoff_spot_predictions(n=100):
     # this will allow us to calculate the probabilities of each team making the playoffs and their likely seed
     for i in range(n):
         print(f'\nSimulation {i+1} of {n}...')
-        season_results = predict_season(False)
+        season_results = predict_season(False, False)
         season_results_points = nhlu.assign_game_points(season_results)
         final_standings = nhlu.generate_final_standings(season_results_points)
 
@@ -223,8 +223,9 @@ if __name__ == "__main__":
 
     ######################
     # create one set of predictions
-    feature_df = predict_season(to_csv=True)
-    nhlu.generate_final_standings(nhlu.assign_game_points(feature_df), to_csv=True)
+    feature_df = predict_season(to_csv=True, set_model_random_state=True)
+    season_results_df = nhlu.generate_final_standings(nhlu.assign_game_points(feature_df), to_csv=True)
+    nhlu.nhl_team_standings(season_results_df)
 
     ######################
     # # create playoff spot predictions for current season based on n simulations
