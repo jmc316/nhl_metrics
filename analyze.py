@@ -3,6 +3,7 @@ import pandas as pd
 import constants as cons
 
 from file_utils import csvLoad
+from datetime import datetime as dt
 
 def game_result_comparison(predict_df, actual_df=None):
 
@@ -120,7 +121,8 @@ def game_result_comparison(predict_df, actual_df=None):
 if __name__ == '__main__':
 
     cons.last_actual_game_date = pd.to_datetime('2026-02-05').date()
+    today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
 
-    season_prediction_df = csvLoad(cons.output_folder, cons.season_prediction_filename+'_'+cons.last_actual_game_date.strftime(cons.date_format_yyyy_mm_dd)+'.csv')
+    season_prediction_df = csvLoad(cons.season_pred_folder.format(date=today_dt), cons.season_pred_filename.format(date=today_dt))
     
     game_result_comparison(season_prediction_df)

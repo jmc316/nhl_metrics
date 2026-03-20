@@ -9,6 +9,7 @@ import skl_utils as sklu
 
 from file_utils import csvLoad, csvSave
 from analyze import game_result_comparison
+from datetime import datetime as dt
 
 
 def predict_season(to_csv, set_model_random_state):
@@ -34,9 +35,9 @@ def predict_season(to_csv, set_model_random_state):
     backfill_bool = False
     for season in feature_df_filt[cons.season_name_col].unique():
         if feature_df_filt.loc[feature_df_filt[cons.season_name_col] == season, cons.last_period_col].notna().all():
-            if os.path.exists(f'{cons.season_feature_sets_folder}{season}{cons.feature_data_filename_suffix}'):
+            if os.path.exists(f'{cons.season_feature_sets_folder}{cons.feature_data_filename.format(season=season)}'):
                 print(f'Historical feature data for {season[:4]}-{season[4:]} season already exists. Loading from file...')
-                season_feature_df = csvLoad(cons.season_feature_sets_folder, f'{season}{cons.feature_data_filename_suffix}')
+                season_feature_df = csvLoad(cons.season_feature_sets_folder, f'{cons.feature_data_filename.format(season=season)}')
                 feature_df_filt_load = pd.concat([feature_df_filt_load, season_feature_df], ignore_index=True)
                 continue
 
@@ -53,7 +54,7 @@ def predict_season(to_csv, set_model_random_state):
         for season in feature_df_filt[cons.season_name_col].unique():
             if feature_df_filt.loc[feature_df_filt[cons.season_name_col] == season, cons.last_period_col].notna().all():
                 print(f'Saving feature data for {season[:4]}-{season[4:]} season to CSV file...')
-                csvSave(feature_df_filt.loc[feature_df_filt[cons.season_name_col] == season], cons.season_feature_sets_folder, f'{season}{cons.feature_data_filename_suffix}')
+                csvSave(feature_df_filt.loc[feature_df_filt[cons.season_name_col] == season], cons.season_feature_sets_folder, f'{cons.feature_data_filename.format(season=season)}')
 
     # make predictions for first scheduled game day after completed games and add to filtered dataframe
     print(f'\tPredicting games for {next_game_date.strftime("%Y-%m-%d")}...')
@@ -80,7 +81,8 @@ def predict_season(to_csv, set_model_random_state):
     print('Season predictions complete.\n')
 
     if to_csv:
-        csvSave(feature_df, cons.output_folder, cons.season_prediction_filename+'_'+cons.last_actual_game_date.strftime(cons.date_format_yyyy_mm_dd)+'.csv')
+        today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
+        csvSave(feature_df, cons.season_pred_folder.format(date=today_dt), cons.season_pred_filename.format(date=today_dt))
 
     return feature_df
 
@@ -88,7 +90,7 @@ def predict_season(to_csv, set_model_random_state):
 def create_df_set():
 
     # a list of schedule files that have already been generated
-    season_sched_list = [file for file in os.listdir(cons.season_sched_folder) if file.endswith(cons.season_sched_filename)]
+    season_sched_list = [file for file in os.listdir(cons.season_sched_folder) if file.endswith(cons.season_sched_filename.format(season=''))]
 
     # initialize empty dataframe to store the season schedule data
     sched_df = pd.DataFrame()
@@ -108,7 +110,7 @@ def create_season_df(season_name, from_csv=True, to_csv=False, debug=False):
 
     print(f'\tRetrieving {season_name[:4]}-{season_name[4:]} NHL season schedule...')
 
-    season_filename = season_name + '_' + cons.season_sched_filename
+    season_filename = cons.season_sched_filename.format(season=season_name)
 
     # if the season schedule CSV file already exists in the output folder, load it instead of fetching the data from the API again
     if from_csv and season_filename in os.listdir(cons.season_sched_folder):
@@ -177,7 +179,7 @@ def create_season_df(season_name, from_csv=True, to_csv=False, debug=False):
     # save the season schedule to a CSV file for future use
     if to_csv:
         if debug: print('\tSaving season schedule to CSV file...')
-        csvSave(season_sched, cons.season_sched_folder, season_name + '_' + cons.season_sched_filename)
+        csvSave(season_sched, cons.season_sched_folder, cons.season_sched_filename.format(season=season_name))
 
     return season_sched
 
@@ -212,7 +214,7 @@ def playoff_spot_predictions(n=100):
 
     nhlu.playoff_probabilities_printer(count_df)
 
-    csvSave(count_df, cons.output_folder, cons.playoff_spot_prediction_filename.format(n=n))
+    csvSave(count_df, cons.output_folder, cons.playoff_spot_prediction_filename.format(n=n, date=dt.now().date().strftime(cons.date_format_yyyy_mm_dd)))
 
     return count_df
 
@@ -231,6 +233,7 @@ if __name__ == "__main__":
     game_result_comparison(feature_df)
     season_results_df = nhlu.generate_final_standings(nhlu.assign_game_points(feature_df), to_csv=True)
     nhlu.nhl_team_standings(season_results_df)
+    nhlu.playoff_tree_predictions(feature_df, season_results_df, set_model_random_state=True)
 
     ######################
     # create playoff spot predictions for current season based on n simulations

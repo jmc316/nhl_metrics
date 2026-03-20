@@ -18,6 +18,9 @@ team_stats_options = {
 
 ot_score_diff = 0.25
 max_single_season_games = 110
+playoff_sched_format = [0, 2, 5, 7, 10, 12, 15]
+final_sched_format = [0, 3, 6, 9, 12, 15, 18]
+playoff_round_buffer = 2
 
 game_id_col = 'gameId'
 season_col = 'season'
@@ -102,6 +105,8 @@ home_team_prev_n_otls_col = 'homeTeamPrevOTLs_'
 away_team_prev_n_otls_col = 'awayTeamPrevOTLs_'
 home_team_prev_n_points_percentage_col = 'homeTeamPrevPointsPercentage_'
 away_team_prev_n_points_percentage_col = 'awayTeamPrevPointsPercentage_'
+home_team_series_score_col = 'homeTeamSeriesScore'
+away_team_series_score_col = 'awayTeamSeriesScore'
 
 date_format_yyyy_mm_dd = '%Y-%m-%d'
 div_1_val = 'div_1'
@@ -129,15 +134,14 @@ util_data_folder = 'util_data/'
 model_files_folder = 'model_files/'
 season_sched_folder = output_folder + 'season_schedules/'
 season_feature_sets_folder = output_folder + 'season_feature_sets/'
-season_sched_filename = 'season_sched.csv'
-season_sched_pred_filename = 'season_sched_pred.csv'
-season_prediction_filename = 'season_prediction'
-season_sched_pred_points_filename = 'season_sched_pred_points.csv'
-final_standings_filename = 'final_standings.csv'
-venue_geolocations_filename = 'venue_geolocations.csv'
-feature_data_filename_suffix = '_feature_data.csv'
+season_pred_folder = output_folder + 'season_predictions/{date}/'
+season_sched_filename = '{season}_season_sched.csv'
+season_pred_filename = 'season_prediction_{date}.csv'
+final_standings_filename = 'final_standings_{date}.csv'
+venue_geoloc_filename = 'venue_geolocations.csv'
+feature_data_filename = '{season}_feature_data.csv'
 sklearn_model_filename = 'skl_rf_model.pkl'
-playoff_spot_prediction_filename = 'playoff_predictions_{n}.csv'
+playoff_spot_pred_filename = 'playoff_predictions_{n}_{date}.csv'
 
 team_colors = {
     'Anaheim Ducks': 'cyan',

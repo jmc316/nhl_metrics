@@ -51,4 +51,4 @@ if __name__ == "__main__":
     geoloc_df = geolocate_venues(feature_df, cons.venue_col)
 
     # save the geolocation data to a csv file
-    csvSave(geoloc_df, cons.util_data_folder, cons.venue_geolocations_filename)
+    csvSave(geoloc_df, cons.util_data_folder, cons.venue_geoloc_filename)

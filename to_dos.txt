@@ -5,14 +5,14 @@
 - model features to add: 
     - starting goalie
     - injury score
+    - default locations for when areans lat/long cannot be found
 
 - admin data analysis features to add:
     - generate charts displaying each team's point pace before predictions versus after predictions
     - overall model evaluation / score
 
 - codebase features to add:
-    - mid-season playoff chances (partially done)
-    - mid-season playoff tree/series predictions
     - full season playoff chances
     - full season playoff predictions
     - gambling interaction with how much money the model would be winning?
+    - add cup winner odds/division winner to playoff odss predictions
