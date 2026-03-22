@@ -1,11 +1,10 @@
 import numpy as np
 import pandas as pd
 import constants as cons
+import nhl_client as nhlc
 
 from file_utils import csvLoad
 from datetime import datetime as dt
-
-import nhl_client
 
 def game_result_comparison(predict_df, actual_df=None):
 
@@ -37,7 +36,7 @@ def game_result_comparison(predict_df, actual_df=None):
         while current_dt <= predict_max_dt_mon:
             # print(f'\tGetting actual game results for week of {current_dt.strftime(cons.date_format_yyyy_mm_dd)}...')
 
-            weekly_sched = nhl_client.get_sched_data(current_dt, 0)
+            weekly_sched = nhlc.get_sched_data(current_dt, 0)
 
             actual_df = pd.concat([actual_df, weekly_sched], ignore_index=True)
                     

@@ -5,7 +5,6 @@
 - model features to add: 
     - starting goalie
     - injury score
-    - away teams seem OP in playoffs - possibly
 
 - admin data analysis features to add:
     - generate charts displaying each team's point pace before predictions versus after predictions
@@ -19,5 +18,4 @@
     - playoff tree visual
     - switch start times to EST
     - optimize playoff series scores feature creation
-    - move all nhl_client API calls to nhl_client file
     - organize files/methods (ex: regular season pred vs playoffs)

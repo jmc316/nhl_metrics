@@ -16,6 +16,7 @@ max_single_season_games = 110
 playoff_sched_format = [0, 2, 5, 7, 10, 12, 15]
 final_sched_format = [0, 3, 6, 9, 12, 15, 18]
 playoff_round_buffer = 2
+aip_timeout_wait_time = 3
 
 game_id_col = 'gameId'
 season_col = 'season'

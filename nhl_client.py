@@ -16,7 +16,7 @@ def get_sched_data(week, dow):
         except Exception as ex:
             # re-try this week's schedule if there was a timeout error
             print(f'\t\t... {ex} ...')
-            time.sleep(3)
+            time.sleep(cons.api_timeout_wait_time)
 
             continue
 
@@ -53,3 +53,33 @@ def get_sched_data(week, dow):
             weekly_sched[cons.last_period_col] = None
 
         return weekly_sched
+
+
+def get_nhl_team_standings():
+    print('Fetching live NHL team standings...')
+    while True:
+        try:
+            # Fetch the standings
+            data_df = pd.DataFrame(nhl_client.standings.league_standings()['standings'])
+        except Exception as ex:
+            # re-try this week's schedule if there was a timeout error
+            print(f'\t\t... {ex} ...')
+            time.sleep(cons.api_timeout_wait_time)
+
+        finally:
+            return data_df
+        
+
+def get_team_stats():
+    print('Fetching live NHL team stats...')
+    while True:
+        try:
+            # Fetch the team stats
+            data_df = pd.DataFrame(nhl_client.teams.teams())
+        except Exception as ex:
+            # re-try this week's schedule if there was a timeout error
+            print(f'\t\t... {ex} ...')
+            time.sleep(cons.api_timeout_wait_time)
+
+        finally:
+            return data_df

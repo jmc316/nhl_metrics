@@ -6,11 +6,11 @@ import features as ft
 import constants as cons
 import nhl_utils as nhlu
 import skl_utils as sklu
-import nhl_client as nhl_client
+import nhl_client as nhlc
 
+from datetime import datetime as dt
 from file_utils import csvLoad, csvSave
 from analyze import game_result_comparison
-from datetime import datetime as dt
 
 
 def predict_season(to_csv, set_model_random_state):
@@ -34,6 +34,7 @@ def predict_season(to_csv, set_model_random_state):
     # if complete historical data exists, change next_game_date to first date with missing features
     feature_df_filt_load = pd.DataFrame()
     backfill_bool = False
+    seasons_to_save = []
     for season in feature_df_filt[cons.season_name_col].unique():
         if feature_df_filt.loc[feature_df_filt[cons.season_name_col] == season, cons.last_period_col].notna().all():
             if os.path.exists(f'{cons.season_feature_sets_folder}{cons.feature_data_filename.format(season=season)}'):
@@ -42,16 +43,17 @@ def predict_season(to_csv, set_model_random_state):
                 feature_df_filt_load = pd.concat([feature_df_filt_load, season_feature_df], ignore_index=True)
                 continue
 
-        print(f'Historical feature data for {season[:4]}-{season[4:]} season does not exist... ')
+        print(f'Historical feature data for {season[:4]}-{season[4:]} season does not exist, creating features... ')
         feature_df_filt_load = pd.concat([feature_df_filt_load, feature_df_filt[feature_df_filt[cons.season_name_col] == season]], ignore_index=True)
         backfill_bool = True
+        seasons_to_save.append(season)
 
     # add dependent features to filtered dataframe
-    feature_df_filt = ft.dependent_feature_add(feature_df_filt_load, backfill=backfill_bool)
+    feature_df_filt = ft.dependent_feature_add(feature_df_filt_load, backfill=backfill_bool, debug=False)
 
     # save the feature dataframe with added features for the first game day to predict to a CSV file for future use; this will allow us to skip the feature engineering process for this game day in future runs and go straight to making predictions
     if to_csv:
-        for season in feature_df_filt[cons.season_name_col].unique():
+        for season in seasons_to_save:
             if feature_df_filt.loc[feature_df_filt[cons.season_name_col] == season, cons.last_period_col].notna().all():
                 print(f'Saving feature data for {season[:4]}-{season[4:]} season to CSV file...')
                 csvSave(feature_df_filt.loc[feature_df_filt[cons.season_name_col] == season], cons.season_feature_sets_folder, f'{cons.feature_data_filename.format(season=season)}')
@@ -125,7 +127,7 @@ def schedule_update(sched_df):
         # add schedule data one date at a time
         for game_date in pd.date_range(start=stored_dt, end=(today_dt - pd.Timedelta(days=1)), freq='D'):
             print(f'\t\t\t... {game_date.strftime("%Y-%m-%d")} ...')
-            missing_sched = pd.concat([missing_sched, nhl_client.get_sched_data(game_date, 0)], ignore_index=True)
+            missing_sched = pd.concat([missing_sched, nhlc.get_sched_data(game_date, 0)], ignore_index=True)
 
         sched_df = sched_df.loc[~sched_df[cons.game_id_col].isin(missing_sched[cons.game_id_col])]
         sched_df = pd.concat([sched_df, missing_sched], ignore_index=True)
@@ -169,7 +171,7 @@ def create_season_df(season_name, from_csv=True, to_csv=False, debug=False):
     for week in pd.date_range(start=first_day, end=last_day, freq='W'):
         print(f'\t... {week.strftime("%Y-%m-%d")} ...')
         for dow in range(0, 7):
-            season_sched = pd.concat([season_sched, nhl_client.get_sched_data(week, dow)], ignore_index=True)
+            season_sched = pd.concat([season_sched, nhlc.get_sched_data(week, dow)], ignore_index=True)
 
     # save the season schedule to a CSV file for future use
     if to_csv:

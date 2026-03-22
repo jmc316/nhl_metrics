@@ -28,43 +28,43 @@ def dependent_feature_add(feature_df, backfill=True, debug=True):
     feature_df = points_percentage_feature_add(feature_df, debug, backfill, cons.away_team_name_col, 7)
 
     # calculate goals for in the previous 3 games for the home team in all matchups
-    if debug: print('\t\t... [feature_creation] home team previous 3 goals for ...')
+    if debug: print('\t... [feature_creation] home team previous 3 goals for ...')
     feature_df = prevN_gpg(feature_df, backfill, cons.home_team_prev_n_goals_for_col, cons.home_team_name_col, 3, 'for')
 
     # calculate goals for in the previous 3 games for the away team in all matchups
-    if debug: print('\t\t... [feature_creation] away team previous 3 goals for ...')
+    if debug: print('\t... [feature_creation] away team previous 3 goals for ...')
     feature_df = prevN_gpg(feature_df, backfill, cons.away_team_prev_n_goals_for_col, cons.away_team_name_col, 3, 'for')
 
     # calculate goals for in the previous 7 games for the home team in all matchups
-    if debug: print('\t\t... [feature_creation] home team previous 7 goals for ...')
+    if debug: print('\t... [feature_creation] home team previous 7 goals for ...')
     feature_df = prevN_gpg(feature_df, backfill, cons.home_team_prev_n_goals_for_col, cons.home_team_name_col, 7, 'for')
 
     # calculate goals for in the previous 7 games for the away team in all matchups
-    if debug: print('\t\t... [feature_creation] away team previous 7 goals for ...')
+    if debug: print('\t... [feature_creation] away team previous 7 goals for ...')
     feature_df = prevN_gpg(feature_df, backfill, cons.away_team_prev_n_goals_for_col, cons.away_team_name_col, 7, 'for')
 
     # calculate goals against in the previous 3 games for the home team in all matchups
-    if debug: print('\t\t... [feature_creation] home team previous 3 goals against ...')
+    if debug: print('\t... [feature_creation] home team previous 3 goals against ...')
     feature_df = prevN_gpg(feature_df, backfill, cons.home_team_prev_n_goals_against_col, cons.home_team_name_col, 3, 'against')
 
     # calculate goals against in the previous 3 games for the away team in all matchups
-    if debug: print('\t\t... [feature_creation] away team previous 3 goals against ...')
+    if debug: print('\t... [feature_creation] away team previous 3 goals against ...')
     feature_df = prevN_gpg(feature_df, backfill, cons.away_team_prev_n_goals_against_col, cons.away_team_name_col, 3, 'against')
 
     # calculate goals against in the previous 7 games for the home team in all matchups
-    if debug: print('\t\t... [feature_creation] home team previous 7 goals against ...')
+    if debug: print('\t... [feature_creation] home team previous 7 goals against ...')
     feature_df = prevN_gpg(feature_df, backfill, cons.home_team_prev_n_goals_against_col, cons.home_team_name_col, 7, 'against')
 
     # calculate goals against in the previous 7 games for the away team in all matchups
-    if debug: print('\t\t... [feature_creation] away team previous 7 goals against ...')
+    if debug: print('\t... [feature_creation] away team previous 7 goals against ...')
     feature_df = prevN_gpg(feature_df, backfill, cons.away_team_prev_n_goals_against_col, cons.away_team_name_col, 7, 'against')
 
     # calculate days since last played game for the home team in all matchups
-    if debug: print('\t\t... [feature_creation] home team days since last game ...')
+    if debug: print('\t... [feature_creation] home team days since last game ...')
     feature_df = days_since_last_played(feature_df, cons.home_team_days_since_last_game_col, cons.home_team_name_col)
 
     # calculate days since last played game for the away team in all matchups
-    if debug: print('\t\t... [feature_creation] away team days since last game ...')
+    if debug: print('\t... [feature_creation] away team days since last game ...')
     feature_df = days_since_last_played(feature_df, cons.away_team_days_since_last_game_col, cons.away_team_name_col)
 
     # load the geolocation file for venues and merge with the feature dataframe
@@ -460,36 +460,94 @@ def playoff_series_score(data_df, backfill):
     series_score_cols = [cons.home_team_series_score_col, cons.away_team_series_score_col]
     data_df_target[series_score_cols] = 0
 
-    # loop through each game in the dataframe and calculate the rolling series score
-    for index, game in data_df_target.iterrows():
+    # Build playoff-series history once, then query prior-game counts with binary search.
+    row_id_col = '_row_id'
+    season_key_col = '_season'
+    team_low_col = '_team_low'
+    team_high_col = '_team_high'
+    date_col = '_game_date'
+    winner_col = '_winner'
 
-        # find all games in this series that have already been played
-        prev_series_games = data_df.loc[((data_df[cons.home_team_name_col] == game[cons.home_team_name_col]) &
-                                (data_df[cons.away_team_name_col] == game[cons.away_team_name_col]) | 
-                                (data_df[cons.home_team_name_col] == game[cons.away_team_name_col]) &
-                                (data_df[cons.away_team_name_col] == game[cons.home_team_name_col])) &
-                                (data_df[cons.game_date_col] < game[cons.game_date_col]) &
-                                (data_df[cons.season_name_col] == game[cons.season_name_col]) &
-                                (data_df[cons.game_type_col] == 3)]
+    all_dates = pd.to_datetime(data_df[cons.game_date_col], errors='coerce').dt.date
+    playoff_mask = data_df[cons.game_type_col] == 3
 
-        if not prev_series_games.empty:
+    playoff_games = data_df.loc[playoff_mask, [
+        cons.home_team_name_col,
+        cons.away_team_name_col,
+        cons.season_name_col,
+        cons.home_team_score_col,
+        cons.away_team_score_col
+    ]].copy()
 
-            # count how many games each team has won in the series so far and update the series score for this game
-            series_score = {
-                cons.home_team_col: [game[cons.home_team_name_col], int((prev_series_games[prev_series_games[
-                    cons.home_team_name_col] == game[cons.home_team_name_col]][cons.home_team_score_col] > prev_series_games[prev_series_games[
-                        cons.home_team_name_col] == game[cons.home_team_name_col]][cons.away_team_score_col]).sum() + (prev_series_games[prev_series_games[
-                            cons.away_team_name_col] == game[cons.home_team_name_col]][cons.away_team_score_col] > prev_series_games[prev_series_games[
-                                cons.away_team_name_col] == game[cons.home_team_name_col]][cons.home_team_score_col]).sum())],
-                cons.away_team_col: [game[cons.away_team_name_col], int((prev_series_games[prev_series_games[
-                    cons.home_team_name_col] == game[cons.away_team_name_col]][cons.home_team_score_col] > prev_series_games[prev_series_games[
-                        cons.home_team_name_col] == game[cons.away_team_name_col]][cons.away_team_score_col]).sum() + (prev_series_games[prev_series_games[
-                            cons.away_team_name_col] == game[cons.away_team_name_col]][cons.away_team_score_col] > prev_series_games[prev_series_games[
-                                cons.away_team_name_col] == game[cons.away_team_name_col]][cons.home_team_score_col]).sum())]
-            }
+    if not playoff_games.empty:
+        playoff_games[row_id_col] = data_df.loc[playoff_mask].index.to_numpy()
+        playoff_games[date_col] = all_dates.loc[playoff_mask].to_numpy()
+        playoff_games = playoff_games.dropna(subset=[date_col])
 
-            data_df_target.loc[(data_df_target.index==index), cons.home_team_series_score_col] = series_score[cons.home_team_col][1]
-            data_df_target.loc[(data_df_target.index==index), cons.away_team_series_score_col] = series_score[cons.away_team_col][1]
+        home_arr = playoff_games[cons.home_team_name_col].to_numpy()
+        away_arr = playoff_games[cons.away_team_name_col].to_numpy()
+        playoff_games[season_key_col] = playoff_games[cons.season_name_col].to_numpy()
+        playoff_games[team_low_col] = np.where(home_arr <= away_arr, home_arr, away_arr)
+        playoff_games[team_high_col] = np.where(home_arr <= away_arr, away_arr, home_arr)
+
+        home_scores = pd.to_numeric(playoff_games[cons.home_team_score_col], errors='coerce').to_numpy()
+        away_scores = pd.to_numeric(playoff_games[cons.away_team_score_col], errors='coerce').to_numpy()
+        playoff_games[winner_col] = np.where(
+            home_scores > away_scores,
+            home_arr,
+            np.where(away_scores > home_scores, away_arr, None)
+        )
+
+        playoff_games.sort_values(
+            by=[season_key_col, team_low_col, team_high_col, date_col, row_id_col],
+            inplace=True
+        )
+
+        series_history = {}
+        for key, group in playoff_games.groupby([season_key_col, team_low_col, team_high_col], sort=False):
+            team_low = key[1]
+            team_high = key[2]
+            winners = group[winner_col].to_numpy(dtype=object)
+            low_prefix = np.concatenate(([0], np.cumsum((winners == team_low).astype(np.int16), dtype=np.int32)))
+            high_prefix = np.concatenate(([0], np.cumsum((winners == team_high).astype(np.int16), dtype=np.int32)))
+            series_history[key] = (group[date_col].tolist(), team_low, low_prefix, high_prefix)
+
+        target_dates = pd.to_datetime(data_df_target[cons.game_date_col], errors='coerce').dt.date.to_numpy()
+        target_seasons = data_df_target[cons.season_name_col].to_numpy()
+        target_home = data_df_target[cons.home_team_name_col].to_numpy()
+        target_away = data_df_target[cons.away_team_name_col].to_numpy()
+
+        home_series_vals = np.zeros(len(data_df_target), dtype=np.int16)
+        away_series_vals = np.zeros(len(data_df_target), dtype=np.int16)
+
+        for i in range(len(data_df_target)):
+            game_date = target_dates[i]
+            if pd.isna(game_date):
+                continue
+
+            home_team = target_home[i]
+            away_team = target_away[i]
+            low_team = home_team if home_team <= away_team else away_team
+            high_team = away_team if home_team <= away_team else home_team
+
+            history = series_history.get((target_seasons[i], low_team, high_team))
+            if not history:
+                continue
+
+            hist_dates, series_low_team, low_prefix, high_prefix = history
+            end_idx = bisect.bisect_left(hist_dates, game_date)
+            if end_idx == 0:
+                continue
+
+            if home_team == series_low_team:
+                home_series_vals[i] = low_prefix[end_idx]
+                away_series_vals[i] = high_prefix[end_idx]
+            else:
+                home_series_vals[i] = high_prefix[end_idx]
+                away_series_vals[i] = low_prefix[end_idx]
+
+        data_df_target[cons.home_team_series_score_col] = home_series_vals
+        data_df_target[cons.away_team_series_score_col] = away_series_vals
 
     if backfill:
         data_df = pd.concat([data_df.loc[data_df[cons.game_type_col]!=3], data_df_target], ignore_index=True)

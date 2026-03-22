@@ -2,13 +2,13 @@ import numpy as np
 import pandas as pd
 import features as ft
 import constants as cons
-import terminal_ui as tui
 import skl_utils as sklu
+import terminal_ui as tui
+import nhl_client as nhlc
 
 from tabulate import tabulate
-from nhl_client import nhl_client
-from file_utils import csvLoad, csvSave
 from datetime import datetime as dt
+from file_utils import csvLoad, csvSave
 from playoff_matchup import PlayoffMatchup
 
 
@@ -27,9 +27,7 @@ def nhl_team_stats():
 def nhl_team_standings(data_df=None):
 
     if data_df is None:
-        print('Fetching live NHL team standings...')
-        # Fetch the standings
-        data_df = pd.DataFrame(nhl_client.standings.league_standings()['standings'])
+        nhlc.get_nhl_team_standings()
 
     data_df['wildcardSeed'] = None
     data_df.loc[data_df['playoffSeed'].str[:3] == 'div', 'wildcardSeed'] = 0
@@ -98,21 +96,14 @@ def nhl_individual_team_stats():
     print('Fetching individual NHL team stats...')
 
     # Fetch the teams
-    teams = nhl_client.teams.teams()
+    teams = nhlc.get_team_stats()
 
     print(teams)
 
 
 def team_info():
     
-    while True:
-        try:
-            # Fetch the teams
-            teams_df = pd.DataFrame(nhl_client.teams.teams())
-            break
-        except Exception as ex:
-            print(f'\t\t... {ex} ...')
-            continue
+    teams_df = nhlc.get_team_stats()
         
     teams_df.rename(columns={'name': cons.team_name_col}, inplace=True)
 
