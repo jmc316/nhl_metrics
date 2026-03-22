@@ -81,7 +81,7 @@ def dependent_feature_add(feature_df, backfill=True, debug=True):
 
     # calculate the series score for all playoff games
     if debug: print(f'\t\t... [feature_creation] playoff series scores ...')
-    feature_df = playoff_series_score(feature_df)
+    feature_df = playoff_series_score(feature_df, backfill)
 
     feature_df.drop(columns=[cons.venue_col+'_lat', cons.venue_col+'_long'], inplace=True)
 
@@ -449,31 +449,19 @@ def hav_dist_Ndays(data_df, target_col, team_col, backfill, n):
     return data_df
 
 
-def playoff_series_score(feature_df):
+def playoff_series_score(data_df, backfill):
 
-    feature_df[cons.home_team_series_score_col] = None
-    feature_df[cons.away_team_series_score_col] = None
+    # create dataframe to loop through
+    if backfill:
+        data_df_target = data_df.loc[data_df[cons.game_type_col]==3].copy()
+    else:
+        data_df_target = data_df.loc[data_df[cons.last_period_col].isna()].copy()
 
-    # for each season, calculate the running series score for each playoff series
-    for season in feature_df[cons.season_name_col].unique():
-        season_mask = feature_df[cons.season_name_col] == season
-        playoff_mask = feature_df[cons.game_type_col] == 3
-        playoff_df = feature_df.loc[season_mask & playoff_mask].copy()
-
-        series_score_cols = [cons.home_team_series_score_col, cons.away_team_series_score_col]
-        playoff_df[series_score_cols] = 0
-
-        playoff_df = playoff_series_score_fill(playoff_df, playoff_df, season)
-
-        feature_df.update(playoff_df[series_score_cols])
-
-    return feature_df
-
-
-def playoff_series_score_fill(data_iter, data_df, season, debug=False):
+    series_score_cols = [cons.home_team_series_score_col, cons.away_team_series_score_col]
+    data_df_target[series_score_cols] = 0
 
     # loop through each game in the dataframe and calculate the rolling series score
-    for index, game in data_iter.iterrows():
+    for index, game in data_df_target.iterrows():
 
         # find all games in this series that have already been played
         prev_series_games = data_df.loc[((data_df[cons.home_team_name_col] == game[cons.home_team_name_col]) &
@@ -481,37 +469,31 @@ def playoff_series_score_fill(data_iter, data_df, season, debug=False):
                                 (data_df[cons.home_team_name_col] == game[cons.away_team_name_col]) &
                                 (data_df[cons.away_team_name_col] == game[cons.home_team_name_col])) &
                                 (data_df[cons.game_date_col] < game[cons.game_date_col]) &
-                                (data_df[cons.season_name_col] == season) &
+                                (data_df[cons.season_name_col] == game[cons.season_name_col]) &
                                 (data_df[cons.game_type_col] == 3)]
 
-        # if the home team won, find the previous series score and update the current series score accordingly
-        if game[cons.home_team_score_col] > game[cons.away_team_score_col]:
-            if prev_series_games.empty:
-                data_df.at[index, cons.home_team_series_score_col] = 1
-                data_df.at[index, cons.away_team_series_score_col] = 0
-            else:
-                if prev_series_games.iloc[-1][cons.home_team_name_col] == game[cons.home_team_name_col]:
-                    data_df.at[index, cons.home_team_series_score_col]  = int(prev_series_games.iloc[-1][cons.home_team_series_score_col]) + 1
-                    data_df.at[index, cons.away_team_series_score_col]  = int(prev_series_games.iloc[-1][cons.away_team_series_score_col])
-                    if debug: print(f'\t\t{game[cons.home_team_name_col]} advance past {game[cons.away_team_name_col]}: {data_df.at[index, cons.home_team_series_score_col]}-{data_df.at[index, cons.away_team_series_score_col]}')
-                else:
-                    data_df.at[index, cons.home_team_series_score_col]  = int(prev_series_games.iloc[-1][cons.away_team_series_score_col]) + 1
-                    data_df.at[index, cons.away_team_series_score_col]  = int(prev_series_games.iloc[-1][cons.home_team_series_score_col])
-                    if debug: print(f'\t\t{game[cons.home_team_name_col]} advance past {game[cons.away_team_name_col]}: {data_df.at[index, cons.home_team_series_score_col]}-{data_df.at[index, cons.away_team_series_score_col]}')
-        
-        # if the away team won, find the previous series score and update the current series score accordingly
-        elif game[cons.away_team_score_col] > game[cons.home_team_score_col]:
-            if prev_series_games.empty:
-                data_df.at[index, cons.away_team_series_score_col] = 1
-                data_df.at[index, cons.home_team_series_score_col] = 0
-            else:
-                if prev_series_games.iloc[-1][cons.away_team_name_col] == game[cons.away_team_name_col]:
-                    data_df.at[index, cons.away_team_series_score_col] = int(prev_series_games.iloc[-1][cons.away_team_series_score_col]) + 1
-                    data_df.at[index, cons.home_team_series_score_col] = int(prev_series_games.iloc[-1][cons.home_team_series_score_col])
-                    if debug: print(f'\t\t{game[cons.away_team_name_col]} advance past {game[cons.home_team_name_col]}: {data_df.at[index, cons.away_team_series_score_col]}-{data_df.at[index, cons.home_team_series_score_col]}')
-                else:
-                    data_df.at[index, cons.away_team_series_score_col] = int(prev_series_games.iloc[-1][cons.home_team_series_score_col]) + 1
-                    data_df.at[index, cons.home_team_series_score_col] = int(prev_series_games.iloc[-1][cons.away_team_series_score_col])
-                    if debug: print(f'\t\t{game[cons.away_team_name_col]} advance past {game[cons.home_team_name_col]}: {data_df.at[index, cons.away_team_series_score_col]}-{data_df.at[index, cons.home_team_series_score_col]}')
+        if not prev_series_games.empty:
+
+            # count how many games each team has won in the series so far and update the series score for this game
+            series_score = {
+                cons.home_team_col: [game[cons.home_team_name_col], int((prev_series_games[prev_series_games[
+                    cons.home_team_name_col] == game[cons.home_team_name_col]][cons.home_team_score_col] > prev_series_games[prev_series_games[
+                        cons.home_team_name_col] == game[cons.home_team_name_col]][cons.away_team_score_col]).sum() + (prev_series_games[prev_series_games[
+                            cons.away_team_name_col] == game[cons.home_team_name_col]][cons.away_team_score_col] > prev_series_games[prev_series_games[
+                                cons.away_team_name_col] == game[cons.home_team_name_col]][cons.home_team_score_col]).sum())],
+                cons.away_team_col: [game[cons.away_team_name_col], int((prev_series_games[prev_series_games[
+                    cons.home_team_name_col] == game[cons.away_team_name_col]][cons.home_team_score_col] > prev_series_games[prev_series_games[
+                        cons.home_team_name_col] == game[cons.away_team_name_col]][cons.away_team_score_col]).sum() + (prev_series_games[prev_series_games[
+                            cons.away_team_name_col] == game[cons.away_team_name_col]][cons.away_team_score_col] > prev_series_games[prev_series_games[
+                                cons.away_team_name_col] == game[cons.away_team_name_col]][cons.home_team_score_col]).sum())]
+            }
+
+            data_df_target.loc[(data_df_target.index==index), cons.home_team_series_score_col] = series_score[cons.home_team_col][1]
+            data_df_target.loc[(data_df_target.index==index), cons.away_team_series_score_col] = series_score[cons.away_team_col][1]
+
+    if backfill:
+        data_df = pd.concat([data_df.loc[data_df[cons.game_type_col]!=3], data_df_target], ignore_index=True)
+    else:
+        data_df = pd.concat([data_df.loc[data_df[cons.last_period_col].notna()], data_df_target], ignore_index=True)
 
     return data_df

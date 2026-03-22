@@ -6,6 +6,7 @@ import features as ft
 import constants as cons
 import nhl_utils as nhlu
 import skl_utils as sklu
+import nhl_client as nhl_client
 
 from file_utils import csvLoad, csvSave
 from analyze import game_result_comparison
@@ -50,7 +51,6 @@ def predict_season(to_csv, set_model_random_state):
 
     # save the feature dataframe with added features for the first game day to predict to a CSV file for future use; this will allow us to skip the feature engineering process for this game day in future runs and go straight to making predictions
     if to_csv:
-        # feature_df_filt[cons.season_name_col] = feature_df_filt[cons.season_name_col].astype(str)
         for season in feature_df_filt[cons.season_name_col].unique():
             if feature_df_filt.loc[feature_df_filt[cons.season_name_col] == season, cons.last_period_col].notna().all():
                 print(f'Saving feature data for {season[:4]}-{season[4:]} season to CSV file...')
@@ -81,6 +81,7 @@ def predict_season(to_csv, set_model_random_state):
     print('Season predictions complete.\n')
 
     if to_csv:
+        print('Saving season predictions to CSV file...')
         today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
         csvSave(feature_df, cons.season_pred_folder.format(date=today_dt), cons.season_pred_filename.format(date=today_dt))
 
@@ -102,6 +103,44 @@ def create_df_set():
             sched_df = create_season_df(filename[:8], from_csv=True, to_csv=False)
         else:
             sched_df = pd.concat([sched_df, create_season_df(filename[:8], from_csv=True, to_csv=False)], ignore_index=True)
+
+    # check if the current season schedule needs to be updated
+    sched_df = schedule_update(sched_df)
+
+    return sched_df
+
+
+def schedule_update(sched_df):
+
+    # today's date and the date of the first unplayed game in the schedule dataframe
+    today_dt = dt.now().date()
+    stored_dt = pd.to_datetime(min(sched_df.loc[sched_df[cons.last_period_col].isna(), cons.starttime_utc_col])).date()
+
+    # if the date of the first unplayed game is in the past, the schedule dataframe is missing some data
+    if today_dt > stored_dt:
+        print('\t\tCurrent season schedule data requires update from API...')
+
+        missing_sched = pd.DataFrame()
+
+        # add schedule data one date at a time
+        for game_date in pd.date_range(start=stored_dt, end=(today_dt - pd.Timedelta(days=1)), freq='D'):
+            print(f'\t\t\t... {game_date.strftime("%Y-%m-%d")} ...')
+            missing_sched = pd.concat([missing_sched, nhl_client.get_sched_data(game_date, 0)], ignore_index=True)
+
+        sched_df = sched_df.loc[~sched_df[cons.game_id_col].isin(missing_sched[cons.game_id_col])]
+        sched_df = pd.concat([sched_df, missing_sched], ignore_index=True)
+        sched_df.sort_values(by=cons.starttime_utc_col, inplace=True)
+        sched_df.reset_index(drop=True, inplace=True)
+
+        sched_df[cons.season_name_col] = sched_df[cons.season_name_col].astype(str)
+
+        for col in sched_df.columns:
+            if isinstance(sched_df[col], np.int64):
+                sched_df[col] = sched_df[col].astype(int)
+
+        print('\t\tSaving updated season schedule to CSV file...')
+        csvSave(sched_df.loc[sched_df[cons.season_name_col]==max(sched_df[cons.season_name_col])],
+                cons.season_sched_folder, cons.season_sched_filename.format(season=max(sched_df[cons.season_name_col])))
 
     return sched_df
 
@@ -130,51 +169,7 @@ def create_season_df(season_name, from_csv=True, to_csv=False, debug=False):
     for week in pd.date_range(start=first_day, end=last_day, freq='W'):
         print(f'\t... {week.strftime("%Y-%m-%d")} ...')
         for dow in range(0, 7):
-            while True:
-                try:
-                    # fetch the schedule data for this week and day of week from the NHL API
-                    weekly_sched_raw = pd.DataFrame(cons.nhl_client.schedule.weekly_schedule(date=week.strftime("%Y-%m-%d"))['gameWeek'][dow]['games'])
-                except Exception as ex:
-                    # re-try this week's schedule if there was a timeout error
-                    print(f'\t\t... {ex} ...')
-                    continue
-
-                # if there are no games in this week, skip to the next week
-                if weekly_sched_raw.empty:
-                    break
-
-                # initialize columns that are the same as the raw data
-                weekly_sched = weekly_sched_raw[['id', cons.season_col, cons.game_type_col, cons.starttime_utc_col, cons.venue_timezone_col]]
-
-                weekly_sched.rename(columns={'id': cons.game_id_col, 'season': cons.season_name_col}, inplace=True)
-
-                # only include NHL games (gameType 2 = regular season, 3 = playoffs)
-                weekly_sched = weekly_sched.loc[weekly_sched[cons.game_type_col].isin([2, 3])]
-                weekly_sched_raw = weekly_sched_raw.loc[weekly_sched_raw[cons.game_type_col].isin([2, 3])]
-
-                # if there are no valid NHL games in this week, skip to the next week
-                if weekly_sched.empty:
-                    break
-
-                # create columns that are derived from the raw data
-                weekly_sched[cons.venue_col] = [item['default'] for item in weekly_sched_raw['venue']]
-                weekly_sched[cons.away_team_name_col] = [item['placeName']['default'] + ' ' + item['commonName']['default'] for item in weekly_sched_raw[cons.away_team_col]]
-                weekly_sched[cons.home_team_name_col] = [item['placeName']['default'] + ' ' + item['commonName']['default'] for item in weekly_sched_raw[cons.home_team_col]]
-
-                # if the game has already been played, extract the scores and last period type from the raw data; otherwise, set these columns to None for now and they will be filled in with predictions later
-                if cons.game_outcome_col in weekly_sched_raw.columns:
-                    weekly_sched[cons.away_team_score_col] = [item['score'] for item in weekly_sched_raw[cons.away_team_col]]
-                    weekly_sched[cons.home_team_score_col] = [item['score'] for item in weekly_sched_raw[cons.home_team_col]]
-                    weekly_sched[cons.last_period_col] = [item['lastPeriodType'] for item in weekly_sched_raw[cons.game_outcome_col]]
-                else:
-                    weekly_sched[cons.away_team_score_col] = None
-                    weekly_sched[cons.home_team_score_col] = None
-                    weekly_sched[cons.last_period_col] = None
-
-                # concatenate this week's schedule to the season schedule dataframe
-                season_sched = pd.concat([season_sched, weekly_sched], ignore_index=True)
-
-                break
+            season_sched = pd.concat([season_sched, nhl_client.get_sched_data(week, dow)], ignore_index=True)
 
     # save the season schedule to a CSV file for future use
     if to_csv:
@@ -233,7 +228,7 @@ if __name__ == "__main__":
     game_result_comparison(feature_df)
     season_results_df = nhlu.generate_final_standings(nhlu.assign_game_points(feature_df), to_csv=True)
     nhlu.nhl_team_standings(season_results_df)
-    nhlu.playoff_tree_predictions(feature_df, season_results_df, set_model_random_state=True)
+    playoff_results_df = nhlu.playoff_tree_predictions(feature_df, season_results_df, set_model_random_state=True)
 
     ######################
     # create playoff spot predictions for current season based on n simulations

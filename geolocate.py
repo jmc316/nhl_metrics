@@ -29,11 +29,21 @@ def geolocate_venues(feature_df, venue_col):
                                                 })], ignore_index=True)
                 else:
                     print(f'{venue}: Geolocation not found')
+                    if venue in cons.missing_geoloc:
+                        print(f'\tUsing manually added geolocation for {venue}: {cons.missing_geoloc[venue][0]}, {cons.missing_geoloc[venue][1]}')
+                        lat = cons.missing_geoloc[venue][0]
+                        long = cons.missing_geoloc[venue][1]
+                        
+                    else:
+                        print(f'\tNo manually added geolocation available for {venue}...')
+                        lat = None
+                        long = None
+
                     geoloc_df = pd.concat([geoloc_df,
                                            pd.DataFrame(
                                                {venue_col: [venue],
-                                                venue_col+'_lat': [None],
-                                                venue_col+'_long': [None]
+                                                venue_col+'_lat': [lat],
+                                                venue_col+'_long': [long]
                                                 })], ignore_index=True)
                 break
             except Exception as ex:

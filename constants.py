@@ -1,8 +1,3 @@
-from nhlpy import NHLClient
-
-# Create an instance of the NHLClient
-nhl_client = NHLClient()
-
 # format is 'Option Name': ['module_name', 'function_name']
 main_options = {
     'NHL Team Stats': ['team_stats', 'nhl_team_stats'],
@@ -136,8 +131,9 @@ season_sched_folder = output_folder + 'season_schedules/'
 season_feature_sets_folder = output_folder + 'season_feature_sets/'
 season_pred_folder = output_folder + 'season_predictions/{date}/'
 season_sched_filename = '{season}_season_sched.csv'
-season_pred_filename = 'season_prediction_{date}.csv'
-final_standings_filename = 'final_standings_{date}.csv'
+season_pred_filename = 'regularseason_predictions_{date}.csv'
+final_standings_filename = 'regularseason_standings_{date}.csv'
+playoff_pred_filename = 'playoff_predictions_{date}.csv'
 venue_geoloc_filename = 'venue_geolocations.csv'
 feature_data_filename = '{season}_feature_data.csv'
 sklearn_model_filename = 'skl_rf_model.pkl'
@@ -176,4 +172,10 @@ team_colors = {
     'Vegas Golden Knights': 'dark_grey',
     'Washington Capitals': 'red',
     'Winnipeg Jets': 'light_grey'
+}
+
+missing_geoloc = {
+    'Amalie Arena': (27.9439, -82.4519),
+    'FLA Live Arena': (26.1583, -80.3256),
+    'Gila River Arena': (33.5325, -112.2611)
 }
