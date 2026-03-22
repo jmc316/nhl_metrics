@@ -217,6 +217,7 @@ def playoff_spot_predictions(n=100):
 
 
 if __name__ == "__main__":
+    import playoffs
 
     ######################
     # create season schedule dataframe for inputted seasons
@@ -230,7 +231,7 @@ if __name__ == "__main__":
     game_result_comparison(feature_df)
     season_results_df = nhlu.generate_final_standings(nhlu.assign_game_points(feature_df), to_csv=True)
     nhlu.nhl_team_standings(season_results_df)
-    playoff_results_df = nhlu.playoff_tree_predictions(feature_df, season_results_df, set_model_random_state=True)
+    playoff_results_df = playoffs.playoff_tree_predictions(feature_df, season_results_df, set_model_random_state=True)
 
     ######################
     # create playoff spot predictions for current season based on n simulations

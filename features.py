@@ -141,17 +141,20 @@ def prevN_result(data_df, backfill, target_col, team_col, n):
     else:
         data_df_target = data_df.loc[data_df[cons.last_period_col].isna()].copy()
 
+    # local row column names
     row_id_col = '_row_id'
     team_key_col = '_team'
     season_key_col = '_season'
     date_col = '_game_date'
     result_col = '_result'
 
+    # individual game dates, scores, regulation game mask
     game_dates = pd.to_datetime(data_df[cons.game_date_col], errors='coerce').dt.date
     home_scores = pd.to_numeric(data_df[cons.home_team_score_col], errors='coerce')
     away_scores = pd.to_numeric(data_df[cons.away_team_score_col], errors='coerce')
     reg_mask = data_df[cons.last_period_col] == 'REG'
 
+    # based on game result, create a dataframe mask
     if 'Wins' in target_col:
         home_result = (home_scores > away_scores)
         away_result = (away_scores > home_scores)
@@ -164,6 +167,7 @@ def prevN_result(data_df, backfill, target_col, team_col, n):
     else:
         raise ValueError("target_col must contain one of: Wins, Losses, OTL")
 
+    # Normalize to a team-centric table (one row per team per game) so home/away can be handled identically.
     home_games = pd.DataFrame({
         row_id_col: data_df.index,
         team_key_col: data_df[cons.home_team_name_col],
@@ -183,6 +187,7 @@ def prevN_result(data_df, backfill, target_col, team_col, n):
     team_games = team_games.dropna(subset=[date_col])
     team_games.sort_values(by=[team_key_col, season_key_col, date_col, row_id_col], inplace=True)
 
+    # Store per-team cumulative results so range totals can be answered in O(1).
     team_history = {}
     for key, group in team_games.groupby([team_key_col, season_key_col], sort=False):
         results = group[result_col].to_numpy(dtype=np.int16)
@@ -191,6 +196,7 @@ def prevN_result(data_df, backfill, target_col, team_col, n):
             np.concatenate(([0], np.cumsum(results, dtype=np.int32)))
         )
 
+    # Prepare target rows as numpy arrays to keep the main loop lightweight.
     target_dates = pd.to_datetime(data_df_target[cons.game_date_col], errors='coerce').dt.date.to_numpy()
     target_teams = data_df_target[team_col].to_numpy()
     target_seasons = data_df_target[cons.season_name_col].to_numpy()
@@ -206,10 +212,12 @@ def prevN_result(data_df, backfill, target_col, team_col, n):
             continue
 
         hist_dates, result_prefix = history
+        # First prior game index on this date boundary; excludes the current game and future games.
         end_idx = bisect.bisect_left(hist_dates, game_date)
         if end_idx == 0:
             continue
 
+        # Sliding window total: prefix[end] - prefix[start] gives results in the previous n games.
         start_idx = max(0, end_idx - n)
         target_vals[i] = result_prefix[end_idx] - result_prefix[start_idx]
 
@@ -250,6 +258,7 @@ def prevN_gpg(data_df, backfill, target_col, team_col, n, for_against):
     game_dates = pd.to_datetime(data_df[cons.game_date_col], errors='coerce').dt.date
     score_vals = pd.to_numeric(data_df[score_col], errors='coerce').fillna(0.0)
 
+    # Normalize to one team-game row per side so home/away can share the same lookup path.
     home_games = pd.DataFrame({
         row_id_col: data_df.index,
         team_key_col: data_df[cons.home_team_name_col],
@@ -269,6 +278,7 @@ def prevN_gpg(data_df, backfill, target_col, team_col, n, for_against):
     team_games = team_games.dropna(subset=[date_col])
     team_games.sort_values(by=[team_key_col, season_key_col, date_col, row_id_col], inplace=True)
 
+    # Build per-team cumulative score history so each n-game sum is O(1) after bisect.
     team_history = {}
     for key, group in team_games.groupby([team_key_col, season_key_col], sort=False):
         scores = group[score_key_col].to_numpy(dtype=float)
@@ -277,6 +287,7 @@ def prevN_gpg(data_df, backfill, target_col, team_col, n, for_against):
             np.concatenate(([0.0], np.cumsum(scores)))
         )
 
+    # Pull target columns into arrays to reduce repeated dataframe indexing in the loop.
     target_dates = pd.to_datetime(data_df_target[cons.game_date_col], errors='coerce').dt.date.to_numpy()
     target_teams = data_df_target[team_col].to_numpy()
     target_seasons = data_df_target[cons.season_name_col].to_numpy()
@@ -292,10 +303,12 @@ def prevN_gpg(data_df, backfill, target_col, team_col, n, for_against):
             continue
 
         hist_dates, score_prefix = history
+        # Locate boundary of games strictly before current game date.
         end_idx = bisect.bisect_left(hist_dates, game_date)
         if end_idx == 0:
             continue
 
+        # Window total from prefix sums for the previous n games.
         start_idx = max(0, end_idx - n)
         target_vals[i] = score_prefix[end_idx] - score_prefix[start_idx]
 
@@ -311,6 +324,7 @@ def prevN_gpg(data_df, backfill, target_col, team_col, n, for_against):
 
 def days_since_last_played(data_df, target_col, team_col):
 
+    # Local helper column names used for temporary reshaping.
     row_id_col = '_row_id'
     team_col_name = '_team'
     source_col_name = '_source_col'
@@ -318,6 +332,7 @@ def days_since_last_played(data_df, target_col, team_col):
     season_col_name = '_season'
     game_date_col_name = '_game_date_dt'
 
+    # Materialize source columns once as numpy arrays for faster construction.
     row_ids = data_df.index.to_numpy()
     game_dates = pd.to_datetime(data_df[cons.game_date_col], errors='coerce').to_numpy()
     seasons = data_df[cons.season_name_col].to_numpy()
@@ -325,6 +340,7 @@ def days_since_last_played(data_df, target_col, team_col):
     away_teams = data_df[cons.away_team_name_col].to_numpy()
 
     n_rows = len(data_df)
+    # Build one row per team appearance (home + away) so diff() can be computed uniformly.
     all_team_games = pd.DataFrame({
         row_id_col: np.concatenate([row_ids, row_ids]),
         team_col_name: np.concatenate([home_teams, away_teams]),
@@ -336,9 +352,11 @@ def days_since_last_played(data_df, target_col, team_col):
         ])
     })
 
+    # Within each team-season timeline, compute days since that team's previous game.
     all_team_games.sort_values(by=[team_col_name, season_col_name, game_date_col_name, row_id_col], inplace=True)
     all_team_games[days_col_name] = all_team_games.groupby([team_col_name, season_col_name], sort=False)[game_date_col_name].diff().dt.days
 
+    # Select either home-side or away-side values and align back to the original dataframe index.
     target_series = all_team_games.loc[
         all_team_games[source_col_name] == team_col,
         [row_id_col, days_col_name]
@@ -365,6 +383,7 @@ def hav_dist_Ndays(data_df, target_col, team_col, backfill, n):
     venue_lat_col = cons.venue_col + '_lat'
     venue_long_col = cons.venue_col + '_long'
 
+    # Expand to team-centric rows so each team-season has one chronological venue timeline.
     all_game_dates = pd.to_datetime(data_df[cons.game_date_col], errors='coerce').dt.date
     home_games = pd.DataFrame({
         row_id_col: data_df.index,
@@ -386,6 +405,7 @@ def hav_dist_Ndays(data_df, target_col, team_col, backfill, n):
     team_games = team_games.dropna(subset=[date_col])
     team_games.sort_values(by=[team_key_col, season_key_col, date_col, row_id_col], inplace=True)
 
+    # Cache date and venue arrays per team-season for fast repeated lookups.
     team_history = {}
     for key, group in team_games.groupby([team_key_col, season_key_col], sort=False):
         team_history[key] = (
@@ -394,6 +414,7 @@ def hav_dist_Ndays(data_df, target_col, team_col, backfill, n):
             group[venue_long_col].to_numpy(dtype=float)
         )
 
+    # Vectorized great-circle distance for one current venue against multiple prior venues.
     def _haversine_vector_km(cur_lat, cur_long, prev_lats, prev_longs):
         cur_lat_rad = np.radians(cur_lat)
         cur_long_rad = np.radians(cur_long)
@@ -406,6 +427,7 @@ def hav_dist_Ndays(data_df, target_col, team_col, backfill, n):
         c = 2.0 * np.arcsin(np.sqrt(a))
         return 6371.0 * c
 
+    # Pull target fields once so per-row logic avoids repeated dataframe access.
     target_dates = pd.to_datetime(data_df_target[cons.game_date_col], errors='coerce').dt.date.to_numpy()
     target_teams = data_df_target[team_col].to_numpy()
     target_seasons = data_df_target[cons.season_name_col].to_numpy()
@@ -423,10 +445,12 @@ def hav_dist_Ndays(data_df, target_col, team_col, backfill, n):
             continue
 
         hist_dates, hist_lats, hist_longs = history
+        # Use prior games only (strictly earlier dates) via lower-bound binary search.
         end_idx = bisect.bisect_left(hist_dates, game_date)
         if end_idx == 0:
             continue
 
+        # Restrict to the previous n games and ignore historical rows without coordinates.
         start_idx = max(0, end_idx - n)
         prev_lats = hist_lats[start_idx:end_idx]
         prev_longs = hist_longs[start_idx:end_idx]
@@ -434,6 +458,7 @@ def hav_dist_Ndays(data_df, target_col, team_col, backfill, n):
         if not valid_prev.any():
             continue
 
+        # Mean distance summarizes recent travel burden for this team before the current game.
         dists = _haversine_vector_km(target_lats[i], target_longs[i], prev_lats[valid_prev], prev_longs[valid_prev])
         if dists.size:
             target_vals[i] = float(dists.mean())
@@ -468,6 +493,7 @@ def playoff_series_score(data_df, backfill):
     date_col = '_game_date'
     winner_col = '_winner'
 
+    # Pull playoff games once; everything below works off this filtered subset.
     all_dates = pd.to_datetime(data_df[cons.game_date_col], errors='coerce').dt.date
     playoff_mask = data_df[cons.game_type_col] == 3
 
@@ -484,6 +510,7 @@ def playoff_series_score(data_df, backfill):
         playoff_games[date_col] = all_dates.loc[playoff_mask].to_numpy()
         playoff_games = playoff_games.dropna(subset=[date_col])
 
+        # Canonicalize matchup order so A vs B and B vs A map to the same series key.
         home_arr = playoff_games[cons.home_team_name_col].to_numpy()
         away_arr = playoff_games[cons.away_team_name_col].to_numpy()
         playoff_games[season_key_col] = playoff_games[cons.season_name_col].to_numpy()
@@ -503,6 +530,7 @@ def playoff_series_score(data_df, backfill):
             inplace=True
         )
 
+        # Build cumulative wins per series so "wins before game i" can be read in O(1).
         series_history = {}
         for key, group in playoff_games.groupby([season_key_col, team_low_col, team_high_col], sort=False):
             team_low = key[1]
@@ -512,6 +540,7 @@ def playoff_series_score(data_df, backfill):
             high_prefix = np.concatenate(([0], np.cumsum((winners == team_high).astype(np.int16), dtype=np.int32)))
             series_history[key] = (group[date_col].tolist(), team_low, low_prefix, high_prefix)
 
+        # Extract target fields once to keep the lookup loop lightweight.
         target_dates = pd.to_datetime(data_df_target[cons.game_date_col], errors='coerce').dt.date.to_numpy()
         target_seasons = data_df_target[cons.season_name_col].to_numpy()
         target_home = data_df_target[cons.home_team_name_col].to_numpy()
@@ -535,10 +564,12 @@ def playoff_series_score(data_df, backfill):
                 continue
 
             hist_dates, series_low_team, low_prefix, high_prefix = history
+            # Count only games strictly before the current one.
             end_idx = bisect.bisect_left(hist_dates, game_date)
             if end_idx == 0:
                 continue
 
+            # Map canonical low/high prefixes back to the home/away perspective for this row.
             if home_team == series_low_team:
                 home_series_vals[i] = low_prefix[end_idx]
                 away_series_vals[i] = high_prefix[end_idx]

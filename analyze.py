@@ -59,6 +59,7 @@ def game_result_comparison(predict_df, actual_df=None):
     # merge the predict and actual dataframes on the game ID column
     comparison_df = pd.merge(predict_df[merge_cols], actual_df[merge_cols], on=[cons.game_id_col, cons.game_date_col, cons.home_team_name_col, cons.away_team_name_col], suffixes=('_predicted', '_actual'))
 
+    # create a column that indicates whether the predicted outcome was correct (1) or not (0)
     comparison_df['correct_outcome'] = np.where(
         (comparison_df[cons.home_team_score_col+'_actual'] > comparison_df[cons.away_team_score_col+'_actual']) &
         (comparison_df[cons.home_team_score_col+'_predicted'] > comparison_df[cons.away_team_score_col+'_predicted']) |
