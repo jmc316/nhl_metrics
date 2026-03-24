@@ -20,12 +20,6 @@ logo_size_card = 50
 logo_size_champ = 150
 
 # ---------------- HELPERS ----------------
-
-def get_winner(t1, t2, score):
-    a, b = map(int, score.split('-'))
-    return t1 if a > b else t2
-
-
 def draw_glow_line(canvas, pt1, pt2, color=(0,180,255)):
     overlay = canvas.copy()
     cv2.line(overlay, pt1, pt2, color, 6)
@@ -80,7 +74,7 @@ def overlay_logo(canvas, path, x, y, logo_size, pad_color=(0, 0, 0)):
         canvas[y:y+logo_size, x:x+logo_size] = logo_pad
 
 
-def draw_card(canvas, x, y, team, round1=False, winner=False, align_right=False):
+def draw_card(canvas, x, y, team, seed=None, round1=False, winner=False, align_right=False):
 
     if round1:
         card_w_loc, card_h_loc = card_1_w, card_1_h
@@ -95,13 +89,13 @@ def draw_card(canvas, x, y, team, round1=False, winner=False, align_right=False)
     canvas[:] = cv2.addWeighted(overlay, 0.6, canvas, 0.4, 0)
 
     if round1 and align_right:
-        cv2.rectangle(canvas, (x,y), (x+card_w_loc//3*2,y+card_h), cons.team_info[team['name']]['c1'], -1)
+        cv2.rectangle(canvas, (x,y), (x+card_w_loc//3*2,y+card_h), cons.team_info[team]['c1'], -1)
         cv2.rectangle(canvas, (x+card_w_loc//3*2,y), (x+card_w_loc,y+card_h), (0,0,0), -1)
     elif round1:
         cv2.rectangle(canvas, (x,y), (x+card_w_loc//3,y+card_h), (0,0,0), -1)
-        cv2.rectangle(canvas, (x+card_w_loc//3,y), (x+card_w_loc,y+card_h), cons.team_info[team['name']]['c1'], -1)
+        cv2.rectangle(canvas, (x+card_w_loc//3,y), (x+card_w_loc,y+card_h), cons.team_info[team]['c1'], -1)
     else:
-        cv2.rectangle(canvas, (x,y), (x+card_w_loc,y+card_h), cons.team_info[team['name']]['c1'], -1)
+        cv2.rectangle(canvas, (x,y), (x+card_w_loc,y+card_h), cons.team_info[team]['c1'], -1)
 
     border = (0,180,255) if winner else (70,70,70)
     cv2.rectangle(canvas, (x,y), (x+card_w_loc,y+card_h_loc), border, 1)
@@ -110,11 +104,11 @@ def draw_card(canvas, x, y, team, round1=False, winner=False, align_right=False)
         lx = x + 75 if not align_right else x + card_w_loc - logo_size_card - 75
     else:
         lx = x + 25 if not align_right else x + card_w_loc - logo_size_card - 25
-    overlay_logo(canvas, team["logo"], lx, y+7, logo_size_card, pad_color=cons.team_info[team['name']]['c1'])
+    overlay_logo(canvas, cons.team_info[team]['logo'], lx, y+7, logo_size_card, pad_color=cons.team_info[team]['c1'])
 
     if round1: 
-        text = f'{team["seed"]}' # text = f'{team["seed"]} {team["name"]}'
-        offset = 2 if len(team["seed"]) == 3 else 12
+        text = f'{seed}'
+        offset = 2 if len(seed) == 3 else 12
         tx = x + offset if not align_right else x + 100 + offset
 
         cv2.putText(canvas, text, (tx, y+40),
@@ -219,46 +213,49 @@ def display_playoff_tree(matchups, season, pred_date):
     wy = []
     west_r1_winners = []
 
-    for i in range(0, 8, 2):
-        y1, y2 = r1_y[i], r1_y[i+1]
-        t1, t2 = west[i], west[i+1]
-        score = west_r1[i//2]
+    for i in range(4, 8):
+        y1, y2 = r1_y[(i-4)*2], r1_y[(i-4)*2+1]
+        t1 = matchups[1][i].get_team1()
+        seed1 = matchups[1][i].get_playoff_seed(t1)
+        t2 = matchups[1][i].get_team2()
+        seed2 = matchups[1][i].get_playoff_seed(t2)
+        score = matchups[1][i].get_series_score()
 
-        winner = get_winner(t1, t2, score)
+        winner = matchups[1][i].get_series_winner()
         west_r1_winners.append(winner)
 
-        draw_card(canvas, left_x[0], y1, t1, round1=True, winner=(winner==t1))
-        draw_card(canvas, left_x[0], y2, t2, round1=True, winner=(winner==t2))
+        draw_card(canvas, left_x[0], y1, t1, seed1, round1=True, winner=(winner==t1))
+        draw_card(canvas, left_x[0], y2, t2, seed2, round1=True, winner=(winner==t2))
 
         wy.append(connect_left(canvas, left_x[0], y1, y2, score, 45, round1=True))
 
     wy2 = []
     west_r2_winners = []
 
-    for i in range(2):
-        t1 = west_r1_winners[2*i]
-        t2 = west_r1_winners[2*i+1]
-        score = west_r2[i]
+    for i in range(2, 4):
+        t1 = matchups[2][i].get_team1()
+        t2 = matchups[2][i].get_team2()
+        score = matchups[2][i].get_series_score()
 
-        winner = get_winner(t1, t2, score)
+        winner = matchups[2][i].get_series_winner()
         west_r2_winners.append(winner)
 
-        y = r2_y[i*2]
+        y = r2_y[(i-2)*2]
         draw_card(canvas, left_x[1], y, t1, winner=(winner==t1))
         draw_card(canvas, left_x[1], y+r2_space, t2, winner=(winner==t2))
 
         wy2.append(connect_left(canvas, left_x[1], y, y+r2_space, score, 45))
 
     wy3 = []
-    for i in range(1):
-        t1 = west_r2_winners[2*i]
-        t2 = west_r2_winners[2*i+1]
-        score = west_cf[0]
+    for i in range(2):
+        t1 = matchups[3][i].get_team1()
+        t2 = matchups[3][i].get_team2()
+        score = matchups[3][i].get_series_score()
 
-        winner = get_winner(t1, t2, score)
+        winner = matchups[3][i].get_series_winner()
         west_final_winner = winner
 
-        y = r3_y[i*2]
+        y = r3_y[(i-1)*2]
         draw_card(canvas, left_x[2], y, t1, winner=(winner==t1))
         draw_card(canvas, left_x[2], y+r3_space, t2, winner=(winner==t2))
 
@@ -268,16 +265,19 @@ def display_playoff_tree(matchups, season, pred_date):
     ey = []
     east_r1_winners = []
 
-    for i in range(0, 8, 2):
-        y1, y2 = r1_y[i], r1_y[i+1]
-        t1, t2 = east[i], east[i+1]
-        score = east_r1[i//2]
+    for i in range(0, 4):
+        y1, y2 = r1_y[i*2], r1_y[i*2+1]
+        t1 = matchups[1][i].get_team1()
+        seed1 = matchups[1][i].get_playoff_seed(t1)
+        t2 = matchups[1][i].get_team2()
+        seed2 = matchups[1][i].get_playoff_seed(t2)
+        score = matchups[1][i].get_series_score()
 
-        winner = get_winner(t1, t2, score)
+        winner = matchups[1][i].get_series_winner()
         east_r1_winners.append(winner)
 
-        draw_card(canvas, right_x[0], y1, t1, round1=True, winner=(winner==t1), align_right=True)
-        draw_card(canvas, right_x[0], y2, t2, round1=True, winner=(winner==t2), align_right=True)
+        draw_card(canvas, right_x[0], y1, t1, seed1, round1=True, winner=(winner==t1), align_right=True)
+        draw_card(canvas, right_x[0], y2, t2, seed2, round1=True, winner=(winner==t2), align_right=True)
 
         ey.append(connect_right(canvas, right_x[0], y1, y2, score, 45, round1=True))
 
@@ -285,11 +285,11 @@ def display_playoff_tree(matchups, season, pred_date):
     east_r2_winners = []
 
     for i in range(2):
-        t1 = east_r1_winners[2*i]
-        t2 = east_r1_winners[2*i+1]
-        score = east_r2[i]
+        t1 = matchups[2][i].get_team1()
+        t2 = matchups[2][i].get_team2()
+        score = matchups[2][i].get_series_score()
 
-        winner = get_winner(t1, t2, score)
+        winner = matchups[2][i].get_series_winner()
         east_r2_winners.append(winner)
 
         y = r2_y[i*2]
@@ -300,11 +300,11 @@ def display_playoff_tree(matchups, season, pred_date):
 
     ey3 = []
     for i in range(1):
-        t1 = east_r2_winners[2*i]
-        t2 = east_r2_winners[2*i+1]
-        score = east_cf[0]
+        t1 = matchups[3][i].get_team1()
+        t2 = matchups[3][i].get_team2()
+        score = matchups[3][i].get_series_score()
 
-        winner = get_winner(t1, t2, score)
+        winner = matchups[3][i].get_series_winner()
         east_final_winner = winner
 
         y = r3_y[i*2]

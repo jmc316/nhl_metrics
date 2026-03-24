@@ -120,6 +120,7 @@ final_standings_col_order = ['conferenceName', 'conferenceSeed', 'divisionName',
 output_folder = 'output/'
 util_data_folder = 'util_data/'
 model_files_folder = 'model_files/'
+images_folder = 'images/'
 season_sched_folder = output_folder + 'season_schedules/'
 season_feature_sets_folder = output_folder + 'season_feature_sets/'
 season_pred_folder = output_folder + 'season_predictions/{date}/'
@@ -134,38 +135,38 @@ playoff_spot_pred_filename = 'playoff_predictions_{n}_{date}.csv'
 
 # color tuple format is (B, G, R)
 team_info = {
-    'Anaheim Ducks': {'c1': (2, 76, 252), 'logo': 'anaheim_ducks_logo.png'},
-    'Boston Bruins': {'c1': (20, 181, 252), 'logo': 'boston_bruins_logo.png'},
-    'Buffalo Sabres': {'c1': (0, 48, 135), 'logo': 'buffalo_sabres_logo.png'},
-    'Calgary Flames': {'c1': (28, 0, 210), 'logo': 'calgary_flames_logo.png'},
-    'Carolina Hurricanes': {'c1': (38, 17, 206), 'logo': 'carolina_hurricanes_logo.png'},
-    'Chicago Blackhawks': {'c1': (44, 10, 207), 'logo': 'chicago_blackhawks_logo.png'},
-    'Colorado Avalanche': {'c1': (61, 38, 111), 'logo': 'colorado_avalanche_logo.png'},
-    'Columbus Blue Jackets': {'c1': (84,38,0), 'logo': 'columbus_blue_jackets_logo.png'},
-    'Dallas Stars': {'c1': (71, 104, 0), 'logo': 'dallas_stars_logo.png'},
-    'Detroit Red Wings': {'c1': (38,17,206), 'logo': 'detroit_red_wings_logo.png'},
-    'Edmonton Oilers': {'c1': (66, 30, 4), 'logo': 'edmonton_oilers_logo.png'},
-    'Florida Panthers': {'c1': (66, 30, 4), 'logo': 'florida_panthers_logo.png'},
-    'Los Angeles Kings': {'c1': (17, 17, 17), 'logo': 'los_angeles_kings_logo.png'},
-    'Minnesota Wild': {'c1': (48, 73, 2), 'logo': 'minnesota_wild_logo.png'},
-    'Montréal Canadiens': {'c1': (45, 30, 175), 'logo': 'montreal_canadiens_logo.png'},
-    'Nashville Predators': {'c1': (28, 184, 255), 'logo': 'nashville_predators_logo.png'},
-    'New Jersey Devils': {'c1': (38, 17, 206), 'logo': 'new_jersey_devils_logo.png'},
-    'New York Islanders': {'c1': (155, 83, 0), 'logo': 'new_york_islanders_logo.png'},
-    'New York Rangers': {'c1': (168, 56, 0), 'logo': 'new_york_rangers_logo.png'},
-    'Ottawa Senators': {'c1': (50, 26, 218), 'logo': 'ottawa_senators_logo.png'},
-    'Philadelphia Flyers': {'c1': (2, 73, 247), 'logo': 'philadelphia_flyers_logo.png'},
-    'Pittsburgh Penguins': {'c1': (28, 184, 255), 'logo': 'pittsburgh_penguins_logo.png'},
-    'San Jose Sharks': {'c1': (117, 109, 0), 'logo': 'san_jose_sharks_logo.png'},
-    'Seattle Kraken': {'c1': (40, 22, 0), 'logo': 'seattle_kraken_logo.png'},
-    'St. Louis Blues': {'c1': (135, 47, 0), 'logo': 'st_louis_blues_logo.png'},
-    'Tampa Bay Lightning': {'c1': (104, 40, 0), 'logo': 'tampa_bay_lightning_logo.png'},
-    'Toronto Maple Leafs': {'c1': (91, 32, 0), 'logo': 'toronto_maple_leafs_logo.png'},
-    'Utah Mammoth': {'c1': (231, 179, 105), 'logo': 'utah_mammoth_logo.png'},
-    'Vancouver Canucks': {'c1': (91, 32, 0), 'logo': 'vancouver_canucks_logo.png'},
-    'Vegas Golden Knights': {'c1': (91, 151, 185), 'logo': 'vegas_golden_knights_logo.png'},
-    'Washington Capitals': {'c1': (66, 30, 4), 'logo': 'washington_capitals_logo.png'},
-    'Winnipeg Jets': {'c1': (66, 30, 4), 'logo': 'winnipeg_jets_logo.png'}
+    'Anaheim Ducks': {'c1': (2, 76, 252), 'logo': images_folder + 'anaheim_ducks_logo.png'},
+    'Boston Bruins': {'c1': (20, 181, 252), 'logo': images_folder + 'boston_bruins_logo.png'},
+    'Buffalo Sabres': {'c1': (135, 48, 0), 'logo': images_folder + 'buffalo_sabres_logo.png'},
+    'Calgary Flames': {'c1': (28, 0, 210), 'logo': images_folder + 'calgary_flames_logo.png'},
+    'Carolina Hurricanes': {'c1': (38, 17, 206), 'logo': images_folder + 'carolina_hurricanes_logo.png'},
+    'Chicago Blackhawks': {'c1': (44, 10, 207), 'logo': images_folder + 'chicago_blackhawks_logo.png'},
+    'Colorado Avalanche': {'c1': (61, 38, 111), 'logo': images_folder + 'colorado_avalanche_logo.png'},
+    'Columbus Blue Jackets': {'c1': (84,38,0), 'logo': images_folder + 'columbus_blue_jackets_logo.png'},
+    'Dallas Stars': {'c1': (71, 104, 0), 'logo': images_folder + 'dallas_stars_logo.png'},
+    'Detroit Red Wings': {'c1': (38,17,206), 'logo': images_folder + 'detroit_red_wings_logo.png'},
+    'Edmonton Oilers': {'c1': (66, 30, 4), 'logo': images_folder + 'edmonton_oilers_logo.png'},
+    'Florida Panthers': {'c1': (66, 30, 4), 'logo': images_folder + 'florida_panthers_logo.png'},
+    'Los Angeles Kings': {'c1': (17, 17, 17), 'logo': images_folder + 'los_angeles_kings_logo.png'},
+    'Minnesota Wild': {'c1': (48, 73, 2), 'logo': images_folder + 'minnesota_wild_logo.png'},
+    'Montréal Canadiens': {'c1': (45, 30, 175), 'logo': images_folder + 'montreal_canadiens_logo.png'},
+    'Nashville Predators': {'c1': (28, 184, 255), 'logo': images_folder + 'nashville_predators_logo.png'},
+    'New Jersey Devils': {'c1': (38, 17, 206), 'logo': images_folder + 'new_jersey_devils_logo.png'},
+    'New York Islanders': {'c1': (155, 83, 0), 'logo': images_folder + 'new_york_islanders_logo.png'},
+    'New York Rangers': {'c1': (168, 56, 0), 'logo': images_folder + 'new_york_rangers_logo.png'},
+    'Ottawa Senators': {'c1': (50, 26, 218), 'logo': images_folder + 'ottawa_senators_logo.png'},
+    'Philadelphia Flyers': {'c1': (2, 73, 247), 'logo': images_folder + 'philadelphia_flyers_logo.png'},
+    'Pittsburgh Penguins': {'c1': (28, 184, 255), 'logo': images_folder + 'pittsburgh_penguins_logo.png'},
+    'San Jose Sharks': {'c1': (117, 109, 0), 'logo': images_folder + 'san_jose_sharks_logo.png'},
+    'Seattle Kraken': {'c1': (40, 22, 0), 'logo': images_folder + 'seattle_kraken_logo.png'},
+    'St. Louis Blues': {'c1': (135, 47, 0), 'logo': images_folder + 'st_louis_blues_logo.png'},
+    'Tampa Bay Lightning': {'c1': (104, 40, 0), 'logo': images_folder + 'tampa_bay_lightning_logo.png'},
+    'Toronto Maple Leafs': {'c1': (91, 32, 0), 'logo': images_folder + 'toronto_maple_leafs_logo.png'},
+    'Utah Mammoth': {'c1': (231, 179, 105), 'logo': images_folder + 'utah_mammoth_logo.png'},
+    'Vancouver Canucks': {'c1': (91, 32, 0), 'logo': images_folder + 'vancouver_canucks_logo.png'},
+    'Vegas Golden Knights': {'c1': (91, 151, 185), 'logo': images_folder + 'vegas_golden_knights_logo.png'},
+    'Washington Capitals': {'c1': (66, 30, 4), 'logo': images_folder + 'washington_capitals_logo.png'},
+    'Winnipeg Jets': {'c1': (66, 30, 4), 'logo': images_folder + 'winnipeg_jets_logo.png'}
 }
 
 missing_geoloc = {

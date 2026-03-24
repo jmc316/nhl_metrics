@@ -14,3 +14,11 @@
     - gambling interaction with how much money the model would be winning?
     - add cup winner odds/division winner to playoff odds predictions
     - playoff tree visual for individual predictions
+
+- visuals
+    - add end of seasons standing visual
+    - add playoff odds visual
+    - for the playoff tree visual:
+        - make team logos larger and cropped
+        - change background color to lighter color
+        - add stanley cup?
