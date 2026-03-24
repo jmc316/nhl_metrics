@@ -91,10 +91,10 @@ def dependent_feature_add(feature_df, backfill=True, debug=True):
 def datetime_feature_add(feature_df):
 
     # convert the 'startTimeUTC' column to datetime and extract the relevant features
-    feature_df[cons.starttime_utc_col] = pd.to_datetime(feature_df[cons.starttime_utc_col]).dt.tz_convert('US/Eastern')
-    feature_df[cons.game_date_col] = feature_df[cons.starttime_utc_col].dt.date
-    feature_df[cons.game_time_col] = feature_df[cons.starttime_utc_col].dt.hour * 60 + feature_df[cons.starttime_utc_col].dt.minute
-    feature_df.drop(columns=[cons.starttime_utc_col], inplace=True)
+    feature_df[cons.starttime_est_col] = pd.to_datetime(feature_df[cons.starttime_utc_col]).dt.tz_convert('US/Eastern')
+    feature_df[cons.game_date_col] = feature_df[cons.starttime_est_col].dt.date
+    feature_df[cons.game_time_col] = feature_df[cons.starttime_est_col].dt.hour * 60 + feature_df[cons.starttime_est_col].dt.minute
+    feature_df.drop(columns=[cons.starttime_est_col], inplace=True)
 
     return feature_df
 

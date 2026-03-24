@@ -108,41 +108,41 @@ def generate_playoff_matchups(data_df, round_num, prev_round_matchups=None):
     if round_num == 1:
         # matchup 1: division winner with better record vs wildcard 2 team
         matchups_dict.update({0: PlayoffMatchup(
-            data_df.loc[data_df[cons.playoff_seed_col] == 'div_1', [cons.team_name_col, cons.total_points_col]].sort_values(
-                by=cons.total_points_col, ascending=False)[cons.team_name_col].values[0], # highest seed in the conference
-            data_df.loc[data_df[cons.playoff_seed_col] == 'wc_2', cons.team_name_col].values[0], # second wildcard team in the conference
-            data_df.loc[data_df[cons.playoff_seed_col] == 'div_1', [cons.conference_seed_col, cons.total_points_col]].sort_values(
-                by=cons.total_points_col, ascending=False)[cons.conference_seed_col].values[0], # division winner conference seed
-            data_df.loc[data_df[cons.playoff_seed_col] == 'wc_2', cons.conference_seed_col].values[0], # second wildcard team conference seed
+            data_df.loc[data_df[cons.playoff_seed_col] == cons.div_1_val, [cons.team_name_col]+cons.tiebreaker_cols].sort_values(
+                by=cons.tiebreaker_cols, ascending=False)[cons.team_name_col].values[0], # highest seed in the conference
+            data_df.loc[data_df[cons.playoff_seed_col] == cons.wc_2_val, cons.team_name_col].values[0], # second wildcard team in the conference
+            data_df.loc[data_df[cons.playoff_seed_col] == cons.div_1_val, [cons.conference_seed_col]+cons.tiebreaker_cols].sort_values(
+                by=cons.tiebreaker_cols, ascending=False)[cons.conference_seed_col].values[0], # division winner conference seed
+            data_df.loc[data_df[cons.playoff_seed_col] == cons.wc_2_val, cons.conference_seed_col].values[0], # second wildcard team conference seed
             1, # playoff round number
             data_df[cons.conference_name_col].values[0], # conference name
-            data_df.loc[data_df[cons.playoff_seed_col] == 'div_1', [cons.division_name_col, cons.total_points_col]].sort_values(
-                by=cons.total_points_col, ascending=False)[cons.division_name_col].values[0] # division name (based off division winner)
+            data_df.loc[data_df[cons.playoff_seed_col] == cons.div_1_val, [cons.division_name_col]+cons.tiebreaker_cols].sort_values(
+                by=cons.tiebreaker_cols, ascending=False)[cons.division_name_col].values[0] # division name (based off division winner)
         )})
         
         # matchup 2: division winner with worse record vs wildcard 1 team
         matchups_dict.update({1: PlayoffMatchup(
-            data_df.loc[data_df[cons.playoff_seed_col] == 'div_1', [cons.team_name_col, cons.total_points_col]].sort_values(
-                by=cons.total_points_col, ascending=True)[cons.team_name_col].values[0], # division winner with worse record in the conference
-            data_df.loc[data_df[cons.playoff_seed_col] == 'wc_1', cons.team_name_col].values[0], # first wildcard team in the conference
-            data_df.loc[data_df[cons.playoff_seed_col] == 'div_1', [cons.conference_seed_col, cons.total_points_col]].sort_values(
-                by=cons.total_points_col, ascending=True)[cons.conference_seed_col].values[0], # division winner conference seed
-            data_df.loc[data_df[cons.playoff_seed_col] == 'wc_1', cons.conference_seed_col].values[0], # first wildcard team conference seed
+            data_df.loc[data_df[cons.playoff_seed_col] == cons.div_1_val, [cons.team_name_col]+cons.tiebreaker_cols].sort_values(
+                by=cons.tiebreaker_cols, ascending=True)[cons.team_name_col].values[0], # division winner with worse record in the conference
+            data_df.loc[data_df[cons.playoff_seed_col] == cons.wc_1_val, cons.team_name_col].values[0], # first wildcard team in the conference
+            data_df.loc[data_df[cons.playoff_seed_col] == cons.div_1_val, [cons.conference_seed_col]+cons.tiebreaker_cols].sort_values(
+                by=cons.tiebreaker_cols, ascending=True)[cons.conference_seed_col].values[0], # division winner conference seed
+            data_df.loc[data_df[cons.playoff_seed_col] == cons.wc_1_val, cons.conference_seed_col].values[0], # first wildcard team conference seed
             1, # playoff round number
             data_df[cons.conference_name_col].values[0], # conference name
-            data_df.loc[data_df[cons.playoff_seed_col] == 'div_1', [cons.division_name_col, cons.total_points_col]].sort_values(
-                by=cons.total_points_col, ascending=True)[cons.division_name_col].values[0] # division name (based off division winner)
+            data_df.loc[data_df[cons.playoff_seed_col] == cons.div_1_val, [cons.division_name_col]+cons.tiebreaker_cols].sort_values(
+                by=cons.tiebreaker_cols, ascending=True)[cons.division_name_col].values[0] # division name (based off division winner)
         )})
 
         # matchup 3: inter-division matchup between division 2 & 3 seeds
         matchups_dict.update({2: PlayoffMatchup(
-            data_df.loc[(data_df[cons.playoff_seed_col] == 'div_2') &
+            data_df.loc[(data_df[cons.playoff_seed_col] == cons.div_2_val) &
                         (data_df[cons.division_name_col] == data_df[cons.division_name_col].unique()[0]), cons.team_name_col].values[0], # division 2 seed from division 1
-            data_df.loc[(data_df[cons.playoff_seed_col] == 'div_3') &
+            data_df.loc[(data_df[cons.playoff_seed_col] == cons.div_3_val) &
                         (data_df[cons.division_name_col] == data_df[cons.division_name_col].unique()[0]), cons.team_name_col].values[0], # division 3 seed from division 1
-            data_df.loc[(data_df[cons.playoff_seed_col] == 'div_2') &
+            data_df.loc[(data_df[cons.playoff_seed_col] == cons.div_2_val) &
                         (data_df[cons.division_name_col] == data_df[cons.division_name_col].unique()[0]), cons.conference_seed_col].values[0], # division 2 seed conference seed
-            data_df.loc[(data_df[cons.playoff_seed_col] == 'div_3') &
+            data_df.loc[(data_df[cons.playoff_seed_col] == cons.div_3_val) &
                         (data_df[cons.division_name_col] == data_df[cons.division_name_col].unique()[0]), cons.conference_seed_col].values[0], # division 3 seed conference seed
             1, # playoff round number
             data_df[cons.conference_name_col].values[0], # conference name
@@ -151,13 +151,13 @@ def generate_playoff_matchups(data_df, round_num, prev_round_matchups=None):
         
         # matchup 4: inter-division matchup between division 2 & 3 seeds
         matchups_dict.update({3: PlayoffMatchup(
-            data_df.loc[(data_df[cons.playoff_seed_col] == 'div_2') &
+            data_df.loc[(data_df[cons.playoff_seed_col] == cons.div_2_val) &
                         (data_df[cons.division_name_col] == data_df[cons.division_name_col].unique()[1]), cons.team_name_col].values[0], # division 2 seed from division 2
-            data_df.loc[(data_df[cons.playoff_seed_col] == 'div_3') &
+            data_df.loc[(data_df[cons.playoff_seed_col] == cons.div_3_val) &
                         (data_df[cons.division_name_col] == data_df[cons.division_name_col].unique()[1]), cons.team_name_col].values[0], # division 3 seed from division 2
-            data_df.loc[(data_df[cons.playoff_seed_col] == 'div_2') &
+            data_df.loc[(data_df[cons.playoff_seed_col] == cons.div_2_val) &
                         (data_df[cons.division_name_col] == data_df[cons.division_name_col].unique()[1]), cons.conference_seed_col].values[0], # division 2 seed conference seed
-            data_df.loc[(data_df[cons.playoff_seed_col] == 'div_3') &
+            data_df.loc[(data_df[cons.playoff_seed_col] == cons.div_3_val) &
                         (data_df[cons.division_name_col] == data_df[cons.division_name_col].unique()[1]), cons.conference_seed_col].values[0], # division 3 seed conference seed
             1, # playoff round number
             data_df[cons.conference_name_col].values[0], # conference name

@@ -43,7 +43,7 @@ def game_result_comparison(predict_df, actual_df=None):
             current_dt += pd.to_timedelta(7, unit='D')
 
         # add game date column
-        actual_df[cons.game_date_col] = pd.to_datetime(actual_df[cons.starttime_utc_col]).dt.date
+        actual_df[cons.game_date_col] = pd.to_datetime(actual_df[cons.starttime_est_col]).dt.date
 
         actual_df = actual_df.loc[(actual_df[cons.game_date_col] > predict_min_dt) &
                                 (actual_df[cons.game_date_col] <= predict_max_dt) &

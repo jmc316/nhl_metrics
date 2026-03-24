@@ -131,7 +131,7 @@ def schedule_update(sched_df):
 
         sched_df = sched_df.loc[~sched_df[cons.game_id_col].isin(missing_sched[cons.game_id_col])]
         sched_df = pd.concat([sched_df, missing_sched], ignore_index=True)
-        sched_df.sort_values(by=cons.starttime_utc_col, inplace=True)
+        sched_df.sort_values(by=cons.starttime_est_col, inplace=True)
         sched_df.reset_index(drop=True, inplace=True)
 
         sched_df[cons.season_name_col] = sched_df[cons.season_name_col].astype(str)
@@ -221,7 +221,7 @@ if __name__ == "__main__":
 
     ######################
     # create season schedule dataframe for inputted seasons
-    # season_names = ['20252026'] # ['20212022', '20222023', '20232024', '20242025', '20252026']
+    # season_names = ['20212022', '20222023', '20232024', '20242025', '20252026']
     # for season in season_names:
     #     create_season_df(season, from_csv=False, to_csv=True, debug=True)
 

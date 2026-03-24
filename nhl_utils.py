@@ -26,10 +26,10 @@ def nhl_team_standings(data_df=None):
     if data_df is None:
         nhlc.get_nhl_team_standings()
 
-    data_df['wildcardSeed'] = None
-    data_df.loc[data_df['playoffSeed'].str[:3] == 'div', 'wildcardSeed'] = 0
-    data_df.loc[data_df['playoffSeed'].str[:2] == 'wc', 'wildcardSeed'] = data_df.loc[data_df['playoffSeed'].str[:2] == 'wc', 'playoffSeed'].str[-1:].astype(int)
-    data_df.loc[data_df['playoffSeed'] == 'Missed', 'wildcardSeed'] = 3
+    data_df[cons.wildcard_seed_col] = None
+    data_df.loc[data_df[cons.playoff_seed_col].str[:3] == 'div', cons.wildcard_seed_col] = 0
+    data_df.loc[data_df[cons.playoff_seed_col].str[:2] == 'wc', cons.wildcard_seed_col] = data_df.loc[data_df[cons.playoff_seed_col].str[:2] == 'wc', cons.playoff_seed_col].str[-1:].astype(int)
+    data_df.loc[data_df[cons.playoff_seed_col] == cons.missed_val, cons.wildcard_seed_col] = 3
         
     # eastern conference playoff seeding
     east_conf_spots = _sort_conference_wildcard_spots(data_df.loc[data_df[cons.conference_name_col] == 'Eastern'])
@@ -77,16 +77,16 @@ def print_wildcard_standings(data_df, conference_name):
     print(f'\n--- {conference_name} Conference Wild Card ---')
     for _, team in data_df.iterrows():
         space = ''.join([ ' ' for _ in range(1, 23 - len(team[cons.team_name_col]))])
-        if team[cons.playoff_seed_col] == 'div_3':
-            print(team[cons.playoff_seed_col][-1:], team[cons.team_name_col], space, team['totalPoints'])
+        if team[cons.playoff_seed_col] == cons.div_3_val:
+            print(team[cons.playoff_seed_col][-1:], team[cons.team_name_col], space, team[cons.total_points_col])
             print('----------------------------')
-        elif team[cons.playoff_seed_col] == 'wc_2':
-            print(team[cons.playoff_seed_col][-1:], team[cons.team_name_col], space, team['totalPoints'])
+        elif team[cons.playoff_seed_col] == cons.wc_2_val:
+            print(team[cons.playoff_seed_col][-1:], team[cons.team_name_col], space, team[cons.total_points_col])
             print('----------------------------')
-        elif team[cons.playoff_seed_col] != 'Missed':
-            print(team[cons.playoff_seed_col][-1:], team[cons.team_name_col], space, team['totalPoints'])
+        elif team[cons.playoff_seed_col] != cons.missed_val:
+            print(team[cons.playoff_seed_col][-1:], team[cons.team_name_col], space, team[cons.total_points_col])
         else:
-            print('-', team[cons.team_name_col], space, team['totalPoints'])
+            print('-', team[cons.team_name_col], space, team[cons.total_points_col])
 
 
 def nhl_individual_team_stats():
