@@ -185,7 +185,7 @@ def playoff_spot_predictions(n=100):
 
     # initialize dataframe to store the count of playoff seeds for each team across all simulations; this will be used to calculate the probabilities of each team making the playoffs and their likely seed
     count_df = pd.DataFrame(columns=[cons.team_name_col, cons.div_1_val, cons.div_2_val, cons.div_3_val, cons.wc_1_val, cons.wc_2_val, cons.missed_val])
-    count_df[cons.team_name_col] = list(cons.team_colors.keys())
+    count_df[cons.team_name_col] = list(cons.team_info.keys())
     count_df.fillna(0, inplace=True)
 
     # run n simulations of the season and count the number of times each team finishes in each playoff seed across all simulations;

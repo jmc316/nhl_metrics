@@ -3,3 +3,4 @@ rich==14.3.2
 pandas==3.0.0
 haversine==2.9.0
 geopy==2.4.1
+diagrams==1.2.0

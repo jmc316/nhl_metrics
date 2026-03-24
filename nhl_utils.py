@@ -133,13 +133,13 @@ def assign_game_points(season_results, to_csv=False):
 def home_away_accumulation(home_df, away_df, stat_col, keep_segregated_cols=False, debug=False):
 
     # fill in missing teams in the homeTeam dataframe
-    for team in cons.team_colors.keys():
+    for team in cons.team_info.keys():
         if team not in home_df[cons.home_team_name_col].values:
             if debug: print(f'\t... Adding {team} to homeTeam{stat_col} dataframe with 0 {stat_col} ...')
             home_df = pd.concat([home_df, pd.DataFrame({cons.home_team_name_col: [team], f'homeTeam{stat_col}': [0]})], ignore_index=True)
 
     # fill in missing teams in the awayTeam dataframe
-    for team in cons.team_colors.keys():
+    for team in cons.team_info.keys():
         if team not in away_df[cons.away_team_name_col].values:
             if debug: print(f'\t... Adding {team} to awayTeam{stat_col} dataframe with 0 {stat_col} ...')
             away_df = pd.concat([away_df, pd.DataFrame({cons.away_team_name_col: [team], f'awayTeam{stat_col}': [0]})], ignore_index=True)
