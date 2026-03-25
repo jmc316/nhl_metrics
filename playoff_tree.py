@@ -48,7 +48,42 @@ def overlay_logo(canvas, path, x, y, logo_size, pad_color=(0, 0, 0)):
         return
     
     h, w = logo.shape[:2]
-    target_h, target_w = (logo_size, logo_size)
+    target_h, target_w = (logo_size*2, logo_size*2)
+    asp_ratio = min(target_w / w, target_h / h)
+    new_w = int(w * asp_ratio)
+    new_h = int(h * asp_ratio)
+
+    logo_resized = cv2.resize(logo, (new_w, new_h), interpolation=cv2.INTER_AREA)
+    logo_pad = cv2.copyMakeBorder(
+        logo_resized, 
+        (target_h - new_h) // 2, 
+        (target_h - new_h) - ((target_h - new_h) // 2), 
+        (target_w - new_w) // 2, 
+        (target_w - new_w) - ((target_w - new_w) // 2), 
+        cv2.BORDER_CONSTANT, 
+        value=pad_color
+    )
+
+    logo_crop = logo_pad[logo_size//2-(CARD_H-logo_size)//2:logo_size+logo_size//2+(CARD_H-logo_size)//2, :logo_size*2]
+
+    if logo_crop.shape[2] == 4:
+        alpha = logo_crop[:,:,3] / 255.0
+        for c in range(3):
+            canvas[y-(CARD_H-logo_size)//2:y+logo_size+(CARD_H-logo_size)//2, x:x+logo_size*2, c] = (
+                alpha * logo_crop[:,:,c] +
+                (1 - alpha) * canvas[y-(CARD_H-logo_size)//2:y+logo_size+(CARD_H-logo_size)//2, x:x+logo_size*2, c]
+            )
+    else:
+        canvas[y-(CARD_H-logo_size)//2:y+logo_size+(CARD_H-logo_size)//2, x:x+logo_size*2] = logo_crop
+
+
+def overlay_image(canvas, path, x, y, image_size, pad_color=(0, 0, 0)):
+    logo = cv2.imread(path, cv2.IMREAD_UNCHANGED)
+    if logo is None:
+        return
+    
+    h, w = logo.shape[:2]
+    target_h, target_w = (image_size, image_size)
     asp_ratio = min(target_w / w, target_h / h)
     new_w = int(w * asp_ratio)
     new_h = int(h * asp_ratio)
@@ -67,12 +102,12 @@ def overlay_logo(canvas, path, x, y, logo_size, pad_color=(0, 0, 0)):
     if logo_pad.shape[2] == 4:
         alpha = logo_pad[:,:,3] / 255.0
         for c in range(3):
-            canvas[y:y+logo_size, x:x+logo_size, c] = (
+            canvas[y:y+image_size, x:x+image_size, c] = (
                 alpha * logo_pad[:,:,c] +
-                (1 - alpha) * canvas[y:y+logo_size, x:x+logo_size, c]
+                (1 - alpha) * canvas[y:y+image_size, x:x+image_size, c]
             )
     else:
-        canvas[y:y+logo_size, x:x+logo_size] = logo_pad
+        canvas[y:y+image_size, x:x+image_size] = logo_pad[:,:,:3]
 
 
 def choose_card(round1):
@@ -103,12 +138,12 @@ def draw_card(canvas, x, y, team, seed=None, round1=False, winner=False, align_r
         cv2.rectangle(canvas, (x,y), (x+card_w,y+card_h), cons.team_info[team]['c1'], -1)
 
     border = (0,180,255) if winner else (70,70,70)
-    cv2.rectangle(canvas, (x,y), (x+card_w,y+card_h), border, 1)
+    cv2.rectangle(canvas, (x,y), (x+card_w,y+card_h), border, 2)
 
     if round1:
-        lx = x + 75 if not align_right else x + card_w - LOGO_SIZE_CARD - 75
+        lx = x + 50 if not align_right else x + card_w - LOGO_SIZE_CARD - 100
     else:
-        lx = x + 25 if not align_right else x + card_w - LOGO_SIZE_CARD - 25
+        lx = x if not align_right else x + card_w - LOGO_SIZE_CARD - 50
     overlay_logo(canvas, cons.team_info[team]['logo'], lx, y+7, LOGO_SIZE_CARD, pad_color=cons.team_info[team]['c1'])
 
     if round1: 
@@ -163,14 +198,14 @@ def display_playoff_tree(matchups, season, pred_date):
     final_y = get_round_positions(BASE_Y + R1_SPACE//2 + R2_SPACE//2 + R3_SPACE//2, R3_SPACE*2, 1)
 
     # print stanley cup champion and stanley gup logo
-    overlay_logo(CANVAS, 'images/stanley_cup.png', CENTER_X-LOGO_SIZE_CUP//2, 250, LOGO_SIZE_CUP, pad_color=(0,0,0))
+    overlay_image(CANVAS, cons.images_folder + cons.stanley_cup_image, CENTER_X-LOGO_SIZE_CUP//2, 250, LOGO_SIZE_CUP, pad_color=(0,0,0))
     cv2.putText(CANVAS, "STANLEY CUP CHAMPION",
                 (CENTER_X-230, 80),
                 cv2.FONT_HERSHEY_DUPLEX, 1.2,
                 (240,240,240), 2)
     
     cup_champ = matchups[4][0].get_series_winner()
-    overlay_logo(CANVAS, cons.team_info[cup_champ]['logo'], CENTER_X-LOGO_SIZE_CHAMP//2, 100, LOGO_SIZE_CHAMP, pad_color=cons.team_info[cup_champ]['c1'])
+    overlay_image(CANVAS, cons.team_info[cup_champ]['logo'], CENTER_X-LOGO_SIZE_CHAMP//2, 100, LOGO_SIZE_CHAMP, pad_color=cons.team_info[cup_champ]['c1'])
 
     # draw the Western Conference Matchups on the left
     # West round 1
