@@ -17,8 +17,8 @@
 
 - visuals
     - add end of seasons standing visual
-    - add playoff odds visual
+    - add playoff odds visual from regular season
     - for the playoff tree visual:
         - make team logos larger and cropped
         - change background color to lighter color
-        - add stanley cup?
+        - add stanley cup picture?

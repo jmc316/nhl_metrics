@@ -155,39 +155,6 @@ def get_round_positions(start, spacing, n):
     return [start + i*spacing for i in range(n)]
 
 
-# ---------------- DATA ----------------
-west = [
-    {"name":"Colorado Avalanche","seed":'C1',"logo":"images/colorado_avalanche_logo.png","color":(40,0,120)},
-    {"name":"Minnesota Wild","seed":'WC2',"logo":"images/minnesota_wild_logo.png","color":(0,100,0)},
-    {"name":"Dallas Stars","seed":'C2',"logo":"images/dallas_stars_logo.png","color":(0,120,0)},
-    {"name":"Winnipeg Jets","seed":'C3',"logo":"images/winnipeg_jets_logo.png","color":(0,80,150)},
-    {"name":"Edmonton Oilers","seed":'P1',"logo":"images/edmonton_oilers_logo.png","color":(0,90,200)},
-    {"name":"Los Angeles Kings","seed":'WC1',"logo":"images/los_angeles_kings_logo.png","color":(80,80,80)},
-    {"name":"Vegas Golden Knights","seed":'P2',"logo":"images/vegas_golden_knights_logo.png","color":(0,160,160)},
-    {"name":"Calgary Flames","seed":'P3',"logo":"images/calgary_flames_logo.png","color":(0,0,200)},
-]
-
-east = [
-    {"name":"Boston Bruins","seed":'A2',"logo":"images/boston_bruins_logo.png","color":(0,200,255)},
-    {"name":"Toronto Maple Leafs","seed":'A3',"logo":"images/toronto_maple_leafs_logo.png","color":(200,0,0)},
-    {"name":"Tampa Bay Lightning","seed":'A1',"logo":"images/tampa_bay_lightning_logo.png","color":(255,0,0)},
-    {"name":"Carolina Hurricanes","seed":'WC1',"logo":"images/carolina_hurricanes_logo.png","color":(0,0,255)},
-    {"name":"New York Rangers","seed":'M2',"logo":"images/new_york_rangers_logo.png","color":(255,0,0)},
-    {"name":"New York Islanders","seed":'M3',"logo":"images/new_york_islanders_logo.png","color":(255,100,0)},
-    {"name":"New Jersey Devils","seed":'M1',"logo":"images/new_jersey_devils_logo.png","color":(0,0,255)},
-    {"name":"Washington Capitals","seed":'WC2',"logo":"images/washington_capitals_logo.png","color":(255,0,0)},
-]
-
-west_r1 = ["4-1","4-2","4-3","4-2"]
-west_r2 = ["4-2","4-3"]
-west_cf = ["4-2"]
-
-east_r1 = ["4-2","4-3","4-1","4-2"]
-east_r2 = ["4-3","4-2"]
-east_cf = ["4-2"]
-
-final_score = "4-3"
-
 # ---------------- SPACING ----------------
 base_y = 150
 r1_space = 80
@@ -207,7 +174,9 @@ def display_playoff_tree(matchups, season, pred_date):
                 (center_x-230, 80),
                 cv2.FONT_HERSHEY_DUPLEX, 1.2,
                 (240,240,240), 2)
-    overlay_logo(canvas, 'images/colorado_avalanche_logo.png', center_x-logo_size_champ//2, 100, logo_size_champ, pad_color=cons.team_info['Colorado Avalanche']['c1'])
+    
+    cup_champ = matchups[4][0].get_series_winner()
+    overlay_logo(canvas, cons.team_info[cup_champ]['logo'], center_x-logo_size_champ//2, 100, logo_size_champ, pad_color=cons.team_info[cup_champ]['c1'])
 
     # ---------------- WEST ----------------
     wy = []
@@ -259,7 +228,7 @@ def display_playoff_tree(matchups, season, pred_date):
         draw_card(canvas, left_x[2], y, t1, winner=(winner==t1))
         draw_card(canvas, left_x[2], y+r3_space, t2, winner=(winner==t2))
 
-        wy3.append(connect_left(canvas, left_x[2], y, y+r3_space, score, 115))
+        wy3.append(connect_left(canvas, left_x[2], y, y+r3_space, score, 45))
 
     # ---------------- EAST ----------------
     ey = []
@@ -308,8 +277,8 @@ def display_playoff_tree(matchups, season, pred_date):
         east_final_winner = winner
 
         y = r3_y[i*2]
-        draw_card(canvas, right_x[2], y, t1, winner=(winner==t1), align_right=True)
-        draw_card(canvas, right_x[2], y+r3_space, t2, winner=(winner==t2), align_right=True)
+        draw_card(canvas, right_x[2], y+r3_space, t1, winner=(winner==t1), align_right=True)
+        draw_card(canvas, right_x[2], y, t2, winner=(winner==t2), align_right=True)
 
         ey3.append(connect_right(canvas, right_x[2], y, y+r3_space, score, 45))
 
@@ -317,7 +286,7 @@ def display_playoff_tree(matchups, season, pred_date):
     draw_card(canvas, center_x-150, final_y[0], west_final_winner, winner=True)
     draw_card(canvas, center_x+150, final_y[0], east_final_winner, winner=True, align_right=True)
 
-    draw_series_score(canvas, center_x, final_y[0] + card_h//2, final_score)
+    draw_series_score(canvas, center_x, final_y[0] + card_h//2, matchups[4][0].get_series_score())
 
     # ---------------- OUTPUT ----------------
     cv2.imwrite(f'{cons.season_pred_folder.format(date=pred_date)}{season}_playoff_tree_{pred_date}.png', canvas)
