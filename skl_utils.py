@@ -57,8 +57,7 @@ def make_predictions(data_df, oob_list, mse_list, rsq_list, set_model_random_sta
     # check for ties (this is a simplification and could be improved with a more sophisticated approach)
     predicted_ties_df = predict_df[predict_df[cons.home_team_score_col] == predict_df[cons.away_team_score_col]]
     if not predicted_ties_df.empty:
-        # randomly assign a winner for each tie
-        predicted_ties_df[cons.home_team_score_col] += np.random.choice([-.5, .5], size=len(predicted_ties_df))
+        predicted_ties_df[cons.home_team_score_col] += 0.5
         data_df.update(predicted_ties_df[cons.predict_cols])
 
     # importances = model.feature_importances_
