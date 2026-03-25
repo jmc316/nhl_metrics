@@ -1,3 +1,5 @@
+from importlib.resources import path
+
 import cv2
 
 import numpy as np
@@ -18,6 +20,7 @@ card_1_w, card_1_h = 150, 65
 card_w, card_h = 100, 65
 logo_size_card = 50
 logo_size_champ = 150
+logo_size_cup = 500
 
 # ---------------- HELPERS ----------------
 def draw_glow_line(canvas, pt1, pt2, color=(0,180,255)):
@@ -38,7 +41,7 @@ def draw_series_score(canvas, x, y, text):
     (tw, th), _ = cv2.getTextSize(text, cv2.FONT_HERSHEY_DUPLEX, 0.6, 2)
     cv2.putText(canvas, text, (x - tw//2, y + th//2),
                 cv2.FONT_HERSHEY_DUPLEX, 0.6,
-                (0,180,255), 2, cv2.LINE_AA)
+                (240,240,240), 1, cv2.LINE_AA)
 
 
 def overlay_logo(canvas, path, x, y, logo_size, pad_color=(0, 0, 0)):
@@ -170,6 +173,7 @@ final_y = get_round_positions(base_y + r1_space//2 + r2_space//2 + r3_space//2, 
 def display_playoff_tree(matchups, season, pred_date):
 
     # ---------------- TITLE ----------------
+    overlay_logo(canvas, 'images/stanley_cup.png', center_x-logo_size_cup//2, 250, logo_size_cup, pad_color=(0,0,0))
     cv2.putText(canvas, "STANLEY CUP CHAMPION",
                 (center_x-230, 80),
                 cv2.FONT_HERSHEY_DUPLEX, 1.2,
@@ -283,8 +287,12 @@ def display_playoff_tree(matchups, season, pred_date):
         ey3.append(connect_right(canvas, right_x[2], y, y+r3_space, score, 45))
 
     # ---------------- FINAL ----------------
-    draw_card(canvas, center_x-150, final_y[0], west_final_winner, winner=True)
-    draw_card(canvas, center_x+150, final_y[0], east_final_winner, winner=True, align_right=True)
+    if west_final_winner == cup_champ:
+        west_win, east_win = True, False
+    elif east_final_winner == cup_champ:
+        west_win, east_win = False, True
+    draw_card(canvas, center_x-150, final_y[0], west_final_winner, winner=west_win)
+    draw_card(canvas, center_x+150, final_y[0], east_final_winner, winner=east_win, align_right=True)
 
     draw_series_score(canvas, center_x, final_y[0] + card_h//2, matchups[4][0].get_series_score())
 
