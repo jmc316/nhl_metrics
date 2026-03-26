@@ -160,10 +160,10 @@ def home_away_accumulation(home_df, away_df, stat_col, keep_segregated_cols=Fals
     return merged_df
 
 
-def generate_final_standings(season_results, to_csv=False):
+def generate_final_standings(season_results, today_dt, to_csv=False):
 
     print('Generating final standings...')
-
+    
     # filter the final schedule on the current season
     current_season = str(int(max(season_results[cons.season_name_col].str[4:]))-1) + max(season_results[cons.season_name_col].str[4:])
     season_results = season_results.loc[season_results[cons.season_name_col] == current_season]
@@ -288,7 +288,6 @@ def generate_final_standings(season_results, to_csv=False):
     # save the updated season schedule with predictions to a new CSV file
     if to_csv:
         print('Saving final standings to CSV...')
-        today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
         csvSave(final_standings, cons.season_pred_folder.format(date=today_dt), cons.final_standings_filename.format(date=today_dt))
 
     return final_standings

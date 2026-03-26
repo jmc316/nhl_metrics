@@ -13,10 +13,15 @@ from file_utils import csvLoad, csvSave
 from analyze import game_result_comparison
 
 
-def predict_season(to_csv, set_model_random_state):
+def predict_season(to_csv, set_model_random_state, today_dt):
 
     # create the schedule dataframe from all seasons and games
     sched_df = create_df_set()
+
+    # if there is a manual today_dt, Nullify all scores for games on or after the date
+    if today_dt != dt.now().date().strftime(cons.date_format_yyyy_mm_dd):
+        today_date_utc = pd.to_datetime(today_dt).tz_localize('EST').tz_convert('UTC')
+        sched_df.loc[pd.to_datetime(sched_df[cons.starttime_utc_col]) >= today_date_utc, cons.predict_cols] = np.nan
 
     # add features that are not dependent on the prediction set results
     feature_df = ft.datetime_feature_add(sched_df)
@@ -60,7 +65,7 @@ def predict_season(to_csv, set_model_random_state):
 
     # make predictions for first scheduled game day after completed games and add to filtered dataframe
     print(f'\tPredicting games for {next_game_date.strftime("%Y-%m-%d")}...')
-    feature_df_filt = sklu.make_predictions(feature_df_filt, oob_list, mse_list, rsq_list, set_model_random_state, load_model=False, save_model=True)
+    feature_df_filt = sklu.make_predictions(feature_df_filt, oob_list, mse_list, rsq_list, set_model_random_state, today_dt, load_model=False, save_model=True)
 
     # re-create feature dataframe with added predictions and features
     feature_df = pd.concat([feature_df_filt, feature_df.loc[feature_df[cons.game_date_col] > next_game_date]], ignore_index=True)
@@ -73,7 +78,7 @@ def predict_season(to_csv, set_model_random_state):
         print(f'\tPredicting games for {next_game_date.strftime("%Y-%m-%d")}...')
         feature_df_filt = feature_df[feature_df[cons.game_date_col] <= next_game_date]
         feature_df_filt = ft.dependent_feature_add(feature_df_filt, backfill=False, debug=False)
-        feature_df_filt = sklu.make_predictions(feature_df_filt, oob_list, mse_list, rsq_list, set_model_random_state, load_model=True, save_model=False)
+        feature_df_filt = sklu.make_predictions(feature_df_filt, oob_list, mse_list, rsq_list, set_model_random_state, today_dt, load_model=True, save_model=False)
         feature_df = pd.concat([feature_df_filt, feature_df.loc[feature_df[cons.game_date_col] > next_game_date]], ignore_index=True)
 
     print()
@@ -84,7 +89,6 @@ def predict_season(to_csv, set_model_random_state):
 
     if to_csv:
         print('Saving season predictions to CSV file...')
-        today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
         csvSave(feature_df, cons.season_pred_folder.format(date=today_dt), cons.season_pred_filename.format(date=today_dt))
 
     return feature_df
@@ -181,7 +185,7 @@ def create_season_df(season_name, from_csv=True, to_csv=False, debug=False):
     return season_sched
 
 
-def playoff_spot_predictions(n=100):
+def playoff_spot_predictions(today_dt, n=100, to_csv=True):
 
     # initialize dataframe to store the count of playoff seeds for each team across all simulations; this will be used to calculate the probabilities of each team making the playoffs and their likely seed
     count_df = pd.DataFrame(columns=[cons.team_name_col, cons.div_1_val, cons.div_2_val, cons.div_3_val, cons.wc_1_val, cons.wc_2_val, cons.missed_val])
@@ -192,9 +196,9 @@ def playoff_spot_predictions(n=100):
     # this will allow us to calculate the probabilities of each team making the playoffs and their likely seed
     for i in range(n):
         print(f'\nSimulation {i+1} of {n}...')
-        season_results = predict_season(False, False)
+        season_results = predict_season(False, False, today_dt)
         season_results_points = nhlu.assign_game_points(season_results)
-        final_standings = nhlu.generate_final_standings(season_results_points)
+        final_standings = nhlu.generate_final_standings(season_results_points, today_dt)
 
         # count the number of times each team finishes in each playoff seed across all simulations
         for _, row in final_standings.iterrows():
@@ -211,13 +215,19 @@ def playoff_spot_predictions(n=100):
 
     nhlu.playoff_probabilities_printer(count_df)
 
-    csvSave(count_df, cons.output_folder, cons.playoff_spot_prediction_filename.format(n=n, date=dt.now().date().strftime(cons.date_format_yyyy_mm_dd)))
+    if to_csv:
+        print(f'\nSaving playoff spot predictions to CSV file...')
+        csvSave(count_df, cons.season_pred_folder.format(date=today_dt), cons.playoff_spot_pred_filename.format(n=n, date=today_dt))
 
     return count_df
 
 
 if __name__ == "__main__":
     import playoffs
+
+    # today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
+    # today_dt = '2025-10-01' # beginning of 20252026 season
+    today_dt = '2026-02-24' # end of Olympic break
 
     ######################
     # create season schedule dataframe for inputted seasons
@@ -227,12 +237,12 @@ if __name__ == "__main__":
 
     ######################
     # create one set of predictions
-    feature_df = predict_season(to_csv=True, set_model_random_state=True)
-    game_result_comparison(feature_df)
-    season_results_df = nhlu.generate_final_standings(nhlu.assign_game_points(feature_df), to_csv=True)
-    nhlu.nhl_team_standings(season_results_df)
-    playoff_results_df = playoffs.playoff_tree_predictions(feature_df, season_results_df, set_model_random_state=True)
+    # feature_df = predict_season(to_csv=True, set_model_random_state=True, today_dt=today_dt)
+    # game_result_comparison(feature_df)
+    # season_results_df = nhlu.generate_final_standings(nhlu.assign_game_points(feature_df), today_dt, to_csv=True)
+    # nhlu.nhl_team_standings(season_results_df)
+    # playoff_results_df = playoffs.playoff_tree_predictions(feature_df, season_results_df, True, today_dt)
 
     ######################
     # create playoff spot predictions for current season based on n simulations
-    # playoff_spot_predictions(n=10)
+    playoff_spot_predictions(today_dt, n=100)

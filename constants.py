@@ -131,9 +131,10 @@ playoff_pred_filename = 'playoff_predictions_{date}.csv'
 venue_geoloc_filename = 'venue_geolocations.csv'
 feature_data_filename = '{season}_feature_data.csv'
 sklearn_model_filename = 'skl_rf_model.pkl'
-playoff_spot_pred_filename = 'playoff_predictions_{n}_{date}.csv'
+playoff_spot_pred_filename = 'playoff_predictions_{date}_n{n}.csv'
 playoff_tree_filename = '{season}_playoff_tree_{date}.png'
 stanley_cup_image = 'stanley_cup.png'
+model_features_filename = '{model}_model_features.txt'
 
 # color tuple format is (B, G, R)
 team_info = {

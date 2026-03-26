@@ -59,3 +59,21 @@ def pklSave(data, folder, filename):
 
     except Exception as ex:
         print(f'Error saving pickle file: {ex}')
+
+
+# standardized universal txt saving function
+def txtSave(data, folder, filename):
+
+    try:
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+
+        filepath = os.path.join(folder, filename)
+        with open(filepath, 'w') as file:
+            for line in data:
+                file.write(f"{line}\n")
+
+    except Exception as ex:
+        print(f'Error saving txt file: {ex}')
+
+    return data

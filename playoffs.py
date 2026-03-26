@@ -10,7 +10,7 @@ from playoff_matchup import PlayoffMatchup
 from playoff_tree import display_playoff_tree
 
 
-def playoff_tree_predictions(regular_season_df, season_results_df, set_model_random_state, to_csv=True):
+def playoff_tree_predictions(regular_season_df, season_results_df, set_model_random_state, today_dt, to_csv=True):
 
     print('Predicting playoff tree...')
 
@@ -87,7 +87,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_ran
 
                 # predict games on selected date
                 print(f'\tPredicting games for {game_dt.strftime("%Y-%m-%d")}...')
-                playoff_df_filt = sklu.make_predictions(playoff_df_filt, oob_list, mse_list, rsq_list, set_model_random_state, load_model=True, save_model=False)
+                playoff_df_filt = sklu.make_predictions(playoff_df_filt, oob_list, mse_list, rsq_list, set_model_random_state, today_dt, load_model=True, save_model=False)
 
                 playoff_df = pd.concat([playoff_df_filt, playoff_df.loc[playoff_df[cons.game_date_col] > game_dt]], ignore_index=True)
 
@@ -96,15 +96,14 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_ran
 
             all_matchups.update({pl_round: round_matchups})
 
-    display_tree = True
-    if display_tree:
-        display_playoff_tree(all_matchups, playoff_df[cons.season_name_col].max(), dt.now().date().strftime(cons.date_format_yyyy_mm_dd))
-
     # save playoff predictions to CSV
     if to_csv:
         print('\nSaving playoff predictions to CSV...')
-        today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
         csvSave(playoff_df, cons.season_pred_folder.format(date=today_dt), cons.playoff_pred_filename.format(date=today_dt))
+
+    display_tree = True
+    if display_tree:
+        display_playoff_tree(all_matchups, playoff_df[cons.season_name_col].max(), today_dt)
 
     return playoff_df
 
@@ -386,8 +385,11 @@ if __name__ == '__main__':
     from file_utils import csvLoad
 
     today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
+    # today_dt = '2025-10-01' # beginning of 20252026 season
+    # today_dt = '2026-02-24' # end of Olympic break
+
     feature_df = csvLoad(cons.season_pred_folder.format(date=today_dt), cons.season_pred_filename.format(date=today_dt))
     
     final_standings_df = csvLoad(cons.season_pred_folder.format(date=today_dt), cons.final_standings_filename.format(date=today_dt))
 
-    playoff_tree_predictions(feature_df, final_standings_df, False)
+    playoff_tree_predictions(feature_df, final_standings_df, False, today_dt)

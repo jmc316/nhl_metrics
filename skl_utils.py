@@ -2,13 +2,13 @@ import numpy as np
 import pandas as pd
 import constants as cons
 
-from file_utils import pklLoad, pklSave
+from file_utils import pklLoad, pklSave, txtSave
 from sklearn.preprocessing import LabelEncoder
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 
 
-def make_predictions(data_df, oob_list, mse_list, rsq_list, set_model_random_state, debug=False, load_model=True, save_model=False):
+def make_predictions(data_df, oob_list, mse_list, rsq_list, set_model_random_state, today_dt, debug=False, load_model=True, save_model=False):
 
     # encode categorical variables using label encoding, and keep numerical variables as is
     label_encoder = LabelEncoder()
@@ -35,9 +35,10 @@ def make_predictions(data_df, oob_list, mse_list, rsq_list, set_model_random_sta
 
         model.fit(x_train_df.values, y_train_df.values)
 
-    # save the model to a file for future use
+    # save the model to a file for future use, save features used to txt file in date folder
     if save_model:
         pklSave(model, cons.model_files_folder, cons.sklearn_model_filename)
+        txtSave(x_train_df.columns.tolist(), cons.season_pred_folder.format(date=today_dt), cons.model_features_filename.format(model='skl_rf'))
 
     # make predictions on the training set to calculate metrics
     if debug: print('\t\tMaking predictions...')
