@@ -1,4 +1,5 @@
 import os
+import time
 
 import numpy as np
 import pandas as pd
@@ -42,7 +43,12 @@ def csvSave(dfdata, folder, filename):
 def pklLoad(folder, filename):
 
     filepath = os.path.join(folder, filename)
-    data = pd.read_pickle(filepath)
+    try:
+        data = pd.read_pickle(filepath)
+    except PermissionError as ex:
+        print(f'Permission error loading pickle file: {ex}')
+        time.sleep(5)
+        return pklLoad(folder, filename)
 
     return data
 
