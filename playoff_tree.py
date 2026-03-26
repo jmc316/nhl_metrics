@@ -286,8 +286,8 @@ def display_playoff_tree(matchups, season, pred_date):
         winner = matchups[3][i].get_series_winner()
         east_final_winner = winner
 
-        draw_card(CANVAS, RIGHT_X[2], y+R3_SPACE, t1, winner=(winner==t1), align_right=True)
-        draw_card(CANVAS, RIGHT_X[2], y, t2, winner=(winner==t2), align_right=True)
+        draw_card(CANVAS, RIGHT_X[2], y, t1, winner=(winner==t1), align_right=True)
+        draw_card(CANVAS, RIGHT_X[2], y+R3_SPACE, t2, winner=(winner==t2), align_right=True)
 
         connect_right(CANVAS, RIGHT_X[2], y, y+R3_SPACE, score, 45)
 

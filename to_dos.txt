@@ -13,6 +13,7 @@
 - codebase features to add:
     - gambling interaction with how much money the model would be winning?
     - add cup winner odds/division winner to playoff odds predictions
+    - add time travelling mode - input a date to simulate as 'today's date'
 
 - visuals
     - add end of seasons standing visual

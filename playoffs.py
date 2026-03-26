@@ -154,7 +154,7 @@ def generate_playoff_matchups(data_df, round_num, prev_round_matchups=None):
             div_1_name # division name
         )})
 
-        div_2_name = data_df.loc[data_df[cons.playoff_seed_col] == cons.div_2_val, [cons.division_name_col]+cons.tiebreaker_cols].sort_values(
+        div_2_name = data_df.loc[data_df[cons.playoff_seed_col] == cons.div_1_val, [cons.division_name_col]+cons.tiebreaker_cols].sort_values(
             by=cons.tiebreaker_cols, ascending=True)[cons.division_name_col].values[0]
 
         # matchup 3: division winner with worse record vs wildcard 1 team
