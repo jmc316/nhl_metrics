@@ -188,7 +188,7 @@ def create_season_df(season_name, from_csv=True, to_csv=False, debug=False):
 def playoff_spot_predictions(today_dt, n=100, to_csv=True):
 
     # initialize dataframe to store the count of playoff seeds for each team across all simulations; this will be used to calculate the probabilities of each team making the playoffs and their likely seed
-    count_df = pd.DataFrame(columns=[cons.team_name_col, cons.div_1_val, cons.div_2_val, cons.div_3_val, cons.wc_1_val, cons.wc_2_val, cons.missed_val])
+    count_df = pd.DataFrame(columns=[cons.team_name_col, cons.div_1_val, cons.div_2_val, cons.div_3_val, cons.wc_1_val, cons.wc_2_val, cons.missed_val, cons.make_r2_val, cons.make_r3_val, cons.make_cup_final_val, cons.win_cup_val])
     count_df[cons.team_name_col] = list(cons.team_info.keys())
     count_df.fillna(0, inplace=True)
 
@@ -196,13 +196,25 @@ def playoff_spot_predictions(today_dt, n=100, to_csv=True):
     # this will allow us to calculate the probabilities of each team making the playoffs and their likely seed
     for i in range(n):
         print(f'\nSimulation {i+1} of {n}...')
-        season_results = predict_season(False, False, today_dt)
-        season_results_points = nhlu.assign_game_points(season_results)
-        final_standings = nhlu.generate_final_standings(season_results_points, today_dt)
+        season_results_df = predict_season(False, False, today_dt)
+        season_results_points = nhlu.assign_game_points(season_results_df)
+        final_standings_df = nhlu.generate_final_standings(season_results_points, today_dt)
+        _, playoff_matchups = playoffs.playoff_tree_predictions(season_results_df, final_standings_df, False, today_dt, to_csv=False)
 
         # count the number of times each team finishes in each playoff seed across all simulations
-        for _, row in final_standings.iterrows():
+        for _, row in final_standings_df.iterrows():
             count_df.loc[count_df[cons.team_name_col] == row[cons.team_name_col], row[cons.playoff_seed_col]] += 1
+
+        # count the number of times each playoff team advances to each round across all simulations
+        for round in playoff_matchups.keys():
+            for _, matchup in playoff_matchups[round].items():
+                if matchup.get_series_winner() is not None:
+                    if round < 3:
+                        count_df.loc[count_df[cons.team_name_col] == matchup.get_series_winner(), f'make_round_{round+1}'] += 1
+                    elif round == 3:
+                        count_df.loc[count_df[cons.team_name_col] == matchup.get_series_winner(), cons.make_cup_final_val] += 1
+                    elif round == 4:
+                        count_df.loc[count_df[cons.team_name_col] == matchup.get_series_winner(), cons.win_cup_val] += 1
 
     # calculate the probabilities of each team making the playoffs and their likely seed based on the counts across all simulations
     count_df[f'{cons.div_1_val}_%'] = count_df[cons.div_1_val] / n * 100
@@ -212,12 +224,16 @@ def playoff_spot_predictions(today_dt, n=100, to_csv=True):
     count_df[f'{cons.wc_2_val}_%'] = count_df[cons.wc_2_val] / n * 100
     count_df[f'{cons.missed_val}_%'] = count_df[cons.missed_val] / n * 100
     count_df[f'{cons.playoff_per_col}'] = (n - count_df[cons.missed_val]) / n * 100
+    count_df[f'{cons.make_r2_val}_%'] = count_df[cons.make_r2_val] / n * 100
+    count_df[f'{cons.make_r3_val}_%'] = count_df[cons.make_r3_val] / n * 100
+    count_df[f'{cons.make_cup_final_val}_%'] = count_df[cons.make_cup_final_val] / n * 100
+    count_df[f'{cons.win_cup_val}_%'] = count_df[cons.win_cup_val] / n * 100
 
     nhlu.playoff_probabilities_printer(count_df)
 
     if to_csv:
         print(f'\nSaving playoff spot predictions to CSV file...')
-        csvSave(count_df, cons.season_pred_folder.format(date=today_dt), cons.playoff_spot_pred_filename.format(n=n, date=today_dt))
+        csvSave(count_df, cons.season_pred_folder.format(date=today_dt), cons.season_results_prob_filename.format(n=n, date=today_dt))
 
     return count_df
 
@@ -237,12 +253,12 @@ if __name__ == "__main__":
 
     ######################
     # create one set of predictions
-    feature_df = predict_season(to_csv=True, set_model_random_state=True, today_dt=today_dt)
-    game_result_comparison(feature_df)
-    season_results_df = nhlu.generate_final_standings(nhlu.assign_game_points(feature_df), today_dt, to_csv=True)
-    nhlu.nhl_team_standings(season_results_df)
-    playoff_results_df = playoffs.playoff_tree_predictions(feature_df, season_results_df, True, today_dt)
+    # feature_df = predict_season(to_csv=True, set_model_random_state=True, today_dt=today_dt)
+    # game_result_comparison(feature_df)
+    # season_results_df = nhlu.generate_final_standings(nhlu.assign_game_points(feature_df), today_dt, to_csv=True)
+    # nhlu.nhl_team_standings(season_results_df)
+    # playoff_results_df = playoffs.playoff_tree_predictions(feature_df, season_results_df, True, today_dt)
 
     ######################
     # create playoff spot predictions for current season based on n simulations
-    # playoff_spot_predictions(today_dt, n=100)
+    playoff_spot_predictions(today_dt, n=10)

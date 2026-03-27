@@ -100,12 +100,9 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_ran
     if to_csv:
         print('\nSaving playoff predictions to CSV...')
         csvSave(playoff_df, cons.season_pred_folder.format(date=today_dt), cons.playoff_pred_filename.format(date=today_dt))
-
-    display_tree = True
-    if display_tree:
         display_playoff_tree(all_matchups, playoff_df[cons.season_name_col].max(), today_dt)
 
-    return playoff_df
+    return playoff_df, all_matchups
 
 
 def generate_playoff_matchups(data_df, round_num, prev_round_matchups=None):
