@@ -225,9 +225,9 @@ def playoff_spot_predictions(today_dt, n=100, to_csv=True):
 if __name__ == "__main__":
     import playoffs
 
-    # today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
+    today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
     # today_dt = '2025-10-01' # beginning of 20252026 season
-    today_dt = '2026-02-24' # end of Olympic break
+    # today_dt = '2026-02-24' # end of Olympic break
 
     ######################
     # create season schedule dataframe for inputted seasons
@@ -237,12 +237,12 @@ if __name__ == "__main__":
 
     ######################
     # create one set of predictions
-    # feature_df = predict_season(to_csv=True, set_model_random_state=True, today_dt=today_dt)
-    # game_result_comparison(feature_df)
-    # season_results_df = nhlu.generate_final_standings(nhlu.assign_game_points(feature_df), today_dt, to_csv=True)
-    # nhlu.nhl_team_standings(season_results_df)
-    # playoff_results_df = playoffs.playoff_tree_predictions(feature_df, season_results_df, True, today_dt)
+    feature_df = predict_season(to_csv=True, set_model_random_state=True, today_dt=today_dt)
+    game_result_comparison(feature_df)
+    season_results_df = nhlu.generate_final_standings(nhlu.assign_game_points(feature_df), today_dt, to_csv=True)
+    nhlu.nhl_team_standings(season_results_df)
+    playoff_results_df = playoffs.playoff_tree_predictions(feature_df, season_results_df, True, today_dt)
 
     ######################
     # create playoff spot predictions for current season based on n simulations
-    playoff_spot_predictions(today_dt, n=100)
+    # playoff_spot_predictions(today_dt, n=100)

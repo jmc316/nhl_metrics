@@ -222,22 +222,11 @@ def playoff_matchups_234(round_id, prev_round_matchups):
 
     # add the winners from the first round to the second round matchups dictionary and reconfigure the result list
     for ind, (_, matchup) in enumerate(series_matchups_preview.items()):
-        if matchup[0][1] < matchup[1][1]: # if the first team has a better seed than the second team, they are the home team
-            matchups_dict.update({ind: PlayoffMatchup(
+        matchups_dict.update({ind: PlayoffMatchup(
                 matchup[0][0], # team 1 name
                 matchup[1][0], # team 2 name
                 matchup[0][1], # team 1 conference seed
                 matchup[1][1], # team 2 conference seed
-                round_id, # playoff round number
-                conference=matchup[0][3], # conference name
-                division=matchup[0][2] # division name
-            )})
-        else:
-            matchups_dict.update({ind: PlayoffMatchup(
-                matchup[1][0], # team 1 name
-                matchup[0][0], # team 2 name
-                matchup[1][1], # team 1 conference seed
-                matchup[0][1], # team 2 conference seed
                 round_id, # playoff round number
                 conference=matchup[0][3], # conference name
                 division=matchup[0][2] # division name
@@ -274,8 +263,12 @@ def create_playoff_round_schedule(all_matchups, venue_map_df, feature_df, playof
         game_dts = [game_dt + pd.Timedelta(days=val) for val in sched_format]
 
         # list of home and away teams for the series (higher seed is home first)
-        home_teams = [matchup.get_team1()] * 2 + [matchup.get_team2()] * 2 + [matchup.get_team1()] + [matchup.get_team2()] + [matchup.get_team1()]
-        away_teams = [matchup.get_team2()] * 2 + [matchup.get_team1()] * 2 + [matchup.get_team2()] + [matchup.get_team1()] + [matchup.get_team2()]
+        if matchup.get_team1_conf_seed() < matchup.get_team2_conf_seed():
+            home_teams = [matchup.get_team1()] * 2 + [matchup.get_team2()] * 2 + [matchup.get_team1()] + [matchup.get_team2()] + [matchup.get_team1()]
+            away_teams = [matchup.get_team2()] * 2 + [matchup.get_team1()] * 2 + [matchup.get_team2()] + [matchup.get_team1()] + [matchup.get_team2()]
+        else:
+            home_teams = [matchup.get_team1()] * 2 + [matchup.get_team2()] * 2 + [matchup.get_team1()] + [matchup.get_team2()] + [matchup.get_team1()]
+            away_teams = [matchup.get_team2()] * 2 + [matchup.get_team1()] * 2 + [matchup.get_team2()] + [matchup.get_team1()] + [matchup.get_team2()]
 
         # list of venues for the sesries based off the home team for each game
         venues = [list(venue_map_df.loc[venue_map_df[cons.home_team_name_col]==home_team][[cons.venue_col, cons.venue_timezone_col]].values[0]) for home_team in home_teams]

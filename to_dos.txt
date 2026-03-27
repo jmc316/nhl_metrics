@@ -19,3 +19,8 @@
 - visuals
     - add end of seasons standing visual
     - add playoff odds visual from regular season
+
+- future concept implementations
+    - pytorch
+    - pytest
+    - python GoLang

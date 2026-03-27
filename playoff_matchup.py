@@ -21,6 +21,12 @@ class PlayoffMatchup:
             return int(self.team2_conf_seed)
         else:
             return None
+        
+    def get_team1_conf_seed(self):
+        return self.team1_conf_seed
+    
+    def get_team2_conf_seed(self):
+        return self.team2_conf_seed
 
     def get_conference(self):
         return self.conference
