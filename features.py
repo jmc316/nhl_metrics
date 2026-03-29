@@ -94,7 +94,7 @@ def datetime_feature_add(feature_df):
     feature_df[cons.starttime_est_col] = pd.to_datetime(feature_df[cons.starttime_utc_col]).dt.tz_convert('US/Eastern')
     feature_df[cons.game_date_col] = feature_df[cons.starttime_est_col].dt.date
     feature_df[cons.game_time_col] = feature_df[cons.starttime_est_col].dt.hour * 60 + feature_df[cons.starttime_est_col].dt.minute
-    feature_df.drop(columns=[cons.starttime_est_col], inplace=True)
+    feature_df.drop(columns=[cons.starttime_est_col, cons.starttime_utc_col], inplace=True)
 
     return feature_df
 

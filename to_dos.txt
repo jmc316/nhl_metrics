@@ -10,10 +10,10 @@
 - admin data analysis features to add:
     - generate charts displaying each team's point pace before predictions versus after predictions
     - overall model evaluation / score
+    - fake schedule with some playoff games finished?
 
 - codebase features to add:
     - gambling interaction with how much money the model would be winning?
-    - add cup winner odds/division winner to playoff odds predictions
 
 - visuals
     - add end of regular season standings visual
@@ -22,4 +22,4 @@
 - future concept implementations
     - pytorch
     - pytest
-    - python GoLang
+    - python GoLang?

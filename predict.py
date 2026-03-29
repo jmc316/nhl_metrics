@@ -253,12 +253,12 @@ if __name__ == "__main__":
 
     ######################
     # create one set of predictions
-    # feature_df = predict_season(to_csv=True, set_model_random_state=True, today_dt=today_dt)
-    # game_result_comparison(feature_df)
-    # season_results_df = nhlu.generate_final_standings(nhlu.assign_game_points(feature_df), today_dt, to_csv=True)
-    # nhlu.nhl_team_standings(season_results_df)
-    # playoff_results_df = playoffs.playoff_tree_predictions(feature_df, season_results_df, True, today_dt)
+    feature_df = predict_season(to_csv=True, set_model_random_state=True, today_dt=today_dt)
+    game_result_comparison(feature_df)
+    season_results_df = nhlu.generate_final_standings(nhlu.assign_game_points(feature_df), today_dt, to_csv=True)
+    nhlu.nhl_team_standings(season_results_df)
+    playoff_results_df = playoffs.playoff_tree_predictions(feature_df, season_results_df, True, today_dt)
 
     ######################
     # create playoff spot predictions for current season based on n simulations
-    playoff_spot_predictions(today_dt, n=10)
+    # playoff_spot_predictions(today_dt, n=50)
