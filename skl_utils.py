@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 import constants as cons
 
-from file_utils import pklLoad, pklSave, txtSave
 from sklearn.preprocessing import LabelEncoder
+from file_utils import pklLoad, pklSave, txtSave
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 

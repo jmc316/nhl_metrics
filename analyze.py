@@ -79,7 +79,6 @@ def game_result_comparison(predict_df, actual_df=None):
     for date, accuracy in daily_accuracy.items():
         print(f' {date}: ({daily_correct[date]}/{daily_games[date]}) {accuracy:.2%}')
 
-
     return comparison_df
 
 
