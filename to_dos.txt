@@ -1,7 +1,3 @@
-- ui features to add:
-    - admin ui
-    - fill out user ui with new codebase features
-
 - model features to add:
     - model is too favorable towards better teams
     - starting goalie
