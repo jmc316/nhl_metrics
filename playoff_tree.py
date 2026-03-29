@@ -190,7 +190,7 @@ def get_round_positions(start, spacing, n):
     return [start + i*spacing for i in range(n)]
 
 
-def display_playoff_tree(matchups, season, pred_date):
+def display_playoff_tree(matchups, season, pred_date, display_image=True):
 
     r1_y = get_round_positions(BASE_Y, R1_SPACE, 8)
     r2_y = get_round_positions(BASE_Y + R1_SPACE//2, R2_SPACE, 4)
@@ -304,6 +304,8 @@ def display_playoff_tree(matchups, season, pred_date):
     # Display the image, save it, and wait for key press to close
     print(f"Saving playoff tree image to {cons.season_pred_folder.format(date=pred_date)}{cons.playoff_tree_filename.format(season=season, date=pred_date)}")
     cv2.imwrite(f'{cons.season_pred_folder.format(date=pred_date)}{cons.playoff_tree_filename.format(season=season, date=pred_date)}', CANVAS)
-    cv2.imshow(f"NHL Playoff Bracket {season}", CANVAS)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    
+    if display_image:
+        cv2.imshow(f"NHL Playoff Bracket {season}", CANVAS)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()

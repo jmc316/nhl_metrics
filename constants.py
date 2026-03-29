@@ -1,15 +1,24 @@
 # format is 'Option Name': ['module_name', 'function_name']
-main_options = {
-    'NHL Team Stats': ['team_stats', 'nhl_team_stats'],
-    'Predictions': ['skl_predictions', 'season_predictions'],
+main_user_options = {
+    'NHL Team Stats': ['nhl_utils', 'nhl_team_stats']
 }
-
-exit_option = {'Exit': ['terminal_ui', 'exit_program']}
-
+main_admin_options = {
+    'Update Predictions': ['ui_predict', 'ui_update_predictions'],
+    'Playoff Spot Probability': ['ui_predict', 'ui_update_playoff_spot_probabilities']
+}
 team_stats_options = {
-    'Standings': ['team_stats', 'nhl_team_standings'],
-    'Individual Team Stats': ['team_stats', 'nhl_individual_team_stats'],
+    'Standings': ['nhl_utils', 'nhl_team_standings'],
+    'Individual Team Stats': ['nhl_utils', 'nhl_individual_team_stats'],
 }
+update_predictions_options = {
+    'Update to-date Predictions': ['ui_predict', 'ui_todate_predict'],
+    'Update historic Predictions': ['ui_predict', 'ui_historic_predict']
+}
+playoff_spot_prob_options = {
+    'Update to-date Playoff Spot Probabilities': ['ui_predict', 'ui_todate_playoff_spot_predict'],
+    'Update historic Playoff Spot Probabilities': ['ui_predict', 'ui_historic_playoff_spot_predict']
+}
+exit_option = {'Exit': ['terminal_ui', 'exit_program']}
 
 ot_score_diff = 0.25
 max_single_season_games = 110
@@ -17,6 +26,7 @@ playoff_sched_format = [0, 2, 5, 7, 10, 12, 15]
 final_sched_format = [0, 3, 6, 9, 12, 15, 18]
 playoff_round_buffer = 2
 api_timeout_wait_time = 3
+max_simulations = 1000
 
 game_id_col = 'gameId'
 season_col = 'season'

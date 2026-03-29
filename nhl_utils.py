@@ -24,7 +24,16 @@ def nhl_team_stats():
 def nhl_team_standings(data_df=None):
 
     if data_df is None:
-        nhlc.get_nhl_team_standings()
+        data_df = nhlc.get_nhl_team_standings()
+        data_df.loc[data_df['wildcardSequence']<3, cons.playoff_seed_col] = 'wc_' + data_df.loc[data_df['wildcardSequence']<3, 'wildcardSequence'].astype(str)
+        data_df.loc[data_df['wildcardSequence']==0, cons.playoff_seed_col] = 'div_' + data_df.loc[data_df['wildcardSequence']==0, 'divisionSequence'].astype(str)
+        data_df.loc[data_df['wildcardSequence']>=3, cons.playoff_seed_col] = cons.missed_val
+
+        data_df.rename(columns={'points': cons.total_points_col}, inplace=True)
+        data_df[cons.team_name_col] = data_df[cons.team_name_col]
+
+        # rename the team name column to be the default team name column for consistency across dataframes
+        data_df[cons.team_name_col] = pd.Series([teamname['default'] for teamname in data_df['teamName']])
 
     data_df[cons.wildcard_seed_col] = None
     data_df.loc[data_df[cons.playoff_seed_col].str[:3] == 'div', cons.wildcard_seed_col] = 0

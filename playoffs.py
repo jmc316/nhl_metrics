@@ -10,7 +10,7 @@ from playoff_matchup import PlayoffMatchup
 from playoff_tree import display_playoff_tree
 
 
-def playoff_tree_predictions(regular_season_df, season_results_df, set_model_random_state, today_dt, to_csv=True):
+def playoff_tree_predictions(regular_season_df, season_results_df, set_model_random_state, today_dt, to_csv=True, display_image=True):
 
     print('Predicting playoff tree...')
 
@@ -100,7 +100,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_ran
     if to_csv:
         print('\nSaving playoff predictions to CSV...')
         csvSave(playoff_df, cons.season_pred_folder.format(date=today_dt), cons.playoff_pred_filename.format(date=today_dt))
-        display_playoff_tree(all_matchups, playoff_df[cons.season_name_col].max(), today_dt)
+        display_playoff_tree(all_matchups, playoff_df[cons.season_name_col].max(), today_dt, display_image=display_image)
 
     return playoff_df, all_matchups
 
