@@ -3,6 +3,7 @@ import pandas as pd
 import constants as cons
 import nhl_client as nhlc
 
+from ui_nhl import team_info
 from tabulate import tabulate
 from file_utils import csvSave
 

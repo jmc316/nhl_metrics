@@ -302,7 +302,7 @@ def display_playoff_tree(matchups, season, pred_date, display_image=True):
     draw_series_score(CANVAS, CENTER_X, final_y[0] + CARD_H//2, matchups[4][0].get_series_score())
 
     # Display the image, save it, and wait for key press to close
-    print(f"Saving playoff tree image to {cons.season_pred_folder.format(date=pred_date)}{cons.playoff_tree_filename.format(season=season, date=pred_date)}")
+    print(f'Saving playoff tree graphic...\n')
     cv2.imwrite(f'{cons.season_pred_folder.format(date=pred_date)}{cons.playoff_tree_filename.format(season=season, date=pred_date)}', CANVAS)
     
     if display_image:
