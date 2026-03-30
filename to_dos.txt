@@ -10,6 +10,8 @@
 
 - codebase features to add:
     - gambling interaction with how much money the model would be winning?
+    - add user ui capability to view regular season standings projections, playoff odds, playoff tree
+    - analysis of projections over time
 
 - visuals
     - add end of regular season standings visual
