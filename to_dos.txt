@@ -20,4 +20,3 @@
 - future concept implementations
     - pytorch
     - pytest
-    - python GoLang?
