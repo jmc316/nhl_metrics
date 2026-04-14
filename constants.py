@@ -1,6 +1,7 @@
 # format is 'Option Name': ['module_name', 'function_name']
 main_user_options = {
-    'NHL Team Stats': ['ui_nhl', 'nhl_team_stats']
+    'NHL Team Stats': ['ui_nhl', 'nhl_team_stats'],
+    'Model Accuracy': ['ui_predict', 'ui_model_accuracy']
 }
 main_admin_options = {
     'Update Predictions': ['ui_predict', 'ui_update_predictions'],

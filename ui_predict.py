@@ -5,7 +5,9 @@ import constants as cons
 import nhl_utils as nhlu
 import terminal_ui as tui
 
+from file_utils import csvLoad
 from datetime import datetime as dt
+from analyze import prediction_analysis
 from predict import predict_season, playoff_spot_predictions, game_result_comparison
 
 
@@ -95,3 +97,12 @@ def ui_update_playoff_spot_probabilities():
 
     # call the function associated with the user's choice
     func_map[playoff_spot_ui.get_response()]()
+
+
+def ui_model_accuracy():
+
+    today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
+
+    season_prediction_df = csvLoad(cons.season_pred_folder.format(date=today_dt), cons.season_pred_filename.format(date=today_dt))
+
+    prediction_analysis(season_prediction_df, '2026-02-24') # last day before Olympic Break ended

@@ -83,13 +83,13 @@ def game_result_comparison(predict_df, actual_df=None):
     return comparison_df
 
 
-def prediction_analysis(actuals_df):
+def prediction_analysis(actuals_df, date_since):
 
     predict_df = pd.DataFrame()
 
     # loop through every folder in the season prediction folder and create a dataframe with all predictions for the most recent game date
     for folder in os.listdir('output/season_predictions/'):
-        if folder < '2026-02-24':
+        if folder < date_since:
             continue
         predict_df_indiv = pd.read_csv('output/season_predictions/' + folder + '/regularseason_predictions_' + folder + '.csv')
         print(f'Analyzing predictions for {folder}...')
@@ -113,7 +113,7 @@ def prediction_analysis(actuals_df):
         1, 0
         )
     
-    print(f'Games with correct outcome prediction: {sum(comparison_df["correct_outcome"])} / {len(comparison_df)} ({sum(comparison_df["correct_outcome"]) / len(comparison_df):.2%})\n')
+    print(f"Games with correct outcome prediction: {sum(comparison_df['correct_outcome'])} / {len(comparison_df)} ({sum(comparison_df['correct_outcome']) / len(comparison_df):.2%})\n")
 
     return comparison_df
 
@@ -125,4 +125,4 @@ if __name__ == '__main__':
 
     season_prediction_df = csvLoad(cons.season_pred_folder.format(date=today_dt), cons.season_pred_filename.format(date=today_dt))
 
-    prediction_analysis(season_prediction_df)
+    prediction_analysis(season_prediction_df, '2026-02-24') # last day before Olympic Break ended
