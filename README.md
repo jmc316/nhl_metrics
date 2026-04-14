@@ -26,6 +26,8 @@ It pulls schedule and standings data from the NHL API, engineers team performanc
 	- running playoff probability simulations
 	- reviewing model accuracy summaries
 
+![Playoff Probabilities](images/sample_playoff_tree.png)
+
 ## Main Outputs
 
 Generated files are saved under dated folders in `output/season_predictions/{date}/`, including:
