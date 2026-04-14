@@ -2,7 +2,7 @@
 
 `nhl_metrics` is a Python project that forecasts NHL regular-season game results, projects final standings, and simulates playoff outcomes.
 
-It pulls schedule and standings data from the NHL API, engineers team performance and travel-based features, trains/uses a scikit-learn random forest model, and writes daily prediction artifacts to CSV.
+It pulls schedule and standings data from the NHL API, engineers team performance and travel-based features, trains/uses a scikit-learn random forest model, writes daily prediction artifacts to CSV, and generates colorful visuals to display the prediction data.
 
 ## What This Codebase Does
 
