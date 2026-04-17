@@ -44,6 +44,14 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_ran
     # initialize dictionary that hols all playoff matchups, which will be updated after each round of the playoffs
     all_matchups = {}
 
+    # if the regular season is complete, need to generate a new model on the first runthrough of playoff predictions
+    if regular_season_df['gameDate'].max() < pd.to_datetime(today_dt).date():
+        load_model = False
+        save_model = True
+    else:
+        load_model = True
+        save_model = False
+
     # loop through every playoff round
     for pl_round in range(rounds_scheduled+1, 5):
         print(f'\nPlayoffs Round {pl_round}')
@@ -87,7 +95,11 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_ran
 
                 # predict games on selected date
                 print(f'\tPredicting games for {game_dt.strftime("%Y-%m-%d")}...')
-                playoff_df_filt = sklu.make_predictions(playoff_df_filt, oob_list, mse_list, rsq_list, set_model_random_state, today_dt, load_model=True, save_model=False)
+                playoff_df_filt = sklu.make_predictions(playoff_df_filt, oob_list, mse_list, rsq_list, set_model_random_state, today_dt, load_model=load_model, save_model=save_model)
+
+                # reset the model params for all predictions after the first
+                load_model = True
+                save_model = False
 
                 playoff_df = pd.concat([playoff_df_filt, playoff_df.loc[playoff_df[cons.game_date_col] > game_dt]], ignore_index=True)
 

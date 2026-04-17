@@ -83,18 +83,21 @@ def game_result_comparison(predict_df, actual_df=None):
     return comparison_df
 
 
-def prediction_analysis(actuals_df, date_since):
+def prediction_analysis(actuals_df, date_since, date_until):
 
     predict_df = pd.DataFrame()
 
     # loop through every folder in the season prediction folder and create a dataframe with all predictions for the most recent game date
     for folder in os.listdir('output/season_predictions/'):
-        if folder < date_since:
+        if (folder < date_since) | (folder >= date_until):
             continue
         predict_df_indiv = pd.read_csv('output/season_predictions/' + folder + '/regularseason_predictions_' + folder + '.csv')
         print(f'Analyzing predictions for {folder}...')
-        min_predict_date = predict_df_indiv.loc[predict_df_indiv[cons.game_date_col] > folder, cons.game_date_col].min()
+        min_predict_date = predict_df_indiv.loc[predict_df_indiv[cons.game_date_col] == folder, cons.game_date_col].min()
         predict_df = pd.concat([predict_df, predict_df_indiv.loc[predict_df_indiv[cons.game_date_col] == min_predict_date]], ignore_index=True)
+
+        if predict_df_indiv.loc[predict_df_indiv[cons.game_date_col] == min_predict_date].empty:
+            print(f'\t... No games found')
 
     comparison_df = pd.merge(predict_df, actuals_df, on=[cons.game_id_col], suffixes=('_predicted', '_actual'))
 
@@ -113,16 +116,16 @@ def prediction_analysis(actuals_df, date_since):
         1, 0
         )
     
-    print(f"Games with correct outcome prediction: {sum(comparison_df['correct_outcome'])} / {len(comparison_df)} ({sum(comparison_df['correct_outcome']) / len(comparison_df):.2%})\n")
+    print(f"\nGames with correct outcome prediction: {sum(comparison_df['correct_outcome'])} / {len(comparison_df)} ({sum(comparison_df['correct_outcome']) / len(comparison_df):.2%})\n")
 
     return comparison_df
 
 
 if __name__ == '__main__':
 
-    cons.last_actual_game_date = pd.to_datetime('2026-04-13').date()
+    # cons.last_actual_game_date = pd.to_datetime('2026-04-13').date()
     today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
 
     season_prediction_df = csvLoad(cons.season_pred_folder.format(date=today_dt), cons.season_pred_filename.format(date=today_dt))
 
-    prediction_analysis(season_prediction_df, '2026-02-24') # last day before Olympic Break ended
+    prediction_analysis(season_prediction_df, '2026-02-24', today_dt) # last day before Olympic Break ended

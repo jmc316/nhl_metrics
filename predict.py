@@ -34,7 +34,11 @@ def predict_season(to_csv, set_model_random_state, today_dt):
 
     # next game date is first date to predict games for, create df with games that don't need predicting
     next_game_date = feature_df.loc[feature_df[cons.away_team_score_col].isna(), cons.game_date_col].min()
-    feature_df_filt = feature_df[feature_df[cons.game_date_col] <= next_game_date]
+
+    if pd.isna(next_game_date):
+        feature_df_filt = feature_df.copy()
+    else:
+        feature_df_filt = feature_df[feature_df[cons.game_date_col] <= next_game_date]
 
     # check to see if historical feature data for seasons in the input data already exists
     # if complete historical data exists, change next_game_date to first date with missing features
@@ -63,6 +67,10 @@ def predict_season(to_csv, set_model_random_state, today_dt):
             if feature_df_filt.loc[feature_df_filt[cons.season_name_col] == season, cons.last_period_col].notna().all():
                 print(f'Saving feature data for {season[:4]}-{season[4:]} season to CSV file...')
                 csvSave(feature_df_filt.loc[feature_df_filt[cons.season_name_col] == season], cons.season_feature_sets_folder, f'{cons.feature_data_filename.format(season=season)}')
+
+    if pd.isna(next_game_date):
+        print('No games to predict. All games in the schedule dataframe have scores assigned.\n')
+        return feature_df_filt
 
     # make predictions for first scheduled game day after completed games and add to filtered dataframe
     print(f'\tPredicting games for {next_game_date.strftime("%Y-%m-%d")}...')
@@ -119,9 +127,16 @@ def create_df_set():
 
 def schedule_update(sched_df):
 
+    # there are no unplayed games in the schedule dataframe, so no update is needed
+    if sched_df.loc[sched_df[cons.last_period_col].isna()].empty:
+        return sched_df
+
     # today's date and the date of the first unplayed game in the schedule dataframe
     today_dt = dt.now().date()
     stored_dt = pd.to_datetime(min(sched_df.loc[sched_df[cons.last_period_col].isna(), cons.starttime_utc_col])).date()
+
+    # switch the stored date to EST timezone for comparison with today's date
+    stored_dt = pd.to_datetime(stored_dt).tz_localize('UTC').tz_convert('EST').date()
 
     # if the date of the first unplayed game is in the past, the schedule dataframe is missing some data
     if today_dt > stored_dt:
