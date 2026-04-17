@@ -103,6 +103,8 @@ def ui_model_accuracy():
 
     today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
 
+    since_dt = get_asofdate().strftime(cons.date_format_yyyy_mm_dd)
+
     season_prediction_df = csvLoad(cons.season_pred_folder.format(date=today_dt), cons.season_pred_filename.format(date=today_dt))
 
-    prediction_analysis(season_prediction_df, '2026-02-24') # last day before Olympic Break ended
+    prediction_analysis(season_prediction_df, since_dt, today_dt)

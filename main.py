@@ -36,7 +36,7 @@ def main_admin():
 
 if __name__ == "__main__":
 
-    role = 'admin'  # or 'user'
+    role = 'user'  # or 'user'
 
     if role == 'admin':
         main_admin()
