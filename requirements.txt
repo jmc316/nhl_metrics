@@ -4,3 +4,5 @@ pandas==3.0.0
 haversine==2.9.0
 geopy==2.4.1
 diagrams==1.2.0
+requests==2.33.1
+bs4==0.0.2

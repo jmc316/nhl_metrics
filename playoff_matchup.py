@@ -41,7 +41,7 @@ class PlayoffMatchup:
         return self.team2
 
     def get_teams(self):
-        return self.team1, self.team2
+        return [self.team1, self.team2]
 
     def set_series_results(self, winner, loser, loser_score):
         self.series_winner = winner

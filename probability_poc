@@ -1,0 +1,15 @@
+import pandas as pd
+
+if __name__ == '__main__':
+    odds_data = pd.read_csv('output/prediction_analysis/game_result_comp_2026-02-24_to_2026-04-17_with_odds.csv')
+
+    odds_data['winner_odds'] = odds_data['winner_odds'] = odds_data.apply(lambda row: row['homeTeamOdds'] if row['correct_outcome'] == 1 and row['homeTeamScore_predicted'] > row['awayTeamScore_predicted'] else (row['awayTeamOdds'] if row['correct_outcome'] == 1 and row['homeTeamScore_predicted'] < row['awayTeamScore_predicted'] else 0), axis=1)
+
+    odds_data['winnings'] = -1.0
+
+    odds_data.loc[odds_data['winner_odds'] > 0, 'winnings'] = odds_data['winner_odds'] / 100
+    odds_data.loc[odds_data['winner_odds'] < 0, 'winnings'] = 100 / abs(odds_data['winner_odds'])
+
+    print(odds_data.loc[pd.to_datetime(odds_data['gameDate']) < '2026-04-17', 'winnings'].sum())
+
+    pass

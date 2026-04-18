@@ -1,7 +1,8 @@
 - model features to add:
     - model is too favorable towards better teams
-    - starting goalie
-    - injury score
+    - starting goalie --- nhlc.nhl_client.misc.config()
+    - injury score  --- nhlc.nhl_client.game_center.play_by_play(2025021312)['rosterSpots']
+    - nhl edge scraping?
 
 - admin data analysis features to add:
     - generate charts displaying each team's point pace before predictions versus after predictions

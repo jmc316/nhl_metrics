@@ -28,21 +28,88 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_ran
     if scheduled_games_df.empty:
         print('\tNo scheduled playoff games found for this season...')
         rounds_scheduled = 0
+        rounds_completed = 0
+        series_in_progress = []
         playoff_df = pd.DataFrame()
+
+        # initialize dictionary that hols all playoff matchups, which will be updated after each round of the playoffs
+        all_matchups = {}
     else:
-        # can't test this yet
-        # need to assume that a whole round has finished and is in the same format as the generated playoff schedules
-        exit('Error: Found scheduled playoff games in the regular season schedule, but this functionality has not been implemented yet.\n' \
-        'Please ensure that the regular season schedule does not contain any playoff games or that the playoff games are in the same format as the generated playoff schedules.')
-    
+        print('\tFound scheduled playoff games for this season...')
+
+        # what round it is, depending on how many unique home/away matchups there are
+        matchups_total_round_map = {16: 1, 24: 2, 28: 3, 30: 4}
+
+        matchups_df = scheduled_games_df[['homeTeamName', 'awayTeamName']].drop_duplicates()
+
+        # calculate how many rounds are scheduled
+        num_matchups = len(matchups_df)
+
+        rounds_scheduled = matchups_total_round_map[num_matchups]
+        rounds_completed = 0
+
+        playoff_df = regular_season_df.copy()
+
+        all_matchups = {}   
+        series_in_progress = []  
+
+        # some playoff games have already been played
+        if not scheduled_games_df.loc[scheduled_games_df['lastPeriod'].notna()].empty:
+
+            # create the existing matchups
+            for pl_round in range(1, rounds_scheduled+1):
+
+                if pl_round == 1:
+                    east_playoff_matchups = generate_playoff_matchups(season_results_df.loc[season_results_df[cons.conference_name_col] == 'Eastern'], 1)
+                    west_playoff_matchups = generate_playoff_matchups(season_results_df.loc[season_results_df[cons.conference_name_col] == 'Western'], 1)
+
+                    round_matchups = east_playoff_matchups.copy()
+                    for matchup_num, matchup in west_playoff_matchups.items():
+                        round_matchups.update({matchup_num+4: matchup})
+                else:
+                    round_matchups = generate_playoff_matchups(pl_round, round_matchups)
+
+                # check the series scores for each series in this round
+                # and update the series winner if any of the series are already over based on the current series scores
+
+                round_complete = True
+                
+                for _, matchup in round_matchups.items():
+
+                    matchup_teams = matchup.get_teams()
+
+                    # look for any games between these two teams in the playoff schedule dataframe that have a score assigned
+                    last_series_game = playoff_df.loc[((playoff_df[cons.home_team_name_col].isin(matchup_teams)) &
+                                            (playoff_df[cons.away_team_name_col].isin(matchup_teams))) &
+                                            (playoff_df[cons.last_period_col].notna())].iloc[-1]
+
+                    # if there has already been a winner in this series, update the matchup with the series winner and score
+                    if (last_series_game[cons.home_team_series_score_col] == 3) & (last_series_game[cons.home_team_score_col] > last_series_game[cons.away_team_score_col]):
+                        matchup.set_series_results(last_series_game[cons.home_team_name_col], last_series_game[cons.away_team_name_col], last_series_game[cons.away_team_series_score_col])
+                    elif (last_series_game[cons.away_team_series_score_col] == 3) & (last_series_game[cons.away_team_score_col] > last_series_game[cons.home_team_score_col]):
+                        matchup.set_series_results(last_series_game[cons.away_team_name_col], last_series_game[cons.home_team_name_col], last_series_game[cons.home_team_series_score_col])
+                    else:
+                        round_complete = False
+                        series_in_progress.append({
+                            'team1': matchup.get_team1(),
+                            'team2': matchup.get_team2(),
+                            'team1_wins': int(last_series_game[cons.home_team_series_score_col]) if (last_series_game[cons.home_team_name_col]==matchup.get_team1()) else int(last_series_game[cons.away_team_series_score_col]),
+                            'team2_wins': int(last_series_game[cons.away_team_series_score_col]) if (last_series_game[cons.away_team_name_col]==matchup.get_team2()) else int(last_series_game[cons.home_team_series_score_col])
+                        })
+
+                if round_complete:
+                    rounds_completed += 1
+                    print(f'Playoffs Round {pl_round} already complete')
+
+                all_matchups.update({pl_round: round_matchups})
+
+            pass
+
     # load the venue map to establish each team's home venue and timezone
     venue_map_df = venue_map_load(regular_season_df)
 
     # initialize lists to store OOB predictions, MSE, and R-squared values for each playoff round
     oob_list, mse_list, rsq_list = [], [], []
-
-    # initialize dictionary that hols all playoff matchups, which will be updated after each round of the playoffs
-    all_matchups = {}
 
     # if the regular season is complete, need to generate a new model on the first runthrough of playoff predictions
     if regular_season_df['gameDate'].max() < pd.to_datetime(today_dt).date():
@@ -53,60 +120,69 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_ran
         save_model = False
 
     # loop through every playoff round
-    for pl_round in range(rounds_scheduled+1, 5):
+    for pl_round in range(rounds_completed+1, 5):
         print(f'\nPlayoffs Round {pl_round}')
 
+        # playoff round 1
+        if pl_round == 1:
+            # generate the round 1 playoff matchups based off the regular season standings
+            east_playoff_matchups = generate_playoff_matchups(season_results_df.loc[season_results_df[cons.conference_name_col] == 'Eastern'], 1)
+            west_playoff_matchups = generate_playoff_matchups(season_results_df.loc[season_results_df[cons.conference_name_col] == 'Western'], 1)
+
+            round_matchups = east_playoff_matchups.copy()
+            for matchup_num, matchup in west_playoff_matchups.items():
+                round_matchups.update({matchup_num+4: matchup})
+
+        # playoff rounds 2, 3, 4
+        else:
+            # generate the round n playoff matchups based off the regular season standings
+            round_matchups = generate_playoff_matchups(playoff_df, pl_round, round_matchups)
+
         # if there is no schedule for this round, create the schedule
-        if rounds_scheduled+1 <= pl_round:
+        if rounds_scheduled < pl_round:
+            next_round_sched = create_playoff_round_schedule(round_matchups, venue_map_df, regular_season_df, playoff_df)
 
-            # playoff round 1
+            # create the round 1 playoff schedule and add it to the regular season schedule
             if pl_round == 1:
-                # generate the round 1 playoff matchups based off the regular season standings
-                east_playoff_matchups = generate_playoff_matchups(season_results_df.loc[season_results_df[cons.conference_name_col] == 'Eastern'], 1)
-                west_playoff_matchups = generate_playoff_matchups(season_results_df.loc[season_results_df[cons.conference_name_col] == 'Western'], 1)
-
-                round_matchups = east_playoff_matchups.copy()
-                for matchup_num, matchup in west_playoff_matchups.items():
-                    round_matchups.update({matchup_num+4: matchup})
-
-                # create the round 1 playoff schedule and add it to the regular season schedule
-                playoff_df = pd.concat([regular_season_df, create_playoff_round_schedule(round_matchups, venue_map_df, regular_season_df, playoff_df)], ignore_index=True, sort=False)
-            # playoff rounds 2, 3, 4
-            else:
-                # generate the round n playoff matchups based off the regular season standings
-                round_matchups = generate_playoff_matchups(playoff_df, pl_round, round_matchups)
-
+                playoff_df = pd.concat([regular_season_df, next_round_sched], ignore_index=True, sort=False)
                 # create the round n playoff schedule and add it to the regular season schedule
-                playoff_df = create_playoff_round_schedule(round_matchups, venue_map_df, regular_season_df, playoff_df)
+            else:
+                playoff_df = next_round_sched.copy()
 
-            # predict games for this playoff round one day at a time
-            for game_dt in playoff_df.loc[(playoff_df[cons.season_name_col] == max(playoff_df[cons.season_name_col])) &
-                                          (playoff_df[cons.game_type_col] == 3) &
-                                          (playoff_df[cons.last_period_col].isna()), cons.game_date_col].unique():
-                
-                # if there were scheduled games on this date that no longer exist, skip to the next date
-                if playoff_df.loc[playoff_df[cons.game_date_col] == game_dt].empty:
-                    continue
+        if series_in_progress:
+            print(f'Round {pl_round} in progress:')
+            for series in series_in_progress:
+                print(f"\t{series['team1']} vs {series['team2']}: {series['team1_wins']}-{series['team2_wins']}")
+            print()
 
-                playoff_df_filt = playoff_df.loc[playoff_df[cons.game_date_col] <= game_dt]
+        # predict games for this playoff round one day at a time
+        for game_dt in playoff_df.loc[(playoff_df[cons.season_name_col] == max(playoff_df[cons.season_name_col])) &
+                                        (playoff_df[cons.game_type_col] == 3) &
+                                        (playoff_df[cons.last_period_col].isna()), cons.game_date_col].unique():
+            
+            # if there were scheduled games on this date that no longer exist, skip to the next date
+            if playoff_df.loc[playoff_df[cons.game_date_col] == game_dt].empty:
+                continue
 
-                # add dependent features to the playoff schedule dataframe
-                playoff_df_filt = ft.dependent_feature_add(playoff_df_filt, backfill=False, debug=False)
+            playoff_df_filt = playoff_df.loc[playoff_df[cons.game_date_col] <= game_dt]
 
-                # predict games on selected date
-                print(f'\tPredicting games for {game_dt.strftime("%Y-%m-%d")}...')
-                playoff_df_filt = sklu.make_predictions(playoff_df_filt, oob_list, mse_list, rsq_list, set_model_random_state, today_dt, load_model=load_model, save_model=save_model)
+            # add dependent features to the playoff schedule dataframe
+            playoff_df_filt = ft.dependent_feature_add(playoff_df_filt, backfill=False, debug=False)
 
-                # reset the model params for all predictions after the first
-                load_model = True
-                save_model = False
+            # predict games on selected date
+            print(f'\tPredicting games for {game_dt.strftime("%Y-%m-%d")}...')
+            playoff_df_filt = sklu.make_predictions(playoff_df_filt, oob_list, mse_list, rsq_list, set_model_random_state, today_dt, load_model=load_model, save_model=save_model)
 
-                playoff_df = pd.concat([playoff_df_filt, playoff_df.loc[playoff_df[cons.game_date_col] > game_dt]], ignore_index=True)
+            # reset the model params for all predictions after the first
+            load_model = True
+            save_model = False
 
-                # check to see if any of the series are over based on the current series scores
-                playoff_df, round_matchups = series_final_check(playoff_df, playoff_df_filt, round_matchups, game_dt)
+            playoff_df = pd.concat([playoff_df_filt, playoff_df.loc[playoff_df[cons.game_date_col] > game_dt]], ignore_index=True)
 
-            all_matchups.update({pl_round: round_matchups})
+            # check to see if any of the series are over based on the current series scores
+            playoff_df, round_matchups = series_final_check(playoff_df, playoff_df_filt, round_matchups, game_dt)
+
+        all_matchups.update({pl_round: round_matchups})
 
     # save playoff predictions to CSV
     if to_csv:
