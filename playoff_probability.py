@@ -259,10 +259,10 @@ def display_playoff_probability(pred_date, season, playoff_rd=0, matchups=None, 
         cv2.destroyAllWindows()
 
 
-if __name__ == "__main__":
-    today_dt = '2026-04-17'
-    season_results_df = predict_season(False, False, today_dt)
-    season_results_points = nhlu.assign_game_points(season_results_df)
-    final_standings_df = nhlu.generate_final_standings(season_results_points, today_dt)
-    _, playoff_matchups = playoffs.playoff_tree_predictions(season_results_df, final_standings_df, False, today_dt, to_csv=False)
-    display_playoff_probability('2026-04-17', '20252026', playoff_rd=1, matchups=playoff_matchups)
+# if __name__ == "__main__":
+#     today_dt = '2026-04-17'
+#     season_results_df = predict_season(False, False, today_dt)
+#     season_results_points = nhlu.assign_game_points(season_results_df)
+#     final_standings_df = nhlu.generate_final_standings(season_results_points, today_dt)
+#     _, playoff_matchups = playoffs.playoff_tree_predictions(season_results_df, final_standings_df, False, today_dt, to_csv=False)
+#     display_playoff_probability('2026-04-17', '20252026', playoff_rd=1, matchups=playoff_matchups)

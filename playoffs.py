@@ -80,22 +80,38 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_ran
                     matchup_teams = matchup.get_teams()
 
                     # look for any games between these two teams in the playoff schedule dataframe that have a score assigned
-                    last_series_game = playoff_df.loc[((playoff_df[cons.home_team_name_col].isin(matchup_teams)) &
-                                            (playoff_df[cons.away_team_name_col].isin(matchup_teams))) &
-                                            (playoff_df[cons.last_period_col].notna())].iloc[-1]
+                    try:
+                        last_series_game = playoff_df.loc[((playoff_df[cons.home_team_name_col].isin(matchup_teams)) &
+                                                (playoff_df[cons.away_team_name_col].isin(matchup_teams))) &
+                                                (playoff_df[cons.last_period_col].notna()) &
+                                                (playoff_df[cons.game_type_col] == 3) &
+                                                (playoff_df[cons.season_name_col] == max(playoff_df[cons.season_name_col]))].iloc[-1]
+                    except IndexError:
+                        last_series_game = pd.DataFrame()
+                        continue
 
                     # if there has already been a winner in this series, update the matchup with the series winner and score
                     if (last_series_game[cons.home_team_series_score_col] == 3) & (last_series_game[cons.home_team_score_col] > last_series_game[cons.away_team_score_col]):
                         matchup.set_series_results(last_series_game[cons.home_team_name_col], last_series_game[cons.away_team_name_col], last_series_game[cons.away_team_series_score_col])
                     elif (last_series_game[cons.away_team_series_score_col] == 3) & (last_series_game[cons.away_team_score_col] > last_series_game[cons.home_team_score_col]):
                         matchup.set_series_results(last_series_game[cons.away_team_name_col], last_series_game[cons.home_team_name_col], last_series_game[cons.home_team_series_score_col])
-                    else:
+                    elif not last_series_game.empty:
                         round_complete = False
+                        team1_wins = int(last_series_game[cons.home_team_series_score_col]) if (last_series_game[cons.home_team_name_col]==matchup.get_team1()) else int(last_series_game[cons.away_team_series_score_col])
+                        team2_wins = int(last_series_game[cons.away_team_series_score_col]) if (last_series_game[cons.away_team_name_col]==matchup.get_team2()) else int(last_series_game[cons.home_team_series_score_col])
+                        if (last_series_game[cons.home_team_name_col]==matchup.get_team1()) and (last_series_game[cons.home_team_score_col] > last_series_game[cons.away_team_score_col]):
+                            team1_wins += 1
+                        elif (last_series_game[cons.away_team_name_col]==matchup.get_team1()) and (last_series_game[cons.away_team_score_col] > last_series_game[cons.home_team_score_col]):
+                            team1_wins += 1
+                        if (last_series_game[cons.home_team_name_col]==matchup.get_team2()) and (last_series_game[cons.home_team_score_col] > last_series_game[cons.away_team_score_col]):
+                            team2_wins += 1
+                        elif (last_series_game[cons.away_team_name_col]==matchup.get_team2()) and (last_series_game[cons.away_team_score_col] > last_series_game[cons.home_team_score_col]):
+                            team2_wins += 1
                         series_in_progress.append({
                             'team1': matchup.get_team1(),
                             'team2': matchup.get_team2(),
-                            'team1_wins': int(last_series_game[cons.home_team_series_score_col]) if (last_series_game[cons.home_team_name_col]==matchup.get_team1()) else int(last_series_game[cons.away_team_series_score_col]),
-                            'team2_wins': int(last_series_game[cons.away_team_series_score_col]) if (last_series_game[cons.away_team_name_col]==matchup.get_team2()) else int(last_series_game[cons.home_team_series_score_col])
+                            'team1_wins': team1_wins,
+                            'team2_wins': team2_wins
                         })
 
                 if round_complete:
@@ -155,6 +171,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_ran
             for series in series_in_progress:
                 print(f"\t{series['team1']} vs {series['team2']}: {series['team1_wins']}-{series['team2_wins']}")
             print()
+            series_in_progress = []  # reset series in progress list for the next round of playoffs
 
         # predict games for this playoff round one day at a time
         for game_dt in playoff_df.loc[(playoff_df[cons.season_name_col] == max(playoff_df[cons.season_name_col])) &
