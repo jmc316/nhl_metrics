@@ -10,7 +10,7 @@ from playoff_matchup import PlayoffMatchup
 from playoff_tree import display_playoff_tree
 
 
-def playoff_tree_predictions(regular_season_df, season_results_df, set_model_random_state, today_dt, to_csv=True, display_image=True, repeat_pred=False):
+def playoff_tree_predictions(regular_season_df, season_results_df, set_model_state, today_dt, to_csv=True, display_image=True, repeat_pred=False):
 
     print('Predicting playoff tree...')
 
@@ -20,42 +20,50 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_ran
     if cons.away_team_points_col in regular_season_df.columns:
         regular_season_df.drop(columns=[cons.away_team_points_col], inplace=True)
     
+    current_season = regular_season_df[cons.season_name_col].max()
+
     # create a dataframe with the already scheduled playoff games
     scheduled_games_df = regular_season_df.loc[(regular_season_df[cons.game_type_col] == 3) &
-                                        (regular_season_df[cons.season_name_col] == max(regular_season_df[cons.season_name_col]))].copy()
+                                               (regular_season_df[cons.season_name_col] == current_season)].copy()
 
     # if there are no scheduled playoff games, will need to create schedules for all rounds before predictions
     if scheduled_games_df.empty:
         print('\tNo scheduled playoff games found for this season...')
-        rounds_scheduled = 0
-        rounds_completed = 0
-        series_in_progress = []
-        playoff_df = pd.DataFrame()
-
-        # initialize dictionary that hols all playoff matchups, which will be updated after each round of the playoffs
-        all_matchups = {}
+        rounds_scheduled = 0 # no rounds scheduled
+        rounds_completed = 0 # no rounds completed
+        series_in_progress = [] # no series in progress
+        playoff_df = pd.DataFrame() # no playoff games initialized yet
+        all_matchups = {} # no playoff matchups yet
     else:
         print('\tFound scheduled playoff games for this season...')
 
-        # what round it is, depending on how many unique home/away matchups there are
-        matchups_total_round_map = {16: 1, 24: 2, 28: 3, 30: 4}
-
-        matchups_df = scheduled_games_df[['homeTeamName', 'awayTeamName']].drop_duplicates()
-
         # calculate how many rounds are scheduled
+        matchups_total_round_map = {16: 1, 24: 2, 28: 3, 30: 4}
+        matchups_df = scheduled_games_df[['homeTeamName', 'awayTeamName']].drop_duplicates()
         num_matchups = len(matchups_df)
-
         rounds_scheduled = matchups_total_round_map[num_matchups]
-        rounds_completed = 0
-        set_model_random_state = False
 
+        rounds_completed = 0 # initialized at 0, may be incremented below
+        set_model_state = True # need to re-train the model here, it was not re-trained before playoff predictions
         playoff_df = regular_season_df.copy()
 
-        all_matchups = {}   
-        series_in_progress = []  
+        all_matchups = {}
+        series_in_progress = []
 
         # some playoff games have already been played
-        if not scheduled_games_df.loc[scheduled_games_df['lastPeriod'].notna()].empty:
+        played_playoff_games = playoff_df.loc[(playoff_df[cons.game_type_col] == 3) &
+                                              (playoff_df[cons.season_name_col] == current_season) &
+                                              (playoff_df[cons.last_period_col].notna())]
+        if not played_playoff_games.empty:
+
+            played_playoff_games = played_playoff_games.sort_values(by=[cons.game_date_col, cons.game_time_col])
+
+            # Cache the latest completed game for each series so we avoid repeatedly
+            # scanning the full playoff dataframe for every matchup.
+            latest_series_game = {}
+            for _, game_row in played_playoff_games.iterrows():
+                series_key = frozenset((game_row[cons.home_team_name_col], game_row[cons.away_team_name_col]))
+                latest_series_game[series_key] = game_row
 
             # create the existing matchups
             for pl_round in range(1, rounds_scheduled+1):
@@ -78,16 +86,11 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_ran
                 for _, matchup in round_matchups.items():
 
                     matchup_teams = matchup.get_teams()
+                    series_key = frozenset(matchup_teams)
 
-                    # look for any games between these two teams in the playoff schedule dataframe that have a score assigned
-                    try:
-                        last_series_game = playoff_df.loc[((playoff_df[cons.home_team_name_col].isin(matchup_teams)) &
-                                                (playoff_df[cons.away_team_name_col].isin(matchup_teams))) &
-                                                (playoff_df[cons.last_period_col].notna()) &
-                                                (playoff_df[cons.game_type_col] == 3) &
-                                                (playoff_df[cons.season_name_col] == max(playoff_df[cons.season_name_col]))].iloc[-1]
-                    except IndexError:
-                        last_series_game = pd.DataFrame()
+                    # look for the latest completed game in this series
+                    last_series_game = latest_series_game.get(series_key)
+                    if last_series_game is None:
                         continue
 
                     # if there has already been a winner in this series, update the matchup with the series winner and score
@@ -95,7 +98,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_ran
                         matchup.set_series_results(last_series_game[cons.home_team_name_col], last_series_game[cons.away_team_name_col], last_series_game[cons.away_team_series_score_col])
                     elif (last_series_game[cons.away_team_series_score_col] == 3) & (last_series_game[cons.away_team_score_col] > last_series_game[cons.home_team_score_col]):
                         matchup.set_series_results(last_series_game[cons.away_team_name_col], last_series_game[cons.home_team_name_col], last_series_game[cons.home_team_series_score_col])
-                    elif not last_series_game.empty:
+                    else:
                         round_complete = False
                         team1_wins = int(last_series_game[cons.home_team_series_score_col]) if (last_series_game[cons.home_team_name_col]==matchup.get_team1()) else int(last_series_game[cons.away_team_series_score_col])
                         team2_wins = int(last_series_game[cons.away_team_series_score_col]) if (last_series_game[cons.away_team_name_col]==matchup.get_team2()) else int(last_series_game[cons.home_team_series_score_col])
@@ -129,7 +132,8 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_ran
     oob_list, mse_list, rsq_list = [], [], []
 
     # if the regular season is complete, need to generate a new model on the first runthrough of playoff predictions
-    if regular_season_df.loc[regular_season_df[cons.game_type_col]==2,'gameDate'].max() < pd.to_datetime(today_dt).date():
+    reg_season_max_game_dt = regular_season_df.loc[regular_season_df[cons.game_type_col] == 2, cons.game_date_col].max()
+    if reg_season_max_game_dt < pd.to_datetime(today_dt).date():
         load_model = False
         save_model = True
     else:
@@ -174,9 +178,12 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_ran
             series_in_progress = []  # reset series in progress list for the next round of playoffs
 
         # predict games for this playoff round one day at a time
-        for game_dt in playoff_df.loc[(playoff_df[cons.season_name_col] == max(playoff_df[cons.season_name_col])) &
-                                        (playoff_df[cons.game_type_col] == 3) &
-                                        (playoff_df[cons.last_period_col].isna()), cons.game_date_col].unique():
+        playoff_season = playoff_df[cons.season_name_col].max()
+        game_dates = playoff_df.loc[(playoff_df[cons.season_name_col] == playoff_season) &
+                        (playoff_df[cons.game_type_col] == 3) &
+                        (playoff_df[cons.last_period_col].isna()), cons.game_date_col].drop_duplicates().sort_values()
+
+        for game_dt in game_dates:
             
             # if there were scheduled games on this date that no longer exist, skip to the next date
             if playoff_df.loc[playoff_df[cons.game_date_col] == game_dt].empty:
@@ -189,9 +196,11 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_ran
 
             # predict games on selected date
             print(f'\tPredicting games for {game_dt.strftime("%Y-%m-%d")}...')
-            playoff_df_filt = sklu.make_predictions(playoff_df_filt, oob_list, mse_list, rsq_list, set_model_random_state, today_dt, load_model=load_model, save_model=save_model)
-            if not repeat_pred:
-                set_model_random_state = True  # only set the random state for the first runthrough of predictions to allow for more variability in predictions for later rounds of the playoffs
+            playoff_df_filt = sklu.make_predictions(playoff_df_filt, oob_list, mse_list, rsq_list, set_model_state, today_dt, load_model=load_model, save_model=save_model)
+            
+            # if this is a part of a set of predictions, keep the model state random
+            if repeat_pred:
+                set_model_state = False
             
             # reset the model params for all predictions after the first
             load_model = True
@@ -348,6 +357,16 @@ def create_playoff_round_schedule(all_matchups, venue_map_df, feature_df, playof
     else:
         round_stdt = playoff_df[cons.game_date_col].max() + pd.Timedelta(days=cons.playoff_round_buffer)
 
+    season_name = max(feature_df[cons.season_name_col])
+
+    # Build a venue -> typical game time map once per round rather than once per matchup.
+    game_time_df = pd.DataFrame(feature_df.loc[
+        feature_df[cons.season_name_col] == season_name, [cons.game_time_col, cons.venue_col]].value_counts(), columns=['count'])
+    game_time_df = game_time_df.loc[game_time_df['count'] > 5]
+    game_time_df = game_time_df.loc[game_time_df.groupby(cons.venue_col)['count'].idxmax()]
+    game_time_df.reset_index(inplace=True)
+    venue_game_time_map = dict(zip(game_time_df[cons.venue_col], game_time_df[cons.game_time_col].astype(int)))
+
     # loop through matchups
     for _, matchup in all_matchups.items():
 
@@ -384,17 +403,8 @@ def create_playoff_round_schedule(all_matchups, venue_map_df, feature_df, playof
         # game type for playoff games is 3
         game_type = 3
 
-        # season name is the current season for the feature dataframe
-        season_name = max(feature_df[cons.season_name_col])
-
-        # get the most popular game time per venue for the current season to use as the game time for the playoff matchups
-        game_time_df = pd.DataFrame(feature_df.loc[
-            feature_df[cons.season_name_col]==max(feature_df[cons.season_name_col])][[
-                cons.game_time_col, cons.venue_col]].value_counts(), columns=['count'])
-        game_time_df = game_time_df.loc[game_time_df['count'] > 5]
-        game_time_df = game_time_df.loc[game_time_df.groupby(cons.venue_col)['count'].idxmax()]
-        game_time_df.reset_index(inplace=True)
-        game_time_utc = [int(game_time_df.loc[game_time_df[cons.venue_col]==venue[0]][cons.game_time_col].values[0]) for venue in venues]
+        # use the most common game time for each venue in the current season
+        game_time_utc = [venue_game_time_map[venue[0]] for venue in venues]
 
         # add all data to a dataframe for the current matchup and append to the playoff dataframe
         matchup_df = pd.DataFrame({

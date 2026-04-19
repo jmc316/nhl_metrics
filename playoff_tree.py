@@ -5,16 +5,21 @@ import constants as cons
 
 # local constants
 WIDTH, HEIGHT = 1400, 800
+# Shared canvas reused for one bracket render.
 CANVAS = np.zeros((HEIGHT, WIDTH, 3), dtype=np.uint8)
 CANVAS[:] = (12, 12, 14)
+# Column anchors for bracket rounds (left conference).
 LEFT_X = [20, 270, 410]
+# Mirror left anchors around the center line for the right conference.
 RIGHT_X = [WIDTH-LEFT_X[0], WIDTH-LEFT_X[1], WIDTH-LEFT_X[2]]
 CENTER_X = WIDTH // 2
+# First round cards are wider to include seed text; later rounds are compact.
 CARD_1_W, CARD_1_H = 150, 65
 CARD_W, CARD_H = 100, 65
 LOGO_SIZE_CARD = 50
 LOGO_SIZE_CHAMP = 150
 LOGO_SIZE_CUP = 500
+# Vertical layout controls for each round.
 BASE_Y = 150
 R1_SPACE = 80
 R2_SPACE = R1_SPACE * 2
@@ -22,6 +27,7 @@ R3_SPACE = R2_SPACE * 2
 
 
 def draw_glow_line(canvas, pt1, pt2, color=(0,180,255)):
+    """Draw a connector line with a soft glow effect behind a bright core."""
     overlay = canvas.copy()
     cv2.line(overlay, pt1, pt2, color, 6)
     canvas[:] = cv2.addWeighted(overlay, 0.25, canvas, 0.75, 0)
@@ -29,6 +35,7 @@ def draw_glow_line(canvas, pt1, pt2, color=(0,180,255)):
 
 
 def draw_series_score(canvas, x, y, text):
+    """Draw a small score badge centered at (x, y)."""
     w, h = 70, 30
     overlay = canvas.copy()
     cv2.rectangle(overlay, (x-w//2, y-h//2), (x+w//2, y+h//2), (25,25,25), -1)
@@ -43,6 +50,11 @@ def draw_series_score(canvas, x, y, text):
 
 
 def overlay_logo(canvas, path, x, y, logo_size, pad_color=(0, 0, 0)):
+    """Overlay a team logo into a fixed-height card slot.
+
+    The source image is resized with preserved aspect ratio, padded to a square,
+    then cropped so the visible area fits the card height convention used here.
+    """
     logo = cv2.imread(path, cv2.IMREAD_UNCHANGED)
     if logo is None:
         return
@@ -64,6 +76,7 @@ def overlay_logo(canvas, path, x, y, logo_size, pad_color=(0, 0, 0)):
         value=pad_color
     )
 
+    # Crop to the same vertical profile used by card rendering.
     logo_crop = logo_pad[logo_size//2-(CARD_H-logo_size)//2:logo_size+logo_size//2+(CARD_H-logo_size)//2, :logo_size*2]
 
     if logo_crop.shape[2] == 4:
@@ -78,6 +91,7 @@ def overlay_logo(canvas, path, x, y, logo_size, pad_color=(0, 0, 0)):
 
 
 def overlay_image(canvas, path, x, y, image_size, pad_color=(0, 0, 0)):
+    """Overlay any square-fitted image (cup art, champion logo, etc.)."""
     logo = cv2.imread(path, cv2.IMREAD_UNCHANGED)
     if logo is None:
         return
@@ -111,6 +125,7 @@ def overlay_image(canvas, path, x, y, image_size, pad_color=(0, 0, 0)):
 
 
 def choose_card(round1):
+    """Return the card dimensions for the given playoff round type."""
     if round1:
         return CARD_1_W, CARD_1_H
     else:
@@ -118,6 +133,12 @@ def choose_card(round1):
 
 
 def draw_card(canvas, x, y, team, seed=None, round1=False, winner=False, align_right=False):
+    """Draw one team card with logo, optional seed, and winner highlight.
+
+    Args:
+        align_right: If True, x is treated as the card's right edge so cards on
+            the right side of the bracket mirror left-side placement.
+    """
 
     card_w, card_h = choose_card(round1)
 
@@ -128,6 +149,7 @@ def draw_card(canvas, x, y, team, seed=None, round1=False, winner=False, align_r
     cv2.rectangle(overlay, (x,y), (x+card_w,y+card_h), (40,40,40), -1)
     canvas[:] = cv2.addWeighted(overlay, 0.6, canvas, 0.4, 0)
 
+    # Round 1 cards reserve a black strip for seed text and mirror by side.
     if round1 and align_right:
         cv2.rectangle(canvas, (x,y), (x+card_w//3*2,y+card_h), cons.team_info[team]['c1'], -1)
         cv2.rectangle(canvas, (x+card_w//3*2,y), (x+card_w,y+card_h), (0,0,0), -1)
@@ -137,6 +159,7 @@ def draw_card(canvas, x, y, team, seed=None, round1=False, winner=False, align_r
     else:
         cv2.rectangle(canvas, (x,y), (x+card_w,y+card_h), cons.team_info[team]['c1'], -1)
 
+    # Winner cards get an accent border so advancement is visually obvious.
     border = (0,180,255) if winner else (70,70,70)
     cv2.rectangle(canvas, (x,y), (x+card_w,y+card_h), border, 2)
 
@@ -157,6 +180,7 @@ def draw_card(canvas, x, y, team, seed=None, round1=False, winner=False, align_r
 
 
 def connect_left(canvas, x, y1, y2, score, x_offset, round1=False):
+    """Connect two left-side cards to the next-round spine and draw score."""
 
     card_w, card_h = choose_card(round1)
 
@@ -172,6 +196,7 @@ def connect_left(canvas, x, y1, y2, score, x_offset, round1=False):
 
 
 def connect_right(canvas, x, y1, y2, score, x_offset, round1=False):
+    """Connect two right-side cards to the next-round spine and draw score."""
     
     card_w, card_h = choose_card(round1)
 
@@ -187,17 +212,27 @@ def connect_right(canvas, x, y1, y2, score, x_offset, round1=False):
 
 
 def get_round_positions(start, spacing, n):
+    """Build evenly spaced y-positions for card rows in a round."""
     return [start + i*spacing for i in range(n)]
 
 
 def display_playoff_tree(matchups, season, pred_date, display_image=True):
+    """Render the playoff bracket image from simulated matchup outcomes.
 
+    Bracket structure expectation:
+    - matchups[1]: 8 first-round series (0-3 East, 4-7 West)
+    - matchups[2]: 4 second-round series (0-1 East, 2-3 West)
+    - matchups[3]: 2 conference finals (0 East, 1 West)
+    - matchups[4][0]: Stanley Cup Final
+    """
+
+    # Precompute y-lanes for each round so cards and connectors align cleanly.
     r1_y = get_round_positions(BASE_Y, R1_SPACE, 8)
     r2_y = get_round_positions(BASE_Y + R1_SPACE//2, R2_SPACE, 4)
     r3_y = get_round_positions(BASE_Y + R1_SPACE//2 + R2_SPACE//2, R3_SPACE, 2)
     final_y = get_round_positions(BASE_Y + R1_SPACE//2 + R2_SPACE//2 + R3_SPACE//2, R3_SPACE*2, 1)
 
-    # print stanley cup champion and stanley gup logo
+    # Center header: cup art and final champion logo.
     overlay_image(CANVAS, cons.images_folder + cons.stanley_cup_image, CENTER_X-LOGO_SIZE_CUP//2, 250, LOGO_SIZE_CUP, pad_color=(0,0,0))
     cv2.putText(CANVAS, "STANLEY CUP CHAMPION",
                 (CENTER_X-230, 80),
@@ -207,7 +242,7 @@ def display_playoff_tree(matchups, season, pred_date, display_image=True):
     cup_champ = matchups[4][0].get_series_winner()
     overlay_image(CANVAS, cons.team_info[cup_champ]['logo'], CENTER_X-LOGO_SIZE_CHAMP//2, 100, LOGO_SIZE_CHAMP, pad_color=cons.team_info[cup_champ]['c1'])
 
-    # draw the Western Conference Matchups on the left
+    # Draw Western Conference on the left side of the bracket.
     # West round 1
     for i in range(4, 8):
         y1, y2 = r1_y[(i-4)*2], r1_y[(i-4)*2+1]
@@ -222,7 +257,7 @@ def display_playoff_tree(matchups, season, pred_date, display_image=True):
         draw_card(CANVAS, LEFT_X[0], y2, t2, seed2, round1=True, winner=(winner==t2))
         connect_left(CANVAS, LEFT_X[0], y1, y2, score, 45, round1=True)
 
-    # West round 2
+    # West round 2 uses matchup indices 2 and 3 by bracket convention.
     for i in range(2, 4):
         y = r2_y[(i-2)*2]
         t1 = matchups[2][i].get_team1()
@@ -235,7 +270,7 @@ def display_playoff_tree(matchups, season, pred_date, display_image=True):
 
         connect_left(CANVAS, LEFT_X[1], y, y+R2_SPACE, score, 45)
 
-    # West round 3
+    # West conference final is matchup index 1 in round 3.
     for i in range(2):
         y = r3_y[(i-1)*2]
         t1 = matchups[3][i].get_team1()
@@ -248,7 +283,7 @@ def display_playoff_tree(matchups, season, pred_date, display_image=True):
         draw_card(CANVAS, LEFT_X[2], y+R3_SPACE, t2, winner=(winner==t2))
         connect_left(CANVAS, LEFT_X[2], y, y+R3_SPACE, score, 45)
 
-    # draw the Eastern Conference Matchups on the right
+    # Draw Eastern Conference on the right side, mirrored with align_right=True.
     # East round 1
     for i in range(0, 4):
         y1, y2 = r1_y[i*2], r1_y[i*2+1]
@@ -264,7 +299,7 @@ def display_playoff_tree(matchups, season, pred_date, display_image=True):
 
         connect_right(CANVAS, RIGHT_X[0], y1, y2, score, 45, round1=True)
 
-    # East round 2
+    # East round 2 uses matchup indices 0 and 1.
     for i in range(2):
         y = r2_y[i*2]
         t1 = matchups[2][i].get_team1()
@@ -277,7 +312,7 @@ def display_playoff_tree(matchups, season, pred_date, display_image=True):
 
         connect_right(CANVAS, RIGHT_X[1], y, y+R2_SPACE, score, 45)
 
-    # East round 3
+    # East conference final is matchup index 0 in round 3.
     for i in range(1):
         y = r3_y[i*2]
         t1 = matchups[3][i].get_team1()
@@ -291,7 +326,7 @@ def display_playoff_tree(matchups, season, pred_date, display_image=True):
 
         connect_right(CANVAS, RIGHT_X[2], y, y+R3_SPACE, score, 45)
 
-    # Stanley Cup Final
+    # Stanley Cup Final card pair and center score badge.
     if west_final_winner == cup_champ:
         west_win, east_win = True, False
     elif east_final_winner == cup_champ:

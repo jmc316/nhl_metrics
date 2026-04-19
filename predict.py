@@ -15,10 +15,10 @@ from file_utils import csvLoad, csvSave
 from playoff_probability import display_playoff_probability
 
 
-def predict_season(to_csv, set_model_random_state, today_dt):
+def predict_season(to_csv, set_model_state, today_dt):
 
     # create the schedule dataframe from all seasons and games
-    sched_df = create_df_set()
+    sched_df = create_df_set(pd.to_datetime(today_dt).date())
 
     # if there is a manual today_dt, Nullify all scores for games on or after the date
     if today_dt != dt.now().date().strftime(cons.date_format_yyyy_mm_dd):
@@ -75,7 +75,7 @@ def predict_season(to_csv, set_model_random_state, today_dt):
 
     # make predictions for first scheduled game day after completed games and add to filtered dataframe
     print(f'\tPredicting games for {next_game_date.strftime("%Y-%m-%d")}...')
-    feature_df_filt = sklu.make_predictions(feature_df_filt, oob_list, mse_list, rsq_list, set_model_random_state, today_dt, load_model=False, save_model=True)
+    feature_df_filt = sklu.make_predictions(feature_df_filt, oob_list, mse_list, rsq_list, set_model_state, today_dt, load_model=False, save_model=True)
 
     # re-create feature dataframe with added predictions and features
     feature_df = pd.concat([feature_df_filt, feature_df.loc[feature_df[cons.game_date_col] > next_game_date]], ignore_index=True)
@@ -88,7 +88,7 @@ def predict_season(to_csv, set_model_random_state, today_dt):
         print(f'\tPredicting games for {next_game_date.strftime("%Y-%m-%d")}...')
         feature_df_filt = feature_df[feature_df[cons.game_date_col] <= next_game_date]
         feature_df_filt = ft.dependent_feature_add(feature_df_filt, backfill=False, debug=False)
-        feature_df_filt = sklu.make_predictions(feature_df_filt, oob_list, mse_list, rsq_list, set_model_random_state, today_dt, load_model=True, save_model=False)
+        feature_df_filt = sklu.make_predictions(feature_df_filt, oob_list, mse_list, rsq_list, set_model_state, today_dt, load_model=True, save_model=False)
         feature_df = pd.concat([feature_df_filt, feature_df.loc[feature_df[cons.game_date_col] > next_game_date]], ignore_index=True)
 
     print()
@@ -104,7 +104,7 @@ def predict_season(to_csv, set_model_random_state, today_dt):
     return feature_df
 
 
-def create_df_set():
+def create_df_set(today_dt):
 
     # a list of schedule files that have already been generated
     season_sched_list = [file for file in os.listdir(cons.season_sched_folder) if file.endswith(cons.season_sched_filename.format(season=''))]
@@ -121,23 +121,22 @@ def create_df_set():
             sched_df = pd.concat([sched_df, create_season_df(filename[:8], from_csv=True, to_csv=False)], ignore_index=True)
 
     # check if the current season schedule needs to be updated
-    sched_df = game_results_update(sched_df)
+    sched_df = game_results_update(sched_df, today_dt)
 
     return sched_df
 
 
-def game_results_update(sched_df):
+def game_results_update(sched_df, today_dt):
 
     # there are no unplayed games in the schedule dataframe, so no update is needed
     if sched_df.loc[sched_df[cons.last_period_col].isna()].empty:
         return sched_df
 
     # today's date and the date of the first unplayed game in the schedule dataframe
-    today_dt = dt.now().date()
-    stored_dt = pd.to_datetime(min(sched_df.loc[sched_df[cons.last_period_col].isna(), cons.starttime_utc_col])).date()
+    stored_dt_tm = pd.to_datetime(min(sched_df.loc[sched_df[cons.last_period_col].isna(), cons.starttime_utc_col]))
 
     # switch the stored date to EST timezone for comparison with today's date
-    stored_dt = pd.to_datetime(stored_dt).tz_localize('UTC').tz_convert('EST').date()
+    stored_dt = stored_dt_tm.tz_convert('EST').date()
 
     # if the date of the first unplayed game is in the past, the schedule dataframe is missing some data
     if today_dt > stored_dt:
@@ -314,7 +313,7 @@ if __name__ == "__main__":
 
     ######################
     # create one set of predictions
-    feature_df = predict_season(to_csv=True, set_model_random_state=True, today_dt=today_dt)
+    feature_df = predict_season(to_csv=True, set_model_state=True, today_dt=today_dt)
     feature_df_game_points = nhlu.assign_game_points(feature_df.loc[(feature_df[cons.game_type_col]==2) & (feature_df[cons.season_name_col]==max(feature_df[cons.season_name_col]))])
     season_results_df = nhlu.generate_final_standings(feature_df_game_points, today_dt, to_csv=True)
     if not feature_df.loc[(feature_df[cons.game_type_col]==2) &

@@ -13,11 +13,20 @@ import datetime as dt
 scale = 0.75
 SIZE = int(1200 * scale)
 center = (SIZE // 2, SIZE // 2)
+# Reused render surface for the radial playoff probability chart.
 canvas = np.zeros((SIZE, SIZE, 3), dtype=np.uint8)
 canvas[:] = (16, 16, 18)
 
 
 def overlay_center_image(img, image_path, center, size):
+    """Overlay an image at the chart center, preserving aspect ratio and alpha.
+
+    Args:
+        img: Destination BGR canvas.
+        image_path: Path to source image (supports PNG alpha).
+        center: (x, y) center point on the destination canvas.
+        size: Max width/height box to fit the source image into.
+    """
     image = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)
     if image is None:
         return
@@ -46,6 +55,11 @@ def overlay_center_image(img, image_path, center, size):
 
 def draw_wedge(img, center, r_outer, r_inner,
                start_angle, end_angle, color):
+    """Draw a donut-sector wedge for one team in one playoff round.
+
+    The wedge is formed by sampling points along the outer arc and the inner arc,
+    then filling the closed polygon between those arcs.
+    """
     step = 1.5  # smoothness
 
     if not np.isfinite(start_angle) or not np.isfinite(end_angle):
@@ -78,10 +92,12 @@ def draw_wedge(img, center, r_outer, r_inner,
 
 def draw_probability_text(img, center, r_inner, r_outer,
                           start_angle, end_angle, prob):
+    """Render a percentage label at the midpoint of a wedge."""
 
     mid_angle = (start_angle + end_angle) / 2
     rad = math.radians(mid_angle)
 
+    # Place text near the middle of the ring thickness for readability.
     r_text = r_inner + 0.55 * (r_outer - r_inner)
 
     x = int(center[0] + r_text * math.cos(rad))
@@ -95,6 +111,7 @@ def draw_probability_text(img, center, r_inner, r_outer,
 
 
 def overlay_logo(img, logo_path, x, y, box_size=60):
+    """Overlay and center-fit a team logo into a square box on the canvas."""
     logo = cv2.imread(logo_path, cv2.IMREAD_UNCHANGED)
     if logo is None:
         return
@@ -122,11 +139,13 @@ def overlay_logo(img, logo_path, x, y, box_size=60):
 
 
 def normalize(probs):
+    # Convert absolute probabilities to relative shares so each ring fills 360 degrees.
     probs = np.array(probs)
     return probs / probs.sum()
 
 
 def compute_angles(probs):
+    # Convert normalized probabilities into clockwise angular spans.
     probs = np.array(probs)
     angles = probs * 360
 
@@ -137,6 +156,14 @@ def compute_angles(probs):
 
 
 def display_playoff_probability(pred_date, season, playoff_rd=0, matchups=None, display_image=True):
+    """Generate and optionally display a radial playoff-probability visualization.
+
+    Workflow:
+    1) Load the latest simulation output for the provided date.
+    2) Optionally filter/sort teams for a specific playoff round.
+    3) Build 5 concentric rings (playoffs -> cup winner).
+    4) Draw team wedges, labels, logos, and final center art.
+    """
 
     # list files in output/season_predictions/{pred_date}/ and find the one with the highest n
     season_sched_list = [file for file in os.listdir(cons.season_pred_folder.format(date=pred_date)) if file.startswith(f'season_results_probabilities_{pred_date}_n')]
@@ -144,15 +171,17 @@ def display_playoff_probability(pred_date, season, playoff_rd=0, matchups=None, 
         print(f'No playoff probability files found for {pred_date}. Please run the playoff prediction first.')
         return
 
-    # extract n from filenames and find the highest n
+    # Multiple simulation files may exist for a date (nX runs).
+    # Always use the largest n so visualization reflects the most complete run.
     n_values = [int(file.split('_n')[-1].split('.csv')[0]) for file in season_sched_list]
     n_sims = max(n_values)
     df_prob = pd.read_csv(f'output/season_predictions/{pred_date}/season_results_probabilities_{pred_date}_n{n_sims}.csv')
 
-    # regular season mode
+    # Regular-season view keeps all teams alphabetized.
     if playoff_rd == 0:
         df_prob.sort_values('teamName', inplace=True)
-    # playoff mode
+    # Playoff view filters to teams still alive in the selected round,
+    # then applies bracket order so neighbors in the wheel match matchups.
     else:
         if playoff_rd == 1:
             df_prob = df_prob.loc[df_prob['playoff_%'] > 0]
@@ -169,6 +198,8 @@ def display_playoff_probability(pred_date, season, playoff_rd=0, matchups=None, 
         df_prob['teamName'] = pd.Categorical(df_prob['teamName'], categories=sort_order, ordered=True)
         df_prob.sort_values('teamName', inplace=True)
 
+    # Freeze row order into an ordered categorical so all downstream arrays,
+    # colors, wedges, and logos stay aligned by the same team index.
     sort_order = df_prob[cons.team_name_col].tolist()
     df_prob['teamName'] = pd.Categorical(df_prob['teamName'], categories=sort_order, ordered=True)
     df_prob.sort_values('teamName', inplace=True)
@@ -184,6 +215,7 @@ def display_playoff_probability(pred_date, season, playoff_rd=0, matchups=None, 
         np.array(list(df_prob['win_cup_%']/100)), # Cup win
     ]
 
+    # Store both normalized slices (for geometry) and raw values (for labels).
     rounds = [[normalize(r), r] for r in rounds]
 
     colors = [cons.team_info[team]['c1'] for team in teams]
@@ -198,6 +230,7 @@ def display_playoff_probability(pred_date, season, playoff_rd=0, matchups=None, 
         int(130 * scale),
     ]
 
+    # Constant ring thickness keeps spacing visually uniform across rounds.
     ring_width = int(70 * scale)
 
     for r_idx, probs in enumerate(rounds):
@@ -205,16 +238,19 @@ def display_playoff_probability(pred_date, season, playoff_rd=0, matchups=None, 
         r_outer = radii[r_idx]
         r_inner = r_outer - ring_width
 
+        # Geometry uses normalized probabilities so the full ring is always 360.
         starts, ends = compute_angles(probs[0])
 
         for i in range(num_teams):
 
             start = starts[i]
             end = ends[i]
+            # Labels use raw values (pre-normalization), preserving true percent text.
             prob = probs[1][i]
 
             draw_wedge(canvas, center, r_outer, r_inner, start, end, colors[i])
 
+            # Skip zero-probability labels to avoid visual noise.
             if prob > 0:
                 draw_probability_text(canvas, center, r_inner, r_outer, start, end, prob)
 
@@ -222,7 +258,7 @@ def display_playoff_probability(pred_date, season, playoff_rd=0, matchups=None, 
     logo_radius = r_outer + int(30 * scale)  # slightly outside chart
     logo_size = int(60 * scale)
 
-    # use FIRST round to define angular positions
+    # Use first-round shares to anchor logo positions around the outer rim.
     starts, ends = compute_angles(rounds[0][0])
 
     for i, team in enumerate(teams):
@@ -243,6 +279,7 @@ def display_playoff_probability(pred_date, season, playoff_rd=0, matchups=None, 
         "Win Cup"
     ]
 
+    # Round labels are placed near each ring's top edge for quick legend lookup.
     for i, text in enumerate(labels):
         y = center[1] - radii[i] + 40
         cv2.putText(canvas, text,
@@ -250,6 +287,7 @@ def display_playoff_probability(pred_date, season, playoff_rd=0, matchups=None, 
                     cv2.FONT_HERSHEY_DUPLEX,
                     0.6, (240, 240, 240), 1, cv2.LINE_AA)
 
+    # Add cup image in the center and persist the final render to disk.
     overlay_center_image(canvas,'images/stanley_cup.png',center,size=int(120 * scale))
 
     cv2.imwrite(f'{cons.season_pred_folder.format(date=pred_date)}{cons.playoff_probability_filename.format(season=season, date=pred_date, n=n_sims)}', canvas)
