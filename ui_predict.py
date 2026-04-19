@@ -8,7 +8,7 @@ import terminal_ui as tui
 from file_utils import csvLoad
 from datetime import datetime as dt
 from analyze import prediction_analysis
-from predict import predict_season, playoff_spot_predictions, game_result_comparison
+from predict import predict_season, playoff_spot_predictions
 
 
 def get_asofdate():
@@ -35,10 +35,13 @@ def ui_todate_predict():
 
     print('Updating predictions for current season...\n')
     feature_df = predict_season(to_csv=True, set_model_random_state=True, today_dt=today_dt)
-    game_result_comparison(feature_df)
-    season_results_df = nhlu.generate_final_standings(nhlu.assign_game_points(feature_df), today_dt, to_csv=True)
-    nhlu.nhl_team_standings(season_results_df)
-    playoffs.playoff_tree_predictions(feature_df, season_results_df, True, today_dt, display_image=False)
+    feature_df_game_points = nhlu.assign_game_points(feature_df.loc[(feature_df[cons.game_type_col]==2) & (feature_df[cons.season_name_col]==max(feature_df[cons.season_name_col]))])
+    season_results_df = nhlu.generate_final_standings(feature_df_game_points, today_dt, to_csv=True)
+    if not feature_df.loc[(feature_df[cons.game_type_col]==2) &
+                      (feature_df[cons.season_name_col]==max(feature_df[cons.season_name_col])) &
+                      feature_df[cons.last_period_col].isna()].empty:
+        nhlu.nhl_team_standings(season_results_df)
+    playoffs.playoff_tree_predictions(feature_df, season_results_df, True, today_dt)
 
 
 def ui_historic_predict():
@@ -47,10 +50,13 @@ def ui_historic_predict():
 
     print(f'Updating predictions for current season as of {today_dt}...\n')
     feature_df = predict_season(to_csv=True, set_model_random_state=True, today_dt=today_dt)
-    game_result_comparison(feature_df)
-    season_results_df = nhlu.generate_final_standings(nhlu.assign_game_points(feature_df), today_dt, to_csv=True)
-    nhlu.nhl_team_standings(season_results_df)
-    playoffs.playoff_tree_predictions(feature_df, season_results_df, True, today_dt, display_image=False)
+    feature_df_game_points = nhlu.assign_game_points(feature_df.loc[(feature_df[cons.game_type_col]==2) & (feature_df[cons.season_name_col]==max(feature_df[cons.season_name_col]))])
+    season_results_df = nhlu.generate_final_standings(feature_df_game_points, today_dt, to_csv=True)
+    if not feature_df.loc[(feature_df[cons.game_type_col]==2) &
+                      (feature_df[cons.season_name_col]==max(feature_df[cons.season_name_col])) &
+                      feature_df[cons.last_period_col].isna()].empty:
+        nhlu.nhl_team_standings(season_results_df)
+    playoffs.playoff_tree_predictions(feature_df, season_results_df, True, today_dt)
 
 
 def ui_todate_playoff_spot_predict():

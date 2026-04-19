@@ -12,6 +12,7 @@ import nhl_client as nhlc
 from zoneinfo import ZoneInfo
 from datetime import datetime as dt
 from file_utils import csvLoad, csvSave
+from playoff_probability import display_playoff_probability
 
 
 def predict_season(to_csv, set_model_random_state, today_dt):
@@ -244,7 +245,7 @@ def playoff_spot_predictions(today_dt, n=100, to_csv=True):
         season_results_df = predict_season(False, False, today_dt)
         season_results_points = nhlu.assign_game_points(season_results_df)
         final_standings_df = nhlu.generate_final_standings(season_results_points, today_dt)
-        _, playoff_matchups = playoffs.playoff_tree_predictions(season_results_df, final_standings_df, False, today_dt, to_csv=False)
+        _, playoff_matchups, rounds_scheduled, rounds_completed = playoffs.playoff_tree_predictions(season_results_df, final_standings_df, False, today_dt, to_csv=False, repeat_pred=True)
 
         # count the number of times each team finishes in each playoff seed across all simulations
         for _, row in final_standings_df.iterrows():
@@ -276,9 +277,22 @@ def playoff_spot_predictions(today_dt, n=100, to_csv=True):
 
     nhlu.playoff_probabilities_printer(count_df)
 
+    # figure out which round of the playoffs is going on, if any
+    if (rounds_scheduled == 0) & (rounds_completed == 0):
+        playoff_rd = 0
+    elif rounds_completed == 0:
+        playoff_rd = 1
+    elif rounds_completed == 1:
+        playoff_rd = 2
+    elif rounds_completed == 2:
+        playoff_rd = 3
+    elif rounds_completed == 3:
+        playoff_rd = 4
+
     if to_csv:
         print(f'\nSaving playoff spot predictions to CSV file...')
         csvSave(count_df, cons.season_pred_folder.format(date=today_dt), cons.season_results_prob_filename.format(n=n, date=today_dt))
+        display_playoff_probability(today_dt, season_results_df[cons.season_name_col].max(), playoff_rd=playoff_rd, matchups=playoff_matchups, display_image=False)
 
     return count_df
 

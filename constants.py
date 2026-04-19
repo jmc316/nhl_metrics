@@ -150,6 +150,7 @@ feature_data_filename = '{season}_feature_data.csv'
 sklearn_model_filename = 'skl_rf_model.pkl'
 season_results_prob_filename = 'season_results_probabilities_{date}_n{n}.csv'
 playoff_tree_filename = '{season}_playoff_tree_{date}.png'
+playoff_probability_filename = '{season}_playoff_probability_{date}_n{n}.png'
 stanley_cup_image = 'stanley_cup.png'
 model_features_filename = '{model}_model_features.txt'
 

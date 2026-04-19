@@ -10,7 +10,7 @@ from playoff_matchup import PlayoffMatchup
 from playoff_tree import display_playoff_tree
 
 
-def playoff_tree_predictions(regular_season_df, season_results_df, set_model_random_state, today_dt, to_csv=True, display_image=True):
+def playoff_tree_predictions(regular_season_df, season_results_df, set_model_random_state, today_dt, to_csv=True, display_image=True, repeat_pred=False):
 
     print('Predicting playoff tree...')
 
@@ -47,6 +47,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_ran
 
         rounds_scheduled = matchups_total_round_map[num_matchups]
         rounds_completed = 0
+        set_model_random_state = False
 
         playoff_df = regular_season_df.copy()
 
@@ -112,7 +113,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_ran
     oob_list, mse_list, rsq_list = [], [], []
 
     # if the regular season is complete, need to generate a new model on the first runthrough of playoff predictions
-    if regular_season_df['gameDate'].max() < pd.to_datetime(today_dt).date():
+    if regular_season_df.loc[regular_season_df[cons.game_type_col]==2,'gameDate'].max() < pd.to_datetime(today_dt).date():
         load_model = False
         save_model = True
     else:
@@ -172,7 +173,9 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_ran
             # predict games on selected date
             print(f'\tPredicting games for {game_dt.strftime("%Y-%m-%d")}...')
             playoff_df_filt = sklu.make_predictions(playoff_df_filt, oob_list, mse_list, rsq_list, set_model_random_state, today_dt, load_model=load_model, save_model=save_model)
-
+            if not repeat_pred:
+                set_model_random_state = True  # only set the random state for the first runthrough of predictions to allow for more variability in predictions for later rounds of the playoffs
+            
             # reset the model params for all predictions after the first
             load_model = True
             save_model = False
@@ -190,7 +193,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_ran
         csvSave(playoff_df, cons.season_pred_folder.format(date=today_dt), cons.playoff_pred_filename.format(date=today_dt))
         display_playoff_tree(all_matchups, playoff_df[cons.season_name_col].max(), today_dt, display_image=display_image)
 
-    return playoff_df, all_matchups
+    return playoff_df, all_matchups, rounds_scheduled, rounds_completed
 
 
 def generate_playoff_matchups(data_df, round_num, prev_round_matchups=None):

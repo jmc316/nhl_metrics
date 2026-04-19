@@ -7,7 +7,6 @@
 - admin data analysis features to add:
     - generate charts displaying each team's point pace before predictions versus after predictions
     - overall model evaluation / score
-    - fake schedule with some playoff games finished?
 
 - codebase features to add:
     - gambling interaction with how much money the model would be winning?
