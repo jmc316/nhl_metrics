@@ -10,7 +10,7 @@ from playoff_matchup import PlayoffMatchup
 from playoff_tree import display_playoff_tree
 
 
-def playoff_tree_predictions(regular_season_df, season_results_df, set_model_state, today_dt, to_csv=True, display_image=True, repeat_pred=False):
+def playoff_tree_predictions(regular_season_df, season_results_df, set_model_state, today_dt, to_csv=True, display_image=True):
 
     print('Predicting playoff tree...')
 
@@ -44,7 +44,6 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
         rounds_scheduled = matchups_total_round_map[num_matchups]
 
         rounds_completed = 0 # initialized at 0, may be incremented below
-        set_model_state = True # need to re-train the model here, it was not re-trained before playoff predictions
         playoff_df = regular_season_df.copy()
 
         all_matchups = {}
@@ -197,10 +196,6 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
             # predict games on selected date
             print(f'\tPredicting games for {game_dt.strftime("%Y-%m-%d")}...')
             playoff_df_filt = sklu.make_predictions(playoff_df_filt, oob_list, mse_list, rsq_list, set_model_state, today_dt, load_model=load_model, save_model=save_model)
-            
-            # if this is a part of a set of predictions, keep the model state random
-            if repeat_pred:
-                set_model_state = False
             
             # reset the model params for all predictions after the first
             load_model = True

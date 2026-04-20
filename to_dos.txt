@@ -15,7 +15,6 @@
 
 - visuals
     - add end of regular season standings visual
-    - add visual for probability df
 
 - future concept implementations
     - pytorch

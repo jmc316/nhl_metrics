@@ -244,7 +244,7 @@ def playoff_spot_predictions(today_dt, n=100, to_csv=True):
         season_results_df = predict_season(False, False, today_dt)
         season_results_points = nhlu.assign_game_points(season_results_df)
         final_standings_df = nhlu.generate_final_standings(season_results_points, today_dt)
-        _, playoff_matchups, rounds_scheduled, rounds_completed = playoffs.playoff_tree_predictions(season_results_df, final_standings_df, False, today_dt, to_csv=False, repeat_pred=True)
+        _, playoff_matchups, rounds_scheduled, rounds_completed = playoffs.playoff_tree_predictions(season_results_df, final_standings_df, False, today_dt, to_csv=False)
 
         # count the number of times each team finishes in each playoff seed across all simulations
         for _, row in final_standings_df.iterrows():
