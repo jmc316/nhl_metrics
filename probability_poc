@@ -1,7 +1,24 @@
 import pandas as pd
+from datetime import datetime as dt
+
+from file_utils import csvLoad
+import constants as cons
+from analyze import prediction_analysis
 
 if __name__ == '__main__':
-    odds_data = pd.read_csv('output/prediction_analysis/game_result_comp_2026-02-24_to_2026-04-17_with_odds.csv')
+
+    today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
+
+    season_actual_df = csvLoad(cons.season_sched_folder, cons.season_sched_filename.format(season='20252026'))
+
+    # date_since = '2026-02-24' # last day before Olympic Break ended
+    date_since = '2026-04-17' # day after season ended
+
+    pred_df = prediction_analysis(season_actual_df, date_since, today_dt) # last day before Olympic Break ended
+
+    odds_data = pd.read_csv('output/prediction_analysis/all_time_schedule_odds.csv')
+
+    odds_data = pd.merge(pred_df, odds_data, on=[cons.game_id_col], how='left')
 
     odds_data['winner_odds'] = odds_data['winner_odds'] = odds_data.apply(lambda row: row['homeTeamOdds'] if row['correct_outcome'] == 1 and row['homeTeamScore_predicted'] > row['awayTeamScore_predicted'] else (row['awayTeamOdds'] if row['correct_outcome'] == 1 and row['homeTeamScore_predicted'] < row['awayTeamScore_predicted'] else 0), axis=1)
 
@@ -10,6 +27,6 @@ if __name__ == '__main__':
     odds_data.loc[odds_data['winner_odds'] > 0, 'winnings'] = odds_data['winner_odds'] / 100
     odds_data.loc[odds_data['winner_odds'] < 0, 'winnings'] = 100 / abs(odds_data['winner_odds'])
 
-    print(odds_data.loc[pd.to_datetime(odds_data['gameDate']) < '2026-04-17', 'winnings'].sum())
+    print(odds_data.loc[pd.to_datetime(odds_data['gameDate']) > date_since, 'winnings'].sum())
 
     pass

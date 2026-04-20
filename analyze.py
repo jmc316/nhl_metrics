@@ -88,12 +88,15 @@ def prediction_analysis(actuals_df, date_since, date_until):
     predict_df = pd.DataFrame()
 
     # loop through every folder in the season prediction folder and create a dataframe with all predictions for the most recent game date
-    for folder in os.listdir('output/season_predictions/'):
-        if (folder < date_since) | (folder >= date_until):
+    for pred_date in os.listdir('output/season_predictions/'):
+        if (pred_date < date_since) | (pred_date >= date_until):
             continue
-        predict_df_indiv = pd.read_csv('output/season_predictions/' + folder + '/regularseason_predictions_' + folder + '.csv')
-        print(f'Analyzing predictions for {folder}...')
-        min_predict_date = predict_df_indiv.loc[predict_df_indiv[cons.game_date_col] == folder, cons.game_date_col].min()
+        if os.path.exists('output/season_predictions/' + pred_date + '/regularseason_predictions_' + pred_date + '.csv'):
+            predict_df_indiv = csvLoad('output/season_predictions/' + pred_date + '/', 'regularseason_predictions_' + pred_date + '.csv')
+        else:
+            predict_df_indiv = csvLoad('output/season_predictions/' + pred_date + '/', 'playoff_tree_predictions_' + pred_date + '.csv') 
+        print(f'Analyzing predictions for {pred_date}...')
+        min_predict_date = predict_df_indiv.loc[predict_df_indiv[cons.game_date_col] == dt.strptime(pred_date, '%Y-%m-%d').date(), cons.game_date_col].min()
         predict_df = pd.concat([predict_df, predict_df_indiv.loc[predict_df_indiv[cons.game_date_col] == min_predict_date]], ignore_index=True)
 
         if predict_df_indiv.loc[predict_df_indiv[cons.game_date_col] == min_predict_date].empty:
@@ -101,7 +104,7 @@ def prediction_analysis(actuals_df, date_since, date_until):
 
     comparison_df = pd.merge(predict_df, actuals_df, on=[cons.game_id_col], suffixes=('_predicted', '_actual'))
 
-    comparison_df = comparison_df[[cons.game_id_col, cons.game_date_col+'_predicted', cons.home_team_name_col+'_predicted', cons.away_team_name_col+'_predicted', cons.home_team_score_col+'_predicted', cons.away_team_score_col+'_predicted', cons.last_period_col+'_predicted',
+    comparison_df = comparison_df[[cons.game_id_col, cons.game_date_col, cons.home_team_name_col+'_predicted', cons.away_team_name_col+'_predicted', cons.home_team_score_col+'_predicted', cons.away_team_score_col+'_predicted', cons.last_period_col+'_predicted',
                             cons.home_team_score_col+'_actual', cons.away_team_score_col+'_actual', cons.last_period_col+'_actual']]
     
     comparison_df.rename(columns={cons.game_date_col+'_predicted': cons.game_date_col, cons.home_team_name_col+'_predicted': cons.home_team_name_col, cons.away_team_name_col+'_predicted': cons.away_team_name_col}, inplace=True)
