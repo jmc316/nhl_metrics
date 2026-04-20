@@ -224,7 +224,8 @@ def generate_final_standings(season_results, today_dt, to_csv=False):
     final_standings[cons.points_percentage_col] = final_standings[cons.total_points_col] / (final_standings[cons.total_games_col] * 2)
 
     # load individual team info to merge with final standings for wildcard setup
-    team_info_df = team_info()
+    # team_info_df = team_info()
+    team_info_df = pd.DataFrame(cons.team_info).transpose().reset_index().rename(columns={'index': cons.team_name_col, 'division': cons.division_name_col, 'conference': cons.conference_name_col})
     final_standings = pd.merge(final_standings, team_info_df[[cons.team_name_col, cons.division_name_col, cons.conference_name_col]], on=cons.team_name_col)
 
     # assign divisionSeed, conferenceSeed based on total points and tiebreakers within each division, conference
