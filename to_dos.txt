@@ -9,9 +9,8 @@
     - overall model evaluation / score
 
 - codebase features to add:
-    - gambling interaction with how much money the model would be winning?
     - add user ui capability to view regular season standings projections, playoff odds, playoff tree
-    - analysis of projections over time
+    - analysis of projections over time - cup % chances, making playoffs %, etc
 
 - visuals
     - add end of regular season standings visual

@@ -8,6 +8,7 @@ import terminal_ui as tui
 from file_utils import csvLoad
 from datetime import datetime as dt
 from analyze import prediction_analysis
+from pred_returns import daily_probability
 from predict import predict_season, playoff_spot_predictions
 
 
@@ -42,6 +43,7 @@ def ui_todate_predict():
                       feature_df[cons.last_period_col].isna()].empty:
         nhlu.nhl_team_standings(season_results_df)
     playoffs.playoff_tree_predictions(feature_df, season_results_df, True, today_dt)
+    daily_probability(today_dt, date_since='2026-02-24')
 
 
 def ui_historic_predict():
