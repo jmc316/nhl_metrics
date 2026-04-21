@@ -12,13 +12,14 @@ if __name__ == '__main__':
     season_actual_df = csvLoad(cons.season_sched_folder, cons.season_sched_filename.format(season='20252026'))
 
     # date_since = '2026-02-24' # last day before Olympic Break ended
-    date_since = '2026-04-17' # day after season ended
+    date_since = '2026-04-18' # day after season ended
 
     pred_df = prediction_analysis(season_actual_df, date_since, today_dt) # last day before Olympic Break ended
 
     odds_data = pd.read_csv('output/prediction_analysis/all_time_schedule_odds.csv')
 
-    odds_data = pd.merge(pred_df, odds_data, on=[cons.game_id_col], how='left')
+    merge_cols = [cons.game_id_col, cons.home_team_name_col, cons.away_team_name_col]
+    odds_data = pd.merge(pred_df, odds_data[merge_cols+['homeTeamOdds', 'awayTeamOdds']], on=merge_cols, how='left')
 
     odds_data['winner_odds'] = odds_data['winner_odds'] = odds_data.apply(lambda row: row['homeTeamOdds'] if row['correct_outcome'] == 1 and row['homeTeamScore_predicted'] > row['awayTeamScore_predicted'] else (row['awayTeamOdds'] if row['correct_outcome'] == 1 and row['homeTeamScore_predicted'] < row['awayTeamScore_predicted'] else 0), axis=1)
 
