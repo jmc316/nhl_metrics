@@ -11,7 +11,7 @@ def daily_probability(today_dt, date_since, display_graphic=True):
 
     season_actual_df = csvLoad(cons.season_sched_folder, cons.season_sched_filename.format(season='20252026'))
 
-    pred_df = prediction_analysis(season_actual_df, date_since, today_dt) # last day before Olympic Break ended
+    pred_df = prediction_analysis(season_actual_df, date_since, today_dt)
 
     odds_data = pd.read_csv('output/prediction_analysis/all_time_schedule_odds.csv')
 
@@ -34,7 +34,7 @@ def daily_probability(today_dt, date_since, display_graphic=True):
     else:
         print(f'Total return on $1 bet since {date_since}: ${total_return:.2f} (Loss of ${1 - total_return:.2f})\n')
 
-    fig, ax = plt.subplots()
+    _, ax = plt.subplots()
 
     # create a column that is the sum of each day's winnings
     odds_data_daily = odds_data.groupby(cons.game_date_col)['winnings'].sum().reset_index()
@@ -46,8 +46,18 @@ def daily_probability(today_dt, date_since, display_graphic=True):
     # create x='2026-04-17' line (playoffs start)
     ax.axvline(pd.to_datetime('2026-04-17').date(), color='green', linewidth=0.8, linestyle='--', label='Playoffs Start')
 
+    # Define condition: green if perfect, red if 0% accuracy, blue otherwise
+    colors = []
+    for date in odds_data_daily[cons.game_date_col]:
+        if odds_data.loc[pd.to_datetime(odds_data[cons.game_date_col]) == dt.strftime(date, cons.date_format_yyyy_mm_dd), 'correct_outcome'].mean() == 1.0:
+            colors.append('green')
+        elif odds_data.loc[pd.to_datetime(odds_data[cons.game_date_col]) == dt.strftime(date, cons.date_format_yyyy_mm_dd), 'correct_outcome'].mean() == 0.0:
+            colors.append('red')
+        else:
+            colors.append('lightblue')
+
     # Create bar chart
-    ax.bar(list(odds_data_daily[cons.game_date_col]), list(odds_data_daily['winnings']), color='lightblue', label='Revenue')
+    ax.bar(list(odds_data_daily[cons.game_date_col]), list(odds_data_daily['winnings']), color=colors, label='Revenue')
 
     # Create line chart on the same axis
     ax.plot(list(odds_data_daily[cons.game_date_col]), list(odds_data_daily['daily_return']), color='red', label='Cumulative Winnings')

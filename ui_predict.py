@@ -59,6 +59,7 @@ def ui_historic_predict():
                       feature_df[cons.last_period_col].isna()].empty:
         nhlu.nhl_team_standings(season_results_df)
     playoffs.playoff_tree_predictions(feature_df, season_results_df, True, today_dt)
+    daily_probability(dt.strftime(today_dt, cons.date_format_yyyy_mm_dd), date_since='2026-02-24')
 
 
 def ui_todate_playoff_spot_predict():
