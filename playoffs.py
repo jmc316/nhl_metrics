@@ -34,6 +34,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
         series_in_progress = [] # no series in progress
         playoff_df = pd.DataFrame() # no playoff games initialized yet
         all_matchups = {} # no playoff matchups yet
+        round_matchups_pre = None
     else:
         print('\tFound scheduled playoff games for this season...')
 
@@ -71,18 +72,18 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
                     east_playoff_matchups = generate_playoff_matchups(season_results_df.loc[season_results_df[cons.conference_name_col] == 'Eastern'], 1)
                     west_playoff_matchups = generate_playoff_matchups(season_results_df.loc[season_results_df[cons.conference_name_col] == 'Western'], 1)
 
-                    round_matchups = east_playoff_matchups.copy()
+                    round_matchups_pre = east_playoff_matchups.copy()
                     for matchup_num, matchup in west_playoff_matchups.items():
-                        round_matchups.update({matchup_num+4: matchup})
+                        round_matchups_pre.update({matchup_num+4: matchup})
                 else:
-                    round_matchups = generate_playoff_matchups(pl_round, round_matchups)
+                    round_matchups_pre = generate_playoff_matchups(pl_round, round_matchups_pre)
 
                 # check the series scores for each series in this round
                 # and update the series winner if any of the series are already over based on the current series scores
 
                 round_complete = True
                 
-                for _, matchup in round_matchups.items():
+                for _, matchup in round_matchups_pre.items():
 
                     matchup_teams = matchup.get_teams()
                     series_key = frozenset(matchup_teams)
@@ -120,7 +121,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
                     rounds_completed += 1
                     print(f'Playoffs Round {pl_round} already complete')
 
-                all_matchups.update({pl_round: round_matchups})
+                all_matchups.update({pl_round: round_matchups_pre})
 
             pass
 
@@ -145,13 +146,17 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
 
         # playoff round 1
         if pl_round == 1:
-            # generate the round 1 playoff matchups based off the regular season standings
-            east_playoff_matchups = generate_playoff_matchups(season_results_df.loc[season_results_df[cons.conference_name_col] == 'Eastern'], 1)
-            west_playoff_matchups = generate_playoff_matchups(season_results_df.loc[season_results_df[cons.conference_name_col] == 'Western'], 1)
 
-            round_matchups = east_playoff_matchups.copy()
-            for matchup_num, matchup in west_playoff_matchups.items():
-                round_matchups.update({matchup_num+4: matchup})
+            if round_matchups_pre is not None:
+                round_matchups = round_matchups_pre.copy()
+            else:
+                # generate the round 1 playoff matchups based off the regular season standings
+                east_playoff_matchups = generate_playoff_matchups(season_results_df.loc[season_results_df[cons.conference_name_col] == 'Eastern'], 1)
+                west_playoff_matchups = generate_playoff_matchups(season_results_df.loc[season_results_df[cons.conference_name_col] == 'Western'], 1)
+
+                round_matchups = east_playoff_matchups.copy()
+                for matchup_num, matchup in west_playoff_matchups.items():
+                    round_matchups.update({matchup_num+4: matchup})
 
         # playoff rounds 2, 3, 4
         else:
