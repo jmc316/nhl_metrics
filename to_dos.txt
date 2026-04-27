@@ -4,13 +4,11 @@
     - injury score  --- nhlc.nhl_client.game_center.play_by_play(2025021312)['rosterSpots']
     - nhl edge scraping?
 
-- admin data analysis features to add:
-    - generate charts displaying each team's point pace before predictions versus after predictions
-    - overall model evaluation / score
-
 - codebase features to add:
-    - add user ui capability to view regular season standings projections, playoff odds, playoff tree
     - analysis of projections over time - cup % chances, making playoffs %, etc
+    - add ETL pipeline for input of game ML odds, currently manual
+    - add website for users to view data, remove admin/user mode in codebase
+    - bug fix for bug that predicts games after a series ends before the round is over
 
 - visuals
     - add end of regular season standings visual

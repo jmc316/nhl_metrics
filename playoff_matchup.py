@@ -55,6 +55,9 @@ class PlayoffMatchup:
     def get_series_loser(self):
         return self.series_loser
     
+    def get_series_loser_score(self):
+        return self.series_loser_score
+    
     def get_series_score(self):
         return str(self.series_winner_score) + '-' + str(self.series_loser_score)
     
