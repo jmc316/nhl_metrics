@@ -163,6 +163,8 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
         load_model = True
         save_model = False
 
+    first_loop = True
+
     # loop through every playoff round
     for pl_round in range(rounds_completed+1, 5):
         print(f'\nPlayoffs Round {pl_round}')
@@ -238,6 +240,15 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
 
             playoff_df = pd.concat([playoff_df_filt, playoff_df.loc[playoff_df[cons.game_date_col] > game_dt]], ignore_index=True)
 
+            if first_loop:
+                for _, row in playoff_df_filt.loc[playoff_df_filt[cons.game_date_col]==game_dt].iterrows():
+                    ot_str = ' (OT)' if row[cons.last_period_col]=='OT' else ''
+                    if row[cons.home_team_score_col] > row[cons.away_team_score_col]:
+                        print(f"\t\t\t{row[cons.away_team_name_col]} {row[cons.away_team_score_col]} at {row[cons.home_team_name_col].upper()} {row[cons.home_team_score_col]}{ot_str}")
+                    else:
+                        print(f"\t\t\t{row[cons.away_team_name_col].upper()} {row[cons.away_team_score_col]} at {row[cons.home_team_name_col]} {row[cons.home_team_score_col]}{ot_str}")
+                first_loop = False
+            
             # check to see if any of the series are over based on the current series scores
             playoff_df, round_matchups = series_final_check(playoff_df, playoff_df_filt, round_matchups, game_dt)
 

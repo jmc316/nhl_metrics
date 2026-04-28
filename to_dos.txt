@@ -3,6 +3,7 @@
     - starting goalie --- nhlc.nhl_client.misc.config()
     - injury score  --- nhlc.nhl_client.game_center.play_by_play(2025021312)['rosterSpots']
     - nhl edge scraping?
+    - add historical predictions as feature
 
 - codebase features to add:
     - analysis of projections over time - cup % chances, making playoffs %, etc

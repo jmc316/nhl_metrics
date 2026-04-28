@@ -13,10 +13,14 @@ def daily_probability(today_dt, date_since, display_graphic=True):
 
     pred_df = prediction_analysis(season_actual_df, date_since, today_dt)
 
-    odds_data = pd.read_csv('output/prediction_analysis/all_time_schedule_odds.csv')
+    odds_data = pd.read_csv(cons.util_data_folder + 'all_time_schedule_odds.csv')
 
     merge_cols = [cons.game_id_col, cons.home_team_name_col, cons.away_team_name_col]
     odds_data = pd.merge(pred_df, odds_data[merge_cols+['homeTeamOdds', 'awayTeamOdds']], on=merge_cols, how='left')
+
+    if odds_data['homeTeamOdds'].isnull().any() or odds_data['awayTeamOdds'].isnull().any():
+        missing_games = odds_data['homeTeamOdds'].isnull().sum() + odds_data['awayTeamOdds'].isnull().sum()
+        print(f"Warning: Missing odds data for {missing_games} entries!")
 
     odds_data['winner_odds'] = odds_data['winner_odds'] = odds_data.apply(lambda row: row['homeTeamOdds'] if row['correct_outcome'] == 1 and row['homeTeamScore_predicted'] > row['awayTeamScore_predicted'] else (row['awayTeamOdds'] if row['correct_outcome'] == 1 and row['homeTeamScore_predicted'] < row['awayTeamScore_predicted'] else 0), axis=1)
 

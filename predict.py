@@ -195,7 +195,7 @@ def schedule_update():
 
     sched_df_cur = pd.concat([sched_df.loc[
         (sched_df[cons.season_name_col] == cur_season) &
-        (sched_df[cons.starttime_utc_col].dt.date < dt.now(ZoneInfo('UTC')).date() - datetime.timedelta(days=1))], sched_df_filt], ignore_index=True)
+        (sched_df[cons.starttime_utc_col].dt.date < (dt.now(ZoneInfo('UTC')).date() - datetime.timedelta(days=1)))], sched_df_filt], ignore_index=True)
     
     sched_df_cur[cons.starttime_est_col] = sched_df_cur[cons.starttime_utc_col].dt.tz_convert('EST')
 
