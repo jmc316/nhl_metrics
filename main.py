@@ -18,30 +18,21 @@ def main_user():
         func_map[main_ui.get_response()]()
 
 
-def main_admin():
+def main():
 
     # display intro ui
-    tui.intro_screen('admin')
+    tui.intro_screen()
 
     while True:
 
         # display main ui
-        main_ui = tui.main_admin_screen()
+        main_ui = tui.main_screen()
 
-        func_map = {option: getattr(__import__(module), func) for option, (module, func) in cons.main_admin_options.items()}
+        func_map = {option: getattr(__import__(module), func) for option, (module, func) in cons.main_options.items()}
 
         # call the function associated with the user's choice
         func_map[main_ui.get_response()]()
 
 
 if __name__ == "__main__":
-
-    role = 'admin'  # or 'user'
-
-    if role == 'admin':
-        main_admin()
-    elif role == 'user':
-        main_user()
-    else:
-        print("Invalid role. Please choose 'admin' or 'user'.")
-        exit()
+    main()

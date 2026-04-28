@@ -1,5 +1,6 @@
 import os
 import playoffs
+import datetime
 
 import numpy as np
 import pandas as pd
@@ -173,23 +174,30 @@ def game_results_update(sched_df, today_dt):
 
 def schedule_update():
 
-    sched_df = create_df_set()
-
-    sched_df[cons.starttime_est_col] = pd.to_datetime(sched_df[cons.starttime_utc_col]).dt.tz_convert('EST')
+    sched_df = create_df_set(dt.now().date())
 
     cur_season = max(sched_df[cons.season_name_col])
 
-    sched_df_filt = sched_df.loc[(sched_df[cons.season_name_col]==cur_season) & (sched_df[cons.starttime_est_col] < dt.now(ZoneInfo('America/New_York'))) & (sched_df[cons.away_team_score_col].isna())]
+    sched_df[cons.starttime_utc_col] = pd.to_datetime(sched_df[cons.starttime_utc_col], format='ISO8601')
+
+    sched_df_filt = pd.DataFrame()
 
     # loop through each date between today and the end of the season (cons.season_enddt) and check if there are any games on that date in the schedule dataframe that have not been updated with scores; if there are, update the schedule dataframe with the scores for those games by fetching the data from the API
-    for game_date in pd.date_range(start=dt.now().date(), end=pd.to_datetime(f'{dt.now().year}-{cons.season_enddt}').date(), freq='D'):
+    for game_date in pd.date_range(start=dt.now(ZoneInfo('UTC')).date() - datetime.timedelta(days=1),
+                                   end=pd.to_datetime(f'{dt.now(ZoneInfo('UTC')).year}-{cons.season_enddt}').date(), freq='D'):
         print(f'\tUpdating schedule data for {game_date.strftime("%Y-%m-%d")}...')
         daily_sched = nhlc.get_sched_data(game_date, 0)
         sched_df_filt = pd.concat([sched_df_filt, daily_sched], ignore_index=True)
         sched_df_filt.sort_values(by=cons.starttime_utc_col, inplace=True)
         sched_df_filt.reset_index(drop=True, inplace=True)
 
-    sched_df_cur = pd.concat([sched_df.loc[(sched_df[cons.season_name_col] == cur_season) & (sched_df[cons.starttime_est_col] < dt.now(ZoneInfo('America/New_York')))], sched_df_filt], ignore_index=True)
+    sched_df_filt[cons.starttime_utc_col] = pd.to_datetime(sched_df_filt[cons.starttime_utc_col], format='ISO8601')
+
+    sched_df_cur = pd.concat([sched_df.loc[
+        (sched_df[cons.season_name_col] == cur_season) &
+        (sched_df[cons.starttime_utc_col].dt.date < dt.now(ZoneInfo('UTC')).date() - datetime.timedelta(days=1))], sched_df_filt], ignore_index=True)
+    
+    sched_df_cur[cons.starttime_est_col] = sched_df_cur[cons.starttime_utc_col].dt.tz_convert('EST')
 
     csvSave(sched_df_cur, cons.season_sched_folder, cons.season_sched_filename.format(season=cur_season))
 

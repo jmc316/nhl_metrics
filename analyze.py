@@ -122,8 +122,6 @@ def prediction_analysis(actuals_df, date_since, date_until):
     
     print(f"\nGames with correct outcome prediction: {sum(comparison_df['correct_outcome'])} / {len(comparison_df)} ({sum(comparison_df['correct_outcome']) / len(comparison_df):.2%})\n")
 
-    # csvSave(comparison_df, cons.pred_analysis_folder, cons.pred_analysis_filename.format(date_since=date_since, date_until=date_until))
-
     return comparison_df
 
 

@@ -90,10 +90,9 @@ class terminal_input_dt:
         return self.response
 
 
-def intro_screen(mode):
+def intro_screen():
     print('\nWelcome to NHL Metrics!')
-    print('This program allows you to analyze team data, and view ML predictions.')
-    print(f'You are in {mode} mode.\n')
+    print('This program allows you to analyze team data, and view ML predictions.\n')
 
 
 def main_user_screen():
@@ -107,9 +106,9 @@ def main_user_screen():
     return terminal_ui
 
 
-def main_admin_screen():
+def main_screen():
 
-    options = cons.main_admin_options
+    options = cons.main_options
 
     terminal_ui = terminal_input(options, exit=True)
     terminal_ui.display_options()

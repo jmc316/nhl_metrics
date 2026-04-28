@@ -1,15 +1,8 @@
 # format is 'Option Name': ['module_name', 'function_name']
-main_user_options = {
-    'NHL Team Stats': ['ui_nhl', 'nhl_team_stats'],
-    'Model Accuracy': ['ui_predict', 'ui_model_accuracy']
-}
-main_admin_options = {
+main_options = {
+    'Update Season Schedule': ['ui_schedule', 'ui_update_season_schedule'],
     'Update Predictions': ['ui_predict', 'ui_update_predictions'],
     'Playoff Spot Probability': ['ui_predict', 'ui_update_playoff_spot_probabilities']
-}
-team_stats_options = {
-    'Standings': ['nhl_utils', 'nhl_team_standings'],
-    'Individual Team Stats': ['nhl_utils', 'nhl_individual_team_stats'],
 }
 update_predictions_options = {
     'Update to-date Predictions': ['ui_predict', 'ui_todate_predict'],
@@ -139,7 +132,6 @@ images_folder = 'images/'
 season_sched_folder = output_folder + 'season_schedules/'
 season_feature_sets_folder = output_folder + 'season_feature_sets/'
 season_pred_folder = output_folder + 'season_predictions/{date}/'
-pred_analysis_folder = output_folder + 'prediction_analysis/'
 pred_analysis_filename = 'game_result_comp_{date_since}_to_{date_until}.csv'
 season_sched_filename = '{season}_season_sched.csv'
 season_pred_filename = 'regularseason_predictions_{date}.csv'
