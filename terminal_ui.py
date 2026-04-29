@@ -90,33 +90,6 @@ class terminal_input_dt:
         return self.response
 
 
-def intro_screen():
-    print('\nWelcome to NHL Metrics!')
-    print('This program allows you to analyze team data, and view ML predictions.\n')
-
-
-def main_user_screen():
-
-    options = cons.main_user_options
-
-    terminal_ui = terminal_input(options, exit=True)
-    terminal_ui.display_options()
-    terminal_ui.receive_user_input()
-
-    return terminal_ui
-
-
-def main_screen():
-
-    options = cons.main_options
-
-    terminal_ui = terminal_input(options, exit=True)
-    terminal_ui.display_options()
-    terminal_ui.receive_user_input()
-
-    return terminal_ui
-
-
 def exit_program():
     print('\nExiting the program. Goodbye!\n')
     exit()

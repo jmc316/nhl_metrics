@@ -24,7 +24,7 @@ def predict_season(to_csv, set_model_state, today_dt):
     # if there is a manual today_dt, Nullify all scores for games on or after the date
     if today_dt != dt.now().date().strftime(cons.date_format_yyyy_mm_dd):
         today_date_utc = pd.to_datetime(today_dt).tz_localize('EST').tz_convert('UTC')
-        sched_df.loc[pd.to_datetime(sched_df[cons.starttime_utc_col]) >= today_date_utc, cons.predict_cols] = np.nan
+        sched_df.loc[pd.to_datetime(sched_df[cons.starttime_utc_col], format='ISO8601') >= today_date_utc, cons.predict_cols] = np.nan
 
     # add features that are not dependent on the prediction set results
     feature_df = ft.datetime_feature_add(sched_df)
@@ -153,6 +153,10 @@ def game_results_update(sched_df, today_dt):
         if missing_sched.empty:
             print('\t\tNo missing schedule data found\n')
             return sched_df
+        
+        missing_sched[cons.starttime_utc_col] = pd.to_datetime(missing_sched[cons.starttime_utc_col], format='ISO8601')
+        sched_df[cons.starttime_utc_col] = pd.to_datetime(sched_df[cons.starttime_utc_col], format='ISO8601')
+        missing_sched[cons.starttime_est_col] = missing_sched[cons.starttime_utc_col].dt.tz_convert('EST')
 
         sched_df = sched_df.loc[~sched_df[cons.game_id_col].isin(missing_sched[cons.game_id_col])]
         sched_df = pd.concat([sched_df, missing_sched], ignore_index=True)

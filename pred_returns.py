@@ -1,3 +1,5 @@
+import datetime
+
 import pandas as pd
 import constants as cons
 import matplotlib.pyplot as plt
@@ -20,7 +22,7 @@ def daily_probability(today_dt, date_since, display_graphic=True):
 
     if odds_data['homeTeamOdds'].isnull().any() or odds_data['awayTeamOdds'].isnull().any():
         missing_games = odds_data['homeTeamOdds'].isnull().sum() + odds_data['awayTeamOdds'].isnull().sum()
-        print(f"Warning: Missing odds data for {missing_games} entries!")
+        print(f"*** WARNING: Missing odds data for {missing_games} entries! ***")
 
     odds_data['winner_odds'] = odds_data['winner_odds'] = odds_data.apply(lambda row: row['homeTeamOdds'] if row['correct_outcome'] == 1 and row['homeTeamScore_predicted'] > row['awayTeamScore_predicted'] else (row['awayTeamOdds'] if row['correct_outcome'] == 1 and row['homeTeamScore_predicted'] < row['awayTeamScore_predicted'] else 0), axis=1)
 
@@ -33,10 +35,18 @@ def daily_probability(today_dt, date_since, display_graphic=True):
 
     total_return = odds_data.loc[pd.to_datetime(odds_data['gameDate']) > date_since, 'winnings'].sum()
 
+    print('Yesterday\'s games and returns:')
+    for _, row in odds_data.loc[odds_data[cons.game_date_col]==(pd.to_datetime(today_dt) - datetime.timedelta(days=1)).date()].iterrows():
+        ot_str = ' (OT)' if row[cons.last_period_col+'_actual']=='OT' else ''
+        if row[cons.home_team_score_col+'_actual'] > row[cons.away_team_score_col+'_actual']:
+            print(f"\t{row[cons.away_team_name_col]} {int(row[cons.away_team_score_col+'_actual'])} at {row[cons.home_team_name_col].upper()} {int(row[cons.home_team_score_col+'_actual'])}{ot_str}: {row['winnings']}")
+        else:
+            print(f"\t{row[cons.away_team_name_col].upper()} {int(row[cons.away_team_score_col+'_actual'])} at {row[cons.home_team_name_col]} {int(row[cons.home_team_score_col+'_actual'])}{ot_str}: {row['winnings']}")
+
     if total_return > 0:
-        print(f'Total return on $1 bet since {date_since}: ${total_return:.2f} (Profit of ${total_return - 1:.2f})\n')
+        print(f'\nTotal return on $1 bet since {date_since}: ${total_return:.2f} (Profit of ${total_return - 1:.2f})\n')
     else:
-        print(f'Total return on $1 bet since {date_since}: ${total_return:.2f} (Loss of ${1 - total_return:.2f})\n')
+        print(f'\nTotal return on $1 bet since {date_since}: ${total_return:.2f} (Loss of ${1 - total_return:.2f})\n')
 
     _, ax = plt.subplots()
 
