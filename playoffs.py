@@ -42,6 +42,14 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
         matchups_total_round_map = {16: 1, 24: 2, 28: 3, 30: 4}
         matchups_df = scheduled_games_df[['homeTeamName', 'awayTeamName']].drop_duplicates()
         num_matchups = len(matchups_df)
+
+        # if there are partially scheduled rounds
+        if num_matchups not in matchups_total_round_map.keys():
+            num_matchups = max([val for val in matchups_total_round_map.keys() if val < num_matchups])
+            next_round_begin = True
+        else:
+            next_round_begin = False
+
         rounds_scheduled = matchups_total_round_map[num_matchups]
 
         rounds_completed = 0 # initialized at 0, may be incremented below
@@ -190,7 +198,14 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
 
         # if there is no schedule for this round, create the schedule
         if rounds_scheduled < pl_round:
-            next_round_sched = create_playoff_round_schedule(round_matchups, venue_map_df, regular_season_df, playoff_df)
+            # if there have already been schedueld games for this round, but not for the full series
+            if next_round_begin:
+                next_round_begin = False
+                already_scheduled_games_df = playoff_df.loc[(playoff_df[cons.game_type_col] == 3) &
+                                    (playoff_df[cons.season_name_col] == current_season)].merge(matchups_df.tail(len(matchups_df)-num_matchups))
+                next_round_sched = create_playoff_round_schedule(round_matchups, venue_map_df, regular_season_df, playoff_df, already_scheduled_games_df=already_scheduled_games_df)
+            else:
+                next_round_sched = create_playoff_round_schedule(round_matchups, venue_map_df, regular_season_df, playoff_df)
 
             # create the round 1 playoff schedule and add it to the regular season schedule
             if pl_round == 1:
@@ -390,7 +405,7 @@ def playoff_matchups_234(round_id, prev_round_matchups):
     return matchups_dict
 
 
-def create_playoff_round_schedule(all_matchups, venue_map_df, feature_df, playoff_df):
+def create_playoff_round_schedule(all_matchups, venue_map_df, feature_df, playoff_df, already_scheduled_games_df=None):
 
     # if the playoff dataframe is empty, take the round start date from the regular season
     if playoff_df.empty:
@@ -423,9 +438,20 @@ def create_playoff_round_schedule(all_matchups, venue_map_df, feature_df, playof
         else:
             game_dt = round_stdt
             sched_format = cons.final_sched_format
+
+        # check if the series already has scheduled games
+        if already_scheduled_games_df is not None:
+            if matchup.get_team1() in already_scheduled_games_df[cons.home_team_name_col].values:
+                sched_game_dts = already_scheduled_games_df.loc[already_scheduled_games_df[cons.home_team_name_col] == matchup.get_team1(), cons.game_date_col].values
+                game_dts = [sched_game_dts[0] + pd.Timedelta(days=val) for val in sched_format]
+                game_dts = game_dts[len(sched_game_dts):] # only take the number of game dates that are already scheduled for this series
+            else:
+                sched_game_dts = []
+                game_dts = [game_dt + pd.Timedelta(days=val) for val in sched_format]
+        else:
+            sched_game_dts = []
+            game_dts = [game_dt + pd.Timedelta(days=val) for val in sched_format]
         
-        # list of game dates for the series
-        game_dts = [game_dt + pd.Timedelta(days=val) for val in sched_format]
 
         # list of home and away teams for the series (higher seed is home first)
         if matchup.get_team1_conf_seed() < matchup.get_team2_conf_seed():
@@ -434,6 +460,8 @@ def create_playoff_round_schedule(all_matchups, venue_map_df, feature_df, playof
         else:
             home_teams = [matchup.get_team1()] * 2 + [matchup.get_team2()] * 2 + [matchup.get_team1()] + [matchup.get_team2()] + [matchup.get_team1()]
             away_teams = [matchup.get_team2()] * 2 + [matchup.get_team1()] * 2 + [matchup.get_team2()] + [matchup.get_team1()] + [matchup.get_team2()]
+        home_teams = home_teams[len(sched_game_dts):]
+        away_teams = away_teams[len(sched_game_dts):]
 
         # list of venues for the sesries based off the home team for each game
         venues = [list(venue_map_df.loc[venue_map_df[cons.home_team_name_col]==home_team][[cons.venue_col, cons.venue_timezone_col]].values[0]) for home_team in home_teams]
