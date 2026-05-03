@@ -14,6 +14,7 @@ def daily_probability(today_dt, date_since, display_graphic=True):
     season_actual_df = csvLoad(cons.season_sched_folder, cons.season_sched_filename.format(season='20252026'))
 
     pred_df = prediction_analysis(season_actual_df, date_since, today_dt)
+    _ = prediction_analysis(season_actual_df, '2026-04-17', today_dt)
 
     odds_data = pd.read_csv(cons.util_data_folder + 'all_time_schedule_odds.csv')
 
@@ -34,6 +35,7 @@ def daily_probability(today_dt, date_since, display_graphic=True):
     csvSave(odds_data, f'output/season_predictions/{today_dt}/', f'prediction_returns_{date_since}_to_{today_dt}.csv')
 
     total_return = odds_data.loc[pd.to_datetime(odds_data['gameDate']) > date_since, 'winnings'].sum()
+    playoff_return = odds_data.loc[pd.to_datetime(odds_data['gameDate']) > '2026-04-17', 'winnings'].sum()
 
     print('Yesterday\'s games and returns:')
     for _, row in odds_data.loc[odds_data[cons.game_date_col]==(pd.to_datetime(today_dt) - datetime.timedelta(days=1)).date()].iterrows():
@@ -47,6 +49,11 @@ def daily_probability(today_dt, date_since, display_graphic=True):
         print(f'\nTotal return on $1 bet since {date_since}: ${total_return:.2f} (Profit of ${total_return - 1:.2f})\n')
     else:
         print(f'\nTotal return on $1 bet since {date_since}: ${total_return:.2f} (Loss of ${1 - total_return:.2f})\n')
+
+    if playoff_return > 0:
+        print(f'Total return on $1 bet since playoffs start: ${playoff_return:.2f} (Profit of ${playoff_return - 1:.2f})\n')
+    else:
+        print(f'Total return on $1 bet since playoffs start: ${playoff_return:.2f} (Loss of ${1 - playoff_return:.2f})\n')
 
     _, ax = plt.subplots()
 
