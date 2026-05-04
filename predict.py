@@ -206,6 +206,21 @@ def schedule_update():
 
     csvSave(sched_df_cur, cons.season_sched_folder, cons.season_sched_filename.format(season=cur_season))
 
+    # update the odds analysis file with the new schedule data
+    odds_data = csvLoad(cons.util_data_folder, 'all_time_schedule_odds.csv')
+
+    odds_data[cons.starttime_utc_col] = pd.to_datetime(odds_data[cons.starttime_utc_col], format='ISO8601')
+    odds_data[cons.starttime_est_col] = odds_data[cons.starttime_utc_col].dt.tz_convert('EST')
+    sched_df_filt[cons.starttime_est_col] = pd.to_datetime(sched_df_filt[cons.starttime_utc_col], format='ISO8601').dt.tz_convert('EST')
+
+    odds_data = pd.concat([odds_data.loc[
+        (odds_data[cons.season_name_col] == cur_season) &
+        (odds_data[cons.starttime_est_col].dt.date < (dt.now(ZoneInfo('EST')).date()))], sched_df_filt.loc[
+            (sched_df_filt[cons.starttime_est_col].dt.date >= (dt.now(ZoneInfo('EST')).date()))
+            ]], ignore_index=True)
+
+    csvSave(odds_data, cons.util_data_folder, 'all_time_schedule_odds.csv')
+
     return sched_df_cur
 
 
