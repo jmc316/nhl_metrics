@@ -85,7 +85,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
                     for matchup_num, matchup in west_playoff_matchups.items():
                         round_matchups_pre.update({matchup_num+4: matchup})
                 else:
-                    round_matchups_pre = generate_playoff_matchups(pl_round, round_matchups_pre)
+                    round_matchups_pre = generate_playoff_matchups(playoff_df, pl_round, round_matchups_pre)
 
                 # check the series scores for each series in this round
                 # and update the series winner if any of the series are already over based on the current series scores
@@ -151,10 +151,9 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
                 if round_complete:
                     rounds_completed += 1
                     print(f'Playoffs Round {pl_round} already complete')
+                    series_finished = []
 
                 all_matchups.update({pl_round: round_matchups_pre})
-
-            pass
 
     # load the venue map to establish each team's home venue and timezone
     venue_map_df = venue_map_load(regular_season_df)
@@ -193,6 +192,8 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
 
         # playoff rounds 2, 3, 4
         else:
+            if all_matchups[pl_round-1] is not None:
+                round_matchups = all_matchups[pl_round-1].copy()
             # generate the round n playoff matchups based off the regular season standings
             round_matchups = generate_playoff_matchups(playoff_df, pl_round, round_matchups)
 
