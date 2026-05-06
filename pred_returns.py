@@ -46,14 +46,14 @@ def daily_probability(today_dt, date_since, display_graphic=True):
             print(f"\t{row[cons.away_team_name_col].upper()} {int(row[cons.away_team_score_col+'_actual'])} at {row[cons.home_team_name_col]} {int(row[cons.home_team_score_col+'_actual'])}{ot_str}: {row['winnings']}")
 
     if total_return > 0:
-        print(f'\nTotal return on $1 bet since {date_since}: ${total_return:.2f} (Profit of ${total_return - 1:.2f})\n')
+        print(f'\nTotal return on $1 bet since {date_since}: ${total_return:.2f}\n')
     else:
-        print(f'\nTotal return on $1 bet since {date_since}: ${total_return:.2f} (Loss of ${1 - total_return:.2f})\n')
+        print(f'\nTotal return on $1 bet since {date_since}: ${total_return:.2f}\n')
 
     if playoff_return > 0:
-        print(f'Total return on $1 bet since playoffs start: ${playoff_return:.2f} (Profit of ${playoff_return - 1:.2f})\n')
+        print(f'Total return on $1 bet since playoffs start: ${playoff_return:.2f}\n')
     else:
-        print(f'Total return on $1 bet since playoffs start: ${playoff_return:.2f} (Loss of ${1 - playoff_return:.2f})\n')
+        print(f'Total return on $1 bet since playoffs start: ${playoff_return:.2f}\n')
 
     _, ax = plt.subplots()
 

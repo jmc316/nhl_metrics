@@ -6,7 +6,7 @@
     - add historical predictions as feature
 
 - codebase features to add:
-    - add ETL pipeline for input of game ML odds, currently manual
+    - add ETL pipeline for input of game ML odds, currently manual - start with terminal input when missing
     - add website for users to view data
     - historical playoff projections with series in progress
     - add all_time_schedule_odds capability for multiple seasons, multiple date ranges (reg season, playoffs, total season, all time, etc.)
