@@ -179,11 +179,10 @@ def game_results_update(sched_df, today_dt):
 def schedule_update():
 
     sched_df = create_df_set(dt.now().date())
-
     cur_season = max(sched_df[cons.season_name_col])
 
     sched_df[cons.starttime_utc_col] = pd.to_datetime(sched_df[cons.starttime_utc_col], format='ISO8601')
-    sched_df[cons.starttime_est_col] = pd.to_datetime(sched_df[cons.starttime_est_col], format='ISO8601')
+    sched_df[cons.starttime_est_col] = sched_df[cons.starttime_utc_col].dt.tz_convert('EST')
 
     sched_df_filt = pd.DataFrame()
 
@@ -211,7 +210,7 @@ def schedule_update():
 
     odds_data[cons.starttime_utc_col] = pd.to_datetime(odds_data[cons.starttime_utc_col], format='ISO8601')
     odds_data[cons.starttime_est_col] = odds_data[cons.starttime_utc_col].dt.tz_convert('EST')
-    sched_df_filt[cons.starttime_est_col] = pd.to_datetime(sched_df_filt[cons.starttime_utc_col], format='ISO8601').dt.tz_convert('EST')
+    sched_df_filt[cons.starttime_est_col] = sched_df_filt[cons.starttime_utc_col].dt.tz_convert('EST')
 
     update_dt = odds_data.loc[
         (odds_data[cons.season_name_col] == cur_season) &

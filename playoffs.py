@@ -192,10 +192,14 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
 
         # playoff rounds 2, 3, 4
         else:
-            if all_matchups[pl_round-1] is not None:
-                round_matchups = all_matchups[pl_round-1].copy()
-            # generate the round n playoff matchups based off the regular season standings
-            round_matchups = generate_playoff_matchups(playoff_df, pl_round, round_matchups)
+            # if all_matchups[pl_round-1] is not None:
+            #     round_matchups = all_matchups[pl_round-1].copy()
+            if round_matchups_pre is not None:
+                round_matchups = round_matchups_pre.copy()
+                round_matchups_pre = None
+            else:
+                # generate the round n playoff matchups based off the regular season standings
+                round_matchups = generate_playoff_matchups(playoff_df, pl_round, round_matchups)
 
         # if there is no schedule for this round, create the schedule
         if rounds_scheduled < pl_round:
