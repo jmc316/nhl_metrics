@@ -100,6 +100,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
                     # look for the latest completed game in this series
                     last_series_game = latest_series_game.get(series_key)
                     if last_series_game is None:
+                        round_complete = False
                         continue
 
                     # if there has already been a winner in this series, update the matchup with the series winner and score
@@ -456,7 +457,6 @@ def create_playoff_round_schedule(all_matchups, venue_map_df, feature_df, playof
         else:
             sched_game_dts = []
             game_dts = [game_dt + pd.Timedelta(days=val) for val in sched_format]
-        
 
         # list of home and away teams for the series (higher seed is home first)
         if matchup.get_team1_conf_seed() < matchup.get_team2_conf_seed():
