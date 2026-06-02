@@ -191,6 +191,8 @@ def schedule_update():
                                    end=pd.to_datetime(f'{dt.now(ZoneInfo('EST')).year}-{cons.season_enddt}').date(), freq='D'):
         print(f'\tUpdating schedule data for {game_date.strftime("%Y-%m-%d")}...')
         daily_sched = nhlc.get_sched_data(game_date, 0)
+        if daily_sched.empty:
+            continue
         sched_df_filt = pd.concat([sched_df_filt, daily_sched], ignore_index=True)
         sched_df_filt.sort_values(by=cons.starttime_utc_col, inplace=True)
         sched_df_filt.reset_index(drop=True, inplace=True)
