@@ -17,3 +17,6 @@
 - future concept implementations
     - pytorch
     - pytest
+
+- new to-dos
+    - seperate creation of Schedule updates, team features, player features, goalie features

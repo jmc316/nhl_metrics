@@ -182,6 +182,7 @@ cython_debug/
 
 # output csv files
 /output
+/legacy_data_backup
 
 # model files
 /model_files

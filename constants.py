@@ -1,6 +1,10 @@
 # format is 'Option Name': ['module_name', 'function_name']
 main_options = {
-    'Update Season Schedule': ['ui_schedule', 'ui_update_season_schedule'],
+    'Update Schedule Actuals Data': ['ui_schedule', 'ui_update_season_schedule'],
+    'Update Schedule Feature Data': ['ui_features', 'ui_update_schedule_feature_data'],
+    'Update Team Feature Data': ['ui_features', 'ui_update_team_feature_data'],
+    'Update Player Feature Data': ['ui_features', 'ui_update_player_feature_data'],
+    'Update Goalie Feature Data': ['ui_features', 'ui_update_goalie_feature_data'],
     'Update Predictions': ['ui_predict', 'ui_update_predictions'],
     'Playoff Spot Probability': ['ui_predict', 'ui_update_playoff_spot_probabilities']
 }
@@ -115,15 +119,15 @@ make_r2_val = 'make_round_2'
 make_r3_val = 'make_round_3'
 make_cup_final_val = 'make_cup_final'
 win_cup_val = 'win_cup'
-season_stdt = '09-23'
+season_stdt = '09-20'
 season_enddt = '06-30'
+cur_season_name = '20262027'
 
 predict_cols = [home_team_score_col, away_team_score_col, last_period_col]
 tiebreaker_cols = ['totalPoints', 'pointsPercentage', 'totalRegWins', 'totalRegOTWins', 'totalWins', 'goalDifferential', 'totalGoalsFor']
 final_standings_col_order = ['conferenceName', 'conferenceSeed', 'divisionName', 'divisionSeed', 'playoffSeed', 'teamName', 'totalGames',
                  'totalWins', 'totalLosses', 'totalOTLs', 'totalPoints', 'pointsPercentage', 'totalRegWins', 'totalRegOTWins',
                  'goalDifferential', 'totalGoalsFor']
-
 
 output_folder = 'output/'
 util_data_folder = 'util_data/'
@@ -182,8 +186,43 @@ team_info = {
     'Winnipeg Jets': {'c1': (66, 30, 4), 'logo': images_folder + 'winnipeg_jets_logo.png', 'conference': 'Western', 'division': 'Central'}
 }
 
+defunct_team_info = {
+    'Arizona Coyotes': {'c1': None, 'logo': None, 'conference': 'Western', 'division': 'Central'},
+    'Utah Utah Hockey Club': {'c1': None, 'logo': None, 'conference': 'Western', 'division': 'Central'},
+}
+
 missing_geoloc = {
     'Amalie Arena': (27.9439, -82.4519),
     'FLA Live Arena': (26.1583, -80.3256),
     'Gila River Arena': (33.5325, -112.2611)
 }
+
+outdoor_venues = [
+    'Target Field', 'Nissan Stadium', 'Tim Hortons Field', 'Fenway Park', 'Carter-Finley Stadium',
+    'Commonwealth Stadium', 'T-Mobile Park', 'MetLife Stadium', 'Wrigley Field', 'Ohio Stadium',
+    'Raymond James Stadium', 'Princess Auto Stadium', 'Rice-Eccles Stadium'
+]
+
+# tiered by Google Gemini
+market_intensity_map = {
+    # Tier 4: Low Capacity / Unique Arena Traps
+    'Utah Mammoth': 1, 'Anaheim Ducks': 1, 'San Jose Sharks': 1, 'Arizona Coyotes': 1,
+    'Utah Utah Hockey Club': 1,
+    
+    # Tier 3: Performance Dependent / Destination Markets
+    'Florida Panthers': 2, 'Tampa Bay Lightning': 2, 'Los Angeles Kings': 2,
+    'Carolina Hurricanes': 2, 'Nashville Predators': 2, 'Dallas Stars': 2,
+    'St. Louis Blues': 2, 'Columbus Blue Jackets': 2, 'Washington Capitals': 2,
+    'New Jersey Devils': 2, 'New York Islanders': 2, 'Seattle Kraken': 2,
+    
+    # Tier 2: Large Stable Markets / Dedicated Hockey Cities
+    'New York Rangers': 3, 'Philadelphia Flyers': 3, 'Minnesota Wild': 3,
+    'Vegas Golden Knights': 3, 'Detroit Red Wings': 3, 'Pittsburgh Penguins': 3,
+    'Chicago Blackhawks': 3, 'Colorado Avalanche': 3, 'Calgary Flames': 3,
+    'Vancouver Canucks': 3, 'Winnipeg Jets': 3, 'Buffalo Sabres': 3, 'Ottawa Senators': 3,
+    
+    # Tier 1: Canadian Hotbeds & Original Six Elites
+    'Montréal Canadiens': 4, 'Toronto Maple Leafs': 4, 'Edmonton Oilers': 4, 'Boston Bruins': 4
+}
+
+high_altitude_venues = ['Ball Arena', 'Delta Center', 'Rice-Eccles Stadium']

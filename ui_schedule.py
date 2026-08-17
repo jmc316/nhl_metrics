@@ -1,8 +1,9 @@
-from predict import schedule_update
+from schedule import sched_update
+from schedule_features import sched_features_update
 
-def ui_update_season_schedule():
-    print('Updating season schedule...')
+def ui_update_schedule_actuals_data():
+    print('Updating actual schedule data...')
 
-    schedule_update()
+    sched_update()
 
-    print('Season schedule updated.\n')
+    print('Actual schedule data updated.\n')
