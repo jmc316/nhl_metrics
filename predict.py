@@ -4,12 +4,12 @@ import datetime
 
 import numpy as np
 import pandas as pd
-import features as ft
 import constants as cons
 import nhl_utils as nhlu
 import skl_utils as sklu
 import nhl_client as nhlc
 
+from features import feature_data_load
 from zoneinfo import ZoneInfo
 from datetime import datetime as dt
 from file_utils import csvLoad, csvSave
@@ -18,89 +18,23 @@ from playoff_probability import display_playoff_probability
 
 def predict_season(to_csv, set_model_state, today_dt):
 
-    # create the schedule dataframe from all seasons and games
-    sched_df = create_df_set(pd.to_datetime(today_dt).date())
+    # load all of the feature data with all actuals
+    feature_df = feature_data_load()    
 
-    # if there is a manual today_dt, Nullify all scores for games on or after the date
-    if today_dt != dt.now().date().strftime(cons.date_format_yyyy_mm_dd):
-        today_date_utc = pd.to_datetime(today_dt).tz_localize('EST').tz_convert('UTC')
-        sched_df.loc[pd.to_datetime(sched_df[cons.starttime_utc_col], format='ISO8601') >= today_date_utc, cons.predict_cols] = np.nan
+    # cons.last_actual_game_date = feature_df.loc[feature_df[cons.last_period_col].notna(), cons.starttime_est_col].dt.date.max()
 
-    # add features that are not dependent on the prediction set results
-    feature_df = ft.datetime_feature_add(sched_df)
+    # pre-process the feature data
+    processed_df, feature_list = sklu.preprocess_feature_data(feature_df)
 
-    cons.last_actual_game_date = sched_df.loc[sched_df[cons.away_team_score_col].notna(), cons.game_date_col].max()
-
-    # initialize empty metrics lists to store the out-of-bag score, mean squared error, and R-squared for each prediction iteration
-    oob_list, mse_list, rsq_list = [], [], []
-
-    # next game date is first date to predict games for, create df with games that don't need predicting
-    next_game_date = feature_df.loc[(feature_df[cons.last_period_col].isna()) & (feature_df[cons.game_type_col]==2), cons.game_date_col].min()
-
-    if pd.isna(next_game_date):
-        feature_df_filt = feature_df.copy()
-    else:
-        feature_df_filt = feature_df[feature_df[cons.game_date_col] <= next_game_date]
-
-    # check to see if historical feature data for seasons in the input data already exists
-    # if complete historical data exists, change next_game_date to first date with missing features
-    feature_df_filt_load = pd.DataFrame()
-    backfill_bool = False
-    seasons_to_save = []
-    for season in feature_df_filt[cons.season_name_col].unique():
-        if feature_df_filt.loc[feature_df_filt[cons.season_name_col] == season, cons.last_period_col].notna().all() and season != feature_df[cons.season_name_col].max():
-            if os.path.exists(f'{cons.season_feature_sets_folder}{cons.feature_data_filename.format(season=season)}'):
-                print(f'Historical feature data for {season[:4]}-{season[4:]} season already exists. Loading from file...')
-                season_feature_df = csvLoad(cons.season_feature_sets_folder, f'{cons.feature_data_filename.format(season=season)}')
-                feature_df_filt_load = pd.concat([feature_df_filt_load, season_feature_df], ignore_index=True)
-                continue
-
-        print(f'Historical feature data for {season[:4]}-{season[4:]} season does not exist, creating features... ')
-        feature_df_filt_load = pd.concat([feature_df_filt_load, feature_df_filt[feature_df_filt[cons.season_name_col] == season]], ignore_index=True)
-        backfill_bool = True
-        seasons_to_save.append(season)
-
-    # add dependent features to filtered dataframe
-    feature_df_filt = ft.dependent_feature_add(feature_df_filt_load, backfill=backfill_bool, debug=False)
-
-    # save the feature dataframe with added features for the first game day to predict to a CSV file for future use; this will allow us to skip the feature engineering process for this game day in future runs and go straight to making predictions
-    if to_csv:
-        for season in seasons_to_save:
-            if feature_df_filt.loc[feature_df_filt[cons.season_name_col] == season, cons.last_period_col].notna().all():
-                print(f'Saving feature data for {season[:4]}-{season[4:]} season to CSV file...')
-                csvSave(feature_df_filt.loc[feature_df_filt[cons.season_name_col] == season], cons.season_feature_sets_folder, f'{cons.feature_data_filename.format(season=season)}')
-
-    if pd.isna(next_game_date):
-        print('No regular season games to predict. All games in the schedule dataframe have scores assigned.\n')
-        return feature_df_filt
-
-    # make predictions for first scheduled game day after completed games and add to filtered dataframe
-    print(f'\tPredicting games for {next_game_date.strftime("%Y-%m-%d")}...')
-    feature_df_filt = sklu.make_predictions(feature_df_filt, oob_list, mse_list, rsq_list, set_model_state, today_dt, load_model=False, save_model=True)
-
-    # re-create feature dataframe with added predictions and features
-    feature_df = pd.concat([feature_df_filt, feature_df.loc[feature_df[cons.game_date_col] > next_game_date]], ignore_index=True)
-
-    # loop through remaining scheduled game days and repeat following process:
-    #   1. add dependent features to scheduled rows
-    #   2. make predictions for scheduled rows 
-    #   3. re-create feature dataframe with added predictions and features
-    for next_game_date in feature_df.loc[feature_df[cons.away_team_score_col].isna(), cons.game_date_col].unique():
-        print(f'\tPredicting games for {next_game_date.strftime("%Y-%m-%d")}...')
-        feature_df_filt = feature_df[feature_df[cons.game_date_col] <= next_game_date]
-        feature_df_filt = ft.dependent_feature_add(feature_df_filt, backfill=False, debug=False)
-        feature_df_filt = sklu.make_predictions(feature_df_filt, oob_list, mse_list, rsq_list, set_model_state, today_dt, load_model=True, save_model=False)
-        feature_df = pd.concat([feature_df_filt, feature_df.loc[feature_df[cons.game_date_col] > next_game_date]], ignore_index=True)
-
-    print()
-    print(f'Average Out-of-Bag Score: {np.mean(oob_list)}')
-    print(f'Average Mean Squared Error: {np.mean(mse_list)}')
-    print(f'Average R-squared: {np.mean(rsq_list)}')
-    print('Season predictions complete.\n')
+    # make predictions from the start date to the end of the schedule, and add the predictions to the feature dataframe
+    pred_df = sklu.model_inference(processed_df, feature_list)
 
     if to_csv:
         print('Saving season predictions to CSV file...')
-        csvSave(feature_df, cons.season_pred_folder.format(date=today_dt), cons.season_pred_filename.format(date=today_dt))
+        csvSave(pred_df, cons.season_pred_folder.format(date=today_dt), cons.season_pred_filename.format(date=today_dt))
+
+    # return feature_df with the win probability columns added
+    feature_df.update(pred_df[['homeTeamWin', 'homeWinProb', 'awayWinProb']])
 
     return feature_df
 

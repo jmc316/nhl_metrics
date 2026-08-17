@@ -1,7 +1,21 @@
-from schedule_features import sched_features_update
-from team_features import team_features_update
-from player_features import player_features_update
-from goalie_features import goalie_features_update
+from feat_schedule import sched_features_update
+from feat_team import team_features_update
+from feat_player import player_features_update
+from feat_goalie import goalie_features_update
+from features import feature_data_update
+
+
+def ui_update_all_feature_data():
+    print('Updating all feature data...')
+
+    sched_feat_df, sched_features = sched_features_update()
+    team_feat_df, team_features = team_features_update()
+    player_feat_df, player_features = player_features_update()
+    goalie_feat_df, goalie_features = goalie_features_update()
+
+    feature_data_update(sched_feat_df, team_feat_df, player_feat_df, goalie_feat_df)
+
+    print('All feature data updated.\n')
 
 
 def ui_update_schedule_feature_data():

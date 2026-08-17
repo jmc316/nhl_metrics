@@ -3,10 +3,12 @@ import playoffs
 import pandas as pd
 import constants as cons
 import nhl_utils as nhlu
+import skl_utils as sklu
 import terminal_ui as tui
 
 from file_utils import csvLoad
 from datetime import datetime as dt
+from features import feature_data_load
 from analyze import prediction_analysis
 from pred_returns import daily_probability
 from predict import predict_season, playoff_spot_predictions
@@ -88,7 +90,7 @@ def ui_historic_playoff_spot_predict():
     playoff_spot_predictions(today_dt, n=n_in)
 
 
-def ui_update_predictions():
+def ui_run_inference():
 
     predict_ui = tui.predict_screen()
 
@@ -117,3 +119,20 @@ def ui_model_accuracy():
     season_prediction_df = csvLoad(cons.season_pred_folder.format(date=today_dt), cons.season_pred_filename.format(date=today_dt))
 
     prediction_analysis(season_prediction_df, since_dt, today_dt)
+
+
+def ui_train_model():
+    print('Training model...')
+
+    # load all of the feature data with all actuals
+    feature_df = feature_data_load()
+
+    # cons.last_actual_game_date = feature_df.loc[feature_df[cons.last_period_col].notna(), cons.starttime_est_col].dt.date.max()
+
+    # pre-process the feature data
+    processed_df, feature_list = sklu.preprocess_feature_data(feature_df)
+
+    # train the model on the training set and save the model to a file for future use
+    _ = sklu.model_train(processed_df, feature_list, set_model_state=True, today_dt=dt.now().date().strftime(cons.date_format_yyyy_mm_dd))
+
+    print('Model training execution complete.\n')

@@ -1,3 +1,4 @@
+import os
 import bisect
 
 import numpy as np
@@ -5,6 +6,10 @@ import pandas as pd
 import constants as cons
 
 from file_utils import csvLoad
+from feat_team import team_features_update
+from feat_schedule import sched_features_update
+from feat_player import player_features_update
+from feat_goalie import goalie_features_update
 
 
 def dependent_feature_add(feature_df, backfill=True, debug=True):
@@ -494,7 +499,7 @@ def playoff_series_score(data_df, backfill):
     winner_col = '_winner'
 
     # Pull playoff games once; everything below works off this filtered subset.
-    all_dates = pd.to_datetime(data_df[cons.game_date_col], errors='coerce').dt.date
+    all_dates = pd.to_datetime(data_df[cons.starttime_est_col].dt.date, errors='coerce').dt.date
     playoff_mask = data_df[cons.game_type_col] == 3
 
     playoff_games = data_df.loc[playoff_mask, [
@@ -541,7 +546,7 @@ def playoff_series_score(data_df, backfill):
             series_history[key] = (group[date_col].tolist(), team_low, low_prefix, high_prefix)
 
         # Extract target fields once to keep the lookup loop lightweight.
-        target_dates = pd.to_datetime(data_df_target[cons.game_date_col], errors='coerce').dt.date.to_numpy()
+        target_dates = pd.to_datetime(data_df_target[cons.starttime_est_col].dt.date, errors='coerce').dt.date.to_numpy()
         target_seasons = data_df_target[cons.season_name_col].to_numpy()
         target_home = data_df_target[cons.home_team_name_col].to_numpy()
         target_away = data_df_target[cons.away_team_name_col].to_numpy()
@@ -586,3 +591,74 @@ def playoff_series_score(data_df, backfill):
         data_df = pd.concat([data_df.loc[data_df[cons.last_period_col].notna()], data_df_target], ignore_index=True)
 
     return data_df
+
+
+def feature_data_update(sched_feat_df, team_feat_df, player_feat_df, goalie_feat_df, save_feat_data):
+
+    # merge all feature dataframes into a single dataframe
+    merge_cols = [cons.game_id_col, cons.season_name_col, cons.game_type_col, cons.starttime_est_col,
+                  cons.venue_timezone_col, cons.venue_col, cons.home_team_name_col, cons.away_team_name_col,
+                  cons.home_team_score_col, cons.away_team_score_col, cons.last_period_col, cons.home_team_win_col,
+                  cons.win_prob_col.format(team='home'), cons.win_prob_col.format(team='away')]
+    sched_df = sched_feat_df.merge(team_feat_df, how='left', on=merge_cols)
+    sched_df = sched_df.merge(player_feat_df, how='left', on=merge_cols)
+    sched_df = sched_df.merge(goalie_feat_df, how='left', on=merge_cols)
+
+    if save_feat_data:
+        for season in sched_df[cons.season_name_col].unique():
+            season_df = sched_df[sched_df[cons.season_name_col] == season]
+            season_df.to_csv(f"{cons.season_feature_sets_folder}/{season}_feature_data.csv", index=False)
+
+    return sched_df
+
+
+def clean_feature_df(data_df):
+
+    data_df[cons.starttime_est_col] = pd.to_datetime(data_df[cons.starttime_est_col], format='ISO8601')
+
+    data_df.sort_values(by=cons.starttime_est_col, inplace=True)
+    data_df.reset_index(drop=True, inplace=True)
+
+    for col in data_df.columns:
+        if pd.api.types.is_integer_dtype(data_df[col]):
+            data_df[col] = data_df[col].astype(int)
+
+    return data_df
+
+
+def feature_data_load():
+
+    # the list of feature files that have already been generated
+    season_sched_list = [file for file in os.listdir(cons.season_feature_sets_folder) if file.endswith('_feature_data.csv')]
+
+    # initialize empty dataframe to store the feature data
+    feat_df = pd.DataFrame()
+
+    # loop through each feature file and concatenate it to the feature data dataframe;
+    # if there are no feature files, throw an error
+    if not season_sched_list:
+        raise FileNotFoundError(f"No feature files found in {cons.season_feature_sets_folder}")
+    for filename in season_sched_list:
+        temp_df = csvLoad(cons.season_feature_sets_folder, filename)
+        feat_df = pd.concat([feat_df, temp_df], ignore_index=True)
+
+    clean_feature_df(feat_df)
+
+    return feat_df
+
+
+def feat_update(data_df=pd.DataFrame, save_feat_data=False, verbose=False):
+    print('Updating all feature data...')
+
+    sched_feat_df, sched_features = sched_features_update(data_df, verbose)
+    team_feat_df, team_features = team_features_update(data_df, verbose)
+    player_feat_df, player_features = player_features_update(data_df, verbose)
+    goalie_feat_df, goalie_features = goalie_features_update(data_df, verbose)
+
+    feature_df = feature_data_update(sched_feat_df, team_feat_df, player_feat_df, goalie_feat_df, save_feat_data)
+
+    print('All feature data updated.\n')
+
+    feature_df.sort_values(by=cons.starttime_est_col, inplace=True)
+
+    return feature_df

@@ -92,13 +92,13 @@ def assign_game_points(season_results, to_csv=False):
     # assign points to each team based on the predicted scores and last period type
     # (2 points for a win in regulation, 1 point for an OT/SO loss, 0 points for a regulation loss)
     season_results[cons.home_team_points_col] = np.where(
-        season_results[cons.home_team_score_col] > season_results[cons.away_team_score_col], 2, np.where(
-            season_results[cons.last_period_col] != 'REG', 1, np.where(
-                season_results[cons.home_team_score_col] < season_results[cons.away_team_score_col], 0, 0)))
+        season_results['homeWinProb'] > season_results['awayWinProb'], 2, np.where(
+            season_results[cons.last_period_col].isin(['OT', 'SO']), 1, np.where(
+                season_results['homeWinProb'] < season_results['awayWinProb'], 0, 0)))
     season_results[cons.away_team_points_col] = np.where(
-        season_results[cons.away_team_score_col] > season_results[cons.home_team_score_col], 2, np.where(
-            season_results[cons.last_period_col] != 'REG', 1, np.where(
-                season_results[cons.away_team_score_col] < season_results[cons.home_team_score_col], 0, 0)))
+        season_results['awayWinProb'] > season_results['homeWinProb'], 2, np.where(
+            season_results[cons.last_period_col].isin(['OT', 'SO']), 1, np.where(
+                season_results['awayWinProb'] < season_results['homeWinProb'], 0, 0)))
 
     return season_results
 
@@ -152,45 +152,45 @@ def generate_final_standings(season_results, today_dt, to_csv=False):
     points_df = home_away_accumulation(home_points, away_points, 'Points')
 
     # calculate total wins for each team
-    home_wins = season_results.loc[season_results[cons.home_team_score_col] > season_results[cons.away_team_score_col]].groupby(
+    home_wins = season_results.loc[season_results[cons.home_team_win_col] == 1].groupby(
         cons.home_team_name_col).size().reset_index(name=cons.home_team_wins_col)
-    away_wins = season_results.loc[season_results[cons.away_team_score_col] > season_results[cons.home_team_score_col]].groupby(
+    away_wins = season_results.loc[season_results[cons.home_team_win_col] == 0].groupby(
         cons.away_team_name_col).size().reset_index(name=cons.away_team_wins_col)
     wins_df = home_away_accumulation(home_wins, away_wins, 'Wins', keep_segregated_cols=True)
 
     # calculate total losses for each team
-    home_losses = season_results.loc[(season_results[cons.last_period_col]=='REG') &
-                                     (season_results[cons.home_team_score_col] < season_results[cons.away_team_score_col])].groupby(
+    home_losses = season_results.loc[(~season_results[cons.last_period_col].isin(['OT', 'SO'])) &
+                                     (season_results[cons.home_team_win_col] == 0)].groupby(
                                          cons.home_team_name_col).size().reset_index(name=cons.home_team_losses_col)
-    away_losses = season_results.loc[(season_results[cons.last_period_col]=='REG') &
-                                     (season_results[cons.away_team_score_col] < season_results[cons.home_team_score_col])].groupby(
+    away_losses = season_results.loc[(~season_results[cons.last_period_col].isin(['OT', 'SO'])) &
+                                     (season_results[cons.home_team_win_col] == 1)].groupby(
                                          cons.away_team_name_col).size().reset_index(name=cons.away_team_losses_col)
     losses_df = home_away_accumulation(home_losses, away_losses, 'Losses', keep_segregated_cols=True)
 
     # calculate total OT/SO losses for each team 
-    home_otls = season_results.loc[(season_results[cons.last_period_col]=='OT') &
-                                   (season_results[cons.home_team_score_col] < season_results[cons.away_team_score_col])].groupby(
+    home_otls = season_results.loc[(season_results[cons.last_period_col].isin(['OT', 'SO'])) &
+                                   (season_results[cons.home_team_win_col] == 0)].groupby(
                                        cons.home_team_name_col).size().reset_index(name=cons.home_team_otls_col)
-    away_otls = season_results.loc[(season_results[cons.last_period_col]=='OT') &
-                                   (season_results[cons.away_team_score_col] < season_results[cons.home_team_score_col])].groupby(
+    away_otls = season_results.loc[(season_results[cons.last_period_col].isin(['OT', 'SO'])) &
+                                   (season_results[cons.home_team_win_col] == 1)].groupby(
                                        cons.away_team_name_col).size().reset_index(name=cons.away_team_otls_col)
     otls_df = home_away_accumulation(home_otls, away_otls, 'OTLs', keep_segregated_cols=True)
 
     # calculate total regulation wins for each team (used for tiebreakers in the standings)
-    home_reg_wins = season_results.loc[(season_results[cons.last_period_col]=='REG') &
-                                       (season_results[cons.home_team_score_col] > season_results[cons.away_team_score_col])].groupby(
+    home_reg_wins = season_results.loc[(~season_results[cons.last_period_col].isin(['OT', 'SO'])) &
+                                       (season_results[cons.home_team_win_col] == 1)].groupby(
                                            cons.home_team_name_col).size().reset_index(name=cons.home_team_reg_wins_col)
-    away_reg_wins = season_results.loc[(season_results[cons.last_period_col]=='REG') &
-                                       (season_results[cons.away_team_score_col] > season_results[cons.home_team_score_col])].groupby(
+    away_reg_wins = season_results.loc[(~season_results[cons.last_period_col].isin(['OT', 'SO'])) &
+                                       (season_results[cons.home_team_win_col] == 0)].groupby(
                                            cons.away_team_name_col).size().reset_index(name=cons.away_team_reg_wins_col)
     reg_wins_df = home_away_accumulation(home_reg_wins, away_reg_wins, 'RegWins')
 
     # calculate total regulation/OT wins for each team (used for tiebreakers in the standings)
     home_reg_ot_wins = season_results.loc[(season_results[cons.last_period_col]!='SO') &
-                                          (season_results[cons.home_team_score_col] > season_results[cons.away_team_score_col])].groupby(
+                                          (season_results[cons.home_team_win_col] == 1)].groupby(
                                               cons.home_team_name_col).size().reset_index(name=cons.home_team_reg_ot_wins_col)
     away_reg_ot_wins = season_results.loc[(season_results[cons.last_period_col]!='SO') &
-                                          (season_results[cons.away_team_score_col] > season_results[cons.home_team_score_col])].groupby(
+                                          (season_results[cons.home_team_win_col] == 0)].groupby(
                                               cons.away_team_name_col).size().reset_index(name=cons.away_team_reg_ot_wins_col)
     reg_ot_wins_df = home_away_accumulation(home_reg_ot_wins, away_reg_ot_wins, 'RegOTWins')
 
@@ -227,6 +227,11 @@ def generate_final_standings(season_results, today_dt, to_csv=False):
     # team_info_df = team_info()
     team_info_df = pd.DataFrame(cons.team_info).transpose().reset_index().rename(columns={'index': cons.team_name_col, 'division': cons.division_name_col, 'conference': cons.conference_name_col})
     final_standings = pd.merge(final_standings, team_info_df[[cons.team_name_col, cons.division_name_col, cons.conference_name_col]], on=cons.team_name_col)
+
+    # fake tiebreaker for when everything is equal, take the higher alphabetized team
+    final_standings['fakeTiebreaker'] = final_standings['teamName']
+    cons.tiebreaker_cols.append('fakeTiebreaker')
+    cons.final_standings_col_order.append('fakeTiebreaker')
 
     # assign divisionSeed, conferenceSeed based on total points and tiebreakers within each division, conference
     final_standings.sort_values(by=[cons.division_name_col] + cons.tiebreaker_cols, ascending=[True] + [False]*len(cons.tiebreaker_cols), inplace=True)

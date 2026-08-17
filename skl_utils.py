@@ -2,68 +2,187 @@ import numpy as np
 import pandas as pd
 import constants as cons
 
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder, TargetEncoder
 from file_utils import pklLoad, pklSave, txtSave
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, roc_auc_score, log_loss, brier_score_loss
+from sklearn.inspection import permutation_importance
 
 
-def make_predictions(data_df, oob_list, mse_list, rsq_list, set_model_state, today_dt, debug=False, load_model=True, save_model=False):
+def preprocess_feature_data(data_df_in):
 
-    # encode categorical variables using label encoding, and keep numerical variables as is
+    data_df = data_df_in.copy()
+
+    # numeric features that do not need to be scaled or normalized, keep as is for the model
+    # num_feats = ['homeGameNumPerc', 'awayGameNumPerc', 'relDaysRest', 'relTravelDist4Days',
+    #             'relTravelDist7Days', 'relGamesPlayed4Days', 'relGamesPlayed7Days', 'relCrossedTZ4Days',
+    #             'relCrossedTZ7Days']
+    num_feats_nonwindow = [cons.reg_game_num_perc_col.format(team='home'), cons.reg_game_num_perc_col.format(team='away'),
+                 cons.days_rest_col.format(pre='rel')]
+    num_feats_window = []
+    for window in cons.sched_feat_windows:
+        num_feats_window.append(cons.travel_dist_n_days_col.format(pre='rel', n=window))
+        num_feats_window.append(cons.games_played_n_days_col.format(pre='rel', n=window))
+        num_feats_window.append(cons.crossed_tz_n_days_col.format(pre='rel', n=window))
+    num_feats = num_feats_nonwindow + num_feats_window
+
+    # boolean categorical features, keep as is for the model
+    bool_feats = [cons.is_outdoor_venue_col, cons.is_home_opener_col,
+                  cons.is_ret_home_trap_col, cons.is_venue_alt_shock_col]
+
+    # very low cardinality numeric categorical features (< 5 values), keep as is for the model
+    low_card_feats = [cons.rival_match_col, cons.market_intensity_col]
+
+    # categorical features to be custom encoded with target encoding
+    target_encoding_feats = [cons.venue_timezone_col]
+    target_encoding_map = {
+        cons.venue_timezone_col: cons.venue_timezone_map
+    }
+    for feat in target_encoding_feats:
+        data_df[feat] = data_df[feat].map(target_encoding_map[feat])
+
+    # medium cardinality categorical features to be one-hot encoded
+    # helps avoid implication of false ordering
+    # NOTE: venueTimezone added to one-hot encode mapped values above
+    one_hot_feats = [cons.day_of_week_col, cons.game_type_col, cons.venue_timezone_col]
+    one_hot_feats_new = []
+    one_hot_encoder = OneHotEncoder(sparse_output=False).set_output(transform='pandas')
+    for col in one_hot_feats:
+        one_hot_encoded_df = one_hot_encoder.fit_transform(data_df[[col]])
+        one_hot_feats_new.extend(one_hot_encoded_df.columns.tolist())
+        data_df = pd.concat([data_df.drop(columns=[col]), one_hot_encoded_df], axis=1)
+
+    # larger cardinality categorical features to be label encoded
+    label_encode_feats = [cons.venue_col, cons.season_name_col]
     label_encoder = LabelEncoder()
-    categorical_df = data_df.select_dtypes(include=['object', 'str']).apply(label_encoder.fit_transform)
-    numerical_df = data_df.select_dtypes(exclude=['object', 'str'])
-    encoded_df = pd.concat([numerical_df, categorical_df], axis=1)
-    encoded_df.replace({None: np.nan}, inplace=True) 
+    for col in label_encode_feats:
+        data_df[col] = label_encoder.fit_transform(data_df[col])
 
-    # split the data into training and prediction sets based on the presence of the target variable (home team score)
-    x_train_df = encoded_df.loc[encoded_df[cons.home_team_score_col].notna(), encoded_df.columns.difference(cons.predict_cols)]
-    y_train_df = encoded_df.loc[encoded_df[cons.home_team_score_col].notna(), cons.predict_cols]
-    x_predict_df = encoded_df.loc[encoded_df[cons.home_team_score_col].isna(), encoded_df.columns.difference(cons.predict_cols)]
+    feature_list = num_feats + bool_feats + low_card_feats + one_hot_feats_new + label_encode_feats
 
-    # initialize or load the model, fit it to the training data, and make predictions on the prediction set
-    if load_model:
-        if debug: print('\t\tLoading existing model...')
+    return data_df, feature_list
+
+
+def model_train(data_df, feature_list, set_model_state=False, today_dt=None, debug=False):
+
+    actual_df = data_df[data_df[cons.home_team_win_col].notna()]
+
+    # get the unique seasons in the dataframe, sorted
+    seasons = sorted(actual_df[cons.season_name_col].unique())
+
+    # Walk-forward loop: train on all seasons up to N, validate on season N+1
+    fold_results = []
+
+    for i in range(1, len(seasons)):  # leave last season out as final holdout test
+        train_seasons = seasons[:i]
+        val_season = seasons[i]
+
+        train_df = actual_df[actual_df[cons.season_name_col].isin(train_seasons)]
+        val_df = actual_df[actual_df[cons.season_name_col] == val_season]
+
+        X_train, y_train = train_df[feature_list], train_df[cons.home_team_win_col]
+        X_val, y_val = val_df[feature_list], val_df[cons.home_team_win_col]
+
+        val_model = init_model(random_state_in=42)
+        val_model.fit(X_train, y_train)
+
+        preds = val_model.predict(X_val)
+        probs = val_model.predict_proba(X_val)[:, 1]  # probability of the positive class
+
+        fold_result = {
+            'train_seasons': train_seasons,
+            'val_season': val_season,
+            'n_train': len(X_train),
+            'n_val': len(X_val),
+            'accuracy': accuracy_score(y_val, preds),
+            'auc': roc_auc_score(y_val, probs),
+            'log_loss': log_loss(y_val, probs),
+            'brier': brier_score_loss(y_val, probs)
+        }
+        fold_results.append(fold_result)
+
+    fold_results_df = pd.DataFrame(fold_results)
+    print('\nValidation Set Results:')
+    print(fold_results_df)
+
+    baseline_acc = (actual_df[cons.home_team_win_col] == 1).mean()
+    print(f"Baseline Accuracy:          {baseline_acc:.3f}")
+    print(f"Model Validation Accuracy:  {fold_results_df.iloc[max(fold_results_df.index)]['accuracy']:.4f}")
+
+    perm_imp_result = permutation_importance(
+        val_model,           # your fitted RandomForestClassifier
+        X_val,
+        y_val,
+        n_repeats=10,    # shuffle each feature 10x, average the effect
+        random_state=42,
+        n_jobs=-1,       # parallelize across cores
+        scoring='accuracy'     # or 'neg_mean_squared_error', etc.
+    )
+
+    perm_imp_df = pd.DataFrame({
+        'feature': X_val.columns,
+        'importance_mean': perm_imp_result.importances_mean,
+        'importance_std': perm_imp_result.importances_std
+    }).sort_values('importance_mean', ascending=False)
+
+    print('\nPermutation Importance:')
+    print(perm_imp_df)
+
+    # train a final model on all actual data to use for the prediction set
+    print('\nFinalizing model data...')
+    final_model = init_model(random_state_in=42)
+    final_model.fit(actual_df[feature_list], actual_df[cons.home_team_win_col])
+
+    # Schedule-only baseline (no class_weight):
+    # Avg AUC:      ~0.539
+    # Avg Accuracy: 0.5352 (baseline: 0.537)
+    # Avg Brier:    ~0.254
+    # Avg Log Loss: ~0.703
+
+    # Vegas Model:
+    #   Accuracy = ~62-63%
+    #   AUC = 68-72%
+
+    print('\nSaving model file...')
+    pklSave(final_model, cons.model_files_folder, cons.sklearn_model_filename)
+
+    return final_model
+
+
+def model_inference(data_df, feature_list, model=None):
+
+    # if the model is not passed in, load it from the pkl file
+    if not model:
         model = pklLoad(cons.model_files_folder, cons.sklearn_model_filename)
-    else:
-        if debug: print('\t\tCreating new model...')
-        if set_model_state:
-            model = init_model(random_state_in=42)
-        else:
-            model = init_model()
 
-        model.fit(x_train_df.values, y_train_df.values)
-
-    # save the model to a file for future use, save features used to txt file in date folder
-    if save_model:
-        pklSave(model, cons.model_files_folder, cons.sklearn_model_filename)
-        txtSave(x_train_df.columns.tolist(), cons.season_pred_folder.format(date=today_dt), cons.model_features_filename.format(model='skl_rf'))
-
-    # make predictions on the training set to calculate metrics
-    if debug: print('\t\tMaking predictions...')
-    trainset_predictions = model.predict(x_train_df.values)
-
-    trainset_metrics(model, y_train_df, trainset_predictions, oob_list, mse_list, rsq_list, debug)
+    x_predict_df = data_df[data_df[cons.home_team_win_col].isna()][feature_list]
 
     # make predictions on the prediction set
-    predictset_predictions = model.predict(x_predict_df.values)
+    predictset_predictions = model.predict(x_predict_df)
 
     # update the original data_df with the predictions for the target variables and determine the last period based on the predicted scores
-    predict_df = data_df[data_df[cons.last_period_col].isna()]
-    predict_df[cons.predict_cols] = predictset_predictions
-    predict_df[cons.last_period_col] = np.where(abs(predict_df[cons.home_team_score_col] - predict_df[cons.away_team_score_col]) < cons.ot_score_diff, 'OT', 'REG')
-    data_df.update(predict_df[cons.predict_cols])
+    predict_df = data_df[data_df[cons.home_team_win_col].isna()]
+    predict_df[cons.home_team_win_col] = predictset_predictions
 
-    # check for ties (this is a simplification and could be improved with a more sophisticated approach)
-    predicted_ties_df = predict_df[predict_df[cons.home_team_score_col] == predict_df[cons.away_team_score_col]]
-    if not predicted_ties_df.empty:
-        predicted_ties_df[cons.home_team_score_col] += 0.5
-        data_df.update(predicted_ties_df[cons.predict_cols])
+    probs = model.predict_proba(x_predict_df)
+    home_win_prob = probs[:, 1]  # column 1 = probability of class "1" (home win)
+    away_win_prob = probs[:, 0]  # column 0 = probability of class "0" (away win)
 
-    # importances = model.feature_importances_
-    # importance_df = pd.DataFrame({'feature': x_train_df.columns, 'importance': importances})
-    # print(importance_df.sort_values(by='importance', ascending=False))
+    home_win_prob_col = cons.win_prob_col.format(team='home')
+    away_win_prob_col = cons.win_prob_col.format(team='away')
+
+    predict_df[home_win_prob_col] = home_win_prob
+    predict_df[away_win_prob_col] = away_win_prob
+
+    data_df.update(predict_df[[cons.home_team_win_col,
+                               home_win_prob_col,
+                               away_win_prob_col
+                               ]])
+
+    # fix for bug where prediction is split exactly 50/50
+    if not data_df.loc[(data_df[home_win_prob_col]==0.5) & (data_df[home_win_prob_col]==0.5)].empty:
+        data_df.loc[(data_df[home_win_prob_col]==0.5) & (data_df[home_win_prob_col]==0.5),
+                    [home_win_prob_col, away_win_prob_col]] = [np.float64(0.5000000000000001), np.float64(0.4999999999999999)]
 
     return data_df
 
@@ -81,7 +200,6 @@ def init_model(random_state_in=None):
     - max_features:  The number of features to consider when looking for the best split (default is 'auto')
     - max_leaf_nodes:  Grow trees with max_leaf_nodes in best-first fashion. Best nodes are defined as relative reduction in impurity. If None then unlimited number of leaf nodes (default is None)
     - min_impurity_decrease:  A node will be split if this split induces a decrease of the impurity greater than or equal to this value (default is 0.0)
-    - max_features:  The number of features to consider when looking for the best split (default is 'auto')
     - bootstrap:  Whether bootstrap samples are used when building trees (default is True)
     - oob_score:  Whether to use out-of-bag samples to estimate the generalization score (default is False)
     - n_jobs:  The number of jobs to run in parallel (default is None, which means 1)
@@ -98,53 +216,10 @@ def init_model(random_state_in=None):
     
     """
 
-    model = RandomForestRegressor(n_estimators=100,
-                                  random_state=random_state_in,
-                                  oob_score=True
-                                  )
+    model = RandomForestClassifier(
+        n_estimators=300,
+        random_state=random_state_in,
+        n_jobs=-1
+        )
 
     return model
-
-
-def trainset_metrics(model, y_train_df, trainset_predictions, oob_list, mse_list, rsq_list, debug=False):
-    
-    if debug: print('\t\tcalculating metrics...')
-
-    oob_score = model.oob_score_
-    if debug: print(f'\t\t\tOut-of-Bag Score: {oob_score}')
-    oob_list.append(oob_score)
-
-    mse = mean_squared_error(y_train_df.values, trainset_predictions)
-    if debug: print(f'\t\t\tMean Squared Error: {mse}')
-    mse_list.append(mse)
-
-    r2 = r2_score(y_train_df.values, trainset_predictions)
-    if debug: print(f'\t\t\tR-squared: {r2}')
-    rsq_list.append(r2)
-
-    games_correct, total_games, accuracy = game_outcome_metrics(y_train_df, trainset_predictions)
-    if debug: print(f'\t\t\tGames Correct: {games_correct}/{total_games} ({accuracy:.2%})')
-
-    return oob_list, mse_list, rsq_list
-
-
-def game_outcome_metrics(y_train_df, trainset_predictions):
-
-    game_results_df = pd.DataFrame({
-        'home_team_score_actual': y_train_df[cons.home_team_score_col],
-        'home_team_score_predicted': trainset_predictions[:, 0],
-        'away_team_score_actual': y_train_df[cons.away_team_score_col],
-        'away_team_score_predicted': trainset_predictions[:, 1]
-    })
-
-    game_results_df['correct_outcome'] = np.where(
-        (game_results_df['home_team_score_actual'] > game_results_df['away_team_score_actual']) &
-        (game_results_df['home_team_score_predicted'] > game_results_df['away_team_score_predicted']) |
-        (game_results_df['home_team_score_actual'] < game_results_df['away_team_score_actual']) &
-        (game_results_df['home_team_score_predicted'] < game_results_df['away_team_score_predicted']) |
-        (game_results_df['home_team_score_actual'] == game_results_df['away_team_score_actual']) &
-        (game_results_df['home_team_score_predicted'] == game_results_df['away_team_score_predicted']),
-        1, 0
-        )
-    
-    return (sum(game_results_df['correct_outcome']), len(game_results_df), sum(game_results_df['correct_outcome']) / len(game_results_df))

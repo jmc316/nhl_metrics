@@ -3,149 +3,152 @@ import numpy as np
 import pandas as pd
 import constants as cons
 from file_utils import csvLoad, csvSave
-from schedule import load_sched_df
+from schedule import load_sched_df_features
 
 
-def sched_features_update():
+def sched_features_update(data_df_in=pd.DataFrame, verbose=False):
 
-    # load all of the schedule data
-    data_df = load_sched_df()
-
-    # transform the home/away specific features to relational (home-away) features
-    relational_features = True
+    if data_df_in.empty:
+        data_df = load_sched_df_features()
+    else:
+        data_df = data_df_in[cons.base_feature_cols]
 
     # add schedule-based features
-    sched_features = ['gameTimeSecondsEST', 'dayOfWeek', 'RegGameNumPerc', 'PlayoffGameNum',
-                      'DaysRest', 'isOutdoorVenue', 'RoadTripSeq', 'TravelDistNDays',
-                      'GamesPlayedNDays', 'CrossedTZNDays', 'isHomeOpener', 'rivalMatch',
-                      'marketIntensity', 'isRetHomeTrap', 'isVenueAltShock', 'playoffSeriesScore']
+    sched_features = [cons.game_time_secs_est_col, cons.day_of_week_col, cons.reg_game_num_perc_col, cons.playoff_game_num_col,
+                      cons.days_rest_col, cons.is_outdoor_venue_col, cons.road_trip_seq_col, cons.travel_dist_n_days_col,
+                      cons.games_played_n_days_col, cons.crossed_tz_n_days_col, cons.is_home_opener_col, cons.rival_match_col,
+                      cons.market_intensity_col, cons.is_ret_home_trap_col, cons.is_venue_alt_shock_col, cons.playoff_series_score_col]
 
     # features to add in the future
     future_features = ['isMajorCeremonyNight']
 
-    # windows to perform rolling calculations over for certain features
-    windows = [4, 7]
-
     for feature in sched_features:
 
-        print(f'\tAdding {feature}...')
+        if verbose: print(f'\tAdding {feature}...')
 
         # add the game time in EST timezone for each game
-        if feature == 'gameTimeSecondsEST':
+        if feature == cons.game_time_secs_est_col:
             data_df = game_time_seconds_est(data_df)
             continue
 
         # add the day of the week the game is played for each game
-        if feature == 'dayOfWeek':
+        if feature == cons.day_of_week_col:
             data_df = day_of_week(data_df)
             continue
     
         # add the game number percentage for each team in each regular season
-        if feature == 'RegGameNumPerc':
+        if feature == cons.reg_game_num_perc_col:
             data_df = reg_game_num_perc(data_df, team_col=cons.home_team_name_col)
             data_df = reg_game_num_perc(data_df, team_col=cons.away_team_name_col)
             continue
 
         # add the game number for each team in each playoff season
-        if feature == 'PlayoffGameNum':
+        if feature == cons.playoff_game_num_col:
             data_df = playoff_game_num(data_df, team_col=cons.home_team_name_col)
             data_df = playoff_game_num(data_df, team_col=cons.away_team_name_col)
             continue
 
         # add the number of rest days for each team prior to each game in each season
-        if feature == 'DaysRest':
+        if feature == cons.days_rest_col:
             data_df = days_rest(data_df, team_col=cons.home_team_name_col)
             data_df = days_rest(data_df, team_col=cons.away_team_name_col)
-            if relational_features:
-                data_df['relDaysRest'] = data_df[cons.home_team_col+'DaysRest'] - data_df[cons.away_team_col+'DaysRest']
-                data_df.drop(columns=[cons.home_team_col+'DaysRest', cons.away_team_col+'DaysRest'], inplace=True)
+
+            # create relational feature, drop individual features
+            home_days_rest = cons.days_rest_col.format(pre='home')
+            away_days_rest = cons.days_rest_col.format(pre='away')
+            data_df[cons.days_rest_col.format(pre='rel')] = data_df[home_days_rest] - data_df[away_days_rest]
+            data_df.drop(columns=[home_days_rest, away_days_rest], inplace=True)
             continue
 
         # add a binary feature indicating whether the game is played in an outdoor venue
-        if feature == 'isOutdoorVenue':
+        if feature == cons.is_outdoor_venue_col:
             data_df = is_outdoor_venue(data_df)
             continue
 
-        # add a feature indicating the sequence of games played on the road for each team in each season
-        if feature == 'RoadTripSeq':
-            data_df = road_trip_sequence(data_df, team_col=cons.home_team_name_col)
-            data_df = road_trip_sequence(data_df, team_col=cons.away_team_name_col)
+        # add a feature indicating the sequence of games played on the road for the away team
+        if feature == cons.road_trip_seq_col:
+            data_df = road_trip_sequence(data_df)
             continue
 
         # add a feature that counts the number of games played in the last N days for each team in each season
-        if feature.startswith('GamesPlayedNDays'):
-            for window in windows:
-                print(f'\t\tProcessing window: {window}')
+        if feature == cons.games_played_n_days_col:
+            for window in cons.sched_feat_windows:
+                if verbose: print(f'\t\tProcessing window: {window}')
                 data_df = games_played_last_n_days(data_df, team_col=cons.home_team_name_col, n=window)
                 data_df = games_played_last_n_days(data_df, team_col=cons.away_team_name_col, n=window)
-                if relational_features:
-                    data_df['relGamesPlayed'+str(window)+'Days'] = data_df[cons.home_team_col+'GamesPlayed'+str(window)+'Days'] - data_df[cons.away_team_col+'GamesPlayed'+str(window)+'Days']
-                    data_df.drop(columns=[cons.home_team_col+'GamesPlayed'+str(window)+'Days', cons.away_team_col+'GamesPlayed'+str(window)+'Days'], inplace=True)
+
+                # create relational feature, drop individual features
+                home_games_played_col = cons.games_played_n_days_col.format(pre='home', n=window)
+                away_games_played_col = cons.games_played_n_days_col.format(pre='away', n=window)
+                data_df[cons.games_played_n_days_col.format(pre='rel', n=window)] = data_df[home_games_played_col] - data_df[away_games_played_col]
+                data_df.drop(columns=[home_games_played_col, away_games_played_col], inplace=True)
             continue
 
         # add a feature that calculates the travel distance for each team in the last N days for each season
-        if feature.startswith('TravelDistNDays'):
-            for window in windows:
-                print(f'\t\tProcessing window: {window}')
+        if feature == cons.travel_dist_n_days_col:
+            for window in cons.sched_feat_windows:
+                if verbose: print(f'\t\tProcessing window: {window}')
                 data_df = travel_distance_last_n_days(data_df, team_col=cons.home_team_name_col, n=window)
                 data_df = travel_distance_last_n_days(data_df, team_col=cons.away_team_name_col, n=window)
-                if relational_features:
-                    data_df['relTravelDist'+str(window)+'Days'] = data_df[cons.home_team_col+'TravelDist'+str(window)+'Days'] - data_df[cons.away_team_col+'TravelDist'+str(window)+'Days']
-                    data_df.drop(columns=[cons.home_team_col+'TravelDist'+str(window)+'Days', cons.away_team_col+'TravelDist'+str(window)+'Days'], inplace=True)
+
+                # create relational feature, drop individual features
+                home_travel_dist_col = cons.travel_dist_n_days_col.format(pre='home', n=window)
+                away_travel_dist_col = cons.travel_dist_n_days_col.format(pre='away', n=window)
+                data_df[cons.travel_dist_n_days_col.format(pre='rel', n=window)] = data_df[home_travel_dist_col] - data_df[away_travel_dist_col]
+                data_df.drop(columns=[home_travel_dist_col, away_travel_dist_col], inplace=True)
             continue
 
         # add a feature that counts the number of time zones crossed for each team in the last N days for each season
-        if feature.startswith('CrossedTZNDays'):
-            for window in windows:
-                print(f'\t\tProcessing window: {window}')
+        if feature == cons.crossed_tz_n_days_col:
+            for window in cons.sched_feat_windows:
+                if verbose: print(f'\t\tProcessing window: {window}')
                 data_df = time_zones_crossed_last_n_days(data_df, team_col=cons.home_team_name_col, n=window)
                 data_df = time_zones_crossed_last_n_days(data_df, team_col=cons.away_team_name_col, n=window)
-                if relational_features:
-                    data_df['relCrossedTZ'+str(window)+'Days'] = data_df[cons.home_team_col+'TZCrossed'+str(window)+'Days'] - data_df[cons.away_team_col+'TZCrossed'+str(window)+'Days']
-                    data_df.drop(columns=[cons.home_team_col+'TZCrossed'+str(window)+'Days', cons.away_team_col+'TZCrossed'+str(window)+'Days'], inplace=True)
+
+                # create relational feature, drop individual features
+                home_tz_crossed_col = cons.crossed_tz_n_days_col.format(pre='home', n=window)
+                away_tz_crossed_col = cons.crossed_tz_n_days_col.format(pre='away', n=window)
+                data_df[cons.crossed_tz_n_days_col.format(pre='rel', n=window)] = data_df[home_tz_crossed_col] - data_df[away_tz_crossed_col]
+                data_df.drop(columns=[home_tz_crossed_col, away_tz_crossed_col], inplace=True)
             continue
 
         # add a feature that indicates the timezone of the venue for each game
-        if feature == 'isHomeOpener':
+        if feature == cons.is_home_opener_col:
             data_df = is_home_opener(data_df)
             continue
 
         # add a feature that indicates if the matchup is inter-divisional or inter-conference
-        if feature == 'rivalMatch':
+        if feature == cons.rival_match_col:
             data_df = rival_match(data_df)
             continue
 
         # add a feature that indicates the market intensity of the home team
-        if feature == 'marketIntensity':
+        if feature == cons.market_intensity_col:
             data_df = market_intensity(data_df)
             continue
 
         # add a feature that indicates if the home team is a returning home team after a road trip
-        if feature == 'isRetHomeTrap':
+        if feature == cons.is_ret_home_trap_col:
             data_df = is_return_home_after_road_trip(data_df)
             continue
 
         # add a feature that indicates if the venue is above 4,000ft elevation
-        if feature == 'isVenueAltShock':
+        if feature == cons.is_venue_alt_shock_col:
             data_df = is_venue_altitude_shock(data_df)
             continue
 
         # add a feature that indicates the playoff series score for each team in each playoff season
-        if feature == 'playoffSeriesScore':
+        if feature == cons.playoff_series_score_col:
             data_df = playoff_series_score(data_df)
             continue
 
-    for season in data_df[cons.season_name_col].unique():
-        print(f'Writing schedule features for season: {season}...')
-        data_df_season = data_df.loc[data_df[cons.season_name_col] == season].copy()
-        csvSave(data_df_season, f'{cons.season_feature_sets_folder}Sched_features/', f'{season}_sched_features.csv')
+    if data_df_in.empty:
+        for season in data_df[cons.season_name_col].unique():
+            if verbose: print(f'Writing schedule features for season: {season}...')
+            data_df_season = data_df.loc[data_df[cons.season_name_col] == season].copy()
+            csvSave(data_df_season, cons.sched_features_folder, cons.sched_features_filename.format(season=season))
 
     return data_df, sched_features
-
-
-def load_sched_features_df():
-
-    return pd.DataFrame()
 
 
 def game_time_seconds_est(data_df):
@@ -155,7 +158,7 @@ def game_time_seconds_est(data_df):
     """
 
     # the start time of the game in EST timezone
-    data_df['gameTimeSecondsEST'] = (data_df[cons.starttime_est_col] - data_df[cons.starttime_est_col].dt.normalize()).dt.total_seconds().astype(int)
+    data_df[cons.game_time_secs_est_col] = (data_df[cons.starttime_est_col] - data_df[cons.starttime_est_col].dt.normalize()).dt.total_seconds().astype(int)
     
     return data_df
 
@@ -167,7 +170,7 @@ def day_of_week(data_df):
     """
 
     # the day of the week the game is played
-    data_df['dayOfWeek'] = data_df[cons.starttime_est_col].dt.dayofweek.astype(int)
+    data_df[cons.day_of_week_col] = data_df[cons.starttime_est_col].dt.dayofweek.astype(int)
     
     return data_df
 
@@ -231,7 +234,7 @@ def reg_game_num_perc(data_df, team_col):
         [row_id_col, game_num_perc_col_name]
     ].set_index(row_id_col)[game_num_perc_col_name]
 
-    target_col = team_col[:8]+'GameNumPerc'
+    target_col = cons.reg_game_num_perc_col.format(team=team_col[:4])
     data_df[target_col] = target_series.reindex(row_ids).to_numpy()
 
     return data_df
@@ -288,7 +291,7 @@ def playoff_game_num(data_df, team_col):
         [row_id_col, game_num_col_name]
     ].set_index(row_id_col)[game_num_col_name]
 
-    target_col = team_col[:8]+'PlayoffGameNum'
+    target_col = cons.playoff_game_num_col.format(team=team_col[:4])
     data_df[target_col] = target_series.reindex(row_ids).to_numpy()
 
     return data_df
@@ -338,7 +341,7 @@ def days_rest(data_df, team_col):
         [row_id_col, days_col_name]
     ].set_index(row_id_col)[days_col_name]
 
-    target_col = team_col[:8]+'DaysRest'
+    target_col = cons.days_rest_col.format(pre=team_col[:4])
     data_df[target_col] = target_series.reindex(row_ids).fillna(5)
 
     return data_df
@@ -351,12 +354,12 @@ def is_outdoor_venue(data_df):
     """
 
     # Determine if the venue is outdoors based on the venue name or other criteria.
-    data_df['isOutdoorVenue'] = data_df[cons.venue_col].apply(lambda x: 1 if x in cons.outdoor_venues else 0)
+    data_df[cons.is_outdoor_venue_col] = data_df[cons.venue_col].apply(lambda x: 1 if x in cons.outdoor_venues else 0)
 
     return data_df
 
 
-def road_trip_sequence(data_df, team_col):
+def road_trip_sequence(data_df):
     """
     Adds a new column to the input DataFrame that indicates the sequence of games played on the road for each team.
     The value is an integer representing the number of consecutive road games played by the team.
@@ -366,7 +369,6 @@ def road_trip_sequence(data_df, team_col):
     row_id_col = '_row_id'
     team_col_name = '_team'
     source_col_name = '_source_col'
-    road_trip_seq_col_name = 'RoadTripSeq'
     season_col_name = '_season'
     game_date_col_name = '_game_date_dt'
 
@@ -400,15 +402,15 @@ def road_trip_sequence(data_df, team_col):
         [all_team_games[team_col_name], all_team_games[season_col_name]]
     ).cumsum()
     seq = all_team_games.groupby([team_col_name, season_col_name, reset_group]).cumcount()
-    all_team_games[team_col[:8] + road_trip_seq_col_name] = np.where(is_away, seq, 0)
+    all_team_games[cons.road_trip_seq_col] = np.where(is_away, seq, 0)
 
-    # Select either home-side or away-side values and align back to the original dataframe index.
+    # Select away-side values and align back to the original dataframe index.
     target_series = all_team_games.loc[
-        all_team_games[source_col_name] == team_col,
-        [row_id_col, team_col[:8] + road_trip_seq_col_name]
-    ].set_index(row_id_col)[team_col[:8] + road_trip_seq_col_name]
+        all_team_games[source_col_name] == cons.away_team_name_col,
+        [row_id_col, cons.road_trip_seq_col]
+    ].set_index(row_id_col)[cons.road_trip_seq_col]
 
-    data_df[team_col[:8] + road_trip_seq_col_name] = target_series.reindex(row_ids).to_numpy()
+    data_df[cons.road_trip_seq_col] = target_series.reindex(row_ids).to_numpy()
 
     return data_df
 
@@ -468,7 +470,7 @@ def games_played_last_n_days(data_df, team_col, n):
         [row_id_col, games_played_col_name]
     ].set_index(row_id_col)[games_played_col_name]
 
-    target_col = team_col[:8]+'GamesPlayed'+str(n)+'Days'
+    target_col = cons.games_played_n_days_col.format(pre=team_col[:4], n=n)
     data_df[target_col] = target_series.reindex(row_ids).fillna(0).to_numpy().astype(int)
 
     return data_df
@@ -575,7 +577,7 @@ def travel_distance_last_n_days(data_df, team_col, n, backfill=True):
         if dists.size:
             target_vals[i] = float(dists.mean())
 
-    target_col = team_col[:8]+'TravelDist'+str(n)+'Days'
+    target_col = cons.travel_dist_n_days_col.format(pre=team_col[:4], n=n)
     data_df_target[target_col] = target_vals
     data_df_target[target_col] = data_df_target[target_col].where(pd.notna(data_df_target[target_col]), 0)
 
@@ -594,14 +596,14 @@ def _venue_utc_offset_hours(data_df):
     Returns a Series of the UTC offset (in hours) of each game's venue timezone at the game's start time.
     """
 
-    game_utc = pd.to_datetime(data_df[cons.starttime_utc_col], errors='coerce', utc=True)
+    game_est = data_df[cons.starttime_est_col].dt.tz_localize(cons.est_tz)
     tz_names = data_df[cons.venue_timezone_col]
 
     offsets = pd.Series(np.nan, index=data_df.index, dtype=float)
     for tz_name, idx in tz_names.groupby(tz_names).groups.items():
         if pd.isna(tz_name):
             continue
-        localized = game_utc.loc[idx].dt.tz_convert(tz_name)
+        localized = game_est.loc[idx].dt.tz_convert(tz_name)
         offsets.loc[idx] = localized.apply(lambda ts: ts.utcoffset().total_seconds() / 3600.0)
 
     return offsets
@@ -661,7 +663,7 @@ def time_zones_crossed_last_n_days(data_df, team_col, n):
         [row_id_col, tz_crossed_col_name]
     ].set_index(row_id_col)[tz_crossed_col_name]
 
-    target_col = team_col[:8]+'TZCrossed'+str(n)+'Days'
+    target_col = cons.crossed_tz_n_days_col.format(pre=team_col[:4], n=n)
     data_df[target_col] = target_series.reindex(row_ids).fillna(0).astype(int)
 
     return data_df
@@ -674,7 +676,7 @@ def is_home_opener(data_df):
     """
 
     # Determine if the game is the home opener based on the game number for the home team.
-    data_df['isHomeOpener'] = (data_df[cons.home_team_col+'GameNumPerc'] < 0.02).astype(int)
+    data_df[cons.is_home_opener_col] = (data_df[cons.reg_game_num_perc_col.format(team='home')] < 0.02).astype(int)
 
     return data_df
 
@@ -690,7 +692,7 @@ def rival_match(data_df):
     home_conferences = data_df[cons.home_team_name_col].map(lambda team: (cons.team_info.get(team) or cons.defunct_team_info.get(team))['conference'])
     away_conferences = data_df[cons.away_team_name_col].map(lambda team: (cons.team_info.get(team) or cons.defunct_team_info.get(team))['conference'])
 
-    data_df['rivalMatch'] = np.where(
+    data_df[cons.rival_match_col] = np.where(
         home_divisions == away_divisions, 2,
         np.where(home_conferences == away_conferences, 1, 0)
     )
@@ -704,7 +706,7 @@ def market_intensity(data_df):
     The value is based on the market size and fan engagement, generated by Google Gemini
     """
 
-    data_df['marketIntensity'] = data_df[cons.home_team_name_col].map(lambda team: cons.market_intensity_map[team])
+    data_df[cons.market_intensity_col] = data_df[cons.home_team_name_col].map(lambda team: cons.market_intensity_map[team])
 
     return data_df
 
@@ -763,7 +765,7 @@ def is_return_home_after_road_trip(data_df):
         [row_id_col, is_ret_home_col_name]
     ].set_index(row_id_col)[is_ret_home_col_name]
 
-    data_df['isRetHomeTrap'] = target_series.reindex(row_ids).fillna(0).to_numpy().astype(int)
+    data_df[cons.is_ret_home_trap_col] = target_series.reindex(row_ids).fillna(0).to_numpy().astype(int)
 
     return data_df
 
@@ -774,7 +776,7 @@ def is_venue_altitude_shock(data_df):
     The value is 1 if the venue is above 4,000ft, and 0 otherwise.
     """
     high_altitude_venues = cons.high_altitude_venues
-    data_df['isVenueAltShock'] = data_df[cons.venue_col].isin(high_altitude_venues).astype(int)
+    data_df[cons.is_venue_alt_shock_col] = data_df[cons.venue_col].isin(high_altitude_venues).astype(int)
 
     return data_df
 
@@ -806,8 +808,8 @@ def playoff_series_score(data_df, backfill=True):
         cons.home_team_name_col,
         cons.away_team_name_col,
         cons.season_name_col,
-        cons.home_team_score_col,
-        cons.away_team_score_col
+        cons.win_prob_col.format(team='home'),
+        cons.win_prob_col.format(team='away')
     ]].copy()
 
     if not playoff_games.empty:
@@ -822,8 +824,8 @@ def playoff_series_score(data_df, backfill=True):
         playoff_games[team_low_col] = np.where(home_arr <= away_arr, home_arr, away_arr)
         playoff_games[team_high_col] = np.where(home_arr <= away_arr, away_arr, home_arr)
 
-        home_scores = pd.to_numeric(playoff_games[cons.home_team_score_col], errors='coerce').to_numpy()
-        away_scores = pd.to_numeric(playoff_games[cons.away_team_score_col], errors='coerce').to_numpy()
+        home_scores = pd.to_numeric(playoff_games[cons.win_prob_col.format(team='home')], errors='coerce').to_numpy()
+        away_scores = pd.to_numeric(playoff_games[cons.win_prob_col.format(team='away')], errors='coerce').to_numpy()
         playoff_games[winner_col] = np.where(
             home_scores > away_scores,
             home_arr,
@@ -889,5 +891,8 @@ def playoff_series_score(data_df, backfill=True):
         data_df = pd.concat([data_df.loc[data_df[cons.game_type_col]!=3], data_df_target], ignore_index=True)
     else:
         data_df = pd.concat([data_df.loc[data_df[cons.last_period_col].notna()], data_df_target], ignore_index=True)
+
+    data_df[cons.home_team_series_score_col] = data_df[cons.home_team_series_score_col].fillna(0).astype(int)
+    data_df[cons.away_team_series_score_col] = data_df[cons.away_team_series_score_col].fillna(0).astype(int)
 
     return data_df

@@ -1,7 +1,9 @@
 import os
+import numpy as np
 import pandas as pd
 import constants as cons
 import nhl_client as nhlc
+from zoneinfo import ZoneInfo
 from datetime import datetime as dt
 from file_utils import csvLoad, csvSave
 
@@ -16,11 +18,11 @@ def sched_update():
     sched_df_saved = load_sched_df()
 
     # the day after the last played game in the schedule dataframe; this is the first day that needs to be updated with actual results
-    sched_last_act_dttm = pd.to_datetime(max(sched_df_saved.loc[sched_df_saved[cons.last_period_col].notna(), cons.starttime_est_col]), format='ISO8601') + pd.Timedelta(days=1)
+    sched_last_act_dttm = max(sched_df_saved.loc[sched_df_saved[cons.last_period_col].notna(), cons.starttime_utc_col]).astimezone(ZoneInfo(cons.est_tz)) + pd.Timedelta(days=1)
     sched_last_act_dt = sched_last_act_dttm.date()
 
     # remove all data from the schedule dataframe with null results
-    sched_df_act = sched_df_saved.loc[sched_df_saved[cons.starttime_est_col] <= sched_last_act_dttm]
+    sched_df_act = sched_df_saved.loc[sched_df_saved[cons.starttime_utc_col].dt.tz_convert(cons.est_tz) <= sched_last_act_dttm]
     del sched_df_saved
 
     print('... Finished loading saved season schedule data')
@@ -63,11 +65,11 @@ def sched_update():
             print('\tNo missing actuals data found\n')
         else:
             # clean the missing schedule dataframe
-            sched_df_missing = clean_season_df(sched_df_missing)
+            sched_df_missing = clean_schedule_df(sched_df_missing)
 
     # real_last_act_dt is the last date of a completed game
     if not sched_df_missing.empty:
-        real_last_act_dt = pd.to_datetime(max(sched_df_missing[cons.starttime_est_col]), format='ISO8601').date() 
+        real_last_act_dt = max(sched_df_missing[cons.starttime_utc_col]).astimezone(ZoneInfo(cons.est_tz)).date()
     else:
         real_last_act_dt = sched_last_act_dt
 
@@ -96,7 +98,7 @@ def sched_update():
         for dow in range(0, 7):
             sched_df_future = pd.concat([sched_df_future, nhlc.get_sched_data(week, dow)], ignore_index=True)
 
-    sched_df_future = clean_season_df(sched_df_future)
+    sched_df_future = clean_schedule_df(sched_df_future)
 
     sched_df = pd.concat([sched_df_act, sched_df_missing, sched_df_future], ignore_index=True)
     sched_df.sort_values(by=cons.starttime_utc_col, inplace=True)
@@ -122,6 +124,36 @@ def sched_update():
     return sched_df
 
 
+def load_sched_df_features():
+
+    sched_df = load_sched_df()
+
+    feature_df = sched_df.copy()
+
+    # add startTimeEST column
+    feature_df[cons.starttime_est_col] = feature_df[cons.starttime_utc_col].dt.tz_convert(cons.est_tz).dt.tz_localize(None)
+
+    # add columns that the model will predict
+    feature_df[cons.home_team_win_col] = np.where(feature_df[cons.home_team_score_col].isna(), np.nan,
+        np.where(feature_df[cons.home_team_score_col] > feature_df[cons.away_team_score_col], 1.0, 0.0))
+    feature_df[cons.win_prob_col.format(team='home')] = np.where(feature_df[cons.home_team_score_col].isna(), np.nan,
+        np.where(feature_df[cons.home_team_score_col] > feature_df[cons.away_team_score_col], 1.0, 0.0))
+    feature_df[cons.win_prob_col.format(team='away')] = np.where(feature_df[cons.home_team_score_col].isna(), np.nan,
+        np.where(feature_df[cons.home_team_score_col] < feature_df[cons.away_team_score_col], 1.0, 0.0))
+
+    # drop the startTimeUTC column
+    feature_df.drop(columns=[cons.starttime_utc_col], inplace=True)
+
+    # re-order the columns
+    col_order = [cons.game_id_col, cons.season_name_col, cons.game_type_col, cons.starttime_est_col,
+                 cons.venue_timezone_col, cons.venue_col, cons.home_team_name_col, cons.away_team_name_col,
+                 cons.home_team_score_col, cons.away_team_score_col, cons.last_period_col,
+                 cons.home_team_win_col, cons.win_prob_col.format(team='home'), cons.win_prob_col.format(team='away')]
+    feature_df = feature_df[col_order]
+
+    return feature_df
+
+
 def load_sched_df():
 
     # a list of schedule files that have already been generated
@@ -137,6 +169,8 @@ def load_sched_df():
         else:
             sched_df_saved = pd.concat([sched_df_saved, load_season_df(filename[:8])], ignore_index=True)
 
+    sched_df_saved = clean_schedule_df(sched_df_saved)
+
     return sched_df_saved
 
 
@@ -144,22 +178,21 @@ def load_season_df(season_name):
 
     season_filename = cons.season_sched_filename.format(season=season_name)
     season_df = csvLoad(cons.season_sched_folder, season_filename)
-    season_df = clean_season_df(season_df)
+    season_df = clean_schedule_df(season_df)
 
     return season_df
 
 
-def clean_season_df(season_df):
+def clean_schedule_df(data_df):
 
-    season_df[cons.starttime_utc_col] = pd.to_datetime(season_df[cons.starttime_utc_col], format='ISO8601')
-    season_df[cons.starttime_est_col] = season_df[cons.starttime_utc_col].dt.tz_convert('EST')
-    season_df[cons.season_name_col] = season_df[cons.season_name_col].astype(str)
+    data_df[cons.starttime_utc_col] = pd.to_datetime(data_df[cons.starttime_utc_col], format='ISO8601')
+    data_df[cons.season_name_col] = data_df[cons.season_name_col].astype(str)
 
-    season_df.sort_values(by=cons.starttime_utc_col, inplace=True)
-    season_df.reset_index(drop=True, inplace=True)
+    data_df.sort_values(by=cons.starttime_utc_col, inplace=True)
+    data_df.reset_index(drop=True, inplace=True)
 
-    for col in season_df.columns:
-        if pd.api.types.is_integer_dtype(season_df[col]):
-            season_df[col] = season_df[col].astype(int)
+    for col in data_df.columns:
+        if pd.api.types.is_integer_dtype(data_df[col]):
+            data_df[col] = data_df[col].astype(int)
 
-    return season_df
+    return data_df

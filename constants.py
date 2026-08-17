@@ -1,20 +1,18 @@
 # format is 'Option Name': ['module_name', 'function_name']
 main_options = {
-    'Update Schedule Actuals Data': ['ui_schedule', 'ui_update_season_schedule'],
-    'Update Schedule Feature Data': ['ui_features', 'ui_update_schedule_feature_data'],
-    'Update Team Feature Data': ['ui_features', 'ui_update_team_feature_data'],
-    'Update Player Feature Data': ['ui_features', 'ui_update_player_feature_data'],
-    'Update Goalie Feature Data': ['ui_features', 'ui_update_goalie_feature_data'],
-    'Update Predictions': ['ui_predict', 'ui_update_predictions'],
-    'Playoff Spot Probability': ['ui_predict', 'ui_update_playoff_spot_probabilities']
+    'Update Schedule Data': ['ui_schedule', 'ui_update_season_schedule'],
+    'Update Feature Data': ['ui_features', 'ui_update_all_feature_data'],
+    'Train Model': ['ui_trn_inf', 'ui_train_model'],
+    'Run Inference': ['ui_trn_inf', 'ui_run_inference'],
+    'Playoff Spot Probability': ['ui_trn_inf', 'ui_update_playoff_spot_probabilities']
 }
 update_predictions_options = {
-    'Update to-date Predictions': ['ui_predict', 'ui_todate_predict'],
-    'Update historic Predictions': ['ui_predict', 'ui_historic_predict']
+    'Update to-date Predictions': ['ui_trn_inf', 'ui_todate_predict'],
+    'Update historic Predictions': ['ui_trn_inf', 'ui_historic_predict']
 }
 playoff_spot_prob_options = {
-    'Update to-date Playoff Spot Probabilities': ['ui_predict', 'ui_todate_playoff_spot_predict'],
-    'Update historic Playoff Spot Probabilities': ['ui_predict', 'ui_historic_playoff_spot_predict']
+    'Update to-date Playoff Spot Probabilities': ['ui_trn_inf', 'ui_todate_playoff_spot_predict'],
+    'Update historic Playoff Spot Probabilities': ['ui_trn_inf', 'ui_historic_playoff_spot_predict']
 }
 exit_option = {'Exit': ['terminal_ui', 'exit_program']}
 
@@ -107,6 +105,24 @@ home_team_prev_n_points_percentage_col = 'homeTeamPrevPointsPercentage_'
 away_team_prev_n_points_percentage_col = 'awayTeamPrevPointsPercentage_'
 home_team_series_score_col = 'homeTeamSeriesScore'
 away_team_series_score_col = 'awayTeamSeriesScore'
+home_team_win_col = 'homeTeamWin'
+win_prob_col = '{team}WinProb'
+game_time_secs_est_col = 'gameTimeSecondsEST'
+day_of_week_col = 'dayOfWeek'
+reg_game_num_perc_col = '{team}RegGameNumPerc'
+playoff_game_num_col = '{team}PlayoffGameNum'
+days_rest_col = '{pre}DaysRest'
+is_outdoor_venue_col = 'isOutdoorVenue'
+road_trip_seq_col = 'roadTripSeq'
+travel_dist_n_days_col = '{pre}TravelDist{n}Days'
+games_played_n_days_col = '{pre}GamesPlayed{n}Days'
+crossed_tz_n_days_col = '{pre}CrossedTZ{n}Days'
+is_home_opener_col = 'isHomeOpener'
+rival_match_col = 'rivalMatch'
+market_intensity_col = 'marketIntensity'
+is_ret_home_trap_col = 'isRetHomeTrap'
+is_venue_alt_shock_col = 'isVenueAltShock'
+playoff_series_score_col = 'playoffSeriesScore'
 
 date_format_yyyy_mm_dd = '%Y-%m-%d'
 div_1_val = 'div_1'
@@ -122,12 +138,18 @@ win_cup_val = 'win_cup'
 season_stdt = '09-20'
 season_enddt = '06-30'
 cur_season_name = '20262027'
+est_tz = 'America/New_York'
+sched_feat_windows = [4, 7]
 
 predict_cols = [home_team_score_col, away_team_score_col, last_period_col]
 tiebreaker_cols = ['totalPoints', 'pointsPercentage', 'totalRegWins', 'totalRegOTWins', 'totalWins', 'goalDifferential', 'totalGoalsFor']
 final_standings_col_order = ['conferenceName', 'conferenceSeed', 'divisionName', 'divisionSeed', 'playoffSeed', 'teamName', 'totalGames',
                  'totalWins', 'totalLosses', 'totalOTLs', 'totalPoints', 'pointsPercentage', 'totalRegWins', 'totalRegOTWins',
                  'goalDifferential', 'totalGoalsFor']
+base_feature_cols = ['gameId', 'seasonName', 'gameType', 'startTimeEST', 'venueTimezone',
+                'venue', 'homeTeamName', 'awayTeamName', 'homeTeamScore',
+                'awayTeamScore', 'lastPeriod', 'homeTeamWin', 'homeWinProb',
+                'awayWinProb']
 
 output_folder = 'output/'
 util_data_folder = 'util_data/'
@@ -135,6 +157,14 @@ model_files_folder = 'model_files/'
 images_folder = 'images/'
 season_sched_folder = output_folder + 'season_schedules/'
 season_feature_sets_folder = output_folder + 'season_feature_sets/'
+sched_features_folder = season_feature_sets_folder + 'sched_features/'
+sched_features_filename = '{season}_sched_features.csv'
+goalie_features_folder = season_feature_sets_folder + 'goalie_features/'
+goalie_features_filename = '{season}_goalie_features.csv'
+player_features_folder = season_feature_sets_folder + 'player_features/'
+player_features_filename = '{season}_player_features.csv'
+team_features_folder = season_feature_sets_folder + 'team_features/'
+team_features_filename = '{season}_team_features.csv'
 season_pred_folder = output_folder + 'season_predictions/{date}/'
 pred_analysis_filename = 'game_result_comp_{date_since}_to_{date_until}.csv'
 season_sched_filename = '{season}_season_sched.csv'
@@ -226,3 +256,23 @@ market_intensity_map = {
 }
 
 high_altitude_venues = ['Ball Arena', 'Delta Center', 'Rice-Eccles Stadium']
+
+venue_timezone_map = {
+    # Pacific Timezones
+    'US/Pacific': 'Pacific', 'America/Los_Angeles': 'Pacific', 'America/Vancouver': 'Pacific',
+
+    # Mountain Timezones
+    'US/Mountain': 'Mountain', 'America/Denver': 'Mountain', 'America/Edmonton': 'Mountain', 'America/Phoenix': 'Mountain',
+
+    # Central American Timezones
+    'US/Central': 'Am_Central', 'America/Chicago': 'Am_Central', 'America/Winnipeg': 'Am_Central',
+
+    # Eastern American Timezones
+    'US/Eastern': 'Am_Eastern', 'America/New_York': 'Am_Eastern', 'America/Toronto': 'Am_Eastern', 'America/Montreal': 'Am_Eastern', 'America/Detroit': 'Am_Eastern',
+
+    # Central European Timezones
+    'Europe/Berlin': 'Eu_Central', 'Europe/Stockholm': 'Eu_Central', 'Europe/Prague': 'Eu_Central',
+
+    # Eastern European Timezones
+    'Europe/Helsinki': 'Eu_Eastern' 
+}
