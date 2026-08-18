@@ -261,7 +261,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
             # predict games on selected date
             print(f'\tPredicting games for {game_dt.strftime("%Y-%m-%d")}...')
             processed_playoff_df_filt, feature_list = sklu.preprocess_feature_data(playoff_df_filt)
-            pred_playoff_df_filt = sklu.model_inference(processed_playoff_df_filt, feature_list)
+            pred_playoff_df_filt, model = sklu.model_inference(processed_playoff_df_filt, feature_list)
             playoff_df_filt.update(pred_playoff_df_filt[['homeTeamWin', 'homeWinProb', 'awayWinProb']])
             
             # reset the model params for all predictions after the first
@@ -270,7 +270,8 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
 
             playoff_df = pd.concat([playoff_df_filt, playoff_df.loc[playoff_df[cons.starttime_est_col].dt.date > game_dt]], ignore_index=True)
 
-            if first_loop:
+            # if this is the first playoff prediction loop and the regular season is complete
+            if first_loop and (dt.strptime(today_dt, "%Y-%m-%d").date() > regular_season_df[cons.starttime_est_col].max().date()):
                 for _, row in playoff_df_filt.loc[playoff_df_filt[cons.starttime_est_col].dt.date==game_dt].iterrows():
                     ot_str = ' (OT)' if row[cons.last_period_col]=='OT' else ''
                     if row[cons.win_prob_col.format(team='home')] > row[cons.win_prob_col.format(team='away')]:

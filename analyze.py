@@ -96,7 +96,7 @@ def prediction_analysis(actuals_df, date_since, date_until):
         else:
             predict_df_indiv = csvLoad('output/season_predictions/' + pred_date + '/', 'playoff_tree_predictions_' + pred_date + '.csv') 
         # print(f'Analyzing predictions for {pred_date}...')
-        min_predict_date = predict_df_indiv.loc[predict_df_indiv[cons.game_date_col] == dt.strptime(pred_date, '%Y-%m-%d').date(), cons.game_date_col].min()
+        min_predict_date = predict_df_indiv.loc[predict_df_indiv[cons.starttime_est_col].dt.date == dt.strptime(pred_date, '%Y-%m-%d').date(), cons.game_date_col].min()
         predict_df = pd.concat([predict_df, predict_df_indiv.loc[predict_df_indiv[cons.game_date_col] == min_predict_date]], ignore_index=True)
 
         if predict_df_indiv.loc[predict_df_indiv[cons.game_date_col] == min_predict_date].empty:

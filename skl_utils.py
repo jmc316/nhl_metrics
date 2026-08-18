@@ -1,6 +1,9 @@
+import shap
+
 import numpy as np
 import pandas as pd
 import constants as cons
+import matplotlib.pyplot as plt
 
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder, TargetEncoder
 from file_utils import pklLoad, pklSave, txtSave
@@ -184,7 +187,7 @@ def model_inference(data_df, feature_list, model=None):
         data_df.loc[(data_df[home_win_prob_col]==0.5) & (data_df[home_win_prob_col]==0.5),
                     [home_win_prob_col, away_win_prob_col]] = [np.float64(0.5000000000000001), np.float64(0.4999999999999999)]
 
-    return data_df
+    return data_df, model
 
 
 def init_model(random_state_in=None):
@@ -223,3 +226,26 @@ def init_model(random_state_in=None):
         )
 
     return model
+
+
+def explain_predictions(pred_data_x, model, home_team, away_team, game_date, today_dt):
+
+    # Build the explainer once, using your trained model
+    explainer = shap.TreeExplainer(model)
+
+    # Get SHAP values for the predictions you want to explain
+    explanation = explainer(pred_data_x)
+    explanation_class1 = explanation[:, :, 1]
+
+    # plot SHAP values
+    shap.plots.waterfall(explanation_class1[0], max_display=12, show=False)
+
+    fig = plt.gcf()
+    fig.set_size_inches(10, 6)
+    plt.title(f"Predicted Home Win Probability — {away_team} at {home_team}, {game_date}", fontsize=14, pad=20)
+    plt.tight_layout()
+    # plt.show()
+    plt.savefig(f'output/season_predictions/{today_dt}/shap_{home_team}_{away_team}_{game_date}.png')
+    plt.close()
+
+    pass

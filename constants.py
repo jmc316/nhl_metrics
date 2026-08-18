@@ -216,6 +216,40 @@ team_info = {
     'Winnipeg Jets': {'c1': (66, 30, 4), 'logo': images_folder + 'winnipeg_jets_logo.png', 'conference': 'Western', 'division': 'Central'}
 }
 
+team_name_addrev_map = {
+    'Anaheim Ducks': 'ANA',
+    'Boston Bruins': 'BOS',
+    'Buffalo Sabres': 'BUF',
+    'Calgary Flames': 'CGY',
+    'Carolina Hurricanes': 'CAR',
+    'Chicago Blackhawks': 'CHI',
+    'Colorado Avalanche': 'COL',
+    'Columbus Blue Jackets': 'CBJ',
+    'Dallas Stars': 'DAL',
+    'Detroit Red Wings': 'DET',
+    'Edmonton Oilers': 'EDM',
+    'Florida Panthers': 'FLA',
+    'Los Angeles Kings': 'LAK',
+    'Minnesota Wild': 'MIN',
+    'Montréal Canadiens': 'MTL',
+    'Nashville Predators': 'NSH',
+    'New Jersey Devils': 'NJD',
+    'New York Islanders': 'NYI',
+    'New York Rangers': 'NYR',
+    'Ottawa Senators': 'OTT',
+    'Philadelphia Flyers': 'PHI',
+    'Pittsburgh Penguins': 'PIT',
+    'San Jose Sharks': 'SJS',
+    'Seattle Kraken': 'SEA',
+    'St. Louis Blues': 'STL',
+    'Tampa Bay Lightning': 'TBL',
+    'Toronto Maple Leafs': 'TOR',
+    'Vancouver Canucks': 'VAN',
+    'Vegas Golden Knights': 'VGK',
+    'Washington Capitals': 'WSH',
+    'Winnipeg Jets': 'WPG'
+}
+
 defunct_team_info = {
     'Arizona Coyotes': {'c1': None, 'logo': None, 'conference': 'Western', 'division': 'Central'},
     'Utah Utah Hockey Club': {'c1': None, 'logo': None, 'conference': 'Western', 'division': 'Central'},

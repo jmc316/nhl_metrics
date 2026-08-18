@@ -27,7 +27,7 @@ def predict_season(to_csv, set_model_state, today_dt):
     processed_df, feature_list = sklu.preprocess_feature_data(feature_df)
 
     # make predictions from the start date to the end of the schedule, and add the predictions to the feature dataframe
-    pred_df = sklu.model_inference(processed_df, feature_list)
+    pred_df, model = sklu.model_inference(processed_df, feature_list)
 
     if to_csv:
         print('Saving season predictions to CSV file...')
@@ -36,6 +36,26 @@ def predict_season(to_csv, set_model_state, today_dt):
     # return feature_df with the win probability columns added
     feature_df.update(pred_df[['homeTeamWin', 'homeWinProb', 'awayWinProb']])
 
+    # display the predictions for the first date of predictions, and explain the predictions using SHAP values
+    print_dt = min(feature_df.loc[feature_df[cons.starttime_est_col].dt.date > dt.strptime(today_dt, "%Y-%m-%d").date(),
+                                  cons.starttime_est_col].dt.date)
+    first_pred_dt_df = feature_df.loc[feature_df[cons.starttime_est_col].dt.date==print_dt]
+
+    for idx, row in first_pred_dt_df.iterrows():
+
+        home_team = cons.team_name_addrev_map[row[cons.home_team_name_col]]
+        away_team = cons.team_name_addrev_map[row[cons.away_team_name_col]]
+        ot_str = ' (OT)' if row[cons.last_period_col]=='OT' else ''
+
+        if row[cons.win_prob_col.format(team='home')] > row[cons.win_prob_col.format(team='away')]:
+            print(f"\t{away_team.lower()} {(row[cons.win_prob_col.format(team='away')]*100):.2f} at {home_team} {(row[cons.win_prob_col.format(team='home')]*100):.2f}{ot_str}")
+        else:
+            print(f"\t{away_team} {(row[cons.win_prob_col.format(team='away')]*100):.2f} at {home_team.lower()} {(row[cons.win_prob_col.format(team='home')]*100):.2f}{ot_str}")
+
+        sklu.explain_predictions(pred_df.iloc[[idx]][feature_list],
+                                model, home_team, away_team,
+                                print_dt, today_dt)
+    
     return feature_df
 
 
