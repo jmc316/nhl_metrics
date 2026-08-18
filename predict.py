@@ -27,7 +27,7 @@ def predict_season(to_csv, set_model_state, today_dt):
     processed_df, feature_list = sklu.preprocess_feature_data(feature_df)
 
     # make predictions from the start date to the end of the schedule, and add the predictions to the feature dataframe
-    pred_df, model = sklu.model_inference(processed_df, feature_list)
+    pred_df, model = sklu.model_inference(processed_df, feature_list, today_dt)
 
     if to_csv:
         print('Saving season predictions to CSV file...')

@@ -152,13 +152,16 @@ def model_train(data_df, feature_list, set_model_state=False, today_dt=None, deb
     return final_model
 
 
-def model_inference(data_df, feature_list, model=None):
+def model_inference(data_df, feature_list, today_dt, model=None):
 
     # if the model is not passed in, load it from the pkl file
     if not model:
         model = pklLoad(cons.model_files_folder, cons.sklearn_model_filename)
 
     x_predict_df = data_df[data_df[cons.home_team_win_col].isna()][feature_list]
+
+    # save the features used to create this model for future reference
+    txtSave(feature_list, cons.season_pred_folder.format(date=today_dt), cons.model_features_filename.format(model='skl_rf'))
 
     # make predictions on the prediction set
     predictset_predictions = model.predict(x_predict_df)

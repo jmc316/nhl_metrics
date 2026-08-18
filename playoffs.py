@@ -261,7 +261,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
             # predict games on selected date
             print(f'\tPredicting games for {game_dt.strftime("%Y-%m-%d")}...')
             processed_playoff_df_filt, feature_list = sklu.preprocess_feature_data(playoff_df_filt)
-            pred_playoff_df_filt, model = sklu.model_inference(processed_playoff_df_filt, feature_list)
+            pred_playoff_df_filt, model = sklu.model_inference(processed_playoff_df_filt, feature_list, today_dt)
             playoff_df_filt.update(pred_playoff_df_filt[['homeTeamWin', 'homeWinProb', 'awayWinProb']])
             
             # reset the model params for all predictions after the first
