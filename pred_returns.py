@@ -2,16 +2,23 @@ import datetime
 
 import pandas as pd
 import constants as cons
+import matplotlib
 import matplotlib.pyplot as plt
 
-from file_utils import csvLoad, csvSave
+from utils.file_utils import csvLoad, csvSave
 from datetime import datetime as dt
+from schedule import clean_schedule_df
 from analyze import prediction_analysis
+
+# avoid garbage collection
+matplotlib.use('Agg')
 
 
 def daily_probability(today_dt, date_since, season, display_graphic=True):
 
     season_actual_df = csvLoad(cons.season_sched_folder, cons.season_sched_filename.format(season=season))
+    season_actual_df = clean_schedule_df(season_actual_df)
+    season_actual_df[cons.starttime_est_col] = season_actual_df[cons.starttime_utc_col].dt.tz_convert(cons.est_tz).dt.tz_localize(None)
 
     pred_df = prediction_analysis(season_actual_df, date_since, today_dt)
 
@@ -28,7 +35,10 @@ def daily_probability(today_dt, date_since, season, display_graphic=True):
         missing_games = odds_data['homeTeamOdds'].isnull().sum() + odds_data['awayTeamOdds'].isnull().sum()
         print(f"*** WARNING: Missing odds data for {missing_games} entries! ***")
 
-    odds_data['winner_odds'] = odds_data['winner_odds'] = odds_data.apply(lambda row: row['homeTeamOdds'] if row['correct_outcome'] == 1 and row['homeTeamScore_predicted'] > row['awayTeamScore_predicted'] else (row['awayTeamOdds'] if row['correct_outcome'] == 1 and row['homeTeamScore_predicted'] < row['awayTeamScore_predicted'] else 0), axis=1)
+    odds_data['winner_odds'] = odds_data['winner_odds'] = odds_data.apply(
+        lambda row: row['homeTeamOdds'] if row['correct_outcome'] == 1 and row[cons.home_team_score_col] > row[cons.away_team_score_col]
+            else (row['awayTeamOdds'] if row['correct_outcome'] == 1 and row[cons.home_team_score_col] < row[cons.away_team_score_col]
+                else 0), axis=1)
 
     odds_data['winnings'] = -1.0
 
@@ -37,38 +47,42 @@ def daily_probability(today_dt, date_since, season, display_graphic=True):
 
     csvSave(odds_data, f'output/season_predictions/{today_dt}/', f'prediction_returns_{date_since}_to_{today_dt}.csv')
 
-    total_return = odds_data.loc[pd.to_datetime(odds_data['gameDate']) > date_since, 'winnings'].sum()
-    playoff_return = odds_data.loc[pd.to_datetime(odds_data['gameDate']) > '2026-04-17', 'winnings'].sum()
+    # the date that playoffs starts for this season
+    playoff_st_dt = season_actual_df.loc[season_actual_df[cons.game_type_col]==3, cons.starttime_est_col].dt.date.min()
+
+    total_return = odds_data.loc[odds_data[cons.starttime_est_col].dt.date > pd.to_datetime(date_since).date(), 'winnings'].sum()
+    if playoff_st_dt is not pd.NaT:
+        playoff_return = odds_data.loc[odds_data[cons.starttime_est_col].dt.date > playoff_st_dt, 'winnings'].sum()
 
     print('Yesterday\'s games and returns:')
-    for _, row in odds_data.loc[odds_data[cons.game_date_col]==(pd.to_datetime(today_dt) - datetime.timedelta(days=1)).date()].iterrows():
-        ot_str = ' (OT)' if row[cons.last_period_col+'_actual']=='OT' else ''
-        if row[cons.home_team_score_col+'_actual'] > row[cons.away_team_score_col+'_actual']:
-            print(f"\t{row[cons.away_team_name_col]} {int(row[cons.away_team_score_col+'_actual'])} at {row[cons.home_team_name_col].upper()} {int(row[cons.home_team_score_col+'_actual'])}{ot_str}: {row['winnings']}")
+    for _, row in odds_data.loc[odds_data[cons.starttime_est_col].dt.date == (pd.to_datetime(today_dt) - datetime.timedelta(days=1)).date()].iterrows():
+        ot_str = ' (OT)' if row[cons.last_period_col]=='OT' else ''
+        if row[cons.home_team_score_col] > row[cons.away_team_score_col]:
+            print(f"\t{cons.team_name_addrev_map[row[cons.away_team_name_col]].lower()} {int(row[cons.away_team_score_col])} at {cons.team_name_addrev_map[row[cons.home_team_name_col]]} {int(row[cons.home_team_score_col])}{ot_str}: {row['winnings']:.2f}")
         else:
-            print(f"\t{row[cons.away_team_name_col].upper()} {int(row[cons.away_team_score_col+'_actual'])} at {row[cons.home_team_name_col]} {int(row[cons.home_team_score_col+'_actual'])}{ot_str}: {row['winnings']}")
+            print(f"\t{cons.team_name_addrev_map[row[cons.away_team_name_col]]} {int(row[cons.away_team_score_col])} at {cons.team_name_addrev_map[row[cons.home_team_name_col]].lower()} {int(row[cons.home_team_score_col])}{ot_str}: {row['winnings']:.2f}")
 
-    if total_return > 0:
-        print(f'\nTotal return on $1 bet since {date_since}: ${total_return:.2f}\n')
-    else:
-        print(f'\nTotal return on $1 bet since {date_since}: ${total_return:.2f}\n')
+    num_correct_preds = odds_data.loc[odds_data[cons.starttime_est_col].dt.date > pd.to_datetime(date_since).date(), 'correct_outcome'].sum()
+    num_games = len(odds_data)
+    print(f'\nTotal return on $1 bet since {date_since}: ${total_return:.2f} ({num_correct_preds/num_games:.2%} win rate)\n')
 
-    if playoff_return > 0:
-        print(f'Total return on $1 bet since playoffs start: ${playoff_return:.2f}\n')
-    else:
-        print(f'Total return on $1 bet since playoffs start: ${playoff_return:.2f}\n')
+    if pd.to_datetime(today_dt).date() > playoff_st_dt:
+        num_games = len(odds_data.loc[odds_data[cons.starttime_est_col].dt.date>=playoff_st_dt])
+        print(f'Total return on $1 bet since playoffs start ({num_games} games): ${playoff_return:.2f}\n')
 
     _, ax = plt.subplots()
 
     # create a column that is the sum of each day's winnings
+    odds_data[cons.game_date_col] = odds_data[cons.starttime_est_col].dt.date
     odds_data_daily = odds_data.groupby(cons.game_date_col)['winnings'].sum().reset_index()
     odds_data_daily['daily_return'] = odds_data_daily['winnings'].cumsum()
 
     # create y=0 line
     ax.axhline(0, color='black', linewidth=0.8, linestyle='-')
 
-    # create x='2026-04-17' line (playoffs start)
-    ax.axvline(pd.to_datetime('2026-04-17').date(), color='green', linewidth=0.8, linestyle='--', label='Playoffs Start')
+    # create x=playoff_st_dt line (playoffs start)
+    if pd.to_datetime(today_dt).date() > playoff_st_dt:
+        ax.axvline(playoff_st_dt, color='green', linewidth=0.8, linestyle='--', label='Playoffs Start')
 
     # Define condition: green if perfect, red if 0% accuracy, blue otherwise
     colors = []
@@ -91,3 +105,4 @@ def daily_probability(today_dt, date_since, season, display_graphic=True):
     plt.xticks(rotation=45, ha='right')
     plt.savefig(f'output/season_predictions/{today_dt}/prediction_returns_{date_since}_to_{today_dt}.png')
     # plt.show()
+    plt.close()

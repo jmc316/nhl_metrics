@@ -19,4 +19,8 @@
     - pytest
 
 - new to-dos
-    - seperate creation of Schedule updates, team features, player features, goalie features
+    - clean up constants in pred_resturns file
+    - centralize file saving and loading into utils file
+    - centralize datetime values on file load
+    - looped historical projections over many today_dts
+    - historical prediction explanation

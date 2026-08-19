@@ -3,9 +3,8 @@ import pandas as pd
 import constants as cons
 import nhl_client as nhlc
 
-from ui_nhl import team_info
 from tabulate import tabulate
-from file_utils import csvSave
+from utils.file_utils import csvSave
 
 
 def nhl_team_standings(data_df=None):
@@ -230,8 +229,10 @@ def generate_final_standings(season_results, today_dt, to_csv=False):
 
     # fake tiebreaker for when everything is equal, take the higher alphabetized team
     final_standings['fakeTiebreaker'] = final_standings['teamName']
-    cons.tiebreaker_cols.append('fakeTiebreaker')
-    cons.final_standings_col_order.append('fakeTiebreaker')
+    if 'fakeTiebreaker' not in cons.tiebreaker_cols:
+        cons.tiebreaker_cols.append('fakeTiebreaker')
+    if 'fakeTiebreaker' not in cons.final_standings_col_order:
+        cons.final_standings_col_order.append('fakeTiebreaker')
 
     # assign divisionSeed, conferenceSeed based on total points and tiebreakers within each division, conference
     final_standings.sort_values(by=[cons.division_name_col] + cons.tiebreaker_cols, ascending=[True] + [False]*len(cons.tiebreaker_cols), inplace=True)

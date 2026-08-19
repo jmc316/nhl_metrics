@@ -5,9 +5,6 @@ import constants as cons
 
 # local constants
 WIDTH, HEIGHT = 1400, 800
-# Shared canvas reused for one bracket render.
-CANVAS = np.zeros((HEIGHT, WIDTH, 3), dtype=np.uint8)
-CANVAS[:] = (12, 12, 14)
 # Column anchors for bracket rounds (left conference).
 LEFT_X = [20, 270, 410]
 # Mirror left anchors around the center line for the right conference.
@@ -225,6 +222,10 @@ def display_playoff_tree(matchups, season, pred_date, display_image=True):
     - matchups[3]: 2 conference finals (0 East, 1 West)
     - matchups[4][0]: Stanley Cup Final
     """
+
+    # Shared canvas reused for one bracket render.
+    CANVAS = np.zeros((HEIGHT, WIDTH, 3), dtype=np.uint8)
+    CANVAS[:] = (12, 12, 14)
 
     # Precompute y-lanes for each round so cards and connectors align cleanly.
     r1_y = get_round_positions(BASE_Y, R1_SPACE, 8)

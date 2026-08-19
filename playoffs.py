@@ -1,12 +1,12 @@
 import numpy as np
 import pandas as pd
-import features as ft
-import feat_schedule as ft_sched
+import features.features as ft
+import features.feat_schedule as ft_sched
 import constants as cons
-import skl_utils as sklu
+import utils.skl_utils as sklu
 
 from datetime import datetime as dt, timedelta
-from file_utils import csvSave
+from utils.file_utils import csvSave
 from playoff_matchup import PlayoffMatchup
 from playoff_tree import display_playoff_tree
 
@@ -584,7 +584,7 @@ def series_final_check(playoff_df, playoff_df_filt, all_matchups, game_dt):
 
 
 if __name__ == '__main__':
-    from file_utils import csvLoad
+    from utils.file_utils import csvLoad
 
     today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
     # today_dt = '2025-10-01' # beginning of 20252026 season

@@ -5,14 +5,14 @@ import datetime
 import numpy as np
 import pandas as pd
 import constants as cons
-import nhl_utils as nhlu
-import skl_utils as sklu
+import utils.nhl_utils as nhlu
+import utils.skl_utils as sklu
 import nhl_client as nhlc
 
-from features import feature_data_load
+from features.features import feature_data_load
 from zoneinfo import ZoneInfo
 from datetime import datetime as dt
-from file_utils import csvLoad, csvSave
+from utils.file_utils import csvLoad, csvSave
 from playoff_probability import display_playoff_probability
 
 
@@ -33,16 +33,16 @@ def predict_season(to_csv, set_model_state, today_dt):
 
         # if the today_dt is in the regular season, remove all scheduled playoff games for this season
         if not feature_df.loc[(feature_df[cons.game_type_col]==2) & (feature_df[cons.season_name_col]==season_name) &
-                              (feature_df[cons.starttime_est_col].dt.date > dt.strptime(today_dt, "%Y-%m-%d").date())].empty:
+                              (feature_df[cons.starttime_est_col].dt.date >= dt.strptime(today_dt, "%Y-%m-%d").date())].empty:
             feature_df = feature_df.loc[~((feature_df[cons.game_type_col]==3) & (feature_df[cons.season_name_col]==season_name))]
         # if the today_dt is in the playoffs, remove all scheduled playoff games for any rounds after the current one
         elif not feature_df.loc[(feature_df[cons.game_type_col]==3) & (feature_df[cons.season_name_col]==season_name) &
-                              (feature_df[cons.starttime_est_col].dt.date > dt.strptime(today_dt, "%Y-%m-%d").date())].empty:
+                              (feature_df[cons.starttime_est_col].dt.date >= dt.strptime(today_dt, "%Y-%m-%d").date())].empty:
             feature_df = feature_df.loc[~((feature_df[cons.game_type_col]==3) & (feature_df[cons.season_name_col]==season_name) &
-                                          (feature_df[cons.starttime_est_col].dt.date > dt.strptime(today_dt, "%Y-%m-%d").date()))]
+                                          (feature_df[cons.starttime_est_col].dt.date >= dt.strptime(today_dt, "%Y-%m-%d").date()))]
 
         # nullify the results of all games beyond the today_dt
-        feature_df.loc[feature_df[cons.starttime_est_col].dt.date > dt.strptime(today_dt, "%Y-%m-%d").date(),
+        feature_df.loc[feature_df[cons.starttime_est_col].dt.date >= dt.strptime(today_dt, "%Y-%m-%d").date(),
                        [cons.home_team_score_col, cons.away_team_score_col, cons.last_period_col,
                         cons.home_team_win_col, cons.win_prob_col.format(team='home'), cons.win_prob_col.format(team='away')]] = np.nan
 
@@ -63,7 +63,7 @@ def predict_season(to_csv, set_model_state, today_dt):
     feature_df.update(pred_df[['homeTeamWin', 'homeWinProb', 'awayWinProb']])
 
     # display the predictions for the first date of predictions, and explain the predictions using SHAP values
-    print_dt = min(feature_df.loc[feature_df[cons.starttime_est_col].dt.date > dt.strptime(today_dt, "%Y-%m-%d").date(),
+    print_dt = min(feature_df.loc[feature_df[cons.starttime_est_col].dt.date >= dt.strptime(today_dt, "%Y-%m-%d").date(),
                                   cons.starttime_est_col].dt.date)
     first_pred_dt_df = feature_df.loc[feature_df[cons.starttime_est_col].dt.date==print_dt]
 

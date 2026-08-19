@@ -3,13 +3,17 @@ import shap
 import numpy as np
 import pandas as pd
 import constants as cons
+import matplotlib
 import matplotlib.pyplot as plt
 
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder, TargetEncoder
-from file_utils import pklLoad, pklSave, txtSave
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from utils.file_utils import pklLoad, pklSave, txtSave
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, roc_auc_score, log_loss, brier_score_loss
 from sklearn.inspection import permutation_importance
+
+# avoid garbage collection
+matplotlib.use('Agg')
 
 
 def preprocess_feature_data(data_df_in):
@@ -132,8 +136,8 @@ def model_train(data_df, feature_list, save_model=True):
         print('\nPermutation Importance:')
         print(perm_imp_df)
 
-    # train a final model on all actual data to use for the prediction set
-    print('\nFinalizing model data...')
+        # train a final model on all actual data to use for the prediction set
+        print('\nFinalizing model data...')
     final_model = init_model(random_state_in=42)
     final_model.fit(actual_df[feature_list], actual_df[cons.home_team_win_col])
 

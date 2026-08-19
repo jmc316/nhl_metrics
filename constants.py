@@ -1,21 +1,3 @@
-# format is 'Option Name': ['module_name', 'function_name']
-main_options = {
-    'Update Schedule Data': ['ui_schedule', 'ui_update_season_schedule'],
-    'Update Feature Data': ['ui_features', 'ui_update_all_feature_data'],
-    'Train Model': ['ui_trn_inf', 'ui_train_model'],
-    'Run Inference': ['ui_trn_inf', 'ui_run_inference'],
-    'Playoff Spot Probability': ['ui_trn_inf', 'ui_update_playoff_spot_probabilities']
-}
-update_predictions_options = {
-    'Update to-date Predictions': ['ui_trn_inf', 'ui_todate_predict'],
-    'Update historic Predictions': ['ui_trn_inf', 'ui_historic_predict']
-}
-playoff_spot_prob_options = {
-    'Update to-date Playoff Spot Probabilities': ['ui_trn_inf', 'ui_todate_playoff_spot_predict'],
-    'Update historic Playoff Spot Probabilities': ['ui_trn_inf', 'ui_historic_playoff_spot_predict']
-}
-exit_option = {'Exit': ['terminal_ui', 'exit_program']}
-
 ot_score_diff = 0.25
 max_single_season_games = 110
 playoff_sched_format = [0, 2, 5, 7, 10, 12, 15]
@@ -244,6 +226,7 @@ team_name_addrev_map = {
     'St. Louis Blues': 'STL',
     'Tampa Bay Lightning': 'TBL',
     'Toronto Maple Leafs': 'TOR',
+    'Utah Mammoth': 'UTA',
     'Vancouver Canucks': 'VAN',
     'Vegas Golden Knights': 'VGK',
     'Washington Capitals': 'WSH',

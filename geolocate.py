@@ -2,7 +2,7 @@ import pandas as pd
 import constants as cons
 
 from time import sleep
-from file_utils import csvSave
+from utils.file_utils import csvSave
 from predict import create_df_set
 from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter

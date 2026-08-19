@@ -5,7 +5,7 @@ import constants as cons
 import nhl_client as nhlc
 from zoneinfo import ZoneInfo
 from datetime import datetime as dt
-from file_utils import csvLoad, csvSave
+from utils.file_utils import csvLoad, csvSave
 
 
 def sched_update():

@@ -4,7 +4,7 @@ import playoffs
 import numpy as np
 import pandas as pd
 import constants as cons
-import nhl_utils as nhlu
+import utils.nhl_utils as nhlu
 import math
 import datetime as dt
 

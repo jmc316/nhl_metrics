@@ -2,9 +2,10 @@ import os
 import numpy as np
 import pandas as pd
 import constants as cons
+from features.features import clean_feature_df
 import nhl_client as nhlc
 
-from file_utils import csvLoad, csvSave
+from utils.file_utils import csvLoad
 from datetime import datetime as dt
 
 def game_result_comparison(predict_df, actual_df=None):
@@ -96,10 +97,10 @@ def prediction_analysis(actuals_df, date_since, date_until):
         else:
             predict_df_indiv = csvLoad('output/season_predictions/' + pred_date + '/', 'playoff_tree_predictions_' + pred_date + '.csv') 
         # print(f'Analyzing predictions for {pred_date}...')
-        min_predict_date = predict_df_indiv.loc[predict_df_indiv[cons.starttime_est_col].dt.date == dt.strptime(pred_date, '%Y-%m-%d').date(), cons.game_date_col].min()
-        predict_df = pd.concat([predict_df, predict_df_indiv.loc[predict_df_indiv[cons.game_date_col] == min_predict_date]], ignore_index=True)
+        min_predict_date = pd.to_datetime(predict_df_indiv.loc[pd.to_datetime(predict_df_indiv[cons.starttime_est_col]).dt.date == dt.strptime(pred_date, '%Y-%m-%d').date(), cons.starttime_est_col]).dt.date.min()
+        predict_df = pd.concat([predict_df, predict_df_indiv.loc[pd.to_datetime(predict_df_indiv[cons.starttime_est_col]).dt.date == min_predict_date]], ignore_index=True)
 
-        if predict_df_indiv.loc[predict_df_indiv[cons.game_date_col] == min_predict_date].empty:
+        if predict_df_indiv.loc[pd.to_datetime(predict_df_indiv[cons.starttime_est_col]).dt.date == min_predict_date].empty:
             # print(f'\t... No games found')
             pass
 
@@ -107,20 +108,33 @@ def prediction_analysis(actuals_df, date_since, date_until):
     if date_since > date_until:
         return pd.DataFrame()
 
-    comparison_df = pd.merge(predict_df, actuals_df, on=[cons.game_id_col], suffixes=('_predicted', '_actual'))
+    if predict_df.empty:
+        print(f'No predictions found for the date range {date_since} to {date_until}.')
+        return pd.DataFrame()
+    else:
+        predict_df = clean_feature_df(predict_df)
 
-    comparison_df = comparison_df[[cons.game_id_col, cons.game_date_col, cons.home_team_name_col+'_predicted', cons.away_team_name_col+'_predicted', cons.home_team_score_col+'_predicted', cons.away_team_score_col+'_predicted', cons.last_period_col+'_predicted',
-                            cons.home_team_score_col+'_actual', cons.away_team_score_col+'_actual', cons.last_period_col+'_actual']]
+    home_prob_col = cons.win_prob_col.format(team='home')
+    away_prob_col = cons.win_prob_col.format(team='away')
+
+    comparison_df = pd.merge(predict_df, actuals_df, on=[cons.game_id_col, cons.starttime_est_col], suffixes=('_predicted', '_actual'))
+
+    comparison_df = comparison_df[[cons.game_id_col, cons.starttime_est_col, cons.home_team_name_col+'_predicted',
+                                   cons.away_team_name_col+'_predicted', home_prob_col, away_prob_col,
+                                   cons.home_team_score_col+'_actual', cons.away_team_score_col+'_actual',
+                                   cons.last_period_col+'_actual']]
     
-    comparison_df.rename(columns={cons.game_date_col+'_predicted': cons.game_date_col, cons.home_team_name_col+'_predicted': cons.home_team_name_col, cons.away_team_name_col+'_predicted': cons.away_team_name_col}, inplace=True)
+    comparison_df.rename(columns={cons.game_date_col+'_predicted': cons.game_date_col, cons.home_team_name_col+'_predicted': cons.home_team_name_col,
+                                  cons.away_team_name_col+'_predicted': cons.away_team_name_col, cons.home_team_score_col+'_actual': cons.home_team_score_col,
+                                  cons.away_team_score_col+'_actual': cons.away_team_score_col, cons.last_period_col+'_actual': cons.last_period_col}, inplace=True)
 
     comparison_df['correct_outcome'] = np.where(
-        ((comparison_df[cons.home_team_score_col+'_actual'] > comparison_df[cons.away_team_score_col+'_actual']) &
-        (comparison_df[cons.home_team_score_col+'_predicted'] > comparison_df[cons.away_team_score_col+'_predicted'])) |
-        ((comparison_df[cons.home_team_score_col+'_actual'] < comparison_df[cons.away_team_score_col+'_actual']) &
-        (comparison_df[cons.home_team_score_col+'_predicted'] < comparison_df[cons.away_team_score_col+'_predicted'])) |
-        ((comparison_df[cons.home_team_score_col+'_actual'] == comparison_df[cons.away_team_score_col+'_actual']) &
-        (comparison_df[cons.home_team_score_col+'_predicted'] == comparison_df[cons.away_team_score_col+'_predicted'])),
+        ((comparison_df[cons.home_team_score_col] > comparison_df[cons.away_team_score_col]) &
+        (comparison_df[home_prob_col] > comparison_df[away_prob_col])) |
+        ((comparison_df[cons.home_team_score_col] < comparison_df[cons.away_team_score_col]) &
+        (comparison_df[home_prob_col] < comparison_df[away_prob_col])) |
+        ((comparison_df[cons.home_team_score_col] == comparison_df[cons.away_team_score_col]) &
+        (comparison_df[home_prob_col] == comparison_df[away_prob_col])),
         1, 0
         )
     

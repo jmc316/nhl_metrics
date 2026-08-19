@@ -1,9 +1,6 @@
 from schedule import sched_update
-from features import feat_update
-from ui_trn_inf import ui_train_model, ui_run_inference, ui_update_playoff_spot_probabilities
-
-import constants as cons
-import terminal_ui as tui
+from features.features import feat_update
+from trn_inf import train_model, run_inference, update_playoff_spot_probabilities
 
 
 def main():
@@ -14,25 +11,29 @@ def main():
 
     while True:
 
-        # display main ui
-        main_ui = tui.terminal_input(cons.main_options, exit=True)
-        main_ui.display_options()
-        main_ui.receive_user_input()
-        user_response = main_ui.get_response()
+        print('1. Update Schedule Data')
+        print('2. Update Feature Data')
+        print('3. Train Model')
+        print('4. Run Inference')
+        print('5. Playoff Spot Probability')
+        print('6. Exit')
+        user_response = input('> ')
+        print()
 
         match user_response:
-            case 'Update Schedule Data':
+            case '1': # 'Update Schedule Data'
                 sched_update()
-            case 'Update Feature Data':
+            case '2': # 'Update Feature Data'
                 feat_update(save_feat_data=True, verbose=True)
-            case 'Train Model':
-                ui_train_model()
-            case 'Run Inference':
-                ui_run_inference()
-            case 'Playoff Spot Probability':
-                ui_update_playoff_spot_probabilities()
-            case 'Exit':
-                tui.exit_program()
+            case '3': # 'Train Model'
+                train_model()
+            case '4': # 'Run Inference'
+                run_inference()
+            case '5': # 'Playoff Spot Probability'
+                update_playoff_spot_probabilities()
+            case '6': # 'Exit'
+                print('\nExiting the program. Goodbye!\n')
+                exit()
 
 
 if __name__ == "__main__":

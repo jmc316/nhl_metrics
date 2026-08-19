@@ -2,13 +2,12 @@ import playoffs
 
 import pandas as pd
 import constants as cons
-import nhl_utils as nhlu
-import skl_utils as sklu
-import terminal_ui as tui
+import utils.nhl_utils as nhlu
+import utils.skl_utils as sklu
 
-from file_utils import csvLoad
+from utils.file_utils import csvLoad
 from datetime import datetime as dt
-from features import feature_data_load
+from features.features import feature_data_load
 from analyze import prediction_analysis
 from pred_returns import daily_probability
 from predict import predict_season, playoff_spot_predictions
@@ -24,15 +23,14 @@ def get_asofdate():
     max_dt = dt.now().date()
 
     # get user input for date
-    terminal_ui = tui.terminal_input_dt([cur_season_stdt, max_dt])
-    terminal_ui.display_options()
-    terminal_ui.receive_user_input()
-    today_dt = terminal_ui.get_response()
+    print('Select a date to run the simulations from:')
+    today_dt = input('> ')
+    print()
 
     return today_dt
 
 
-def ui_todate_predict():
+def todate_predict():
 
     today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
 
@@ -52,9 +50,10 @@ def ui_todate_predict():
     daily_probability(today_dt, season=playoff_df[cons.season_name_col].max(), date_since=prob_date_since)
 
 
-def ui_historic_predict():
+def historic_predict(today_dt=None):
 
-    today_dt = get_asofdate().strftime(cons.date_format_yyyy_mm_dd)
+    if today_dt is None:
+        today_dt = get_asofdate()
 
     print(f'Updating predictions for current season as of {today_dt}...\n')
     feature_df = predict_season(to_csv=True, set_model_state=True, today_dt=today_dt)
@@ -72,53 +71,74 @@ def ui_historic_predict():
     daily_probability(today_dt, date_since=prob_date_since, season=playoff_df[cons.season_name_col].max())
 
 
-def ui_todate_playoff_spot_predict():
+def historic_range_predict():
+
+    start_dt = get_asofdate()
+
+    print('Select date to generate predictions through:')
+    end_date = input('> ')
+    print()
+
+    for single_date in pd.date_range(start=start_dt, end=end_date):
+        historic_predict(today_dt=single_date.strftime(cons.date_format_yyyy_mm_dd))
+
+
+def todate_playoff_spot_predict():
 
     today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
 
     # get user input for n
-    terminal_ui = tui.terminal_input_int(range(1, cons.max_simulations + 1))
-    terminal_ui.display_options()
-    terminal_ui.receive_user_input()
-    n_in = terminal_ui.get_response()
+    print('Select the number of iterations to run the simulation for:')
+    n_in = input('> ')
+    print()
 
     playoff_spot_predictions(today_dt, n=n_in)
 
 
-def ui_historic_playoff_spot_predict():
+def historic_playoff_spot_predict():
 
     today_dt = get_asofdate()
 
     # get user input for n
-    terminal_ui = tui.terminal_input_int(range(1, cons.max_simulations + 1))
-    terminal_ui.display_options()
-    terminal_ui.receive_user_input()
-    n_in = terminal_ui.get_response()
+    print('Select the number of iterations to run the simulation for:')
+    n_in = input('> ')
+    print()
 
     playoff_spot_predictions(today_dt, n=n_in)
 
 
-def ui_run_inference():
+def run_inference():
 
-    predict_ui = tui.predict_screen()
+    print('1. Update to-date Predictions')
+    print('2. Update historic Predictions')
+    print('3. Update range of historic predictions')
+    user_response = input('> ')
+    print()
 
-    func_map = {option: getattr(__import__(module), func) for option, (module, func) in cons.update_predictions_options.items()}
-
-    # call the function associated with the user's choice
-    func_map[predict_ui.get_response()]()
-
-
-def ui_update_playoff_spot_probabilities():
-
-    playoff_spot_ui = tui.playoff_spot_screen()
-
-    func_map = {option: getattr(__import__(module), func) for option, (module, func) in cons.playoff_spot_prob_options.items()}
-
-    # call the function associated with the user's choice
-    func_map[playoff_spot_ui.get_response()]()
+    match user_response:
+        case '1': # 'Update to-date Predictions'
+            todate_predict()
+        case '2': # 'Update historic Predictions'
+            historic_predict()
+        case '3': # 'Update range of historic predictions'
+            historic_range_predict()
 
 
-def ui_model_accuracy():
+def update_playoff_spot_probabilities():
+
+    print('1. Update to-date Playoff Spot Probabilities')
+    print('2. Update historic Playoff Spot Probabilities')
+    user_response = input('> ')
+    print()
+
+    match user_response:
+        case '1': # 'Update to-date Playoff Spot Probabilities'
+            todate_playoff_spot_predict()
+        case '2': # 'Update historic Playoff Spot Probabilities'
+            historic_playoff_spot_predict()
+
+
+def model_accuracy():
 
     today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
 
@@ -129,7 +149,7 @@ def ui_model_accuracy():
     prediction_analysis(season_prediction_df, since_dt, today_dt)
 
 
-def ui_train_model():
+def train_model():
     print('Training model...')
 
     # load all of the feature data with all actuals
