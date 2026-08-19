@@ -59,6 +59,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
         rounds_scheduled = matchups_total_round_map[num_matchups]
 
         rounds_completed = 0 # initialized at 0, may be incremented below
+        round_matchups_pre = None
         playoff_df = regular_season_df.copy()
 
         all_matchups = {}
@@ -112,7 +113,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
                     # if there has already been a winner in this series, update the matchup with the series winner and score
                     if (last_series_game[cons.home_team_series_score_col] == 3) & (last_series_game[home_prob_col] > last_series_game[away_prob_col]):
                         matchup.set_series_results(last_series_game[cons.home_team_name_col], last_series_game[cons.away_team_name_col], last_series_game[cons.away_team_series_score_col])
-                        playoff_df.drop(index=playoff_df.loc[(playoff_df[cons.game_date_col] > last_series_game[cons.game_date_col]) &
+                        playoff_df.drop(index=playoff_df.loc[(playoff_df[cons.starttime_est_col] > last_series_game[cons.starttime_est_col]) &
                                                             (((playoff_df[cons.home_team_name_col] == last_series_game[cons.home_team_name_col]) &
                                                             (playoff_df[cons.away_team_name_col] == last_series_game[cons.away_team_name_col])) |
                                                             ((playoff_df[cons.home_team_name_col] == last_series_game[cons.away_team_name_col]) &
@@ -125,7 +126,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
                         })
                     elif (last_series_game[cons.away_team_series_score_col] == 3) & (last_series_game[away_prob_col] > last_series_game[home_prob_col]):
                         matchup.set_series_results(last_series_game[cons.away_team_name_col], last_series_game[cons.home_team_name_col], last_series_game[cons.home_team_series_score_col])
-                        playoff_df.drop(index=playoff_df.loc[(playoff_df[cons.game_date_col] > last_series_game[cons.game_date_col]) &
+                        playoff_df.drop(index=playoff_df.loc[(playoff_df[cons.starttime_est_col] > last_series_game[cons.starttime_est_col]) &
                                                             (((playoff_df[cons.home_team_name_col] == last_series_game[cons.home_team_name_col]) &
                                                             (playoff_df[cons.away_team_name_col] == last_series_game[cons.away_team_name_col])) |
                                                             ((playoff_df[cons.home_team_name_col] == last_series_game[cons.away_team_name_col]) &
@@ -178,6 +179,8 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
     #     save_model = False
 
     first_loop = True
+    model_train = regular_season_df.loc[(regular_season_df[cons.game_type_col]==2) &
+                                        (regular_season_df[cons.last_period_col].isna())].empty
 
     # loop through every playoff round
     for pl_round in range(rounds_completed+1, 5):
@@ -188,6 +191,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
 
             if round_matchups_pre is not None:
                 round_matchups = round_matchups_pre.copy()
+                round_matchups_pre = None
             else:
                 # generate the round 1 playoff matchups based off the regular season standings
                 east_playoff_matchups = generate_playoff_matchups(season_results_df.loc[season_results_df[cons.conference_name_col] == 'Eastern'], 1)
@@ -205,7 +209,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
                 round_matchups = round_matchups_pre.copy()
                 round_matchups_pre = None
             else:
-                # generate the round n playoff matchups based off the regular season standings
+                # generate the round n playoff matchups
                 round_matchups = generate_playoff_matchups(playoff_df, pl_round, round_matchups)
 
         # if there is no schedule for this round, create the schedule
@@ -260,8 +264,22 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
 
             # predict games on selected date
             print(f'\tPredicting games for {game_dt.strftime("%Y-%m-%d")}...')
-            processed_playoff_df_filt, feature_list = sklu.preprocess_feature_data(playoff_df_filt)
-            pred_playoff_df_filt, model = sklu.model_inference(processed_playoff_df_filt, feature_list, today_dt)
+
+            # if this is the first loop of playoff predictions and no previous regular season
+            # predictions were made, train the model based on the data available to this point
+            if first_loop and model_train:
+                model_train = False
+
+                # train a model on the past data state
+                processed_playoff_df, feature_list = sklu.preprocess_feature_data(playoff_df)
+                model = sklu.model_train(processed_playoff_df, feature_list, save_model=False)
+                processed_playoff_df_filt = processed_playoff_df.loc[processed_playoff_df[cons.starttime_est_col].dt.date <= game_dt]
+
+            # don't need to train the model, just preprocess data to predict
+            else:
+                processed_playoff_df_filt, feature_list = sklu.preprocess_feature_data(playoff_df_filt)
+
+            pred_playoff_df_filt, _ = sklu.model_inference(processed_playoff_df_filt, feature_list, today_dt, model=model)
             playoff_df_filt.update(pred_playoff_df_filt[['homeTeamWin', 'homeWinProb', 'awayWinProb']])
             
             # reset the model params for all predictions after the first
@@ -274,10 +292,12 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
             if first_loop and (dt.strptime(today_dt, "%Y-%m-%d").date() > regular_season_df[cons.starttime_est_col].max().date()):
                 for _, row in playoff_df_filt.loc[playoff_df_filt[cons.starttime_est_col].dt.date==game_dt].iterrows():
                     ot_str = ' (OT)' if row[cons.last_period_col]=='OT' else ''
+                    home_team = cons.team_name_addrev_map[row[cons.home_team_name_col]]
+                    away_team = cons.team_name_addrev_map[row[cons.away_team_name_col]]
                     if row[cons.win_prob_col.format(team='home')] > row[cons.win_prob_col.format(team='away')]:
-                        print(f"\t\t\t{row[cons.away_team_name_col]} {(row[cons.win_prob_col.format(team='away')]*100):.2f} at {row[cons.home_team_name_col].upper()} {(row[cons.win_prob_col.format(team='home')]*100):.2f}{ot_str}")
+                        print(f"\t\t\t{away_team.lower()} {(row[cons.win_prob_col.format(team='away')]*100):.2f} at {home_team} {(row[cons.win_prob_col.format(team='home')]*100):.2f}{ot_str}")
                     else:
-                        print(f"\t\t\t{row[cons.away_team_name_col].upper()} {(row[cons.win_prob_col.format(team='away')]*100):.2f} at {row[cons.home_team_name_col]} {(row[cons.win_prob_col.format(team='home')]*100):.2f}{ot_str}")
+                        print(f"\t\t\t{away_team} {(row[cons.win_prob_col.format(team='away')]*100):.2f} at {home_team.lower()} {(row[cons.win_prob_col.format(team='home')]*100):.2f}{ot_str}")
                 first_loop = False
             
             # check to see if any of the series are over based on the current series scores
@@ -581,6 +601,50 @@ def series_final_check(playoff_df, playoff_df_filt, all_matchups, game_dt):
             print(f'\t\t{row[cons.away_team_name_col]} advance past {row[cons.home_team_name_col]}: {int(row[cons.away_team_series_score_col]+1)}-{int(row[cons.home_team_series_score_col])}')
     
     return playoff_df, all_matchups
+
+
+def ensure_seven_games_scheduled(feature_df, playoff_round_matchups, season_name, today_dt):
+
+    venue_map_df = venue_map_load(feature_df)
+
+    for  matchup in playoff_round_matchups:
+        matchup_games_df = feature_df.loc[(feature_df[cons.season_name_col] == season_name) &
+                                          (feature_df[cons.game_type_col] == 3) &
+                                          (((feature_df[cons.home_team_name_col] == matchup[0]) &
+                                            (feature_df[cons.away_team_name_col] == matchup[1])) |
+                                           ((feature_df[cons.home_team_name_col] == matchup[1]) &
+                                            (feature_df[cons.away_team_name_col] == matchup[0])))]
+
+        if len(matchup_games_df) < 7:
+
+            games_to_add = 7 - len(matchup_games_df)
+            next_game_dt = matchup_games_df[cons.starttime_est_col].max().date() if not matchup_games_df.empty else pd.to_datetime(today_dt).date()
+            games_added_df = pd.DataFrame()
+
+            for i in range(games_to_add):
+
+                next_game_dt = next_game_dt + pd.Timedelta(days=2)
+
+                games_added_df = pd.concat([games_added_df, pd.DataFrame([{
+                    cons.game_id_col: np.nan,
+                    cons.season_name_col: season_name,
+                    cons.game_type_col: 3,
+                    cons.home_team_name_col: matchup[1] if (i % 2 == 0) else matchup[0],
+                    cons.away_team_name_col: matchup[0] if (i % 2 == 0) else matchup[1],
+                    cons.starttime_est_col: pd.to_datetime(next_game_dt),
+                    cons.venue_col: venue_map_df.loc[venue_map_df[cons.home_team_name_col] == (matchup[1] if (i % 2 == 0) else matchup[0]), cons.venue_col].values[0],
+                    cons.venue_timezone_col: venue_map_df.loc[venue_map_df[cons.home_team_name_col] == (matchup[1] if (i % 2 == 0) else matchup[0]), cons.venue_timezone_col].values[0],
+                    cons.home_team_score_col: np.nan,
+                    cons.away_team_score_col: np.nan,
+                    cons.last_period_col: np.nan,
+                    cons.home_team_win_col: np.nan,
+                    cons.win_prob_col.format(team='home'): np.nan,
+                    cons.win_prob_col.format(team='away'): np.nan
+                }])] , ignore_index=True)
+
+            feature_df = pd.concat([feature_df, games_added_df], ignore_index=True).sort_values(by=[cons.starttime_est_col])
+
+    return feature_df
 
 
 if __name__ == '__main__':

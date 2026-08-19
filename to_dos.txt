@@ -18,9 +18,9 @@
     - pytorch
     - pytest
 
-- new to-dos
-    - clean up constants in pred_resturns file
+- new to-do
+    - fix import formatting
+    - clean up constants in pred_returns file
     - centralize file saving and loading into utils file
     - centralize datetime values on file load
-    - looped historical projections over many today_dts
     - historical prediction explanation

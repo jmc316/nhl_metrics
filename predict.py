@@ -11,6 +11,7 @@ import nhl_client as nhlc
 
 from features.features import feature_data_load
 from zoneinfo import ZoneInfo
+from itertools import product
 from datetime import datetime as dt
 from utils.file_utils import csvLoad, csvSave
 from playoff_probability import display_playoff_probability
@@ -24,27 +25,10 @@ def predict_season(to_csv, set_model_state, today_dt):
     # running for past predictions, pre-preprocess the feature data
     if today_dt < dt.now().date().strftime(cons.date_format_yyyy_mm_dd):
 
-        # get the season name corresponding to the inputted today_dt
-        season_name = max(feature_df.loc[feature_df[cons.starttime_est_col].dt.date <= dt.strptime(today_dt, "%Y-%m-%d").date(),
-                                         cons.season_name_col])
+        feature_df, in_playoffs = preprocess_historic_data(feature_df, today_dt)
 
-        # remove all seasons after this season from the feature dataframe
-        feature_df = feature_df.loc[feature_df[cons.season_name_col] <= season_name]
-
-        # if the today_dt is in the regular season, remove all scheduled playoff games for this season
-        if not feature_df.loc[(feature_df[cons.game_type_col]==2) & (feature_df[cons.season_name_col]==season_name) &
-                              (feature_df[cons.starttime_est_col].dt.date >= dt.strptime(today_dt, "%Y-%m-%d").date())].empty:
-            feature_df = feature_df.loc[~((feature_df[cons.game_type_col]==3) & (feature_df[cons.season_name_col]==season_name))]
-        # if the today_dt is in the playoffs, remove all scheduled playoff games for any rounds after the current one
-        elif not feature_df.loc[(feature_df[cons.game_type_col]==3) & (feature_df[cons.season_name_col]==season_name) &
-                              (feature_df[cons.starttime_est_col].dt.date >= dt.strptime(today_dt, "%Y-%m-%d").date())].empty:
-            feature_df = feature_df.loc[~((feature_df[cons.game_type_col]==3) & (feature_df[cons.season_name_col]==season_name) &
-                                          (feature_df[cons.starttime_est_col].dt.date >= dt.strptime(today_dt, "%Y-%m-%d").date()))]
-
-        # nullify the results of all games beyond the today_dt
-        feature_df.loc[feature_df[cons.starttime_est_col].dt.date >= dt.strptime(today_dt, "%Y-%m-%d").date(),
-                       [cons.home_team_score_col, cons.away_team_score_col, cons.last_period_col,
-                        cons.home_team_win_col, cons.win_prob_col.format(team='home'), cons.win_prob_col.format(team='away')]] = np.nan
+        if in_playoffs:
+            return feature_df
 
     # pre-process the feature data
     processed_df, feature_list = sklu.preprocess_feature_data(feature_df)
@@ -107,6 +91,82 @@ def create_df_set(today_dt):
             sched_df = pd.concat([sched_df, create_season_df(filename[:8], from_csv=True, to_csv=False)], ignore_index=True)
 
     return sched_df
+
+
+def preprocess_historic_data(feature_df, today_dt):
+    # get the season name corresponding to the inputted today_dt
+    season_name = max(feature_df.loc[feature_df[cons.starttime_est_col].dt.date <= dt.strptime(today_dt, "%Y-%m-%d").date(),
+                                        cons.season_name_col])
+
+    # remove all seasons after this season from the feature dataframe
+    feature_df = feature_df.loc[feature_df[cons.season_name_col] <= season_name]
+
+    # indicates if the inputted today_dt is in the regular season or playoffs
+    in_playoffs = False
+
+    # if the today_dt is in the regular season, remove all scheduled playoff games for this season
+    if not feature_df.loc[(feature_df[cons.game_type_col]==2) & (feature_df[cons.season_name_col]==season_name) &
+                            (feature_df[cons.starttime_est_col].dt.date >= dt.strptime(today_dt, "%Y-%m-%d").date())].empty:
+        in_playoffs = False
+        feature_df = feature_df.loc[~((feature_df[cons.game_type_col]==3) & (feature_df[cons.season_name_col]==season_name))]
+
+    # if the today_dt is in the playoffs, remove all scheduled playoff games for any rounds after the current one
+    elif not feature_df.loc[(feature_df[cons.game_type_col]==3) & (feature_df[cons.season_name_col]==season_name) &
+                            (feature_df[cons.starttime_est_col].dt.date >= dt.strptime(today_dt, "%Y-%m-%d").date())].empty:
+
+        in_playoffs = True
+
+        # get all the scheduled playoff matchups from this season
+        cur_playoff_matchups = list(feature_df.loc[(feature_df[cons.game_type_col]==3) &
+                                                    (feature_df[cons.season_name_col]==season_name)].sort_values(
+                                                        by=cons.starttime_est_col)[[cons.home_team_name_col, cons.away_team_name_col]].drop_duplicates().values.tolist())
+
+        # create round-specific matchups
+        playoff_round_matchups = {}
+        st_ind = 0
+        for round in range(1, 5):
+            if st_ind + 2**(5-round) > len(cur_playoff_matchups):
+                break
+            playoff_round_matchups[round] = cur_playoff_matchups[st_ind:st_ind + 2**(5-round)]
+            st_ind += 2**(5-round)
+
+        # find out which round of the playoffs is currently being played based on the inputted today_dt
+        cur_playoff_round = 0
+        fut_playoff_games_df = feature_df.loc[(feature_df[cons.game_type_col]==3) &
+                                            (feature_df[cons.season_name_col]==season_name) &
+                                            (feature_df[cons.starttime_est_col].dt.date >= dt.strptime(today_dt, "%Y-%m-%d").date())]
+        for round in playoff_round_matchups.keys():
+            for matchup in playoff_round_matchups[round]:
+                if not fut_playoff_games_df.loc[((fut_playoff_games_df[cons.home_team_name_col]==matchup[0]) &
+                                             (fut_playoff_games_df[cons.away_team_name_col]==matchup[1])) |
+                                             ((fut_playoff_games_df[cons.home_team_name_col]==matchup[1]) &
+                                              (fut_playoff_games_df[cons.away_team_name_col]==matchup[0]))].empty:
+                    cur_playoff_round = round
+                    break
+            if cur_playoff_round > 0:
+                break
+
+        # remove all scheduled games for future rounds from the feature dataframe
+        for round in range(cur_playoff_round + 1, 5):
+            if round not in playoff_round_matchups.keys():
+                break
+            feature_df = feature_df.loc[~((feature_df[cons.game_type_col]==3) & (feature_df[cons.season_name_col]==season_name) &
+                                            ((feature_df[cons.home_team_name_col].isin([matchup[0] for matchup in playoff_round_matchups[round]])) &
+                                            (feature_df[cons.away_team_name_col].isin([matchup[1] for matchup in playoff_round_matchups[round]]))))]
+
+    # nullify the results of all games beyond the today_dt
+    feature_df.loc[feature_df[cons.starttime_est_col].dt.date >= dt.strptime(today_dt, "%Y-%m-%d").date(),
+                    [cons.home_team_score_col, cons.away_team_score_col, cons.last_period_col,
+                    cons.home_team_win_col, cons.win_prob_col.format(team='home'), cons.win_prob_col.format(team='away')]] = np.nan
+
+    # make sure 7 games are scheduled for each playoff series matchup
+    cur_round_matchups = playoff_round_matchups[cur_playoff_round][:len(playoff_round_matchups[cur_playoff_round])//2]
+    feature_df = playoffs.ensure_seven_games_scheduled(feature_df, cur_round_matchups, season_name, today_dt)
+
+    # reset the playoff series count for all playoff matchups beyond the today_dt
+    feature_df.loc[feature_df[cons.starttime_est_col].dt.date >= dt.strptime(today_dt, "%Y-%m-%d").date(), [cons.home_team_series_score_col, cons.away_team_series_score_col]] = 0
+
+    return feature_df, in_playoffs
 
 
 def game_results_update(last_act_dt):

@@ -72,7 +72,7 @@ def game_result_comparison(predict_df, actual_df=None):
         1, 0
         )
     
-    print(f'Games with correct outcome prediction: {sum(comparison_df["correct_outcome"])} / {len(comparison_df)} ({sum(comparison_df["correct_outcome"]) / len(comparison_df):.2%})\n')
+    # print(f'Games with correct outcome prediction: {sum(comparison_df["correct_outcome"])} / {len(comparison_df)} ({sum(comparison_df["correct_outcome"]) / len(comparison_df):.2%})\n')
 
     # give the percent accuracy of the correct outcomes per day and the number of correct outcomes
     daily_accuracy = comparison_df.groupby(cons.game_date_col)['correct_outcome'].mean()
@@ -138,7 +138,7 @@ def prediction_analysis(actuals_df, date_since, date_until):
         1, 0
         )
     
-    print(f"\nGames with correct outcome prediction: {sum(comparison_df['correct_outcome'])} / {len(comparison_df)} ({sum(comparison_df['correct_outcome']) / len(comparison_df):.2%})\n")
+    # print(f"\nGames with correct outcome prediction: {sum(comparison_df['correct_outcome'])} / {len(comparison_df)} ({sum(comparison_df['correct_outcome']) / len(comparison_df):.2%})\n")
 
     return comparison_df
 
