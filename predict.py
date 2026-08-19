@@ -19,19 +19,45 @@ from playoff_probability import display_playoff_probability
 def predict_season(to_csv, set_model_state, today_dt):
 
     # load all of the feature data with all actuals
-    feature_df = feature_data_load()    
+    feature_df = feature_data_load()
 
-    # cons.last_actual_game_date = feature_df.loc[feature_df[cons.last_period_col].notna(), cons.starttime_est_col].dt.date.max()
+    # running for past predictions, pre-preprocess the feature data
+    if today_dt < dt.now().date().strftime(cons.date_format_yyyy_mm_dd):
+
+        # get the season name corresponding to the inputted today_dt
+        season_name = max(feature_df.loc[feature_df[cons.starttime_est_col].dt.date <= dt.strptime(today_dt, "%Y-%m-%d").date(),
+                                         cons.season_name_col])
+
+        # remove all seasons after this season from the feature dataframe
+        feature_df = feature_df.loc[feature_df[cons.season_name_col] <= season_name]
+
+        # if the today_dt is in the regular season, remove all scheduled playoff games for this season
+        if not feature_df.loc[(feature_df[cons.game_type_col]==2) & (feature_df[cons.season_name_col]==season_name) &
+                              (feature_df[cons.starttime_est_col].dt.date > dt.strptime(today_dt, "%Y-%m-%d").date())].empty:
+            feature_df = feature_df.loc[~((feature_df[cons.game_type_col]==3) & (feature_df[cons.season_name_col]==season_name))]
+        # if the today_dt is in the playoffs, remove all scheduled playoff games for any rounds after the current one
+        elif not feature_df.loc[(feature_df[cons.game_type_col]==3) & (feature_df[cons.season_name_col]==season_name) &
+                              (feature_df[cons.starttime_est_col].dt.date > dt.strptime(today_dt, "%Y-%m-%d").date())].empty:
+            feature_df = feature_df.loc[~((feature_df[cons.game_type_col]==3) & (feature_df[cons.season_name_col]==season_name) &
+                                          (feature_df[cons.starttime_est_col].dt.date > dt.strptime(today_dt, "%Y-%m-%d").date()))]
+
+        # nullify the results of all games beyond the today_dt
+        feature_df.loc[feature_df[cons.starttime_est_col].dt.date > dt.strptime(today_dt, "%Y-%m-%d").date(),
+                       [cons.home_team_score_col, cons.away_team_score_col, cons.last_period_col,
+                        cons.home_team_win_col, cons.win_prob_col.format(team='home'), cons.win_prob_col.format(team='away')]] = np.nan
 
     # pre-process the feature data
     processed_df, feature_list = sklu.preprocess_feature_data(feature_df)
 
-    # make predictions from the start date to the end of the schedule, and add the predictions to the feature dataframe
-    pred_df, model = sklu.model_inference(processed_df, feature_list, today_dt)
+    # running for past predictions, need to train a model on the past data state
+    if today_dt < dt.now().date().strftime(cons.date_format_yyyy_mm_dd):
+        # train a model on the past data state
+        model = sklu.model_train(processed_df, feature_list, save_model=False)
+        pred_df, model = sklu.model_inference(processed_df, feature_list, today_dt, model=model)
 
-    if to_csv:
-        print('Saving season predictions to CSV file...')
-        csvSave(pred_df, cons.season_pred_folder.format(date=today_dt), cons.season_pred_filename.format(date=today_dt))
+    else:
+        # make predictions from the start date to the end of the schedule, and add the predictions to the feature dataframe
+        pred_df, model = sklu.model_inference(processed_df, feature_list, today_dt)
 
     # return feature_df with the win probability columns added
     feature_df.update(pred_df[['homeTeamWin', 'homeWinProb', 'awayWinProb']])
@@ -41,6 +67,7 @@ def predict_season(to_csv, set_model_state, today_dt):
                                   cons.starttime_est_col].dt.date)
     first_pred_dt_df = feature_df.loc[feature_df[cons.starttime_est_col].dt.date==print_dt]
 
+    print(f'\nPredicted game results for {print_dt.strftime("%Y-%m-%d")}:')
     for idx, row in first_pred_dt_df.iterrows():
 
         home_team = cons.team_name_addrev_map[row[cons.home_team_name_col]]
@@ -55,6 +82,10 @@ def predict_season(to_csv, set_model_state, today_dt):
         sklu.explain_predictions(pred_df.iloc[[idx]][feature_list],
                                 model, home_team, away_team,
                                 print_dt, today_dt)
+
+    if to_csv:
+        print('Saving season predictions to CSV file...')
+        csvSave(pred_df, cons.season_pred_folder.format(date=today_dt), cons.season_pred_filename.format(date=today_dt))
     
     return feature_df
 

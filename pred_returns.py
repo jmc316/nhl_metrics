@@ -9,12 +9,15 @@ from datetime import datetime as dt
 from analyze import prediction_analysis
 
 
-def daily_probability(today_dt, date_since, display_graphic=True):
+def daily_probability(today_dt, date_since, season, display_graphic=True):
 
-    season_actual_df = csvLoad(cons.season_sched_folder, cons.season_sched_filename.format(season='20252026'))
+    season_actual_df = csvLoad(cons.season_sched_folder, cons.season_sched_filename.format(season=season))
 
     pred_df = prediction_analysis(season_actual_df, date_since, today_dt)
-    _ = prediction_analysis(season_actual_df, '2026-04-17', today_dt)
+
+    if pred_df.empty:
+        print('Prediction analysis not available - invalid date range\n')
+        return
 
     odds_data = pd.read_csv(cons.util_data_folder + 'all_time_schedule_odds.csv')
 
@@ -87,5 +90,4 @@ def daily_probability(today_dt, date_since, display_graphic=True):
     ax.legend()
     plt.xticks(rotation=45, ha='right')
     plt.savefig(f'output/season_predictions/{today_dt}/prediction_returns_{date_since}_to_{today_dt}.png')
-    if display_graphic:
-        plt.show()
+    # plt.show()

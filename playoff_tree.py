@@ -340,7 +340,7 @@ def display_playoff_tree(matchups, season, pred_date, display_image=True):
     print(f'Saving playoff tree graphic...\n')
     cv2.imwrite(f'{cons.season_pred_folder.format(date=pred_date)}{cons.playoff_tree_filename.format(season=season, date=pred_date)}', CANVAS)
     
-    if display_image:
-        cv2.imshow(f"NHL Playoff Bracket {season}", CANVAS)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+    # if display_image:
+    #     cv2.imshow(f"NHL Playoff Bracket {season}", CANVAS)
+    #     cv2.waitKey(0)
+    #     cv2.destroyAllWindows()

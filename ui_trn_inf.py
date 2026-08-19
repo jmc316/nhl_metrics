@@ -44,13 +44,17 @@ def ui_todate_predict():
                       (feature_df[cons.season_name_col]==max(feature_df[cons.season_name_col])) &
                       feature_df[cons.last_period_col].isna()].empty:
         nhlu.nhl_team_standings(season_results_df)
-    playoffs.playoff_tree_predictions(feature_df, season_results_df, True, today_dt)
-    daily_probability(today_dt, date_since='2026-02-24')
+    playoff_df, _, _, _ = playoffs.playoff_tree_predictions(feature_df, season_results_df, True, today_dt)
+
+    # set the first comparison date to the first date of the current season
+    prob_date_since = playoff_df.loc[playoff_df[cons.season_name_col]==playoff_df[cons.season_name_col].max(),
+                                     cons.starttime_est_col].dt.date.min().strftime(cons.date_format_yyyy_mm_dd)
+    daily_probability(today_dt, season=playoff_df[cons.season_name_col].max(), date_since=prob_date_since)
 
 
 def ui_historic_predict():
 
-    today_dt = get_asofdate()
+    today_dt = get_asofdate().strftime(cons.date_format_yyyy_mm_dd)
 
     print(f'Updating predictions for current season as of {today_dt}...\n')
     feature_df = predict_season(to_csv=True, set_model_state=True, today_dt=today_dt)
@@ -60,8 +64,12 @@ def ui_historic_predict():
                       (feature_df[cons.season_name_col]==max(feature_df[cons.season_name_col])) &
                       feature_df[cons.last_period_col].isna()].empty:
         nhlu.nhl_team_standings(season_results_df)
-    playoffs.playoff_tree_predictions(feature_df, season_results_df, True, today_dt)
-    daily_probability(dt.strftime(today_dt, cons.date_format_yyyy_mm_dd), date_since='2026-02-24')
+    playoff_df, _, _, _ = playoffs.playoff_tree_predictions(feature_df, season_results_df, True, today_dt)
+
+    # set the first comparison date to the first date of the current season
+    prob_date_since = playoff_df.loc[playoff_df[cons.season_name_col]==playoff_df[cons.season_name_col].max(),
+                                        cons.starttime_est_col].dt.date.min().strftime(cons.date_format_yyyy_mm_dd)
+    daily_probability(today_dt, date_since=prob_date_since, season=playoff_df[cons.season_name_col].max())
 
 
 def ui_todate_playoff_spot_predict():

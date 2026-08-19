@@ -66,70 +66,71 @@ def preprocess_feature_data(data_df_in):
     return data_df, feature_list
 
 
-def model_train(data_df, feature_list, set_model_state=False, today_dt=None, debug=False):
+def model_train(data_df, feature_list, save_model=True):
 
     actual_df = data_df[data_df[cons.home_team_win_col].notna()]
 
-    # get the unique seasons in the dataframe, sorted
-    seasons = sorted(actual_df[cons.season_name_col].unique())
+    if save_model:
+        # get the unique seasons in the dataframe, sorted
+        seasons = sorted(actual_df[cons.season_name_col].unique())
 
-    # Walk-forward loop: train on all seasons up to N, validate on season N+1
-    fold_results = []
+        # Walk-forward loop: train on all seasons up to N, validate on season N+1
+        fold_results = []
 
-    for i in range(1, len(seasons)):  # leave last season out as final holdout test
-        train_seasons = seasons[:i]
-        val_season = seasons[i]
+        for i in range(1, len(seasons)):  # leave last season out as final holdout test
+            train_seasons = seasons[:i]
+            val_season = seasons[i]
 
-        train_df = actual_df[actual_df[cons.season_name_col].isin(train_seasons)]
-        val_df = actual_df[actual_df[cons.season_name_col] == val_season]
+            train_df = actual_df[actual_df[cons.season_name_col].isin(train_seasons)]
+            val_df = actual_df[actual_df[cons.season_name_col] == val_season]
 
-        X_train, y_train = train_df[feature_list], train_df[cons.home_team_win_col]
-        X_val, y_val = val_df[feature_list], val_df[cons.home_team_win_col]
+            X_train, y_train = train_df[feature_list], train_df[cons.home_team_win_col]
+            X_val, y_val = val_df[feature_list], val_df[cons.home_team_win_col]
 
-        val_model = init_model(random_state_in=42)
-        val_model.fit(X_train, y_train)
+            val_model = init_model(random_state_in=42)
+            val_model.fit(X_train, y_train)
 
-        preds = val_model.predict(X_val)
-        probs = val_model.predict_proba(X_val)[:, 1]  # probability of the positive class
+            preds = val_model.predict(X_val)
+            probs = val_model.predict_proba(X_val)[:, 1]  # probability of the positive class
 
-        fold_result = {
-            'train_seasons': train_seasons,
-            'val_season': val_season,
-            'n_train': len(X_train),
-            'n_val': len(X_val),
-            'accuracy': accuracy_score(y_val, preds),
-            'auc': roc_auc_score(y_val, probs),
-            'log_loss': log_loss(y_val, probs),
-            'brier': brier_score_loss(y_val, probs)
-        }
-        fold_results.append(fold_result)
+            fold_result = {
+                'train_seasons': train_seasons,
+                'val_season': val_season,
+                'n_train': len(X_train),
+                'n_val': len(X_val),
+                'accuracy': accuracy_score(y_val, preds),
+                'auc': roc_auc_score(y_val, probs),
+                'log_loss': log_loss(y_val, probs),
+                'brier': brier_score_loss(y_val, probs)
+            }
+            fold_results.append(fold_result)
 
-    fold_results_df = pd.DataFrame(fold_results)
-    print('\nValidation Set Results:')
-    print(fold_results_df)
+        fold_results_df = pd.DataFrame(fold_results)
+        print('\nValidation Set Results:')
+        print(fold_results_df)
 
-    baseline_acc = (actual_df[cons.home_team_win_col] == 1).mean()
-    print(f"Baseline Accuracy:          {baseline_acc:.3f}")
-    print(f"Model Validation Accuracy:  {fold_results_df.iloc[max(fold_results_df.index)]['accuracy']:.4f}")
+        baseline_acc = (actual_df[cons.home_team_win_col] == 1).mean()
+        print(f"Baseline Accuracy:          {baseline_acc:.3f}")
+        print(f"Model Validation Accuracy:  {fold_results_df.iloc[max(fold_results_df.index)]['accuracy']:.4f}")
 
-    perm_imp_result = permutation_importance(
-        val_model,           # your fitted RandomForestClassifier
-        X_val,
-        y_val,
-        n_repeats=10,    # shuffle each feature 10x, average the effect
-        random_state=42,
-        n_jobs=-1,       # parallelize across cores
-        scoring='accuracy'     # or 'neg_mean_squared_error', etc.
-    )
+        perm_imp_result = permutation_importance(
+            val_model,           # your fitted RandomForestClassifier
+            X_val,
+            y_val,
+            n_repeats=10,    # shuffle each feature 10x, average the effect
+            random_state=42,
+            n_jobs=-1,       # parallelize across cores
+            scoring='accuracy'     # or 'neg_mean_squared_error', etc.
+        )
 
-    perm_imp_df = pd.DataFrame({
-        'feature': X_val.columns,
-        'importance_mean': perm_imp_result.importances_mean,
-        'importance_std': perm_imp_result.importances_std
-    }).sort_values('importance_mean', ascending=False)
+        perm_imp_df = pd.DataFrame({
+            'feature': X_val.columns,
+            'importance_mean': perm_imp_result.importances_mean,
+            'importance_std': perm_imp_result.importances_std
+        }).sort_values('importance_mean', ascending=False)
 
-    print('\nPermutation Importance:')
-    print(perm_imp_df)
+        print('\nPermutation Importance:')
+        print(perm_imp_df)
 
     # train a final model on all actual data to use for the prediction set
     print('\nFinalizing model data...')
@@ -146,8 +147,9 @@ def model_train(data_df, feature_list, set_model_state=False, today_dt=None, deb
     #   Accuracy = ~62-63%
     #   AUC = 68-72%
 
-    print('\nSaving model file...')
-    pklSave(final_model, cons.model_files_folder, cons.sklearn_model_filename)
+    if save_model:
+        print('\nSaving model file...')
+        pklSave(final_model, cons.model_files_folder, cons.sklearn_model_filename)
 
     return final_model
 

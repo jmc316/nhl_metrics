@@ -103,6 +103,10 @@ def prediction_analysis(actuals_df, date_since, date_until):
             # print(f'\t... No games found')
             pass
 
+    # not a valid date range to do comparison for
+    if date_since > date_until:
+        return pd.DataFrame()
+
     comparison_df = pd.merge(predict_df, actuals_df, on=[cons.game_id_col], suffixes=('_predicted', '_actual'))
 
     comparison_df = comparison_df[[cons.game_id_col, cons.game_date_col, cons.home_team_name_col+'_predicted', cons.away_team_name_col+'_predicted', cons.home_team_score_col+'_predicted', cons.away_team_score_col+'_predicted', cons.last_period_col+'_predicted',
