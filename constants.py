@@ -1,17 +1,13 @@
-ot_score_diff = 0.25
-max_single_season_games = 110
 playoff_sched_format = [0, 2, 5, 7, 10, 12, 15]
 final_sched_format = [0, 3, 6, 9, 12, 15, 18]
 playoff_round_buffer = 2
 api_timeout_wait_time = 3
-max_simulations = 1000
 
 game_id_col = 'gameId'
 season_col = 'season'
 season_name_col = 'seasonName'
 starttime_utc_col = 'startTimeUTC'
 starttime_est_col = 'startTimeEST'
-game_time_col = 'gameTimeEST'
 venue_timezone_col = 'venueTimezone'
 venue_col = 'venue'
 away_team_name_col = 'awayTeamName'
@@ -19,7 +15,6 @@ home_team_name_col = 'homeTeamName'
 away_team_score_col = 'awayTeamScore'
 home_team_score_col = 'homeTeamScore'
 last_period_col = 'lastPeriod'
-default_col = 'default'
 team_name_col = 'teamName'
 
 away_team_col = 'awayTeam'
@@ -36,8 +31,10 @@ home_team_otls_col = 'homeTeamOTLs'
 away_team_otls_col = 'awayTeamOTLs'
 home_team_reg_wins_col = 'homeTeamRegWins'
 away_team_reg_wins_col = 'awayTeamRegWins'
+total_reg_wins_col = 'totalRegWins'
 home_team_reg_ot_wins_col = 'homeTeamRegOTWins'
 away_team_reg_ot_wins_col = 'awayTeamRegOTWins'
+total_reg_ot_wins_col = 'totalRegOTWins'
 home_team_so_wins_col = 'homeTeamSOWins'
 away_team_so_wins_col = 'awayTeamSOWins'
 home_team_so_losses_col = 'homeTeamSOLosses'
@@ -46,6 +43,8 @@ home_team_goals_for_col = 'homeTeamGoalsFor'
 away_team_goals_for_col = 'awayTeamGoalsFor'
 home_team_goals_against_col = 'homeTeamGoalsAgainst'
 away_team_goals_against_col = 'awayTeamGoalsAgainst'
+total_goals_for_col = 'totalGoalsFor'
+total_goals_against_col = 'totalGoalsAgainst'
 goal_diff_col = 'goalDifferential'
 points_percentage_col = 'pointsPercentage'
 division_name_col = 'divisionName'
@@ -61,34 +60,15 @@ total_wins_col = 'totalWins'
 total_losses_col = 'totalLosses'
 total_otls_col = 'totalOTLs'
 playoff_per_col = 'playoff_%'
-total_goals_for_col = 'totalGoalsFor'
-total_goals_against_col = 'totalGoalsAgainst'
 total_games_col = 'totalGames'
 game_outcome_col = 'gameOutcome'
 game_type_col = 'gameType' # 1 = preseason, 2 = regular season, 3 = playoffs, 4 = all-star game
-home_team_prev_n_goals_for_col = 'homeTeamPrevGoalsFor_'
-away_team_prev_n_goals_for_col = 'awayTeamPrevGoalsFor_'
-home_team_prev_n_goals_against_col = 'homeTeamPrevGoalsAgainst_'
-away_team_prev_n_goals_against_col = 'awayTeamPrevGoalsAgainst_'
 game_date_col = 'gameDate'
-home_team_days_since_last_game_col = 'homeTeamDaysSinceLastGame'
-away_team_days_since_last_game_col = 'awayTeamDaysSinceLastGame'
-home_team_travel_distance_7days_col = 'homeTeamTravelDistance7Days'
-away_team_travel_distance_7days_col = 'awayTeamTravelDistance7Days'
-home_team_points_percentage_col = 'homeTeamPointsPercentage'
-away_team_points_percentage_col = 'awayTeamPointsPercentage'
-home_team_prev_n_wins_col = 'homeTeamPrevWins_'
-away_team_prev_n_wins_col = 'awayTeamPrevWins_'
-home_team_prev_n_losses_col = 'homeTeamPrevLosses_'
-away_team_prev_n_losses_col = 'awayTeamPrevLosses_'
-home_team_prev_n_otls_col = 'homeTeamPrevOTLs_'
-away_team_prev_n_otls_col = 'awayTeamPrevOTLs_'
-home_team_prev_n_points_percentage_col = 'homeTeamPrevPointsPercentage_'
-away_team_prev_n_points_percentage_col = 'awayTeamPrevPointsPercentage_'
 home_team_series_score_col = 'homeTeamSeriesScore'
 away_team_series_score_col = 'awayTeamSeriesScore'
 home_team_win_col = 'homeTeamWin'
-win_prob_col = '{team}WinProb'
+home_win_prob_col = 'homeWinProb'
+away_win_prob_col = 'awayWinProb'
 game_time_secs_est_col = 'gameTimeSecondsEST'
 day_of_week_col = 'dayOfWeek'
 reg_game_num_perc_col = '{team}RegGameNumPerc'
@@ -105,6 +85,17 @@ market_intensity_col = 'marketIntensity'
 is_ret_home_trap_col = 'isRetHomeTrap'
 is_venue_alt_shock_col = 'isVenueAltShock'
 playoff_series_score_col = 'playoffSeriesScore'
+cor_outcome_col = 'correct_outcome'
+home_odds_col = 'homeTeamOdds'
+away_odds_col = 'awayTeamOdds'
+winner_odds_col = 'winner_odds'
+winnings_col = 'winnings'
+fake_tiebreaker_col = 'fakeTiebreaker'
+
+pred_suf = '_predicted'
+act_suf = '_actual'
+lat_suf = '_lat'
+long_suf = '_long'
 
 date_format_yyyy_mm_dd = '%Y-%m-%d'
 div_1_val = 'div_1'
@@ -123,15 +114,16 @@ cur_season_name = '20262027'
 est_tz = 'America/New_York'
 sched_feat_windows = [4, 7]
 
-predict_cols = [home_team_score_col, away_team_score_col, last_period_col]
-tiebreaker_cols = ['totalPoints', 'pointsPercentage', 'totalRegWins', 'totalRegOTWins', 'totalWins', 'goalDifferential', 'totalGoalsFor']
-final_standings_col_order = ['conferenceName', 'conferenceSeed', 'divisionName', 'divisionSeed', 'playoffSeed', 'teamName', 'totalGames',
-                 'totalWins', 'totalLosses', 'totalOTLs', 'totalPoints', 'pointsPercentage', 'totalRegWins', 'totalRegOTWins',
-                 'goalDifferential', 'totalGoalsFor']
-base_feature_cols = ['gameId', 'seasonName', 'gameType', 'startTimeEST', 'venueTimezone',
-                'venue', 'homeTeamName', 'awayTeamName', 'homeTeamScore',
-                'awayTeamScore', 'lastPeriod', 'homeTeamWin', 'homeWinProb',
-                'awayWinProb']
+tiebreaker_cols = [total_points_col, points_percentage_col, total_reg_wins_col, total_reg_ot_wins_col,
+                   total_wins_col, goal_diff_col, total_goals_for_col]
+final_standings_col_order = [conference_name_col, conference_seed_col, division_name_col, division_seed_col,
+                             playoff_seed_col, team_name_col, total_games_col, total_wins_col, total_losses_col,
+                             total_otls_col, total_points_col, points_percentage_col, total_reg_wins_col,
+                             total_reg_ot_wins_col, goal_diff_col, total_goals_for_col]
+base_feature_cols = [game_id_col, season_name_col, game_type_col, starttime_est_col, venue_timezone_col,
+                     venue_col, home_team_name_col, away_team_name_col, home_team_score_col,
+                     away_team_score_col, last_period_col, home_team_win_col,
+                     home_win_prob_col, away_win_prob_col]
 
 output_folder = 'output/'
 util_data_folder = 'util_data/'
@@ -147,20 +139,23 @@ player_features_folder = season_feature_sets_folder + 'player_features/'
 player_features_filename = '{season}_player_features.csv'
 team_features_folder = season_feature_sets_folder + 'team_features/'
 team_features_filename = '{season}_team_features.csv'
-season_pred_folder = output_folder + 'season_predictions/{date}/'
-pred_analysis_filename = 'game_result_comp_{date_since}_to_{date_until}.csv'
+feat_data_filename = '{season}_feature_data.csv'
+season_pred_base_folder = output_folder + 'season_predictions/'
+season_pred_folder = season_pred_base_folder + '{date}/'
 season_sched_filename = '{season}_season_sched.csv'
 season_pred_filename = 'regularseason_predictions_{date}.csv'
 final_standings_filename = 'regularseason_standings_{date}.csv'
 playoff_pred_filename = 'playoff_tree_predictions_{date}.csv'
 venue_geoloc_filename = 'venue_geolocations.csv'
-feature_data_filename = '{season}_feature_data.csv'
 sklearn_model_filename = 'skl_rf_model.pkl'
 season_results_prob_filename = 'season_results_probabilities_{date}_n{n}.csv'
 playoff_tree_filename = '{season}_playoff_tree_{date}.png'
 playoff_probability_filename = '{season}_playoff_probability_{date}_n{n}.png'
 stanley_cup_image = 'stanley_cup.png'
 model_features_filename = '{model}_model_features.txt'
+sched_odds_filename = 'all_time_schedule_odds.csv'
+pred_ret_filename = 'prediction_returns_{date_since}_to_{today_dt}.csv'
+shap_filename = 'shap_{home}_{away}_{date}.png'
 
 # color tuple format is (B, G, R)
 team_info = {
@@ -198,6 +193,11 @@ team_info = {
     'Winnipeg Jets': {'c1': (66, 30, 4), 'logo': images_folder + 'winnipeg_jets_logo.png', 'conference': 'Western', 'division': 'Central'}
 }
 
+defunct_team_info = {
+    'Arizona Coyotes': {'c1': None, 'logo': None, 'conference': 'Western', 'division': 'Central'},
+    'Utah Utah Hockey Club': {'c1': None, 'logo': None, 'conference': 'Western', 'division': 'Central'},
+}
+
 team_name_addrev_map = {
     'Anaheim Ducks': 'ANA',
     'Boston Bruins': 'BOS',
@@ -231,11 +231,6 @@ team_name_addrev_map = {
     'Vegas Golden Knights': 'VGK',
     'Washington Capitals': 'WSH',
     'Winnipeg Jets': 'WPG'
-}
-
-defunct_team_info = {
-    'Arizona Coyotes': {'c1': None, 'logo': None, 'conference': 'Western', 'division': 'Central'},
-    'Utah Utah Hockey Club': {'c1': None, 'logo': None, 'conference': 'Western', 'division': 'Central'},
 }
 
 missing_geoloc = {

@@ -16,7 +16,7 @@ def feature_data_update(sched_feat_df, team_feat_df, player_feat_df, goalie_feat
     merge_cols = [cons.game_id_col, cons.season_name_col, cons.game_type_col, cons.starttime_est_col,
                   cons.venue_timezone_col, cons.venue_col, cons.home_team_name_col, cons.away_team_name_col,
                   cons.home_team_score_col, cons.away_team_score_col, cons.last_period_col, cons.home_team_win_col,
-                  cons.win_prob_col.format(team='home'), cons.win_prob_col.format(team='away')]
+                  cons.home_win_prob_col, cons.away_win_prob_col]
     sched_df = sched_feat_df.merge(team_feat_df, how='left', on=merge_cols)
     sched_df = sched_df.merge(player_feat_df, how='left', on=merge_cols)
     sched_df = sched_df.merge(goalie_feat_df, how='left', on=merge_cols)
@@ -24,7 +24,7 @@ def feature_data_update(sched_feat_df, team_feat_df, player_feat_df, goalie_feat
     if save_feat_data:
         for season in sched_df[cons.season_name_col].unique():
             season_df = sched_df[sched_df[cons.season_name_col] == season]
-            csvSave(cons.season_feature_sets_folder, f"{season}_feature_data.csv", season_df, index=False)
+            csvSave(cons.season_feature_sets_folder, cons.feat_data_filename.format(season=season), season_df, index=False)
 
     return sched_df
 
@@ -46,7 +46,7 @@ def clean_feature_df(data_df):
 def feature_data_load():
 
     # the list of feature files that have already been generated
-    season_sched_list = [file for file in os.listdir(cons.season_feature_sets_folder) if file.endswith('_feature_data.csv')]
+    season_sched_list = [file for file in os.listdir(cons.season_feature_sets_folder) if file.endswith(cons.feat_data_filename.format(season='$').split('$')[1])]
 
     # initialize empty dataframe to store the feature data
     feat_df = pd.DataFrame()

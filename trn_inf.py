@@ -15,13 +15,6 @@ from predict import predict_season, playoff_spot_predictions
 
 def get_asofdate():
 
-    if dt.now().month < int(cons.season_stdt[:2]):
-        cur_season_stdt = pd.to_datetime(f'{dt.now().year - 1}-{cons.season_stdt}').date()
-    else:
-        cur_season_stdt = pd.to_datetime(f'{dt.now().year}-{cons.season_stdt}').date()
-
-    max_dt = dt.now().date()
-
     # get user input for date
     print('Select a date to run the simulations from:')
     today_dt = input('> ')

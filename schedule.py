@@ -138,9 +138,9 @@ def load_sched_df_features():
     # add columns that the model will predict
     feature_df[cons.home_team_win_col] = np.where(feature_df[cons.home_team_score_col].isna(), np.nan,
         np.where(feature_df[cons.home_team_score_col] > feature_df[cons.away_team_score_col], 1.0, 0.0))
-    feature_df[cons.win_prob_col.format(team='home')] = np.where(feature_df[cons.home_team_score_col].isna(), np.nan,
+    feature_df[cons.home_win_prob_col] = np.where(feature_df[cons.home_team_score_col].isna(), np.nan,
         np.where(feature_df[cons.home_team_score_col] > feature_df[cons.away_team_score_col], 1.0, 0.0))
-    feature_df[cons.win_prob_col.format(team='away')] = np.where(feature_df[cons.home_team_score_col].isna(), np.nan,
+    feature_df[cons.away_win_prob_col] = np.where(feature_df[cons.home_team_score_col].isna(), np.nan,
         np.where(feature_df[cons.home_team_score_col] < feature_df[cons.away_team_score_col], 1.0, 0.0))
 
     # drop the startTimeUTC column
@@ -150,7 +150,7 @@ def load_sched_df_features():
     col_order = [cons.game_id_col, cons.season_name_col, cons.game_type_col, cons.starttime_est_col,
                  cons.venue_timezone_col, cons.venue_col, cons.home_team_name_col, cons.away_team_name_col,
                  cons.home_team_score_col, cons.away_team_score_col, cons.last_period_col,
-                 cons.home_team_win_col, cons.win_prob_col.format(team='home'), cons.win_prob_col.format(team='away')]
+                 cons.home_team_win_col, cons.home_win_prob_col, cons.away_win_prob_col]
     feature_df = feature_df[col_order]
 
     return feature_df

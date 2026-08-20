@@ -63,22 +63,22 @@ def game_result_comparison(predict_df, actual_df=None):
     comparison_df = pd.merge(predict_df[merge_cols], actual_df[merge_cols], on=[cons.game_id_col, cons.game_date_col, cons.home_team_name_col, cons.away_team_name_col], suffixes=('_predicted', '_actual'))
 
     # create a column that indicates whether the predicted outcome was correct (1) or not (0)
-    comparison_df['correct_outcome'] = np.where(
-        (comparison_df[cons.home_team_score_col+'_actual'] > comparison_df[cons.away_team_score_col+'_actual']) &
-        (comparison_df[cons.home_team_score_col+'_predicted'] > comparison_df[cons.away_team_score_col+'_predicted']) |
-        (comparison_df[cons.home_team_score_col+'_actual'] < comparison_df[cons.away_team_score_col+'_actual']) &
-        (comparison_df[cons.home_team_score_col+'_predicted'] < comparison_df[cons.away_team_score_col+'_predicted']) |
-        (comparison_df[cons.home_team_score_col+'_actual'] == comparison_df[cons.away_team_score_col+'_actual']) &
-        (comparison_df[cons.home_team_score_col+'_predicted'] == comparison_df[cons.away_team_score_col+'_predicted']),
+    comparison_df[cons.cor_outcome_col] = np.where(
+        (comparison_df[cons.home_team_score_col+cons.act_suf] > comparison_df[cons.away_team_score_col+cons.act_suf]) &
+        (comparison_df[cons.home_team_score_col+cons.pred_suf] > comparison_df[cons.away_team_score_col+cons.pred_suf]) |
+        (comparison_df[cons.home_team_score_col+cons.act_suf] < comparison_df[cons.away_team_score_col+cons.act_suf]) &
+        (comparison_df[cons.home_team_score_col+cons.pred_suf] < comparison_df[cons.away_team_score_col+cons.pred_suf]) |
+        (comparison_df[cons.home_team_score_col+cons.act_suf] == comparison_df[cons.away_team_score_col+cons.act_suf]) &
+        (comparison_df[cons.home_team_score_col+cons.pred_suf] == comparison_df[cons.away_team_score_col+cons.pred_suf]),
         1, 0
         )
     
-    # print(f'Games with correct outcome prediction: {sum(comparison_df["correct_outcome"])} / {len(comparison_df)} ({sum(comparison_df["correct_outcome"]) / len(comparison_df):.2%})\n')
+    # print(f'Games with correct outcome prediction: {sum(comparison_df[cons.cor_outcome_col])} / {len(comparison_df)} ({sum(comparison_df[cons.cor_outcome_col]) / len(comparison_df):.2%})\n')
 
     # give the percent accuracy of the correct outcomes per day and the number of correct outcomes
-    daily_accuracy = comparison_df.groupby(cons.game_date_col)['correct_outcome'].mean()
-    daily_correct = comparison_df.groupby(cons.game_date_col)['correct_outcome'].sum()
-    daily_games = comparison_df.groupby(cons.game_date_col)['correct_outcome'].count()
+    daily_accuracy = comparison_df.groupby(cons.game_date_col)[cons.cor_outcome_col].mean()
+    daily_correct = comparison_df.groupby(cons.game_date_col)[cons.cor_outcome_col].sum()
+    daily_games = comparison_df.groupby(cons.game_date_col)[cons.cor_outcome_col].count()
     for date, accuracy in daily_accuracy.items():
         print(f' {date}: ({daily_correct[date]}/{daily_games[date]}) {accuracy:.2%}')
 
@@ -90,13 +90,13 @@ def prediction_analysis(actuals_df, date_since, date_until):
     predict_df = pd.DataFrame()
 
     # loop through every folder in the season prediction folder and create a dataframe with all predictions for the most recent game date
-    for pred_date in os.listdir('output/season_predictions/'):
+    for pred_date in os.listdir(cons.season_pred_base_folder):
         if (pred_date < date_since) | (pred_date >= date_until):
             continue
-        if os.path.exists('output/season_predictions/' + pred_date + '/regularseason_predictions_' + pred_date + '.csv'):
-            predict_df_indiv = csvLoad('output/season_predictions/' + pred_date + '/', 'regularseason_predictions_' + pred_date + '.csv')
+        if os.path.exists(cons.season_pred_base_folder + pred_date + '/' + cons.season_pred_filename.format(date=pred_date)):
+            predict_df_indiv = csvLoad(cons.season_pred_base_folder + pred_date + '/', cons.season_pred_filename.format(date=pred_date))
         else:
-            predict_df_indiv = csvLoad('output/season_predictions/' + pred_date + '/', 'playoff_tree_predictions_' + pred_date + '.csv') 
+            predict_df_indiv = csvLoad(cons.season_pred_base_folder + pred_date + '/', cons.playoff_pred_filename.format(date=pred_date))
         # print(f'Analyzing predictions for {pred_date}...')
         min_predict_date = pd.to_datetime(predict_df_indiv.loc[pd.to_datetime(predict_df_indiv[cons.starttime_est_col]).dt.date == dt.strptime(pred_date, '%Y-%m-%d').date(), cons.starttime_est_col]).dt.date.min()
         predict_df = pd.concat([predict_df, predict_df_indiv.loc[pd.to_datetime(predict_df_indiv[cons.starttime_est_col]).dt.date == min_predict_date]], ignore_index=True)
@@ -115,21 +115,21 @@ def prediction_analysis(actuals_df, date_since, date_until):
     else:
         predict_df = clean_feature_df(predict_df)
 
-    home_prob_col = cons.win_prob_col.format(team='home')
-    away_prob_col = cons.win_prob_col.format(team='away')
+    home_prob_col = cons.home_win_prob_col
+    away_prob_col = cons.away_win_prob_col
 
-    comparison_df = pd.merge(predict_df, actuals_df, on=[cons.game_id_col, cons.starttime_est_col], suffixes=('_predicted', '_actual'))
+    comparison_df = pd.merge(predict_df, actuals_df, on=[cons.game_id_col, cons.starttime_est_col], suffixes=(cons.pred_suf, cons.act_suf))
 
-    comparison_df = comparison_df[[cons.game_id_col, cons.starttime_est_col, cons.home_team_name_col+'_predicted',
-                                   cons.away_team_name_col+'_predicted', home_prob_col, away_prob_col,
-                                   cons.home_team_score_col+'_actual', cons.away_team_score_col+'_actual',
-                                   cons.last_period_col+'_actual']]
+    comparison_df = comparison_df[[cons.game_id_col, cons.starttime_est_col, cons.home_team_name_col+cons.pred_suf,
+                                   cons.away_team_name_col+cons.pred_suf, home_prob_col, away_prob_col,
+                                   cons.home_team_score_col+cons.act_suf, cons.away_team_score_col+cons.act_suf,
+                                   cons.last_period_col+cons.act_suf]]
     
-    comparison_df.rename(columns={cons.game_date_col+'_predicted': cons.game_date_col, cons.home_team_name_col+'_predicted': cons.home_team_name_col,
-                                  cons.away_team_name_col+'_predicted': cons.away_team_name_col, cons.home_team_score_col+'_actual': cons.home_team_score_col,
-                                  cons.away_team_score_col+'_actual': cons.away_team_score_col, cons.last_period_col+'_actual': cons.last_period_col}, inplace=True)
+    comparison_df.rename(columns={cons.game_date_col+cons.pred_suf: cons.game_date_col, cons.home_team_name_col+cons.pred_suf: cons.home_team_name_col,
+                                  cons.away_team_name_col+cons.pred_suf: cons.away_team_name_col, cons.home_team_score_col+cons.act_suf: cons.home_team_score_col,
+                                  cons.away_team_score_col+cons.act_suf: cons.away_team_score_col, cons.last_period_col+cons.act_suf: cons.last_period_col}, inplace=True)
 
-    comparison_df['correct_outcome'] = np.where(
+    comparison_df[cons.cor_outcome_col] = np.where(
         ((comparison_df[cons.home_team_score_col] > comparison_df[cons.away_team_score_col]) &
         (comparison_df[home_prob_col] > comparison_df[away_prob_col])) |
         ((comparison_df[cons.home_team_score_col] < comparison_df[cons.away_team_score_col]) &
@@ -139,7 +139,7 @@ def prediction_analysis(actuals_df, date_since, date_until):
         1, 0
         )
     
-    # print(f"\nGames with correct outcome prediction: {sum(comparison_df['correct_outcome'])} / {len(comparison_df)} ({sum(comparison_df['correct_outcome']) / len(comparison_df):.2%})\n")
+    # print(f"\nGames with correct outcome prediction: {sum(comparison_df[cons.cor_outcome_col])} / {len(comparison_df)} ({sum(comparison_df[cons.cor_outcome_col]) / len(comparison_df):.2%})\n")
 
     return comparison_df
 

@@ -11,19 +11,22 @@ def nhl_team_standings(data_df=None):
 
     if data_df is None:
         data_df = nhlc.get_nhl_team_standings()
-        data_df.loc[data_df['wildcardSequence']<3, cons.playoff_seed_col] = 'wc_' + data_df.loc[data_df['wildcardSequence']<3, 'wildcardSequence'].astype(str)
-        data_df.loc[data_df['wildcardSequence']==0, cons.playoff_seed_col] = 'div_' + data_df.loc[data_df['wildcardSequence']==0, 'divisionSequence'].astype(str)
-        data_df.loc[data_df['wildcardSequence']>=3, cons.playoff_seed_col] = cons.missed_val
+        data_df.loc[data_df[cons.wildcard_sequence_col]<3, cons.playoff_seed_col] = 'wc_' + data_df.loc[
+            data_df[cons.wildcard_sequence_col]<3, cons.wildcard_sequence_col].astype(str)
+        data_df.loc[data_df[cons.wildcard_sequence_col]==0, cons.playoff_seed_col] = 'div_' + data_df.loc[
+            data_df[cons.wildcard_sequence_col]==0, cons.division_sequence_col].astype(str)
+        data_df.loc[data_df[cons.wildcard_sequence_col]>=3, cons.playoff_seed_col] = cons.missed_val
 
         data_df.rename(columns={'points': cons.total_points_col}, inplace=True)
         data_df[cons.team_name_col] = data_df[cons.team_name_col]
 
         # rename the team name column to be the default team name column for consistency across dataframes
-        data_df[cons.team_name_col] = pd.Series([teamname['default'] for teamname in data_df['teamName']])
+        data_df[cons.team_name_col] = pd.Series([teamname['default'] for teamname in data_df[cons.team_name_col]])
 
     data_df[cons.wildcard_seed_col] = None
     data_df.loc[data_df[cons.playoff_seed_col].str[:3] == 'div', cons.wildcard_seed_col] = 0
-    data_df.loc[data_df[cons.playoff_seed_col].str[:2] == 'wc', cons.wildcard_seed_col] = data_df.loc[data_df[cons.playoff_seed_col].str[:2] == 'wc', cons.playoff_seed_col].str[-1:].astype(int)
+    data_df.loc[data_df[cons.playoff_seed_col].str[:2] == 'wc', cons.wildcard_seed_col] = data_df.loc[
+        data_df[cons.playoff_seed_col].str[:2] == 'wc', cons.playoff_seed_col].str[-1:].astype(int)
     data_df.loc[data_df[cons.playoff_seed_col] == cons.missed_val, cons.wildcard_seed_col] = 3
         
     # eastern conference playoff seeding
@@ -42,27 +45,31 @@ def _sort_conference_wildcard_spots(conf_df):
     sort_df = conf_df.copy()
     playoff_seed_str = sort_df[cons.playoff_seed_col].fillna(cons.missed_val).astype(str).str.lower()
 
+    seed_group = '_seed_group'
+    div_sort = '_division_sort'
+    points_sort = '_points_sort'
+
     # Group ordering: division seeds first, wildcard seeds second, then missed teams.
-    sort_df['_seed_group'] = np.where(
+    sort_df[seed_group] = np.where(
         playoff_seed_str.str.startswith('div'),
         0,
         np.where(playoff_seed_str.str.startswith('wc'), 1, 2)
     )
 
     # Division name should only influence ordering inside division seed rows.
-    sort_df['_division_sort'] = np.where(
-        sort_df['_seed_group'] == 0,
+    sort_df[div_sort] = np.where(
+        sort_df[seed_group] == 0,
         sort_df[cons.division_name_col],
         ''
     )
-    sort_df['_points_sort'] = pd.to_numeric(sort_df[cons.total_points_col], errors='coerce').fillna(-np.inf)
+    sort_df[points_sort] = pd.to_numeric(sort_df[cons.total_points_col], errors='coerce').fillna(-np.inf)
 
     sort_df.sort_values(
-        by=['_seed_group', '_division_sort', '_points_sort'],
+        by=[seed_group, div_sort, points_sort],
         ascending=[True, True, False],
         inplace=True
     )
-    sort_df.drop(columns=['_seed_group', '_division_sort', '_points_sort'], inplace=True)
+    sort_df.drop(columns=[seed_group, div_sort, points_sort], inplace=True)
 
     return sort_df
 
@@ -91,13 +98,13 @@ def assign_game_points(season_results, to_csv=False):
     # assign points to each team based on the predicted scores and last period type
     # (2 points for a win in regulation, 1 point for an OT/SO loss, 0 points for a regulation loss)
     season_results[cons.home_team_points_col] = np.where(
-        season_results['homeWinProb'] > season_results['awayWinProb'], 2, np.where(
+        season_results[cons.home_win_prob_col] > season_results[cons.away_win_prob_col], 2, np.where(
             season_results[cons.last_period_col].isin(['OT', 'SO']), 1, np.where(
-                season_results['homeWinProb'] < season_results['awayWinProb'], 0, 0)))
+                season_results[cons.home_win_prob_col] < season_results[cons.away_win_prob_col], 0, 0)))
     season_results[cons.away_team_points_col] = np.where(
-        season_results['awayWinProb'] > season_results['homeWinProb'], 2, np.where(
+        season_results[cons.away_win_prob_col] > season_results[cons.home_win_prob_col], 2, np.where(
             season_results[cons.last_period_col].isin(['OT', 'SO']), 1, np.where(
-                season_results['awayWinProb'] < season_results['homeWinProb'], 0, 0)))
+                season_results[cons.away_win_prob_col] < season_results[cons.home_win_prob_col], 0, 0)))
 
     return season_results
 
@@ -228,11 +235,11 @@ def generate_final_standings(season_results, today_dt, to_csv=False):
     final_standings = pd.merge(final_standings, team_info_df[[cons.team_name_col, cons.division_name_col, cons.conference_name_col]], on=cons.team_name_col)
 
     # fake tiebreaker for when everything is equal, take the higher alphabetized team
-    final_standings['fakeTiebreaker'] = final_standings['teamName']
-    if 'fakeTiebreaker' not in cons.tiebreaker_cols:
-        cons.tiebreaker_cols.append('fakeTiebreaker')
-    if 'fakeTiebreaker' not in cons.final_standings_col_order:
-        cons.final_standings_col_order.append('fakeTiebreaker')
+    final_standings[cons.fake_tiebreaker_col] = final_standings[cons.team_name_col]
+    if cons.fake_tiebreaker_col not in cons.tiebreaker_cols:
+        cons.tiebreaker_cols.append(cons.fake_tiebreaker_col)
+    if cons.fake_tiebreaker_col not in cons.final_standings_col_order:
+        cons.final_standings_col_order.append(cons.fake_tiebreaker_col)
 
     # assign divisionSeed, conferenceSeed based on total points and tiebreakers within each division, conference
     final_standings.sort_values(by=[cons.division_name_col] + cons.tiebreaker_cols, ascending=[True] + [False]*len(cons.tiebreaker_cols), inplace=True)

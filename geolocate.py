@@ -12,7 +12,7 @@ def geolocate_venues(feature_df, venue_col):
     geolocator = Nominatim(user_agent='nhl_metrics_app', timeout=10) 
     geocode = RateLimiter(geolocator.geocode, min_delay_seconds=1)
 
-    geoloc_df = pd.DataFrame(columns=[venue_col, venue_col+'_lat', venue_col+'_long'])
+    geoloc_df = pd.DataFrame(columns=[venue_col, venue_col+cons.lat_suf, venue_col+cons.long_suf])
 
     # add a new column with the geolocation of each game venue
     for venue in feature_df[venue_col].unique():
@@ -24,8 +24,8 @@ def geolocate_venues(feature_df, venue_col):
                     geoloc_df = pd.concat([geoloc_df,
                                            pd.DataFrame(
                                                {venue_col: [venue],
-                                                venue_col+'_lat': [location.latitude],
-                                                venue_col+'_long': [location.longitude]
+                                                venue_col+cons.lat_suf: [location.latitude],
+                                                venue_col+cons.long_suf: [location.longitude]
                                                 })], ignore_index=True)
                 else:
                     print(f'{venue}: Geolocation not found')
@@ -42,8 +42,8 @@ def geolocate_venues(feature_df, venue_col):
                     geoloc_df = pd.concat([geoloc_df,
                                            pd.DataFrame(
                                                {venue_col: [venue],
-                                                venue_col+'_lat': [lat],
-                                                venue_col+'_long': [long]
+                                                venue_col+cons.lat_suf: [lat],
+                                                venue_col+cons.long_suf: [long]
                                                 })], ignore_index=True)
                 break
             except Exception as ex:

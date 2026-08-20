@@ -180,21 +180,18 @@ def model_inference(data_df, feature_list, today_dt, model=None):
     home_win_prob = probs[:, 1]  # column 1 = probability of class "1" (home win)
     away_win_prob = probs[:, 0]  # column 0 = probability of class "0" (away win)
 
-    home_win_prob_col = cons.win_prob_col.format(team='home')
-    away_win_prob_col = cons.win_prob_col.format(team='away')
-
-    predict_df[home_win_prob_col] = home_win_prob
-    predict_df[away_win_prob_col] = away_win_prob
+    predict_df[cons.home_win_prob_col] = home_win_prob
+    predict_df[cons.away_win_prob_col] = away_win_prob
 
     data_df.update(predict_df[[cons.home_team_win_col,
-                               home_win_prob_col,
-                               away_win_prob_col
+                               cons.home_win_prob_col,
+                               cons.away_win_prob_col
                                ]])
 
     # fix for bug where prediction is split exactly 50/50
-    if not data_df.loc[(data_df[home_win_prob_col]==0.5) & (data_df[home_win_prob_col]==0.5)].empty:
-        data_df.loc[(data_df[home_win_prob_col]==0.5) & (data_df[home_win_prob_col]==0.5),
-                    [home_win_prob_col, away_win_prob_col]] = [np.float64(0.5000000000000001), np.float64(0.4999999999999999)]
+    if not data_df.loc[(data_df[cons.home_win_prob_col]==0.5) & (data_df[cons.away_win_prob_col]==0.5)].empty:
+        data_df.loc[(data_df[cons.home_win_prob_col]==0.5) & (data_df[cons.away_win_prob_col]==0.5),
+                    [cons.home_win_prob_col, cons.away_win_prob_col]] = [np.float64(0.5000000000000001), np.float64(0.4999999999999999)]
 
     return data_df, model
 
@@ -254,7 +251,7 @@ def explain_predictions(pred_data_x, model, home_team, away_team, game_date, tod
     plt.title(f"Predicted Home Win Probability — {away_team} at {home_team}, {game_date}", fontsize=14, pad=20)
     plt.tight_layout()
     # plt.show()
-    plt.savefig(f'output/season_predictions/{today_dt}/shap_{home_team}_{away_team}_{game_date}.png')
+    plt.savefig(cons.season_pred_folder.format(date=today_dt) + cons.shap_filename.format(home=home_team, away=away_team, date=game_date))
     plt.close()
 
     pass

@@ -495,8 +495,8 @@ def travel_distance_last_n_days(data_df, team_col, n, backfill=True):
     row_id_col = '_row_id'
     team_key_col = '_team'
     season_key_col = '_season'
-    venue_lat_col = cons.venue_col + '_lat'
-    venue_long_col = cons.venue_col + '_long'
+    venue_lat_col = cons.venue_col + cons.lat_suf
+    venue_long_col = cons.venue_col + cons.long_suf
 
     # Expand to team-centric rows so each team-season has one chronological venue timeline.
     all_game_dates = pd.to_datetime(data_df[cons.starttime_est_col], errors='coerce').dt.date
@@ -810,8 +810,8 @@ def playoff_series_score(data_df, backfill=True):
         cons.home_team_name_col,
         cons.away_team_name_col,
         cons.season_name_col,
-        cons.win_prob_col.format(team='home'),
-        cons.win_prob_col.format(team='away')
+        cons.home_win_prob_col,
+        cons.away_win_prob_col
     ]].copy()
 
     if not playoff_games.empty:
@@ -826,8 +826,8 @@ def playoff_series_score(data_df, backfill=True):
         playoff_games[team_low_col] = np.where(home_arr <= away_arr, home_arr, away_arr)
         playoff_games[team_high_col] = np.where(home_arr <= away_arr, away_arr, home_arr)
 
-        home_scores = pd.to_numeric(playoff_games[cons.win_prob_col.format(team='home')], errors='coerce').to_numpy()
-        away_scores = pd.to_numeric(playoff_games[cons.win_prob_col.format(team='away')], errors='coerce').to_numpy()
+        home_scores = pd.to_numeric(playoff_games[cons.home_win_prob_col], errors='coerce').to_numpy()
+        away_scores = pd.to_numeric(playoff_games[cons.away_win_prob_col], errors='coerce').to_numpy()
         playoff_games[winner_col] = np.where(
             home_scores > away_scores,
             home_arr,

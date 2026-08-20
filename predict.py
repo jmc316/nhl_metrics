@@ -43,7 +43,7 @@ def predict_season(to_csv, set_model_state, today_dt):
         pred_df, model = sklu.model_inference(processed_df, feature_list, today_dt)
 
     # return feature_df with the win probability columns added
-    feature_df.update(pred_df[['homeTeamWin', 'homeWinProb', 'awayWinProb']])
+    feature_df.update(pred_df[[cons.home_team_win_col, cons.home_win_prob_col, cons.away_win_prob_col]])
 
     # display the predictions for the first date of predictions, and explain the predictions using SHAP values
     print_dt = min(feature_df.loc[feature_df[cons.starttime_est_col].dt.date >= dt.strptime(today_dt, "%Y-%m-%d").date(),
@@ -57,10 +57,10 @@ def predict_season(to_csv, set_model_state, today_dt):
         away_team = cons.team_name_addrev_map[row[cons.away_team_name_col]]
         ot_str = ' (OT)' if row[cons.last_period_col]=='OT' else ''
 
-        if row[cons.win_prob_col.format(team='home')] > row[cons.win_prob_col.format(team='away')]:
-            print(f"\t{away_team.lower()} {(row[cons.win_prob_col.format(team='away')]*100):.2f} at {home_team} {(row[cons.win_prob_col.format(team='home')]*100):.2f}{ot_str}")
+        if row[cons.home_win_prob_col] > row[cons.away_win_prob_col]:
+            print(f"\t{away_team.lower()} {(row[cons.away_win_prob_col]*100):.2f} at {home_team} {(row[cons.home_win_prob_col]*100):.2f}{ot_str}")
         else:
-            print(f"\t{away_team} {(row[cons.win_prob_col.format(team='away')]*100):.2f} at {home_team.lower()} {(row[cons.win_prob_col.format(team='home')]*100):.2f}{ot_str}")
+            print(f"\t{away_team} {(row[cons.away_win_prob_col]*100):.2f} at {home_team.lower()} {(row[cons.home_win_prob_col]*100):.2f}{ot_str}")
 
         sklu.explain_predictions(pred_df.iloc[[idx]][feature_list],
                                 model, home_team, away_team,
@@ -156,7 +156,7 @@ def preprocess_historic_data(feature_df, today_dt):
     # nullify the results of all games beyond the today_dt
     feature_df.loc[feature_df[cons.starttime_est_col].dt.date >= dt.strptime(today_dt, "%Y-%m-%d").date(),
                     [cons.home_team_score_col, cons.away_team_score_col, cons.last_period_col,
-                    cons.home_team_win_col, cons.win_prob_col.format(team='home'), cons.win_prob_col.format(team='away')]] = np.nan
+                    cons.home_team_win_col, cons.home_win_prob_col, cons.away_win_prob_col]] = np.nan
 
     # make sure 7 games are scheduled for each playoff series matchup
     cur_round_matchups = playoff_round_matchups[cur_playoff_round][:len(playoff_round_matchups[cur_playoff_round])//2]
@@ -304,10 +304,6 @@ def schedule_update():
         print(f'\nSaving updated schedule data for {seasonname[:4]}-{seasonname[4:]} season to CSV file...')
         csvSave(sched_df.loc[sched_df[cons.season_name_col] == seasonname], cons.season_sched_folder, cons.season_sched_filename.format(season=seasonname))
 
-    pass
-
-
-
     sched_df[cons.starttime_utc_col] = pd.to_datetime(sched_df[cons.starttime_utc_col], format='ISO8601')
     sched_df[cons.starttime_est_col] = sched_df[cons.starttime_utc_col].dt.tz_convert('EST')
 
@@ -349,7 +345,7 @@ def schedule_update():
             sched_df_filt[cons.starttime_est_col] > update_dt
             ]], ignore_index=True)
 
-    csvSave(odds_data, cons.util_data_folder, 'all_time_schedule_odds.csv')
+    csvSave(odds_data, cons.util_data_folder, cons.sched_odds_filename)
 
     return sched_df_cur
 
@@ -425,7 +421,7 @@ def playoff_spot_predictions(today_dt, n=100, to_csv=True):
     for i in range(n):
         print(f'\nSimulation {i+1} of {n}...')
         season_results_df = predict_season(False, False, today_dt)
-        season_results_points = nhlu.assign_game_points(season_results_df.loc[season_results_df['gameType']==2])
+        season_results_points = nhlu.assign_game_points(season_results_df.loc[season_results_df[cons.game_type_col]==2])
         final_standings_df = nhlu.generate_final_standings(season_results_points, today_dt)
         _, playoff_matchups, rounds_scheduled, rounds_completed = playoffs.playoff_tree_predictions(season_results_df, final_standings_df, False, today_dt, to_csv=False)
 

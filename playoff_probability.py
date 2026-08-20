@@ -162,7 +162,7 @@ def display_playoff_probability(pred_date, season, playoff_rd=0, matchups=None, 
     """
 
     # list files in output/season_predictions/{pred_date}/ and find the one with the highest n
-    season_sched_list = [file for file in os.listdir(cons.season_pred_folder.format(date=pred_date)) if file.startswith(f'season_results_probabilities_{pred_date}_n')]
+    season_sched_list = [file for file in os.listdir(cons.season_pred_folder.format(date=pred_date)) if file.startswith(cons.season_results_prob_filename.format(date=pred_date).split('{n}')[0])]
     if not season_sched_list:
         print(f'No playoff probability files found for {pred_date}. Please run the playoff prediction first.')
         return
@@ -171,44 +171,44 @@ def display_playoff_probability(pred_date, season, playoff_rd=0, matchups=None, 
     # Always use the largest n so visualization reflects the most complete run.
     n_values = [int(file.split('_n')[-1].split('.csv')[0]) for file in season_sched_list]
     n_sims = max(n_values)
-    df_prob = pd.read_csv(f'output/season_predictions/{pred_date}/season_results_probabilities_{pred_date}_n{n_sims}.csv')
+    df_prob = pd.read_csv(f'{cons.season_pred_folder.format(date=pred_date)}{cons.season_results_prob_filename.format(date=pred_date).split("{n}")[0]}n{n_sims}.csv')
 
     # Regular-season view keeps all teams alphabetized.
     if playoff_rd == 0:
-        df_prob.sort_values('teamName', inplace=True)
+        df_prob.sort_values(cons.team_name_col, inplace=True)
     # Playoff view filters to teams still alive in the selected round,
     # then applies bracket order so neighbors in the wheel match matchups.
     else:
         if playoff_rd == 1:
-            df_prob = df_prob.loc[df_prob['playoff_%'] > 0]
+            df_prob = df_prob.loc[df_prob[cons.playoff_per_col] > 0]
         elif playoff_rd == 2:
-            df_prob = df_prob.loc[df_prob['make_round_2_%'] > 0]
+            df_prob = df_prob.loc[df_prob[cons.make_r2_val+'_%'] > 0]
         elif playoff_rd == 3:
-            df_prob = df_prob.loc[df_prob['make_round_3_%'] > 0]
+            df_prob = df_prob.loc[df_prob[cons.make_r3_val+'_%'] > 0]
         elif playoff_rd == 4:
-            df_prob = df_prob.loc[df_prob['make_cup_final_%'] > 0]
+            df_prob = df_prob.loc[df_prob[cons.make_cup_final_val+'_%'] > 0]
         sort_order = []
         for _, matchup in matchups[playoff_rd].items():
             sort_order.append(matchup.get_team1())
             sort_order.append(matchup.get_team2())
-        df_prob['teamName'] = pd.Categorical(df_prob['teamName'], categories=sort_order, ordered=True)
-        df_prob.sort_values('teamName', inplace=True)
+        df_prob[cons.team_name_col] = pd.Categorical(df_prob[cons.team_name_col], categories=sort_order, ordered=True)
+        df_prob.sort_values(cons.team_name_col, inplace=True)
 
     # Freeze row order into an ordered categorical so all downstream arrays,
     # colors, wedges, and logos stay aligned by the same team index.
     sort_order = df_prob[cons.team_name_col].tolist()
-    df_prob['teamName'] = pd.Categorical(df_prob['teamName'], categories=sort_order, ordered=True)
-    df_prob.sort_values('teamName', inplace=True)
+    df_prob[cons.team_name_col] = pd.Categorical(df_prob[cons.team_name_col], categories=sort_order, ordered=True)
+    df_prob.sort_values(cons.team_name_col, inplace=True)
 
     teams = df_prob[cons.team_name_col].tolist()
     logo_paths = {team: cons.team_info[team]['logo'] for team in teams}
 
     rounds = [
-        np.array(list(df_prob['playoff_%']/100)),  # Make playoffs
-        np.array(list(df_prob['make_round_2_%']/100)),  # Round 2
-        np.array(list(df_prob['make_round_3_%']/100)),  # Round 3
-        np.array(list(df_prob['make_cup_final_%']/100)), # Conference finals
-        np.array(list(df_prob['win_cup_%']/100)), # Cup win
+        np.array(list(df_prob[cons.playoff_per_col]/100)),  # Make playoffs
+        np.array(list(df_prob[cons.make_r2_val+'_%']/100)),  # Round 2
+        np.array(list(df_prob[cons.make_r3_val+'_%']/100)),  # Round 3
+        np.array(list(df_prob[cons.make_cup_final_val+'_%']/100)), # Conference finals
+        np.array(list(df_prob[cons.win_cup_val+'_%']/100)), # Cup win
     ]
 
     # Store both normalized slices (for geometry) and raw values (for labels).
@@ -284,7 +284,7 @@ def display_playoff_probability(pred_date, season, playoff_rd=0, matchups=None, 
                     0.6, (240, 240, 240), 1, cv2.LINE_AA)
 
     # Add cup image in the center and persist the final render to disk.
-    overlay_center_image(canvas,'images/stanley_cup.png',center,size=int(120 * scale))
+    overlay_center_image(canvas, f'{cons.images_folder}{cons.stanley_cup_image}', center, size=int(120 * scale))
 
     cv2.imwrite(f'{cons.season_pred_folder.format(date=pred_date)}{cons.playoff_probability_filename.format(season=season, date=pred_date, n=n_sims)}', canvas)
     if display_image:
