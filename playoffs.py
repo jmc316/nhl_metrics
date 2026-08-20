@@ -1,14 +1,14 @@
 import numpy as np
 import pandas as pd
-import features.features as ft
-import features.feat_schedule as ft_sched
 import constants as cons
 import utils.skl_utils as sklu
+import features.features as ft
+import features.feat_schedule as ft_sched
 
-from datetime import datetime as dt, timedelta
 from utils.file_utils import csvSave
 from playoff_matchup import PlayoffMatchup
 from playoff_tree import display_playoff_tree
+from datetime import datetime as dt, timedelta
 
 
 def playoff_tree_predictions(regular_season_df, season_results_df, set_model_state, today_dt, to_csv=True, display_image=True):

@@ -5,15 +5,14 @@ import datetime
 import numpy as np
 import pandas as pd
 import constants as cons
+import nhl_client as nhlc
 import utils.nhl_utils as nhlu
 import utils.skl_utils as sklu
-import nhl_client as nhlc
 
-from features.features import feature_data_load
 from zoneinfo import ZoneInfo
-from itertools import product
 from datetime import datetime as dt
 from utils.file_utils import csvLoad, csvSave
+from features.features import feature_data_load
 from playoff_probability import display_playoff_probability
 
 

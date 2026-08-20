@@ -5,9 +5,9 @@ import constants as cons
 
 from utils.file_utils import csvLoad, csvSave
 from features.feat_team import team_features_update
-from features.feat_schedule import sched_features_update
 from features.feat_player import player_features_update
 from features.feat_goalie import goalie_features_update
+from features.feat_schedule import sched_features_update
 
 
 def feature_data_update(sched_feat_df, team_feat_df, player_feat_df, goalie_feat_df, save_feat_data):

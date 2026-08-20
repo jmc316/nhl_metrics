@@ -1,12 +1,13 @@
 import os
+
 import numpy as np
 import pandas as pd
 import constants as cons
-from features.features import clean_feature_df
 import nhl_client as nhlc
 
-from utils.file_utils import csvLoad
 from datetime import datetime as dt
+from utils.file_utils import csvLoad
+from features.features import clean_feature_df
 
 def game_result_comparison(predict_df, actual_df=None):
 

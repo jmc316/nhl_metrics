@@ -5,11 +5,11 @@ import constants as cons
 import utils.nhl_utils as nhlu
 import utils.skl_utils as sklu
 
-from utils.file_utils import csvLoad
 from datetime import datetime as dt
-from features.features import feature_data_load
+from utils.file_utils import csvLoad
 from analyze import prediction_analysis
 from pred_returns import daily_probability
+from features.features import feature_data_load
 from predict import predict_season, playoff_spot_predictions
 
 

@@ -1,14 +1,10 @@
 import os
 import cv2
-import playoffs
+import math
+
 import numpy as np
 import pandas as pd
 import constants as cons
-import utils.nhl_utils as nhlu
-import math
-import datetime as dt
-
-# from predict import predict_season
 
 scale = 0.75
 SIZE = int(1200 * scale)

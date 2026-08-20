@@ -1,14 +1,14 @@
 import datetime
+import matplotlib
 
 import pandas as pd
 import constants as cons
-import matplotlib
 import matplotlib.pyplot as plt
 
-from utils.file_utils import csvLoad, csvSave
 from datetime import datetime as dt
 from schedule import clean_schedule_df
 from analyze import prediction_analysis
+from utils.file_utils import csvLoad, csvSave
 
 # avoid garbage collection
 matplotlib.use('Agg')

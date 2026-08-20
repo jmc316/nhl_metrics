@@ -8,6 +8,7 @@ from nhlpy import NHLClient
 # Create an instance of the NHLClient
 nhl_client = NHLClient()
 
+
 def get_sched_data(week, dow):
     while True:
         try:

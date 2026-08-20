@@ -1,16 +1,16 @@
 import shap
+import matplotlib
 
 import numpy as np
 import pandas as pd
 import constants as cons
-import matplotlib
 import matplotlib.pyplot as plt
 
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 from utils.file_utils import pklLoad, pklSave, txtSave
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, roc_auc_score, log_loss, brier_score_loss
 from sklearn.inspection import permutation_importance
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from sklearn.metrics import accuracy_score, roc_auc_score, log_loss, brier_score_loss
 
 # avoid garbage collection
 matplotlib.use('Agg')

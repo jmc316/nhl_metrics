@@ -1,7 +1,9 @@
 import bisect
+
 import numpy as np
 import pandas as pd
 import constants as cons
+
 from utils.file_utils import csvLoad, csvSave
 from schedule import load_sched_df_features
 
