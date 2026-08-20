@@ -18,9 +18,11 @@
     - pytorch
     - pytest
 
-- new to-do
-    - fix import formatting
-    - clean up constants in pred_returns file
-    - centralize file saving and loading into utils file
-    - centralize datetime values on file load
-    - historical prediction explanation
+- new to-dos
+    - postseason/playoff round probability
+    - team features addition
+    - goalie features addition
+    - player features addition
+    - explain a prediction
+    - betting odds automated ETL
+    - predictions accuracy tracking
