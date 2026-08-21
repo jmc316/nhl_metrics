@@ -131,15 +131,15 @@ def update_playoff_spot_probabilities():
             historic_playoff_spot_predict()
 
 
-def model_accuracy():
+# def model_accuracy():
 
-    today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
+#     today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
 
-    since_dt = get_asofdate().strftime(cons.date_format_yyyy_mm_dd)
+#     since_dt = get_asofdate().strftime(cons.date_format_yyyy_mm_dd)
 
-    season_prediction_df = csvLoad(cons.season_pred_folder.format(date=today_dt), cons.season_pred_filename.format(date=today_dt))
+#     season_prediction_df = csvLoad(cons.season_pred_folder.format(date=today_dt), cons.season_pred_filename.format(date=today_dt))
 
-    prediction_analysis(season_prediction_df, since_dt, today_dt)
+#     prediction_analysis(season_prediction_df, since_dt, today_dt)
 
 
 def train_model():

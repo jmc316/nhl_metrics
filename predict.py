@@ -1,6 +1,5 @@
 import os
 import playoffs
-import datetime
 
 import numpy as np
 import pandas as pd
@@ -9,7 +8,6 @@ import nhl_client as nhlc
 import utils.nhl_utils as nhlu
 import utils.skl_utils as sklu
 
-from zoneinfo import ZoneInfo
 from datetime import datetime as dt
 from utils.file_utils import csvLoad, csvSave
 from features.features import feature_data_load
@@ -26,6 +24,7 @@ def predict_season(to_csv, set_model_state, today_dt):
 
         feature_df, in_playoffs = preprocess_historic_data(feature_df, today_dt)
 
+        # if playoffs are currently underway for the today_dt, move to playoff prediction method
         if in_playoffs:
             return feature_df
 
@@ -50,6 +49,7 @@ def predict_season(to_csv, set_model_state, today_dt):
                                   cons.starttime_est_col].dt.date)
     first_pred_dt_df = feature_df.loc[feature_df[cons.starttime_est_col].dt.date==print_dt]
 
+    # print next game day's predictions into the terminal
     print(f'\nPredicted game results for {print_dt.strftime("%Y-%m-%d")}:')
     for idx, row in first_pred_dt_df.iterrows():
 
@@ -62,10 +62,12 @@ def predict_season(to_csv, set_model_state, today_dt):
         else:
             print(f"\t{away_team} {(row[cons.away_win_prob_col]*100):.2f} at {home_team.lower()} {(row[cons.home_win_prob_col]*100):.2f}{ot_str}")
 
+        # generate SHAP values chart for each of the games
         sklu.explain_predictions(pred_df.iloc[[idx]][feature_list],
                                 model, home_team, away_team,
                                 print_dt, today_dt)
 
+    # save the season predictinos to the prediction folder
     if to_csv:
         print('Saving season predictions to CSV file...')
         csvSave(pred_df, cons.season_pred_folder.format(date=today_dt), cons.season_pred_filename.format(date=today_dt))
@@ -168,186 +170,53 @@ def preprocess_historic_data(feature_df, today_dt):
     return feature_df, in_playoffs
 
 
-def game_results_update(last_act_dt):
+# def game_results_update(last_act_dt):
 
-    # today's date in EST timezone
-    today_dt = dt.now().date()
+#     # today's date in EST timezone
+#     today_dt = dt.now().date()
 
-    # initialize empty dataframe to store any missing schedule data that needs to be updated with actual results
-    missing_sched_df = pd.DataFrame()
+#     # initialize empty dataframe to store any missing schedule data that needs to be updated with actual results
+#     missing_sched_df = pd.DataFrame()
 
-    # if the date of the first unplayed game is in the past, the schedule dataframe is missing some data
-    if today_dt > last_act_dt:
-        print('\tSchedule data actuals update required...')
+#     # if the date of the first unplayed game is in the past, the schedule dataframe is missing some data
+#     if today_dt > last_act_dt:
+#         print('\tSchedule data actuals update required...')
 
-        # the last possible day of the season, no need to check games beyond this date
-        cur_season_enddt = pd.to_datetime(f'{cons.season_enddt}-{str(today_dt.year)}').date()
+#         # the last possible day of the season, no need to check games beyond this date
+#         cur_season_enddt = pd.to_datetime(f'{cons.season_enddt}-{str(today_dt.year)}').date()
 
-        # add schedule actuals data one date at a time
-        for game_date in pd.date_range(start=last_act_dt, end=min(cur_season_enddt, today_dt - pd.Timedelta(days=1)), freq='D'):
-            print(f'\t\t... {game_date.strftime("%Y-%m-%d")} ...')
-            new_data = nhlc.get_sched_data(game_date, 0)
+#         # add schedule actuals data one date at a time
+#         for game_date in pd.date_range(start=last_act_dt, end=min(cur_season_enddt, today_dt - pd.Timedelta(days=1)), freq='D'):
+#             print(f'\t\t... {game_date.strftime("%Y-%m-%d")} ...')
+#             new_data = nhlc.get_sched_data(game_date, 0)
 
-            # if there were no games on this date, check the next date
-            if new_data.empty:
-                continue
+#             # if there were no games on this date, check the next date
+#             if new_data.empty:
+#                 continue
 
-            # if the games on this date have not yetr been played, there are no more games to check for actuals, so break out of the loop
-            if new_data.loc[new_data[cons.last_period_col].notna()].empty:
-                break
+#             # if the games on this date have not yetr been played, there are no more games to check for actuals, so break out of the loop
+#             if new_data.loc[new_data[cons.last_period_col].notna()].empty:
+#                 break
 
-            # there were games on this date found with completed final scores, so add them to the missing schedule dataframe
-            missing_sched_df = pd.concat([missing_sched_df, new_data], ignore_index=True)
+#             # there were games on this date found with completed final scores, so add them to the missing schedule dataframe
+#             missing_sched_df = pd.concat([missing_sched_df, new_data], ignore_index=True)
 
-        if missing_sched_df.empty:
-            print('\tNo missing actuals data found\n')
-            return missing_sched_df
+#         if missing_sched_df.empty:
+#             print('\tNo missing actuals data found\n')
+#             return missing_sched_df
         
-        missing_sched_df[cons.starttime_utc_col] = pd.to_datetime(missing_sched_df[cons.starttime_utc_col], format='ISO8601')
-        missing_sched_df[cons.starttime_est_col] = missing_sched_df[cons.starttime_utc_col].dt.tz_convert('EST')
-        missing_sched_df[cons.season_name_col] = missing_sched_df[cons.season_name_col].astype(str)
+#         missing_sched_df[cons.starttime_utc_col] = pd.to_datetime(missing_sched_df[cons.starttime_utc_col], format='ISO8601')
+#         missing_sched_df[cons.starttime_est_col] = missing_sched_df[cons.starttime_utc_col].dt.tz_convert('EST')
+#         missing_sched_df[cons.season_name_col] = missing_sched_df[cons.season_name_col].astype(str)
 
-        missing_sched_df.sort_values(by=cons.starttime_utc_col, inplace=True)
-        missing_sched_df.reset_index(drop=True, inplace=True)
+#         missing_sched_df.sort_values(by=cons.starttime_utc_col, inplace=True)
+#         missing_sched_df.reset_index(drop=True, inplace=True)
 
-        for col in missing_sched_df.columns:
-            if isinstance(missing_sched_df[col], np.int64):
-                missing_sched_df[col] = missing_sched_df[col].astype(int)
+#         for col in missing_sched_df.columns:
+#             if isinstance(missing_sched_df[col], np.int64):
+#                 missing_sched_df[col] = missing_sched_df[col].astype(int)
 
-    return missing_sched_df
-
-
-def schedule_update():
-
-    ################################################
-    ### 1. LOAD THE SAVED SCHEDULE DATA WITH ACTUALS
-    ################################################
-    print('\nLoading saved season schedule data...')
-
-    # a list of schedule files that have already been generated
-    season_sched_list = [file for file in os.listdir(cons.season_sched_folder) if file.endswith(cons.season_sched_filename.format(season=''))]
-
-    # initialize empty dataframe to store the saved season schedule data
-    sched_df_saved = pd.DataFrame()
-
-    # loop through each schedule file and concatenate it to the season schedule dataframe
-    for filename in season_sched_list:
-        if sched_df_saved.empty:
-            sched_df_saved = load_season_df(filename[:8])
-        else:
-            sched_df_saved = pd.concat([sched_df_saved, load_season_df(filename[:8])], ignore_index=True)
-
-    # the day after the last played game in the schedule dataframe; this is the first day that needs to be updated with actual results
-    sched_last_act_dttm = pd.to_datetime(max(sched_df_saved.loc[sched_df_saved[cons.last_period_col].notna(), cons.starttime_est_col]), format='ISO8601') + pd.Timedelta(days=1)
-    sched_last_act_dt = sched_last_act_dttm.date()
-
-    # remove all data from the schedule dataframe with null results
-    sched_df_act = sched_df_saved.loc[sched_df_saved[cons.starttime_est_col] <= sched_last_act_dttm]
-    sched_season_name = max(sched_df_act[cons.season_name_col]) # the latest season in the schedule dataframe
-    del sched_df_saved
-
-    print('... Finished loading saved season schedule data')
-
-    ########################################
-    ### 2. CHECK FOR UPDATES TO ACTUALS DATA
-    ########################################
-    print('\nChecking for updates to actual game results...')
-    sched_df_missing = game_results_update(sched_last_act_dt)
-
-    # real_last_act_dt is the last date of a completed game
-    if not sched_df_missing.empty:
-        real_last_act_dt = pd.to_datetime(max(sched_df_missing[cons.starttime_est_col]), format='ISO8601').date() 
-    else:
-        real_last_act_dt = sched_last_act_dt
-
-    print('...Finished checking for updates to actual game results')
-
-    ####################################################
-    ### 3. UPDATE FUTURE GAMES IN THE SCHEDULE DATAFRAME
-    ####################################################
-    print('\nUpdating future schedule data...')
-    sched_df_future = pd.DataFrame()
-
-    # find the last day of the current nhl season
-    real_season_name = cons.cur_season_name # the name corresponding to the latest season schedule released by the NHL
-    real_last_sched_dt = pd.to_datetime(f'{real_season_name[4:]}-{cons.season_enddt}', format=cons.date_format_yyyy_mm_dd).date()
-
-    # loop through each week of the season and fetch the schedule data for that week, then concatenate it to the season schedule dataframe
-    for week in pd.date_range(start=real_last_act_dt + pd.Timedelta(days=1), end=real_last_sched_dt, freq='W'):
-
-        # if the week is in the offseason, skip to the next week
-        cur_year_offseason_begin_dt = pd.to_datetime(f'{week.year}-{cons.season_enddt}', format=cons.date_format_yyyy_mm_dd) + pd.Timedelta(days=1)
-        cur_year_offseason_end_dt = pd.to_datetime(f'{week.year}-{cons.season_stdt}', format=cons.date_format_yyyy_mm_dd) - pd.Timedelta(days=1)
-        if week >= cur_year_offseason_begin_dt and week <= cur_year_offseason_end_dt:
-            continue
-
-        print(f'\t... {week.strftime("%Y-%m-%d")} ...')
-        for dow in range(0, 7):
-            sched_df_future = pd.concat([sched_df_future, nhlc.get_sched_data(week, dow)], ignore_index=True)
-
-    sched_df_future = clean_season_df(sched_df_future)
-
-    sched_df = pd.concat([sched_df_act, sched_df_missing, sched_df_future], ignore_index=True)
-    sched_df.sort_values(by=cons.starttime_utc_col, inplace=True)
-    sched_df.reset_index(drop=True, inplace=True)
-
-    print('\nFinished updating future schedule data')
-
-    ##############################################
-    ### 4. SAVE ALL UPDATED SCHEDULES TO CSV FILES
-    ##############################################
-
-    # create a list of the files to save
-    seasons_to_update = list(sched_df_missing[cons.season_name_col].unique()) + list(sched_df_future[cons.season_name_col].unique())
-
-    for seasonname in seasons_to_update:
-        print(f'\nSaving updated schedule data for {seasonname[:4]}-{seasonname[4:]} season to CSV file...')
-        csvSave(sched_df.loc[sched_df[cons.season_name_col] == seasonname], cons.season_sched_folder, cons.season_sched_filename.format(season=seasonname))
-
-    sched_df[cons.starttime_utc_col] = pd.to_datetime(sched_df[cons.starttime_utc_col], format='ISO8601')
-    sched_df[cons.starttime_est_col] = sched_df[cons.starttime_utc_col].dt.tz_convert('EST')
-
-    sched_df_filt = pd.DataFrame()
-
-    # loop through each date between today and the end of the season (cons.season_enddt) and check if there are any games on that date in the schedule dataframe that have not been updated with scores; if there are, update the schedule dataframe with the scores for those games by fetching the data from the API
-    for game_date in pd.date_range(start=dt.now(ZoneInfo('EST')).date() - datetime.timedelta(days=1),
-                                   end=pd.to_datetime(f'{dt.now(ZoneInfo('EST')).year}-{cons.season_enddt}').date(), freq='D'):
-        print(f'\tUpdating schedule data for {game_date.strftime("%Y-%m-%d")}...')
-        daily_sched = nhlc.get_sched_data(game_date, 0)
-        if daily_sched.empty:
-            continue
-        sched_df_filt = pd.concat([sched_df_filt, daily_sched], ignore_index=True)
-        sched_df_filt.sort_values(by=cons.starttime_utc_col, inplace=True)
-        sched_df_filt.reset_index(drop=True, inplace=True)
-
-    sched_df_filt[cons.starttime_utc_col] = pd.to_datetime(sched_df_filt[cons.starttime_utc_col], format='ISO8601')
-
-    sched_df_cur = pd.concat([sched_df.loc[
-        (sched_df[cons.season_name_col] == sched_season_name) &
-        (sched_df[cons.starttime_est_col].dt.date < (dt.now(ZoneInfo('EST')).date() - datetime.timedelta(days=1)))], sched_df_filt], ignore_index=True)
-    
-    sched_df_cur[cons.starttime_est_col] = sched_df_cur[cons.starttime_utc_col].dt.tz_convert('EST')
-
-    csvSave(sched_df_cur, cons.season_sched_folder, cons.season_sched_filename.format(season=sched_season_name))
-
-    # update the odds analysis file with the new schedule data
-    odds_data = csvLoad(cons.util_data_folder, 'all_time_schedule_odds.csv')
-
-    odds_data[cons.starttime_utc_col] = pd.to_datetime(odds_data[cons.starttime_utc_col], format='ISO8601')
-    odds_data[cons.starttime_est_col] = odds_data[cons.starttime_utc_col].dt.tz_convert('EST')
-    sched_df_filt[cons.starttime_est_col] = sched_df_filt[cons.starttime_utc_col].dt.tz_convert('EST')
-
-    update_dt = odds_data.loc[
-        (odds_data[cons.season_name_col] == sched_season_name) &
-        (odds_data[cons.last_period_col].notna())][cons.starttime_est_col].max()
-
-    odds_data = pd.concat([odds_data.loc[odds_data[cons.starttime_est_col] <= update_dt], sched_df_filt.loc[
-            sched_df_filt[cons.starttime_est_col] > update_dt
-            ]], ignore_index=True)
-
-    csvSave(odds_data, cons.util_data_folder, cons.sched_odds_filename)
-
-    return sched_df_cur
+#     return missing_sched_df
 
 
 def load_season_df(season_name):

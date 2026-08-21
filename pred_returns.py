@@ -16,18 +16,22 @@ matplotlib.use('Agg')
 
 def daily_probability(today_dt, date_since, season, display_graphic=True):
 
+    # load the schedule data with game results
     season_actual_df = csvLoad(cons.season_sched_folder, cons.season_sched_filename.format(season=season))
     season_actual_df = clean_schedule_df(season_actual_df)
     season_actual_df[cons.starttime_est_col] = season_actual_df[cons.starttime_utc_col].dt.tz_convert(cons.est_tz).dt.tz_localize(None)
 
+    # load a dataframe with all predictions in this date range
     pred_df = prediction_analysis(season_actual_df, date_since, today_dt)
 
     if pred_df.empty:
         print('Prediction analysis not available - invalid date range\n')
         return
 
+    # load dataframe containing all odds data
     odds_data = pd.read_csv(cons.util_data_folder + cons.sched_odds_filename)
 
+    # merge the predictions into the odds data
     merge_cols = [cons.game_id_col, cons.home_team_name_col, cons.away_team_name_col]
     odds_data = pd.merge(pred_df, odds_data[merge_cols+[cons.home_odds_col, cons.away_odds_col]], on=merge_cols, how='left')
 
@@ -35,16 +39,20 @@ def daily_probability(today_dt, date_since, season, display_graphic=True):
         missing_games = odds_data[cons.home_odds_col].isnull().sum() + odds_data[cons.away_odds_col].isnull().sum()
         print(f"*** WARNING: Missing odds data for {missing_games} entries! ***")
 
+    # add a row that is the odds of the winner if the correct prediction was made, else 0
     odds_data['winner_odds'] = odds_data.apply(
         lambda row: row[cons.home_odds_col] if row[cons.cor_outcome_col] == 1 and row[cons.home_team_score_col] > row[cons.away_team_score_col]
             else (row[cons.away_odds_col] if row[cons.cor_outcome_col] == 1 and row[cons.home_team_score_col] < row[cons.away_team_score_col]
                 else 0), axis=1)
 
+    # initialize the winnings column as losing every prediction
     odds_data[cons.winnings_col] = -1.0
 
+    # add winning values to the winnings column for when the winner odds are not 0
     odds_data.loc[odds_data[cons.winner_odds_col] > 0, cons.winnings_col] = odds_data[cons.winner_odds_col] / 100
     odds_data.loc[odds_data[cons.winner_odds_col] < 0, cons.winnings_col] = 100 / abs(odds_data[cons.winner_odds_col])
 
+    # save the prediction return data to the prediction folder
     csvSave(odds_data, cons.season_pred_folder.format(date=today_dt), cons.pred_ret_filename.format(date_since=date_since, today_dt=today_dt))
 
     # the date that playoffs starts for this season
@@ -54,6 +62,7 @@ def daily_probability(today_dt, date_since, season, display_graphic=True):
     if playoff_st_dt is not pd.NaT:
         playoff_return = odds_data.loc[odds_data[cons.starttime_est_col].dt.date > playoff_st_dt, cons.winnings_col].sum()
 
+    # print a bunch of stats to the terminal for two date ranges: total season and playoffs
     print('Yesterday\'s games and returns:')
     for _, row in odds_data.loc[odds_data[cons.starttime_est_col].dt.date == (pd.to_datetime(today_dt) - datetime.timedelta(days=1)).date()].iterrows():
         ot_str = ' (OT)' if row[cons.last_period_col]=='OT' else ''
@@ -100,6 +109,7 @@ def daily_probability(today_dt, date_since, season, display_graphic=True):
     # Create line chart on the same axis
     ax.plot(list(odds_data_daily[cons.game_date_col]), list(odds_data_daily['daily_return']), color='red', label='Cumulative Winnings')
 
+    # generate a plot chart for returns over the course of the time frame
     ax.set_title(f'Predictions Returns for {date_since} to {today_dt}')
     ax.legend()
     plt.xticks(rotation=45, ha='right')

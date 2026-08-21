@@ -265,13 +265,11 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
             else:
                 processed_playoff_df_filt, feature_list = sklu.preprocess_feature_data(playoff_df_filt)
 
+            # make predictions for the game_dt
             pred_playoff_df_filt, _ = sklu.model_inference(processed_playoff_df_filt, feature_list, today_dt, model=model)
             playoff_df_filt.update(pred_playoff_df_filt[[cons.home_team_win_col, cons.home_win_prob_col, cons.away_win_prob_col]])
-            
-            # reset the model params for all predictions after the first
-            # load_model = True
-            # save_model = False
 
+            # add the predictions back to the main dataframe
             playoff_df = pd.concat([playoff_df_filt, playoff_df.loc[playoff_df[cons.starttime_est_col].dt.date > game_dt]], ignore_index=True)
 
             # if this is the first playoff prediction loop and the regular season is complete
@@ -289,6 +287,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
             # check to see if any of the series are over based on the current series scores
             playoff_df, round_matchups = series_final_check(playoff_df, playoff_df_filt, round_matchups, game_dt)
 
+        # update the matchups object with this round's matchups
         all_matchups.update({pl_round: round_matchups})
 
     # save playoff predictions to CSV
@@ -528,6 +527,7 @@ def create_playoff_round_schedule(all_matchups, venue_map_df, feature_df, playof
 
 def venue_map_load(regular_season_df):
 
+    # get a dataframe containing venues that have been used more than 20 times in this season (all regular venues)
     venue_map_df = pd.DataFrame(regular_season_df.loc[
         regular_season_df[cons.season_name_col]==max(regular_season_df[cons.season_name_col])][[
             cons.home_team_name_col, cons.venue_col, cons.venue_timezone_col]].value_counts(), columns=['count'])
@@ -593,7 +593,8 @@ def ensure_seven_games_scheduled(feature_df, playoff_round_matchups, season_name
 
     venue_map_df = venue_map_load(feature_df)
 
-    for  matchup in playoff_round_matchups:
+    # loop through every matchup and get the games from the schedule
+    for matchup in playoff_round_matchups:
         matchup_games_df = feature_df.loc[(feature_df[cons.season_name_col] == season_name) &
                                           (feature_df[cons.game_type_col] == 3) &
                                           (((feature_df[cons.home_team_name_col] == matchup[0]) &
@@ -601,12 +602,15 @@ def ensure_seven_games_scheduled(feature_df, playoff_round_matchups, season_name
                                            ((feature_df[cons.home_team_name_col] == matchup[1]) &
                                             (feature_df[cons.away_team_name_col] == matchup[0])))]
 
+        # if there are less than 7 games scheduled, need to add more 
         if len(matchup_games_df) < 7:
 
+            # initialize vars on how many games to add and when
             games_to_add = 7 - len(matchup_games_df)
             next_game_dt = matchup_games_df[cons.starttime_est_col].max().date() if not matchup_games_df.empty else pd.to_datetime(today_dt).date()
             games_added_df = pd.DataFrame()
 
+            # loop through each game and add it to the dataframe
             for i in range(games_to_add):
 
                 next_game_dt = next_game_dt + pd.Timedelta(days=2)
@@ -628,6 +632,7 @@ def ensure_seven_games_scheduled(feature_df, playoff_round_matchups, season_name
                     cons.away_win_prob_col: np.nan
                 }])] , ignore_index=True)
 
+            # add the new games to the main dataframe
             feature_df = pd.concat([feature_df, games_added_df], ignore_index=True).sort_values(by=[cons.starttime_est_col])
 
     return feature_df
