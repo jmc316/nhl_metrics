@@ -67,7 +67,7 @@ def feature_data_load():
 def feat_update(data_df=pd.DataFrame, save_feat_data=False, verbose=False):
     print('Updating all feature data...')
 
-    sched_feat_df, sched_features = sched_features_update(data_df, verbose)
+    # sched_feat_df, sched_features = sched_features_update(data_df, verbose)
     team_feat_df, team_features = team_features_update(data_df, verbose)
     player_feat_df, player_features = player_features_update(data_df, verbose)
     goalie_feat_df, goalie_features = goalie_features_update(data_df, verbose)

@@ -91,6 +91,8 @@ away_odds_col = 'awayTeamOdds'
 winner_odds_col = 'winner_odds'
 winnings_col = 'winnings'
 fake_tiebreaker_col = 'fakeTiebreaker'
+point_per_n_col = '{pre}PointsPer{n}Games'
+goal_diff_n_col = '{pre}GoalDiff{n}Games'
 
 pred_suf = '_predicted'
 act_suf = '_actual'
@@ -113,6 +115,7 @@ season_enddt = '06-30'
 cur_season_name = '20262027'
 est_tz = 'America/New_York'
 sched_feat_windows = [4, 7]
+team_feat_windows = [5, 10, 20]
 
 tiebreaker_cols = [total_points_col, points_percentage_col, total_reg_wins_col, total_reg_ot_wins_col,
                    total_wins_col, goal_diff_col, total_goals_for_col]
