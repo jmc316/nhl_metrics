@@ -155,17 +155,17 @@ def preprocess_historic_data(feature_df, today_dt):
                                             ((feature_df[cons.home_team_name_col].isin([matchup[0] for matchup in playoff_round_matchups[round]])) &
                                             (feature_df[cons.away_team_name_col].isin([matchup[1] for matchup in playoff_round_matchups[round]]))))]
 
+        # make sure 7 games are scheduled for each playoff series matchup
+        cur_round_matchups = playoff_round_matchups[cur_playoff_round][:len(playoff_round_matchups[cur_playoff_round])//2]
+        feature_df = playoffs.ensure_seven_games_scheduled(feature_df, cur_round_matchups, season_name, today_dt)
+
+        # reset the playoff series count for all playoff matchups beyond the today_dt
+        feature_df.loc[feature_df[cons.starttime_est_col].dt.date >= dt.strptime(today_dt, "%Y-%m-%d").date(), [cons.home_team_series_score_col, cons.away_team_series_score_col]] = 0
+
     # nullify the results of all games beyond the today_dt
     feature_df.loc[feature_df[cons.starttime_est_col].dt.date >= dt.strptime(today_dt, "%Y-%m-%d").date(),
                     [cons.home_team_score_col, cons.away_team_score_col, cons.last_period_col,
                     cons.home_team_win_col, cons.home_win_prob_col, cons.away_win_prob_col]] = np.nan
-
-    # make sure 7 games are scheduled for each playoff series matchup
-    cur_round_matchups = playoff_round_matchups[cur_playoff_round][:len(playoff_round_matchups[cur_playoff_round])//2]
-    feature_df = playoffs.ensure_seven_games_scheduled(feature_df, cur_round_matchups, season_name, today_dt)
-
-    # reset the playoff series count for all playoff matchups beyond the today_dt
-    feature_df.loc[feature_df[cons.starttime_est_col].dt.date >= dt.strptime(today_dt, "%Y-%m-%d").date(), [cons.home_team_series_score_col, cons.away_team_series_score_col]] = 0
 
     return feature_df, in_playoffs
 

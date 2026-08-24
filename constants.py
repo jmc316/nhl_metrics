@@ -93,6 +93,14 @@ winnings_col = 'winnings'
 fake_tiebreaker_col = 'fakeTiebreaker'
 point_per_n_col = '{pre}PointsPer{n}Games'
 goal_diff_n_col = '{pre}GoalDiff{n}Games'
+corsi_per_n_col = '{pre}CorsiPer{n}Games'
+fenwick_per_n_col = '{pre}FenwickPer{n}Games'
+home_shot_og_col = 'home_shot-on-goal'
+away_shot_og_col = 'away_shot-on-goal'
+home_shot_miss_col = 'home_missed-shot'
+away_shot_miss_col = 'away_missed-shot'
+home_shot_blk_col = 'home_blocked-shot'
+away_shot_blk_col = 'away_blocked-shot'
 
 pred_suf = '_predicted'
 act_suf = '_actual'
@@ -123,10 +131,12 @@ final_standings_col_order = [conference_name_col, conference_seed_col, division_
                              playoff_seed_col, team_name_col, total_games_col, total_wins_col, total_losses_col,
                              total_otls_col, total_points_col, points_percentage_col, total_reg_wins_col,
                              total_reg_ot_wins_col, goal_diff_col, total_goals_for_col]
-base_feature_cols = [game_id_col, season_name_col, game_type_col, starttime_est_col, venue_timezone_col,
+sched_feature_cols = [game_id_col, season_name_col, game_type_col, starttime_est_col, venue_timezone_col,
                      venue_col, home_team_name_col, away_team_name_col, home_team_score_col,
                      away_team_score_col, last_period_col, home_team_win_col,
                      home_win_prob_col, away_win_prob_col]
+team_feature_cols = sched_feature_cols + [home_shot_og_col, away_shot_og_col, home_shot_miss_col,
+                                         away_shot_miss_col, home_shot_blk_col, away_shot_blk_col]
 
 output_folder = 'output/'
 util_data_folder = 'util_data/'

@@ -261,12 +261,16 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
                 model = sklu.model_train(processed_playoff_df, feature_list, save_model=False)
                 processed_playoff_df_filt = processed_playoff_df.loc[processed_playoff_df[cons.starttime_est_col].dt.date <= game_dt]
 
+                # make predictions for the game_dt
+                pred_playoff_df_filt, _ = sklu.model_inference(processed_playoff_df_filt, feature_list, today_dt, model=model)
+
             # don't need to train the model, just preprocess data to predict
             else:
                 processed_playoff_df_filt, feature_list = sklu.preprocess_feature_data(playoff_df_filt)
 
-            # make predictions for the game_dt
-            pred_playoff_df_filt, _ = sklu.model_inference(processed_playoff_df_filt, feature_list, today_dt, model=model)
+                # make predictions for the game_dt
+                pred_playoff_df_filt, _ = sklu.model_inference(processed_playoff_df_filt, feature_list, today_dt)
+
             playoff_df_filt.update(pred_playoff_df_filt[[cons.home_team_win_col, cons.home_win_prob_col, cons.away_win_prob_col]])
 
             # add the predictions back to the main dataframe

@@ -10,7 +10,7 @@ def goalie_features_update(data_df_in=pd.DataFrame, verbose=False):
     if data_df_in.empty:
         data_df = load_sched_df_features()
     else:
-        data_df = data_df_in[cons.base_feature_cols]
+        data_df = data_df_in[cons.sched_feature_cols]
 
     # add goalie-based features
     goalie_features = []

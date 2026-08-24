@@ -126,7 +126,7 @@ def sched_update():
     return sched_df
 
 
-def load_sched_df_features():
+def load_sched_df_features(feat_set_label=None):
 
     sched_df = load_sched_df()
 
@@ -151,6 +151,11 @@ def load_sched_df_features():
                  cons.venue_timezone_col, cons.venue_col, cons.home_team_name_col, cons.away_team_name_col,
                  cons.home_team_score_col, cons.away_team_score_col, cons.last_period_col,
                  cons.home_team_win_col, cons.home_win_prob_col, cons.away_win_prob_col]
+
+    if feat_set_label == 'team':
+        col_order.extend([cons.home_shot_og_col, cons.away_shot_og_col, cons.home_shot_miss_col,
+                         cons.away_shot_miss_col, cons.home_shot_blk_col, cons.away_shot_blk_col])
+    
     feature_df = feature_df[col_order]
 
     return feature_df

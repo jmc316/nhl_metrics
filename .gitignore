@@ -187,3 +187,4 @@ cython_debug/
 # model files
 /model_files
 util_data/all_time_schedule_odds.csv
+/util_data

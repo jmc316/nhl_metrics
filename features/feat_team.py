@@ -11,19 +11,20 @@ from schedule import load_sched_df_features
 def team_features_update(data_df_in=pd.DataFrame, verbose=False):
 
     if data_df_in.empty:
-        data_df = load_sched_df_features()
+        data_df = load_sched_df_features(feat_set_label='team')
     else:
-        data_df = data_df_in[cons.base_feature_cols]
+        data_df = data_df_in[cons.team_feature_cols]
 
     # add team-based features
-    team_features = [cons.point_per_n_col, cons.goal_diff_n_col]
+    team_features = [cons.point_per_n_col, cons.goal_diff_n_col, cons.corsi_per_n_col, cons.fenwick_per_n_col]
+    skipped_features = []
 
     # features to add in the future
-    future_features = ['elo_rating', 'corsi_per', 'fenwick_per', ]
+    future_features = ['elo_rating', 'ex_gf_per', 'ex_ga_per', 'power_play_per', 'penalty_kill_per', 'shot_per']
 
     for feature in team_features:
 
-        print(f'\tAdding {feature}...')
+        if verbose: print(f'\tAdding {feature}...')
 
         # add a feature that calculates the win percentage for the last n games played for each team
         if feature == cons.point_per_n_col:
@@ -50,15 +51,52 @@ def team_features_update(data_df_in=pd.DataFrame, verbose=False):
                 data_df = prevN_gpg(data_df, target_col=cons.goal_diff_n_col.format(pre='away', n=window)+'for', backfill=True, team_col=cons.away_team_name_col, n=window, for_against='for')
                 data_df = prevN_gpg(data_df, target_col=cons.goal_diff_n_col.format(pre='away', n=window)+'against', backfill=True, team_col=cons.away_team_name_col, n=window, for_against='against')
 
-                data_df[cons.goal_diff_n_col.format(pre='home', n=window)] = data_df[cons.goal_diff_n_col.format(pre='home', n=window)+'for'] - data_df[cons.goal_diff_n_col.format(pre='home', n=window)+'against']
-                data_df[cons.goal_diff_n_col.format(pre='away', n=window)] = data_df[cons.goal_diff_n_col.format(pre='away', n=window)+'for'] - data_df[cons.goal_diff_n_col.format(pre='away', n=window)+'against']
+                # only calculate the goal differential if both the goals for and against are not null
+                data_df.loc[~data_df[cons.goal_diff_n_col.format(pre='home', n=window)+'for'].isna() & ~data_df[cons.goal_diff_n_col.format(pre='home', n=window)+'against'].isna(), cons.goal_diff_n_col.format(pre='home', n=window)] = data_df[cons.goal_diff_n_col.format(pre='home', n=window)+'for'] - data_df[cons.goal_diff_n_col.format(pre='home', n=window)+'against']
+                data_df.loc[~data_df[cons.goal_diff_n_col.format(pre='away', n=window)+'for'].isna() & ~data_df[cons.goal_diff_n_col.format(pre='away', n=window)+'against'].isna(), cons.goal_diff_n_col.format(pre='away', n=window)] = data_df[cons.goal_diff_n_col.format(pre='away', n=window)+'for'] - data_df[cons.goal_diff_n_col.format(pre='away', n=window)+'against']
                 data_df.drop(columns=[cons.goal_diff_n_col.format(pre='home', n=window)+'for', cons.goal_diff_n_col.format(pre='home', n=window)+'against', cons.goal_diff_n_col.format(pre='away', n=window)+'for', cons.goal_diff_n_col.format(pre='away', n=window)+'against'], inplace=True)
 
                 # create relational feature, drop individual features
                 home_goal_diff_col = cons.goal_diff_n_col.format(pre='home', n=window)
                 away_goal_diff_col = cons.goal_diff_n_col.format(pre='away', n=window)
-                data_df[cons.goal_diff_n_col.format(pre='rel', n=window)] = data_df[home_goal_diff_col] - data_df[away_goal_diff_col]
+
+                # only calculate relational feature if both the home and away goal differentials are not null
+                data_df.loc[~data_df[home_goal_diff_col].isna() & ~data_df[away_goal_diff_col].isna(), cons.goal_diff_n_col.format(pre='rel', n=window)] = data_df[home_goal_diff_col] - data_df[away_goal_diff_col]
                 data_df.drop(columns=[home_goal_diff_col, away_goal_diff_col], inplace=True)
+            continue
+
+        # add a feature that calculates the corsi percentage for the last n games played for each team
+        if feature == cons.corsi_per_n_col:
+            for window in cons.team_feat_windows:
+                if verbose: print(f'\t\tProcessing window: {window}')
+
+                data_df = prevN_corsi(data_df, target_col=cons.corsi_per_n_col.format(pre='home', n=window), backfill=True, team_col=cons.home_team_name_col, n=window)
+                data_df = prevN_corsi(data_df, target_col=cons.corsi_per_n_col.format(pre='away', n=window), backfill=True, team_col=cons.away_team_name_col, n=window)
+
+                # create relational feature, drop individual features
+                home_corsi_col = cons.corsi_per_n_col.format(pre='home', n=window)
+                away_corsi_col = cons.corsi_per_n_col.format(pre='away', n=window)
+
+                # only calculate relational feature if both the home and away corsi percentages are not null
+                data_df.loc[~data_df[home_corsi_col].isna() & ~data_df[away_corsi_col].isna(), cons.corsi_per_n_col.format(pre='rel', n=window)] = data_df[home_corsi_col] - data_df[away_corsi_col]
+                data_df.drop(columns=[home_corsi_col, away_corsi_col], inplace=True)
+            continue
+
+        # add a feature that calculates the fenwick percentage for the last n games played for each team
+        if feature == cons.fenwick_per_n_col:
+            for window in cons.team_feat_windows:
+                if verbose: print(f'\t\tProcessing window: {window}')
+
+                data_df = prevN_fenwick(data_df, target_col=cons.fenwick_per_n_col.format(pre='home', n=window), backfill=True, team_col=cons.home_team_name_col, n=window)
+                data_df = prevN_fenwick(data_df, target_col=cons.fenwick_per_n_col.format(pre='away', n=window), backfill=True, team_col=cons.away_team_name_col, n=window)
+
+                # create relational feature, drop individual features
+                home_fenwick_col = cons.fenwick_per_n_col.format(pre='home', n=window)
+                away_fenwick_col = cons.fenwick_per_n_col.format(pre='away', n=window)
+                
+                # only calculate relational feature if both the home and away fenwick percentages are not null
+                data_df.loc[~data_df[home_fenwick_col].isna() & ~data_df[away_fenwick_col].isna(), cons.fenwick_per_n_col.format(pre='rel', n=window)] = data_df[home_fenwick_col] - data_df[away_fenwick_col]
+                data_df.drop(columns=[home_fenwick_col, away_fenwick_col], inplace=True)
             continue
 
     if data_df_in.empty:
@@ -177,7 +215,7 @@ def prevN_result(data_df, backfill, target_col, team_col, n):
     target_teams = data_df_target[team_col].to_numpy()
     target_seasons = data_df_target[cons.season_name_col].to_numpy()
 
-    target_vals = np.zeros(len(data_df_target), dtype=np.int16)
+    target_vals = np.full(len(data_df_target), np.nan, dtype=np.float64)
     for i in range(len(data_df_target)):
         game_date = target_dates[i]
         if pd.isna(game_date):
@@ -229,7 +267,7 @@ def prevN_gpg(data_df, backfill, target_col, team_col, n, for_against):
     score_key_col = '_score'
 
     game_dates = pd.to_datetime(data_df[cons.starttime_est_col], errors='coerce').dt.date
-    score_vals = pd.to_numeric(data_df[score_col], errors='coerce').fillna(0.0)
+    score_vals = pd.to_numeric(data_df[score_col], errors='coerce')
 
     # Normalize to one team-game row per side so home/away can share the same lookup path.
     home_games = pd.DataFrame({
@@ -265,7 +303,7 @@ def prevN_gpg(data_df, backfill, target_col, team_col, n, for_against):
     target_teams = data_df_target[team_col].to_numpy()
     target_seasons = data_df_target[cons.season_name_col].to_numpy()
 
-    target_vals = np.zeros(len(data_df_target), dtype=float)
+    target_vals = np.full(len(data_df_target), np.nan, dtype=float)
     for i in range(len(data_df_target)):
         game_date = target_dates[i]
         if pd.isna(game_date):
@@ -284,6 +322,187 @@ def prevN_gpg(data_df, backfill, target_col, team_col, n, for_against):
         # Window total from prefix sums for the previous n games.
         start_idx = max(0, end_idx - n)
         target_vals[i] = score_prefix[end_idx] - score_prefix[start_idx]
+
+    data_df_target[target_col] = target_vals
+
+    if backfill:
+        data_df = data_df_target
+    else:
+        data_df = pd.concat([data_df.loc[data_df[cons.last_period_col].notna()], data_df_target], ignore_index=True)
+
+    return data_df
+
+
+def prevN_corsi(data_df, backfill, target_col, team_col, n):
+
+    # create dataframe to loop through
+    if backfill:
+        data_df_target = data_df.copy()
+    else:
+        data_df_target = data_df.loc[data_df[cons.last_period_col].isna()].copy()
+
+    row_id_col = '_row_id'
+    team_key_col = '_team'
+    season_key_col = '_season'
+    date_col = '_game_date'
+    corsi_key_col = '_corsi'
+
+    game_dates = pd.to_datetime(data_df[cons.starttime_est_col], errors='coerce').dt.date
+    home_corsi = pd.to_numeric(data_df[cons.home_shot_og_col], errors='coerce') +\
+        pd.to_numeric(data_df[cons.home_shot_miss_col], errors='coerce') +\
+            pd.to_numeric(data_df[cons.home_shot_blk_col], errors='coerce')
+    away_corsi = pd.to_numeric(data_df[cons.away_shot_og_col], errors='coerce') +\
+        pd.to_numeric(data_df[cons.away_shot_miss_col], errors='coerce') +\
+            pd.to_numeric(data_df[cons.away_shot_blk_col], errors='coerce')
+    data_df['_home_corsi_per'] = home_corsi / (home_corsi + away_corsi)
+    data_df['_away_corsi_per'] = away_corsi / (home_corsi + away_corsi)
+
+    # calculate rolling corsi for home and away teams over the last n games played
+    home_games = pd.DataFrame({
+        row_id_col: data_df.index,
+        team_key_col: data_df[cons.home_team_name_col],
+        season_key_col: data_df[cons.season_name_col],
+        date_col: game_dates,
+        corsi_key_col: data_df['_home_corsi_per']
+    })
+
+    away_games = pd.DataFrame({
+        row_id_col: data_df.index,
+        team_key_col: data_df[cons.away_team_name_col],
+        season_key_col: data_df[cons.season_name_col],
+        date_col: game_dates,
+        corsi_key_col: data_df['_away_corsi_per']
+    })
+
+    team_games = pd.concat([home_games, away_games], ignore_index=True)
+    team_games = team_games.dropna(subset=[date_col])
+
+    team_games.sort_values(by=[team_key_col, season_key_col, date_col, row_id_col], inplace=True)
+
+    # Build per-team cumulative corsi history so each n-game average is O(1) after bisect.
+    team_history = {}
+
+    for key, group in team_games.groupby([team_key_col, season_key_col], sort=False):
+        corsi_vals = group[corsi_key_col].to_numpy(dtype=float)
+        team_history[key] = (
+            group[date_col].tolist(),
+            np.concatenate(([0.0], np.cumsum(corsi_vals)))
+        )
+
+    # Pull target columns into arrays to reduce repeated dataframe indexing in the loop.
+    target_dates = pd.to_datetime(data_df_target[cons.starttime_est_col], errors='coerce').dt.date.to_numpy()
+    target_teams = data_df_target[team_col].to_numpy()
+    target_seasons = data_df_target[cons.season_name_col].to_numpy()
+
+    target_vals = np.full(len(data_df_target), np.nan, dtype=float)
+    for i in range(len(data_df_target)):
+        game_date = target_dates[i]
+        if pd.isna(game_date):
+            continue
+
+        history = team_history.get((target_teams[i], target_seasons[i]))
+        if not history:
+            continue
+
+        hist_dates, corsi_prefix = history
+        # Locate boundary of games strictly before current game date.
+        end_idx = bisect.bisect_left(hist_dates, game_date)
+        if end_idx == 0:
+            continue
+
+        # Window average from prefix sums for the previous n games.
+        start_idx = max(0, end_idx - n)
+        games_played = end_idx - start_idx
+        target_vals[i] = (corsi_prefix[end_idx] - corsi_prefix[start_idx]) / games_played
+
+    data_df_target[target_col] = target_vals
+
+    if backfill:
+        data_df = data_df_target
+    else:
+        data_df = pd.concat([data_df.loc[data_df[cons.last_period_col].notna()], data_df_target], ignore_index=True)
+
+    return data_df
+
+
+def prevN_fenwick(data_df, target_col, backfill, team_col, n, data_df_target=None):
+    # create dataframe to loop through
+    if backfill:
+        data_df_target = data_df.copy()
+    else:
+        data_df_target = data_df.loc[data_df[cons.last_period_col].isna()].copy()
+
+    row_id_col = '_row_id'
+    team_key_col = '_team'
+    season_key_col = '_season'
+    date_col = '_game_date'
+    fenwick_key_col = '_fenwick'
+
+    game_dates = pd.to_datetime(data_df[cons.starttime_est_col], errors='coerce').dt.date
+    home_fenwick = pd.to_numeric(data_df[cons.home_shot_og_col], errors='coerce') +\
+        pd.to_numeric(data_df[cons.home_shot_miss_col], errors='coerce')
+    away_fenwick = pd.to_numeric(data_df[cons.away_shot_og_col], errors='coerce') +\
+        pd.to_numeric(data_df[cons.away_shot_miss_col], errors='coerce')
+    data_df['_home_fenwick_per'] = home_fenwick / (home_fenwick + away_fenwick)
+    data_df['_away_fenwick_per'] = away_fenwick / (home_fenwick + away_fenwick)
+
+    # calculate rolling fenwick for home and away teams over the last n games played
+    home_games = pd.DataFrame({
+        row_id_col: data_df.index,
+        team_key_col: data_df[cons.home_team_name_col],
+        season_key_col: data_df[cons.season_name_col],
+        date_col: game_dates,
+        fenwick_key_col: data_df['_home_fenwick_per']
+    })
+
+    away_games = pd.DataFrame({
+        row_id_col: data_df.index,
+        team_key_col: data_df[cons.away_team_name_col],
+        season_key_col: data_df[cons.season_name_col],
+        date_col: game_dates,
+        fenwick_key_col: data_df['_away_fenwick_per']
+    })
+
+    team_games = pd.concat([home_games, away_games], ignore_index=True)
+    team_games = team_games.dropna(subset=[date_col])
+
+    team_games.sort_values(by=[team_key_col, season_key_col, date_col, row_id_col], inplace=True)
+
+    # Build per-team cumulative fenwick history so each n-game average is O(1) after bisect.
+    team_history = {}
+
+    for key, group in team_games.groupby([team_key_col, season_key_col], sort=False):
+        fenwick_vals = group[fenwick_key_col].to_numpy(dtype=float)
+        team_history[key] = (
+            group[date_col].tolist(),
+            np.concatenate(([0.0], np.cumsum(fenwick_vals)))
+        )
+
+    # Pull target columns into arrays to reduce repeated dataframe indexing in the loop.
+    target_dates = pd.to_datetime(data_df_target[cons.starttime_est_col], errors='coerce').dt.date.to_numpy()
+    target_teams = data_df_target[team_col].to_numpy()
+    target_seasons = data_df_target[cons.season_name_col].to_numpy()
+
+    target_vals = np.full(len(data_df_target), np.nan, dtype=float)
+    for i in range(len(data_df_target)):
+        game_date = target_dates[i]
+        if pd.isna(game_date):
+            continue
+
+        history = team_history.get((target_teams[i], target_seasons[i]))
+        if not history:
+            continue
+
+        hist_dates, fenwick_prefix = history
+        # Locate boundary of games strictly before current game date.
+        end_idx = bisect.bisect_left(hist_dates, game_date)
+        if end_idx == 0:
+            continue
+
+        # Window average from prefix sums for the previous n games.
+        start_idx = max(0, end_idx - n)
+        games_played = end_idx - start_idx
+        target_vals[i] = (fenwick_prefix[end_idx] - fenwick_prefix[start_idx]) / games_played
 
     data_df_target[target_col] = target_vals
 

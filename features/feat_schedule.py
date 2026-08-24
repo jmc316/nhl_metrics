@@ -13,7 +13,7 @@ def sched_features_update(data_df_in=pd.DataFrame, verbose=False):
     if data_df_in.empty:
         data_df = load_sched_df_features()
     else:
-        data_df = data_df_in[cons.base_feature_cols]
+        data_df = data_df_in[cons.sched_feature_cols]
 
     # add schedule-based features
     sched_features = [cons.game_time_secs_est_col, cons.day_of_week_col, cons.reg_game_num_perc_col, cons.playoff_game_num_col,

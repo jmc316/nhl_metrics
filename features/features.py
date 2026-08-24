@@ -24,7 +24,7 @@ def feature_data_update(sched_feat_df, team_feat_df, player_feat_df, goalie_feat
     if save_feat_data:
         for season in sched_df[cons.season_name_col].unique():
             season_df = sched_df[sched_df[cons.season_name_col] == season]
-            csvSave(cons.season_feature_sets_folder, cons.feat_data_filename.format(season=season), season_df, index=False)
+            csvSave(season_df, cons.season_feature_sets_folder, cons.feat_data_filename.format(season=season))
 
     return sched_df
 
@@ -67,7 +67,7 @@ def feature_data_load():
 def feat_update(data_df=pd.DataFrame, save_feat_data=False, verbose=False):
     print('Updating all feature data...')
 
-    # sched_feat_df, sched_features = sched_features_update(data_df, verbose)
+    sched_feat_df, sched_features = sched_features_update(data_df, verbose)
     team_feat_df, team_features = team_features_update(data_df, verbose)
     player_feat_df, player_features = player_features_update(data_df, verbose)
     goalie_feat_df, goalie_features = goalie_features_update(data_df, verbose)

@@ -148,8 +148,8 @@ def generate_final_standings(season_results, today_dt, to_csv=False):
     season_results = season_results.loc[season_results[cons.season_name_col] == current_season]
 
     # calculate games played for each team
-    home_games = season_results.groupby(cons.home_team_name_col)[cons.home_team_score_col].count().reset_index(name=cons.home_team_games_col)
-    away_games = season_results.groupby(cons.away_team_name_col)[cons.away_team_score_col].count().reset_index(name=cons.away_team_games_col)
+    home_games = season_results.groupby(cons.home_team_name_col)[cons.home_team_name_col].count().reset_index(name=cons.home_team_games_col)
+    away_games = season_results.groupby(cons.away_team_name_col)[cons.away_team_name_col].count().reset_index(name=cons.away_team_games_col)
     games_played_df = home_away_accumulation(home_games, away_games, 'Games')
 
     # calculate total points for each team

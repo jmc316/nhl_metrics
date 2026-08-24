@@ -31,6 +31,11 @@ def preprocess_feature_data(data_df_in):
         num_feats_window.append(cons.travel_dist_n_days_col.format(pre='rel', n=window))
         num_feats_window.append(cons.games_played_n_days_col.format(pre='rel', n=window))
         num_feats_window.append(cons.crossed_tz_n_days_col.format(pre='rel', n=window))
+    for window in cons.team_feat_windows:
+        num_feats_window.append(cons.point_per_n_col.format(pre='rel', n=window))
+        num_feats_window.append(cons.goal_diff_n_col.format(pre='rel', n=window))
+        num_feats_window.append(cons.corsi_per_n_col.format(pre='rel', n=window))
+        num_feats_window.append(cons.fenwick_per_n_col.format(pre='rel', n=window))
     num_feats = num_feats_nonwindow + num_feats_window
 
     # boolean categorical features, keep as is for the model
@@ -136,6 +141,20 @@ def model_train(data_df, feature_list, save_model=True):
         print('\nPermutation Importance:')
         print(perm_imp_df)
 
+        print('\nFeature Correlation Analysis:')
+        corr_matrix = X_val.corr()
+
+        # find all correlations that are greater than .7
+        high_corr_pairs = []
+        for i in range(len(corr_matrix.columns)):
+            for j in range(i):
+                if abs(corr_matrix.iloc[i, j]) > 0.7:
+                    high_corr_pairs.append((corr_matrix.columns[i], corr_matrix.columns[j], corr_matrix.iloc[i, j]))
+
+        print('High Correlation Pairs (>|0.7|):')
+        for pair in high_corr_pairs:
+            print(f'{pair[0]} - {pair[1]}: {pair[2]:.2f}')
+
         # train a final model on all actual data to use for the prediction set
         print('\nFinalizing model data...')
     final_model = init_model(random_state_in=42)
@@ -191,7 +210,7 @@ def model_inference(data_df, feature_list, today_dt, model=None):
     # fix for bug where prediction is split exactly 50/50
     if not data_df.loc[(data_df[cons.home_win_prob_col]==0.5) & (data_df[cons.away_win_prob_col]==0.5)].empty:
         data_df.loc[(data_df[cons.home_win_prob_col]==0.5) & (data_df[cons.away_win_prob_col]==0.5),
-                    [cons.home_win_prob_col, cons.away_win_prob_col]] = [np.float64(0.5000000000000001), np.float64(0.4999999999999999)]
+                    [cons.home_team_win_col, cons.home_win_prob_col, cons.away_win_prob_col]] = [1, np.float64(0.5000001), np.float64(0.499999)]
 
     return data_df, model
 

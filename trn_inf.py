@@ -154,6 +154,6 @@ def train_model():
     processed_df, feature_list = sklu.preprocess_feature_data(feature_df)
 
     # train the model on the training set and save the model to a file for future use
-    _ = sklu.model_train(processed_df, feature_list, set_model_state=True, today_dt=dt.now().date().strftime(cons.date_format_yyyy_mm_dd))
+    _ = sklu.model_train(processed_df, feature_list, save_model=True)
 
     print('Model training execution complete.\n')
