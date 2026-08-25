@@ -120,7 +120,10 @@ def model_train(data_df, feature_list, save_model=True):
 
         baseline_acc = (actual_df[cons.home_team_win_col] == 1).mean()
         print(f"Baseline Accuracy:          {baseline_acc:.3f}")
-        print(f"Model Validation Accuracy:  {fold_results_df.iloc[max(fold_results_df.index)]['accuracy']:.4f}")
+        print(f"Avg Model Validation Accuracy:  {fold_results_df['accuracy'].mean():.4f}")
+        print(f"Avg Model Validation AUC:  {fold_results_df['auc'].mean():.4f}")
+        print(f"Avg Model Validation Log Loss:  {fold_results_df['log_loss'].mean():.4f}")
+        print(f"Avg Model Validation Brier Score:  {fold_results_df['brier'].mean():.4f}")
 
         perm_imp_result = permutation_importance(
             val_model,           # your fitted RandomForestClassifier
@@ -167,10 +170,10 @@ def model_train(data_df, feature_list, save_model=True):
     # Avg Log Loss: ~0.703
 
     # Schedule + Team Features (no class_weight):
-    # Avg AUC:      ~0.597
-    # Avg Accuracy: 0.548 (baseline: 0.537)
-    # Avg brier:    ~0.244
-    # Avg log loss: ~0.681
+    # Avg AUC:      0.5976
+    # Avg Accuracy: 0.5767 (baseline: 0.537)
+    # Avg brier:    0.2436
+    # Avg log loss: 0.6812
 
     # Vegas Model:
     #   Accuracy = ~62-63%

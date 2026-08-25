@@ -520,10 +520,7 @@ def prevN_fenwick(data_df, target_col, backfill, team_col, n, data_df_target=Non
     return data_df
 
 
-import pandas as pd
-import numpy as np
-
-def compute_elo_ratings(data_df, k=10, home_advantage=25, season_regress_factor=0.33, starting_elo=1500):
+def compute_elo_ratings(data_df, k=6, home_advantage=25, season_regress_factor=0.75, starting_elo=1500):
 
     data_df = data_df.sort_values(cons.starttime_est_col).reset_index(drop=True)
     
