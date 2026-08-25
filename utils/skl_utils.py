@@ -25,7 +25,7 @@ def preprocess_feature_data(data_df_in):
     #             'relTravelDist7Days', 'relGamesPlayed4Days', 'relGamesPlayed7Days', 'relCrossedTZ4Days',
     #             'relCrossedTZ7Days']
     num_feats_nonwindow = [cons.reg_game_num_perc_col.format(team='home'), cons.reg_game_num_perc_col.format(team='away'),
-                 cons.days_rest_col.format(pre='rel')]
+                 cons.days_rest_col.format(pre='rel'), cons.elo_rat_col.format(pre='rel')]
     num_feats_window = []
     for window in cons.sched_feat_windows:
         num_feats_window.append(cons.travel_dist_n_days_col.format(pre='rel', n=window))
@@ -35,7 +35,7 @@ def preprocess_feature_data(data_df_in):
         num_feats_window.append(cons.point_per_n_col.format(pre='rel', n=window))
         num_feats_window.append(cons.goal_diff_n_col.format(pre='rel', n=window))
         num_feats_window.append(cons.corsi_per_n_col.format(pre='rel', n=window))
-        num_feats_window.append(cons.fenwick_per_n_col.format(pre='rel', n=window))
+        # num_feats_window.append(cons.fenwick_per_n_col.format(pre='rel', n=window))
     num_feats = num_feats_nonwindow + num_feats_window
 
     # boolean categorical features, keep as is for the model
@@ -97,7 +97,7 @@ def model_train(data_df, feature_list, save_model=True):
             X_val, y_val = val_df[feature_list], val_df[cons.home_team_win_col]
 
             val_model = init_model(random_state_in=42)
-            val_model.fit(X_train, y_train)
+            val_model.fit(X_train[feature_list], y_train)
 
             preds = val_model.predict(X_val)
             probs = val_model.predict_proba(X_val)[:, 1]  # probability of the positive class
@@ -165,6 +165,12 @@ def model_train(data_df, feature_list, save_model=True):
     # Avg Accuracy: 0.5352 (baseline: 0.537)
     # Avg Brier:    ~0.254
     # Avg Log Loss: ~0.703
+
+    # Schedule + Team Features (no class_weight):
+    # Avg AUC:      ~0.597
+    # Avg Accuracy: 0.548 (baseline: 0.537)
+    # Avg brier:    ~0.244
+    # Avg log loss: ~0.681
 
     # Vegas Model:
     #   Accuracy = ~62-63%

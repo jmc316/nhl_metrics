@@ -101,6 +101,7 @@ home_shot_miss_col = 'home_missed-shot'
 away_shot_miss_col = 'away_missed-shot'
 home_shot_blk_col = 'home_blocked-shot'
 away_shot_blk_col = 'away_blocked-shot'
+elo_rat_col = '{pre}EloRating'
 
 pred_suf = '_predicted'
 act_suf = '_actual'

@@ -16,11 +16,11 @@ def team_features_update(data_df_in=pd.DataFrame, verbose=False):
         data_df = data_df_in[cons.team_feature_cols]
 
     # add team-based features
-    team_features = [cons.point_per_n_col, cons.goal_diff_n_col, cons.corsi_per_n_col, cons.fenwick_per_n_col]
-    skipped_features = []
+    team_features = [cons.point_per_n_col, cons.goal_diff_n_col, cons.corsi_per_n_col, cons.elo_rat_col]
+    skipped_features = [cons.fenwick_per_n_col]
 
     # features to add in the future
-    future_features = ['elo_rating', 'ex_gf_per', 'ex_ga_per', 'power_play_per', 'penalty_kill_per', 'shot_per']
+    future_features = ['ex_gf_per', 'ex_ga_per', 'power_play_per', 'penalty_kill_per', 'shot_per']
 
     for feature in team_features:
 
@@ -97,6 +97,12 @@ def team_features_update(data_df_in=pd.DataFrame, verbose=False):
                 # only calculate relational feature if both the home and away fenwick percentages are not null
                 data_df.loc[~data_df[home_fenwick_col].isna() & ~data_df[away_fenwick_col].isna(), cons.fenwick_per_n_col.format(pre='rel', n=window)] = data_df[home_fenwick_col] - data_df[away_fenwick_col]
                 data_df.drop(columns=[home_fenwick_col, away_fenwick_col], inplace=True)
+            continue
+
+        # add a feature that is a team's elo rating, which is a measure of team strength based on game results
+        if feature == cons.elo_rat_col:
+            data_df = compute_elo_ratings(data_df)
+            data_df.drop(columns=[cons.elo_rat_col.format(pre='home'), cons.elo_rat_col.format(pre='away')], inplace=True)
             continue
 
     if data_df_in.empty:
@@ -510,5 +516,70 @@ def prevN_fenwick(data_df, target_col, backfill, team_col, n, data_df_target=Non
         data_df = data_df_target
     else:
         data_df = pd.concat([data_df.loc[data_df[cons.last_period_col].notna()], data_df_target], ignore_index=True)
+
+    return data_df
+
+
+import pandas as pd
+import numpy as np
+
+def compute_elo_ratings(data_df, k=10, home_advantage=25, season_regress_factor=0.33, starting_elo=1500):
+
+    data_df = data_df.sort_values(cons.starttime_est_col).reset_index(drop=True)
+    
+    teams = pd.unique(data_df[[cons.home_team_name_col, cons.away_team_name_col]].values.ravel())
+    elo_ratings = {team: starting_elo for team in teams}
+    
+    current_season = None
+    
+    home_elo_pre = []
+    away_elo_pre = []
+    
+    for idx, row in data_df.iterrows():
+
+        season = row[cons.season_name_col]
+        home_team = row[cons.home_team_name_col]
+        away_team = row[cons.away_team_name_col]
+        
+        # Regress toward mean at the start of a new season
+        if season != current_season:
+            if current_season is not None:  # skip regression before the very first season
+                for team in elo_ratings:
+                    elo_ratings[team] = (
+                        elo_ratings[team] * (1 - season_regress_factor)
+                        + starting_elo * season_regress_factor
+                    )
+            current_season = season
+
+        # Skip rows where the game outcome is not yet known (e.g., future games)
+        if pd.isna(row[cons.home_team_win_col]):
+            break
+        
+        home_rating = elo_ratings[home_team]
+        away_rating = elo_ratings[away_team]
+        
+        # Record PRE-GAME ratings as features (critical: before this game's outcome updates them)
+        home_elo_pre.append(home_rating)
+        away_elo_pre.append(away_rating)
+        
+        # Expected outcome (with home-ice adjustment baked into the rating diff)
+        expected_home = 1 / (1 + 10 ** (-(home_rating + home_advantage - away_rating) / 400))
+        
+        actual_home = row[cons.home_team_win_col]  # 1 if home won, 0 if away won
+        
+        # Update ratings AFTER recording pre-game values
+        elo_ratings[home_team] = home_rating + k * (actual_home - expected_home)
+        elo_ratings[away_team] = away_rating + k * ((1 - actual_home) - (1 - expected_home))
+    
+    data_df.loc[data_df[cons.home_team_win_col].notna(), cons.elo_rat_col.format(pre='home')] = home_elo_pre
+    data_df.loc[data_df[cons.home_team_win_col].notna(), cons.elo_rat_col.format(pre='away')] = away_elo_pre
+    data_df.loc[data_df[cons.home_team_win_col].notna(), cons.elo_rat_col.format(pre='rel')] = data_df[cons.elo_rat_col.format(pre='home')] - data_df[cons.elo_rat_col.format(pre='away')]
+
+    # Get final Elo per team after all completed games
+    final_elo = {team: elo_ratings[team] for team in elo_ratings}  # from the function's internal state — you may want to return this separately
+
+    data_df.loc[data_df[cons.home_team_win_col].isna(), cons.elo_rat_col.format(pre='home')] = data_df[cons.home_team_name_col].map(final_elo)
+    data_df.loc[data_df[cons.home_team_win_col].isna(), cons.elo_rat_col.format(pre='away')] = data_df[cons.away_team_name_col].map(final_elo)
+    data_df.loc[data_df[cons.home_team_win_col].isna(), cons.elo_rat_col.format(pre='rel')] = data_df[cons.elo_rat_col.format(pre='home')] - data_df[cons.elo_rat_col.format(pre='away')]
 
     return data_df
