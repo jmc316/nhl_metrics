@@ -21,7 +21,7 @@ def team_features_update(data_df_in=pd.DataFrame, verbose=False):
     skipped_features = [cons.fenwick_per_n_col]
 
     # features to add in the future
-    future_features = ['ex_gf_per', 'ex_ga_per', 'power_play_per', 'penalty_kill_per', 'shot_per']
+    future_features = ['ex_gf_per', 'ex_ga_per', 'shot_per']
 
     for feature in team_features:
 
