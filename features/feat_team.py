@@ -16,7 +16,8 @@ def team_features_update(data_df_in=pd.DataFrame, verbose=False):
         data_df = data_df_in[cons.team_feature_cols]
 
     # add team-based features
-    team_features = [cons.point_per_n_col, cons.goal_diff_n_col, cons.corsi_per_n_col, cons.elo_rat_col]
+    team_features = [cons.point_per_n_col, cons.goal_diff_n_col, cons.corsi_per_n_col, cons.elo_rat_col,
+                     cons.pp_per_n_col, cons.pk_per_n_col]
     skipped_features = [cons.fenwick_per_n_col]
 
     # features to add in the future
@@ -98,6 +99,38 @@ def team_features_update(data_df_in=pd.DataFrame, verbose=False):
                 data_df.loc[~data_df[home_fenwick_col].isna() & ~data_df[away_fenwick_col].isna(), cons.fenwick_per_n_col.format(pre='rel', n=window)] = data_df[home_fenwick_col] - data_df[away_fenwick_col]
                 data_df.drop(columns=[home_fenwick_col, away_fenwick_col], inplace=True)
             continue
+
+        # add a feature that calculates the power play percentage for the last n games played for each team
+        if feature == cons.pp_per_n_col:
+            for window in cons.team_feat_windows:
+                if verbose: print(f'\t\tProcessing window: {window}')
+
+                data_df = add_ppper(data_df, team_col=cons.home_team_name_col, n=window)
+                data_df = add_ppper(data_df, team_col=cons.away_team_name_col, n=window)
+
+                # create relational feature, drop individual features
+                home_pp_col = cons.pp_per_n_col.format(pre='home', n=window)
+                away_pp_col = cons.pp_per_n_col.format(pre='away', n=window)
+
+                # only calculate relational feature if both the home and away power play percentages are not null
+                data_df.loc[~data_df[home_pp_col].isna() & ~data_df[away_pp_col].isna(), cons.pp_per_n_col.format(pre='rel', n=window)] = data_df[home_pp_col] - data_df[away_pp_col]
+                data_df.drop(columns=[home_pp_col, away_pp_col], inplace=True)
+
+        # add a feature that calculates the penalty kill percentage for the last n games played for each team
+        if feature == cons.pk_per_n_col:
+            for window in cons.team_feat_windows:
+                if verbose: print(f'\t\tProcessing window: {window}')
+
+                data_df = add_pkper(data_df, team_col=cons.home_team_name_col, n=window)
+                data_df = add_pkper(data_df, team_col=cons.away_team_name_col, n=window)
+
+                # create relational feature, drop individual features
+                home_pk_col = cons.pk_per_n_col.format(pre='home', n=window)
+                away_pk_col = cons.pk_per_n_col.format(pre='away', n=window)
+
+                # only calculate relational feature if both the home and away penalty kill percentages are not null
+                data_df.loc[~data_df[home_pk_col].isna() & ~data_df[away_pk_col].isna(), cons.pk_per_n_col.format(pre='rel', n=window)] = data_df[home_pk_col] - data_df[away_pk_col]
+                data_df.drop(columns=[home_pk_col, away_pk_col], inplace=True)
 
         # add a feature that is a team's elo rating, which is a measure of team strength based on game results
         if feature == cons.elo_rat_col:
@@ -578,5 +611,169 @@ def compute_elo_ratings(data_df, k=6, home_advantage=25, season_regress_factor=0
     data_df.loc[data_df[cons.home_team_win_col].isna(), cons.elo_rat_col.format(pre='home')] = data_df[cons.home_team_name_col].map(final_elo)
     data_df.loc[data_df[cons.home_team_win_col].isna(), cons.elo_rat_col.format(pre='away')] = data_df[cons.away_team_name_col].map(final_elo)
     data_df.loc[data_df[cons.home_team_win_col].isna(), cons.elo_rat_col.format(pre='rel')] = data_df[cons.elo_rat_col.format(pre='home')] - data_df[cons.elo_rat_col.format(pre='away')]
+
+    return data_df
+
+
+def add_ppper(data_df, team_col, n):
+
+    target_col = cons.pp_per_n_col.format(pre=team_col[:4], n=n)
+
+    row_id_col = '_row_id'
+    team_key_col = '_team'
+    season_key_col = '_season'
+    date_col = '_game_date'
+    goal_key_col = '_pp_goal'
+    opp_key_col = '_pp_opp'
+
+    game_dates = pd.to_datetime(data_df[cons.starttime_est_col], errors='coerce').dt.date
+    home_pp_goals = pd.to_numeric(data_df[cons.home_pp_goal_col], errors='coerce')
+    away_pp_goals = pd.to_numeric(data_df[cons.away_pp_goal_col], errors='coerce')
+    home_penalties = pd.to_numeric(data_df[cons.home_penalty_col], errors='coerce')
+    away_penalties = pd.to_numeric(data_df[cons.away_penalty_col], errors='coerce')
+
+    # a team's power play opportunities come from penalties committed by their opponent
+    home_games = pd.DataFrame({
+        row_id_col: data_df.index,
+        team_key_col: data_df[cons.home_team_name_col],
+        season_key_col: data_df[cons.season_name_col],
+        date_col: game_dates,
+        goal_key_col: home_pp_goals,
+        opp_key_col: away_penalties
+    })
+
+    away_games = pd.DataFrame({
+        row_id_col: data_df.index,
+        team_key_col: data_df[cons.away_team_name_col],
+        season_key_col: data_df[cons.season_name_col],
+        date_col: game_dates,
+        goal_key_col: away_pp_goals,
+        opp_key_col: home_penalties
+    })
+
+    team_games = pd.concat([home_games, away_games], ignore_index=True)
+    team_games = team_games.dropna(subset=[date_col])
+    team_games.sort_values(by=[team_key_col, season_key_col, date_col, row_id_col], inplace=True)
+
+    # build per-team cumulative pp goal/opportunity history so each n-game percentage is O(1) after bisect
+    team_history = {}
+    for key, group in team_games.groupby([team_key_col, season_key_col], sort=False):
+        goal_vals = group[goal_key_col].to_numpy(dtype=float)
+        opp_vals = group[opp_key_col].to_numpy(dtype=float)
+        team_history[key] = (
+            group[date_col].tolist(),
+            np.concatenate(([0.0], np.cumsum(goal_vals))),
+            np.concatenate(([0.0], np.cumsum(opp_vals)))
+        )
+
+    target_dates = pd.to_datetime(data_df[cons.starttime_est_col], errors='coerce').dt.date.to_numpy()
+    target_teams = data_df[team_col].to_numpy()
+    target_seasons = data_df[cons.season_name_col].to_numpy()
+
+    target_vals = np.full(len(data_df), np.nan, dtype=float)
+    for i in range(len(data_df)):
+        game_date = target_dates[i]
+        if pd.isna(game_date):
+            continue
+
+        history = team_history.get((target_teams[i], target_seasons[i]))
+        if not history:
+            continue
+
+        hist_dates, goal_prefix, opp_prefix = history
+        # locate boundary of games strictly before current game date
+        end_idx = bisect.bisect_left(hist_dates, game_date)
+        if end_idx == 0:
+            continue
+
+        # window totals from prefix sums for the previous n games
+        start_idx = max(0, end_idx - n)
+        opportunities = opp_prefix[end_idx] - opp_prefix[start_idx]
+        if opportunities > 0:
+            target_vals[i] = (goal_prefix[end_idx] - goal_prefix[start_idx]) / opportunities
+
+    data_df[target_col] = target_vals
+
+    return data_df
+
+
+def add_pkper(data_df, team_col, n):
+
+    target_col = cons.pk_per_n_col.format(pre=team_col[:4], n=n)
+
+    row_id_col = '_row_id'
+    team_key_col = '_team'
+    season_key_col = '_season'
+    date_col = '_game_date'
+    goal_against_key_col = '_pk_goal_against'
+    opp_key_col = '_pk_opp'
+
+    game_dates = pd.to_datetime(data_df[cons.starttime_est_col], errors='coerce').dt.date
+    home_pp_goals = pd.to_numeric(data_df[cons.home_pp_goal_col], errors='coerce')
+    away_pp_goals = pd.to_numeric(data_df[cons.away_pp_goal_col], errors='coerce')
+    home_penalties = pd.to_numeric(data_df[cons.home_penalty_col], errors='coerce')
+    away_penalties = pd.to_numeric(data_df[cons.away_penalty_col], errors='coerce')
+
+    # a team's penalty kill opportunities come from penalties committed by themselves, allowing the opponent's PP goals against them
+    home_games = pd.DataFrame({
+        row_id_col: data_df.index,
+        team_key_col: data_df[cons.home_team_name_col],
+        season_key_col: data_df[cons.season_name_col],
+        date_col: game_dates,
+        goal_against_key_col: away_pp_goals,
+        opp_key_col: home_penalties
+    })
+
+    away_games = pd.DataFrame({
+        row_id_col: data_df.index,
+        team_key_col: data_df[cons.away_team_name_col],
+        season_key_col: data_df[cons.season_name_col],
+        date_col: game_dates,
+        goal_against_key_col: home_pp_goals,
+        opp_key_col: away_penalties
+    })
+
+    team_games = pd.concat([home_games, away_games], ignore_index=True)
+    team_games = team_games.dropna(subset=[date_col])
+    team_games.sort_values(by=[team_key_col, season_key_col, date_col, row_id_col], inplace=True)
+
+    # build per-team cumulative pk goal-against/opportunity history so each n-game percentage is O(1) after bisect
+    team_history = {}
+    for key, group in team_games.groupby([team_key_col, season_key_col], sort=False):
+        goal_against_vals = group[goal_against_key_col].to_numpy(dtype=float)
+        opp_vals = group[opp_key_col].to_numpy(dtype=float)
+        team_history[key] = (
+            group[date_col].tolist(),
+            np.concatenate(([0.0], np.cumsum(goal_against_vals))),
+            np.concatenate(([0.0], np.cumsum(opp_vals)))
+        )
+
+    target_dates = pd.to_datetime(data_df[cons.starttime_est_col], errors='coerce').dt.date.to_numpy()
+    target_teams = data_df[team_col].to_numpy()
+    target_seasons = data_df[cons.season_name_col].to_numpy()
+
+    target_vals = np.full(len(data_df), np.nan, dtype=float)
+    for i in range(len(data_df)):
+        game_date = target_dates[i]
+        if pd.isna(game_date):
+            continue
+
+        history = team_history.get((target_teams[i], target_seasons[i]))
+        if not history:
+            continue
+
+        hist_dates, goal_against_prefix, opp_prefix = history
+        # locate boundary of games strictly before current game date
+        end_idx = bisect.bisect_left(hist_dates, game_date)
+        if end_idx == 0:
+            continue
+
+        # window totals from prefix sums for the previous n games
+        start_idx = max(0, end_idx - n)
+        opportunities = opp_prefix[end_idx] - opp_prefix[start_idx]
+        if opportunities > 0:
+            target_vals[i] = 1 - ((goal_against_prefix[end_idx] - goal_against_prefix[start_idx]) / opportunities)
+
+    data_df[target_col] = target_vals
 
     return data_df

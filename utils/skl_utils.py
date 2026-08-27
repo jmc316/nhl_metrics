@@ -35,6 +35,8 @@ def preprocess_feature_data(data_df_in):
         num_feats_window.append(cons.point_per_n_col.format(pre='rel', n=window))
         num_feats_window.append(cons.goal_diff_n_col.format(pre='rel', n=window))
         num_feats_window.append(cons.corsi_per_n_col.format(pre='rel', n=window))
+        num_feats_window.append(cons.pp_per_n_col.format(pre='rel', n=window))
+        num_feats_window.append(cons.pk_per_n_col.format(pre='rel', n=window))
         # num_feats_window.append(cons.fenwick_per_n_col.format(pre='rel', n=window))
     num_feats = num_feats_nonwindow + num_feats_window
 

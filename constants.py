@@ -102,6 +102,12 @@ away_shot_miss_col = 'away_missed-shot'
 home_shot_blk_col = 'home_blocked-shot'
 away_shot_blk_col = 'away_blocked-shot'
 elo_rat_col = '{pre}EloRating'
+home_penalty_col = 'home_penalty'
+away_penalty_col = 'away_penalty'
+home_pp_goal_col = 'home_pp_goal'
+away_pp_goal_col = 'away_pp_goal'
+pp_per_n_col = '{pre}PPPer{n}Games'
+pk_per_n_col = '{pre}PKPer{n}Games'
 
 pred_suf = '_predicted'
 act_suf = '_actual'
@@ -124,7 +130,7 @@ season_enddt = '06-30'
 cur_season_name = '20262027'
 est_tz = 'America/New_York'
 sched_feat_windows = [4, 7]
-team_feat_windows = [5, 10, 20]
+team_feat_windows = [5, 20]
 
 tiebreaker_cols = [total_points_col, points_percentage_col, total_reg_wins_col, total_reg_ot_wins_col,
                    total_wins_col, goal_diff_col, total_goals_for_col]
@@ -137,7 +143,8 @@ sched_feature_cols = [game_id_col, season_name_col, game_type_col, starttime_est
                      away_team_score_col, last_period_col, home_team_win_col,
                      home_win_prob_col, away_win_prob_col]
 team_feature_cols = sched_feature_cols + [home_shot_og_col, away_shot_og_col, home_shot_miss_col,
-                                         away_shot_miss_col, home_shot_blk_col, away_shot_blk_col]
+                                         away_shot_miss_col, home_shot_blk_col, away_shot_blk_col,
+                                         home_penalty_col, away_penalty_col, home_pp_goal_col, away_pp_goal_col,]
 
 output_folder = 'output/'
 util_data_folder = 'util_data/'

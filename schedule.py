@@ -154,7 +154,9 @@ def load_sched_df_features(feat_set_label=None):
 
     if feat_set_label == 'team':
         col_order.extend([cons.home_shot_og_col, cons.away_shot_og_col, cons.home_shot_miss_col,
-                         cons.away_shot_miss_col, cons.home_shot_blk_col, cons.away_shot_blk_col])
+                         cons.away_shot_miss_col, cons.home_shot_blk_col, cons.away_shot_blk_col,
+                         cons.home_penalty_col, cons.away_penalty_col, cons.home_pp_goal_col,
+                         cons.away_pp_goal_col])
     
     feature_df = feature_df[col_order]
 
