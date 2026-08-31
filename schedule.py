@@ -157,6 +157,20 @@ def load_sched_df_features(feat_set_label=None):
                          cons.away_shot_miss_col, cons.home_shot_blk_col, cons.away_shot_blk_col,
                          cons.home_penalty_col, cons.away_penalty_col, cons.home_pp_goal_col,
                          cons.away_pp_goal_col])
+    if feat_set_label == 'goalie':
+        col_order.extend([cons.home_goalie_name_col, cons.home_goalie_id_col, cons.home_starter_col, cons.home_toi_secs_col,
+                          cons.home_ev_shots_against_col, cons.home_ev_saves_col, cons.home_ev_goals_against_col,
+                          cons.home_sh_shots_against_col, cons.home_sh_saves_col, cons.home_sh_goals_against_col,
+                          cons.home_pp_shots_against_col, cons.home_pp_saves_col, cons.home_pp_goals_against_col,
+                          cons.home_tot_shots_against_col, cons.home_tot_saves_col, cons.home_tot_goals_against_col,
+                          cons.home_decision_col,
+                          cons.away_goalie_name_col, cons.away_goalie_id_col, cons.away_starter_col,
+                          cons.away_toi_secs_col, cons.away_ev_shots_against_col, cons.away_ev_saves_col,
+                          cons.away_ev_goals_against_col, cons.away_sh_shots_against_col, cons.away_sh_saves_col,
+                          cons.away_sh_goals_against_col, cons.away_pp_shots_against_col, cons.away_pp_saves_col,
+                          cons.away_pp_goals_against_col, cons.away_tot_shots_against_col, cons.away_tot_saves_col,
+                          cons.away_tot_goals_against_col, cons.away_decision_col
+        ])
     
     feature_df = feature_df[col_order]
 

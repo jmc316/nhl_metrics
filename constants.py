@@ -74,6 +74,7 @@ day_of_week_col = 'dayOfWeek'
 reg_game_num_perc_col = '{team}RegGameNumPerc'
 playoff_game_num_col = '{team}PlayoffGameNum'
 days_rest_col = '{pre}DaysRest'
+goalie_days_rest_col = '{pre}GoalieDaysRest'
 is_outdoor_venue_col = 'isOutdoorVenue'
 road_trip_seq_col = 'roadTripSeq'
 travel_dist_n_days_col = '{pre}TravelDist{n}Days'
@@ -108,6 +109,45 @@ home_pp_goal_col = 'home_pp_goal'
 away_pp_goal_col = 'away_pp_goal'
 pp_per_n_col = '{pre}PPPer{n}Games'
 pk_per_n_col = '{pre}PKPer{n}Games'
+save_per_n_col = '{pre}SavePer{n}Games'
+gaa_n_col = '{pre}GAA{n}Games'
+num_starts_n_col = '{pre}NumStarts{n}Days'
+num_season_starts_col = '{pre}NumSeasonStarts'
+goalie_id_col = 'goalie_id'
+home_goalie_name_col = 'home_goalie_name'
+away_goalie_name_col = 'away_goalie_name'
+home_goalie_id_col = 'home_goalie_id'
+away_goalie_id_col = 'away_goalie_id'
+home_starter_col = 'home_starter'
+away_starter_col = 'away_starter'
+home_toi_secs_col = 'home_toi_secs'
+away_toi_secs_col = 'away_toi_secs'
+home_ev_shots_against_col = 'home_ev_shots_against'
+away_ev_shots_against_col = 'away_ev_shots_against'
+home_ev_saves_col = 'home_ev_saves'
+away_ev_saves_col = 'away_ev_saves'
+home_ev_goals_against_col = 'home_ev_goals_against'
+away_ev_goals_against_col = 'away_ev_goals_against'
+home_sh_shots_against_col = 'home_sh_shots_against'
+away_sh_shots_against_col = 'away_sh_shots_against'
+home_sh_saves_col = 'home_sh_saves'
+away_sh_saves_col = 'away_sh_saves'
+home_sh_goals_against_col = 'home_sh_goals_against'
+away_sh_goals_against_col = 'away_sh_goals_against'
+home_pp_shots_against_col = 'home_pp_shots_against'
+away_pp_shots_against_col = 'away_pp_shots_against'
+home_pp_saves_col = 'home_pp_saves'
+away_pp_saves_col = 'away_pp_saves'
+home_pp_goals_against_col = 'home_pp_goals_against'
+away_pp_goals_against_col = 'away_pp_goals_against'
+home_tot_shots_against_col = 'home_tot_shots_against'
+away_tot_shots_against_col = 'away_tot_shots_against'
+home_tot_saves_col = 'home_tot_saves'
+away_tot_saves_col = 'away_tot_saves'
+home_tot_goals_against_col = 'home_tot_goals_against'
+away_tot_goals_against_col = 'away_tot_goals_against'
+home_decision_col = 'home_decision'
+away_decision_col = 'away_decision'
 
 pred_suf = '_predicted'
 act_suf = '_actual'
@@ -131,6 +171,9 @@ cur_season_name = '20262027'
 est_tz = 'America/New_York'
 sched_feat_windows = [4, 7]
 team_feat_windows = [5, 20]
+goalie_feat_windows = [5, 15, 'Season']
+goalie_feat_windows_2 = [7, 14, 'Season']
+goalie_feat_prefixes = [None, 'ev', 'pp', 'sh']
 
 tiebreaker_cols = [total_points_col, points_percentage_col, total_reg_wins_col, total_reg_ot_wins_col,
                    total_wins_col, goal_diff_col, total_goals_for_col]
@@ -144,7 +187,20 @@ sched_feature_cols = [game_id_col, season_name_col, game_type_col, starttime_est
                      home_win_prob_col, away_win_prob_col]
 team_feature_cols = sched_feature_cols + [home_shot_og_col, away_shot_og_col, home_shot_miss_col,
                                          away_shot_miss_col, home_shot_blk_col, away_shot_blk_col,
-                                         home_penalty_col, away_penalty_col, home_pp_goal_col, away_pp_goal_col,]
+                                         home_penalty_col, away_penalty_col, home_pp_goal_col, away_pp_goal_col]
+goalie_feature_cols = sched_feature_cols + [home_goalie_name_col, away_goalie_name_col, home_goalie_id_col,
+                                            away_goalie_id_col, home_starter_col, away_starter_col,
+                                            home_toi_secs_col, away_toi_secs_col, home_ev_shots_against_col,
+                                            away_ev_shots_against_col, home_ev_saves_col, away_ev_saves_col,
+                                            home_ev_goals_against_col, away_ev_goals_against_col, 
+                                            home_sh_shots_against_col, away_sh_shots_against_col,
+                                            home_sh_saves_col, away_sh_saves_col, home_sh_goals_against_col,
+                                            away_sh_goals_against_col, home_pp_shots_against_col,
+                                            away_pp_shots_against_col, home_pp_saves_col, away_pp_saves_col,
+                                            home_pp_goals_against_col, away_pp_goals_against_col,
+                                            home_tot_shots_against_col, away_tot_shots_against_col,
+                                            home_tot_saves_col, away_tot_saves_col, home_tot_goals_against_col,
+                                            away_tot_goals_against_col, home_decision_col, away_decision_col]
 
 output_folder = 'output/'
 util_data_folder = 'util_data/'
@@ -156,6 +212,7 @@ sched_features_folder = season_feature_sets_folder + 'sched_features/'
 sched_features_filename = '{season}_sched_features.csv'
 goalie_features_folder = season_feature_sets_folder + 'goalie_features/'
 goalie_features_filename = '{season}_goalie_features.csv'
+goalie_data_filename = 'goalie_data.csv'
 player_features_folder = season_feature_sets_folder + 'player_features/'
 player_features_filename = '{season}_player_features.csv'
 team_features_folder = season_feature_sets_folder + 'team_features/'

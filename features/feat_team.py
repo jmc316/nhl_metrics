@@ -17,8 +17,8 @@ def team_features_update(data_df_in=pd.DataFrame, verbose=False):
 
     # add team-based features
     team_features = [cons.point_per_n_col, cons.goal_diff_n_col, cons.corsi_per_n_col, cons.elo_rat_col,
-                     cons.pp_per_n_col, cons.pk_per_n_col]
-    skipped_features = [cons.fenwick_per_n_col]
+                     cons.pp_per_n_col, cons.pk_per_n_col, cons.fenwick_per_n_col]
+    skipped_features = []
 
     # features to add in the future
     future_features = ['ex_gf_per', 'ex_ga_per', 'shot_per']

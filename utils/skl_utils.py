@@ -25,7 +25,7 @@ def preprocess_feature_data(data_df_in):
     #             'relTravelDist7Days', 'relGamesPlayed4Days', 'relGamesPlayed7Days', 'relCrossedTZ4Days',
     #             'relCrossedTZ7Days']
     num_feats_nonwindow = [cons.reg_game_num_perc_col.format(team='home'), cons.reg_game_num_perc_col.format(team='away'),
-                 cons.days_rest_col.format(pre='rel'), cons.elo_rat_col.format(pre='rel')]
+                 cons.days_rest_col.format(pre='rel'), cons.elo_rat_col.format(pre='rel')] #, cons.goalie_days_rest_col.format(pre='rel')]
     num_feats_window = []
     for window in cons.sched_feat_windows:
         num_feats_window.append(cons.travel_dist_n_days_col.format(pre='rel', n=window))
@@ -38,6 +38,18 @@ def preprocess_feature_data(data_df_in):
         num_feats_window.append(cons.pp_per_n_col.format(pre='rel', n=window))
         num_feats_window.append(cons.pk_per_n_col.format(pre='rel', n=window))
         # num_feats_window.append(cons.fenwick_per_n_col.format(pre='rel', n=window))
+    for window in cons.goalie_feat_windows:
+        pass
+        # num_feats_window.append(cons.save_per_n_col.format(pre='rel', n=window))
+        # num_feats_window.append('ev_'+cons.save_per_n_col.format(pre='rel', n=window))
+        # num_feats_window.append('pp_'+cons.save_per_n_col.format(pre='rel', n=window))
+        # num_feats_window.append('sh_'+cons.save_per_n_col.format(pre='rel', n=window))
+        # num_feats_window.append(cons.gaa_n_col.format(pre='rel', n=window))
+        # num_feats_window.append('ev_'+cons.gaa_n_col.format(pre='rel', n=window))
+        # num_feats_window.append('pp_'+cons.gaa_n_col.format(pre='rel', n=window))
+        # num_feats_window.append('sh_'+cons.gaa_n_col.format(pre='rel', n=window))
+    # for window in [7, 14]:
+    #     num_feats_window.append(cons.num_starts_n_col.format(pre='rel', n=window))
     num_feats = num_feats_nonwindow + num_feats_window
 
     # boolean categorical features, keep as is for the model
@@ -121,10 +133,11 @@ def model_train(data_df, feature_list, save_model=True):
         print(fold_results_df)
 
         baseline_acc = (actual_df[cons.home_team_win_col] == 1).mean()
-        print(f"Baseline Accuracy:          {baseline_acc:.3f}")
-        print(f"Avg Model Validation Accuracy:  {fold_results_df['accuracy'].mean():.4f}")
-        print(f"Avg Model Validation AUC:  {fold_results_df['auc'].mean():.4f}")
-        print(f"Avg Model Validation Log Loss:  {fold_results_df['log_loss'].mean():.4f}")
+        print(f"Baseline Accuracy:              {baseline_acc:.3f}")
+        print(f"Avg Model Validation Accuracy:      {fold_results_df['accuracy'].mean():.4f}")
+        print(f"Target AUC:                     0.68")
+        print(f"Avg Model Validation AUC:           {fold_results_df['auc'].mean():.4f}")
+        print(f"Avg Model Validation Log Loss:      {fold_results_df['log_loss'].mean():.4f}")
         print(f"Avg Model Validation Brier Score:  {fold_results_df['brier'].mean():.4f}")
 
         perm_imp_result = permutation_importance(
