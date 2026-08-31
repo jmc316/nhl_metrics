@@ -171,8 +171,8 @@ cur_season_name = '20262027'
 est_tz = 'America/New_York'
 sched_feat_windows = [4, 7]
 team_feat_windows = [5, 20]
-goalie_feat_windows = [5, 15, 'Season']
-goalie_feat_windows_2 = [7, 14, 'Season']
+goalie_feat_windows = [3] #, 15, 'Season']
+goalie_feat_windows_2 = [7] # [1, 3, 5, 7, 9, 11, 13, 14, 'Season']
 goalie_feat_prefixes = [None, 'ev', 'pp', 'sh']
 
 tiebreaker_cols = [total_points_col, points_percentage_col, total_reg_wins_col, total_reg_ot_wins_col,

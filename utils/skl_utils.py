@@ -32,8 +32,8 @@ def preprocess_feature_data(data_df_in):
         num_feats_window.append(cons.games_played_n_days_col.format(pre='rel', n=window))
         num_feats_window.append(cons.crossed_tz_n_days_col.format(pre='rel', n=window))
     for window in cons.team_feat_windows:
-        num_feats_window.append(cons.point_per_n_col.format(pre='rel', n=window))
-        num_feats_window.append(cons.goal_diff_n_col.format(pre='rel', n=window))
+        # num_feats_window.append(cons.point_per_n_col.format(pre='rel', n=window))
+        # num_feats_window.append(cons.goal_diff_n_col.format(pre='rel', n=window))
         num_feats_window.append(cons.corsi_per_n_col.format(pre='rel', n=window))
         num_feats_window.append(cons.pp_per_n_col.format(pre='rel', n=window))
         num_feats_window.append(cons.pk_per_n_col.format(pre='rel', n=window))
@@ -41,15 +41,15 @@ def preprocess_feature_data(data_df_in):
     for window in cons.goalie_feat_windows:
         pass
         # num_feats_window.append(cons.save_per_n_col.format(pre='rel', n=window))
-        # num_feats_window.append('ev_'+cons.save_per_n_col.format(pre='rel', n=window))
-        # num_feats_window.append('pp_'+cons.save_per_n_col.format(pre='rel', n=window))
+        num_feats_window.append('ev_'+cons.save_per_n_col.format(pre='rel', n=window))
+        num_feats_window.append('pp_'+cons.save_per_n_col.format(pre='rel', n=window))
         # num_feats_window.append('sh_'+cons.save_per_n_col.format(pre='rel', n=window))
         # num_feats_window.append(cons.gaa_n_col.format(pre='rel', n=window))
         # num_feats_window.append('ev_'+cons.gaa_n_col.format(pre='rel', n=window))
-        # num_feats_window.append('pp_'+cons.gaa_n_col.format(pre='rel', n=window))
+        num_feats_window.append('pp_'+cons.gaa_n_col.format(pre='rel', n=window))
         # num_feats_window.append('sh_'+cons.gaa_n_col.format(pre='rel', n=window))
-    # for window in [7, 14]:
-    #     num_feats_window.append(cons.num_starts_n_col.format(pre='rel', n=window))
+    for window in cons.goalie_feat_windows_2:
+        num_feats_window.append(cons.num_starts_n_col.format(pre='rel', n=window))
     num_feats = num_feats_nonwindow + num_feats_window
 
     # boolean categorical features, keep as is for the model
@@ -85,6 +85,45 @@ def preprocess_feature_data(data_df_in):
         data_df[col] = label_encoder.fit_transform(data_df[col])
 
     feature_list = num_feats + bool_feats + low_card_feats + one_hot_feats_new + label_encode_feats
+
+    ### AUC=0.6085, Accuracy=0.5824
+    # ['homeRegGameNumPerc', 'awayRegGameNumPerc', 'relDaysRest', 'relEloRating',
+    # 'relTravelDist4Days', 'relGamesPlayed4Days', 'relCrossedTZ4Days', 'relTravelDist7Days',
+    # 'relGamesPlayed7Days', 'relCrossedTZ7Days', 'relCorsiPer5Games', 'relPPPer5Games',
+    # 'relPKPer5Games', 'relCorsiPer20Games', 'relPPPer20Games', 'relPKPer20Games',
+    # 'ev_relSavePer3Games', 'pp_relSavePer3Games', 'pp_relGAA3Games', 'relNumStarts7Days',
+    # 'isOutdoorVenue', 'isHomeOpener', 'isRetHomeTrap', 'isVenueAltShock', 'rivalMatch',
+    # 'marketIntensity', 'dayOfWeek_0', 'dayOfWeek_1', 'dayOfWeek_2', 'dayOfWeek_3', 'dayOfWeek_4',
+    # 'dayOfWeek_5', 'dayOfWeek_6', 'gameType_2', 'gameType_3', 'venueTimezone_Am_Central',
+    # 'venueTimezone_Am_Eastern', 'venueTimezone_Eu_Central', 'venueTimezone_Eu_Eastern',
+    # 'venueTimezone_Mountain', 'venueTimezone_Pacific', 'venue', 'seasonName']
+
+    ### AUC=0.6054, Accuracy=0.5824
+    # ['homeRegGameNumPerc', 'awayRegGameNumPerc', 'relDaysRest', 'relEloRating',
+    # 'relTravelDist4Days', 'relGamesPlayed4Days', 'relCrossedTZ4Days', 'relTravelDist7Days',
+    # 'relGamesPlayed7Days', 'relCrossedTZ7Days', 'relPointsPer5Games', 'relGoalDiff5Games',
+    # 'relCorsiPer5Games', 'relPPPer5Games', 'relPKPer5Games', 'relPointsPer20Games',
+    # 'relGoalDiff20Games', 'relCorsiPer20Games', 'relPPPer20Games', 'relPKPer20Games',
+    # 'pp_relSavePer3Games', 'ev_relGAA3Games', 'pp_relGAA3Games', 'relNumStarts7Days',
+    # 'isOutdoorVenue', 'isHomeOpener', 'isRetHomeTrap', 'isVenueAltShock', 'rivalMatch',
+    # 'marketIntensity', 'dayOfWeek_0', 'dayOfWeek_1', 'dayOfWeek_2', 'dayOfWeek_3',
+    # 'dayOfWeek_4', 'dayOfWeek_5', 'dayOfWeek_6', 'gameType_2', 'gameType_3',
+    # 'venueTimezone_Am_Central', 'venueTimezone_Am_Eastern', 'venueTimezone_Eu_Central',
+    # 'venueTimezone_Eu_Eastern', 'venueTimezone_Mountain', 'venueTimezone_Pacific', 'venue',
+    # 'seasonName']
+
+    ### AUC=0.606, Accuracy=0.582
+    # ['homeRegGameNumPerc', 'awayRegGameNumPerc', 'relDaysRest', 'relEloRating',
+    # 'relTravelDist4Days', 'relGamesPlayed4Days', 'relCrossedTZ4Days', 'relTravelDist7Days',
+    # 'relGamesPlayed7Days', 'relCrossedTZ7Days', 'relPointsPer5Games', 'relGoalDiff5Games',
+    # 'relCorsiPer5Games', 'relPPPer5Games', 'relPKPer5Games', 'relPointsPer20Games',
+    # 'relGoalDiff20Games', 'relCorsiPer20Games', 'relPPPer20Games', 'relPKPer20Games',
+    # 'isOutdoorVenue', 'isHomeOpener', 'isRetHomeTrap', 'isVenueAltShock', 'rivalMatch',
+    # 'marketIntensity', 'dayOfWeek_0', 'dayOfWeek_1', 'dayOfWeek_2', 'dayOfWeek_3',
+    # 'dayOfWeek_4', 'dayOfWeek_5', 'dayOfWeek_6', 'gameType_2', 'gameType_3',
+    # 'venueTimezone_Am_Central', 'venueTimezone_Am_Eastern', 'venueTimezone_Eu_Central',
+    # 'venueTimezone_Eu_Eastern', 'venueTimezone_Mountain', 'venueTimezone_Pacific', 'venue',
+    # 'seasonName']
 
     return data_df, feature_list
 
@@ -185,10 +224,10 @@ def model_train(data_df, feature_list, save_model=True):
     # Avg Log Loss: ~0.703
 
     # Schedule + Team Features (no class_weight):
-    # Avg AUC:      0.5976
-    # Avg Accuracy: 0.5767 (baseline: 0.537)
-    # Avg brier:    0.2436
-    # Avg log loss: 0.6812
+    # Avg AUC:      0.6060
+    # Avg Accuracy: 0.5820
+    # Avg brier:    
+    # Avg log loss: 
 
     # Vegas Model:
     #   Accuracy = ~62-63%

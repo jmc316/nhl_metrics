@@ -80,8 +80,8 @@ def goalie_features_update(data_df_in=pd.DataFrame, verbose=False):
             data_df[rel_goalie_rest] = data_df[home_goalie_rest] - data_df[away_goalie_rest]
             data_df.drop(columns=[home_goalie_rest, away_goalie_rest], inplace=True)
 
-            # cap the max relative goalie rest at 7 days, since a goalie who has not played in a week is likely injured or otherwise unavailable
-            data_df[rel_goalie_rest] = data_df[rel_goalie_rest].clip(lower=-7, upper=7)
+            # cap the max relative goalie rest at 14 days, since a goalie who has not played in two weeks is likely injured or otherwise unavailable
+            data_df[rel_goalie_rest] = data_df[rel_goalie_rest].clip(lower=-14, upper=14)
 
         # add a feature that tracks the number of starts for each starting goalie over the last n days
         if feature == cons.num_starts_n_col:

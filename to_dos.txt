@@ -20,9 +20,8 @@
 
 - new to-dos
     - postseason/playoff round probability
-    - team features addition
-    - goalie features addition
+    - regular season final standings graphic generation
     - player features addition
-    - explain a prediction
+    - explain a prediction menu item
     - betting odds automated ETL
     - predictions accuracy tracking
