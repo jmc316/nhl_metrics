@@ -95,6 +95,9 @@ def assign_game_points(season_results, to_csv=False):
 
     print('Assigning game points...')
 
+    # de-fragment the frame (it typically arrives with many previously inserted columns)
+    season_results = season_results.copy()
+
     # assign points to each team based on the predicted scores and last period type
     # (2 points for a win in regulation, 1 point for an OT/SO loss, 0 points for a regulation loss)
     season_results[cons.home_team_points_col] = np.where(
