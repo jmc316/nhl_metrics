@@ -19,6 +19,8 @@
     - pytest
 
 - new to-dos
+    - starting goalie model
+    - filling out missing schedule data on request
     - postseason/playoff round probability
     - regular season final standings graphic generation
     - player features addition
