@@ -93,20 +93,29 @@ def backfill():
 
         print(gameId)
 
-        url = f"https://api-web.nhle.com/v1/gamecenter/{gameId}/boxscore"
         try:
-            boxscore_data = requests.get(url).json()
+            game_data = nhl_client.game_center.play_by_play(gameId)
+
+            home_team_id = game_data['homeTeam']['id']
+            away_team_id = game_data['awayTeam']['id']
+    
+            roster_data = game_data['rosterSpots']
+            home_team_roster = [player['playerId'] for player in roster_data if player['teamId']==home_team_id]
+            away_team_roster = [player['playerId'] for player in roster_data if player['teamId']==away_team_id]
+
         except:
-            print(f"Failed to fetch data for game {gameId}. Skipping...")
-            continue
+            print(f"Failed to fetch nhl_client data for game {gameId}. Trying url request...")
+            boxscore_data = requests.get(f"https://api-web.nhle.com/v1/gamecenter/{gameId}/boxscore").json()
 
-        game_data = nhl_client.game_center.play_by_play(gameId)
-        home_team_id = game_data['homeTeam']['id']
-        away_team_id = game_data['awayTeam']['id']
+            home_team_forwards = [player['playerId'] for player in boxscore_data['playerByGameStats']['homeTeam']['forwards']]
+            home_team_defensemen = [player['playerId'] for player in boxscore_data['playerByGameStats']['homeTeam']['defense']]
+            home_team_goalies = [player['playerId'] for player in boxscore_data['playerByGameStats']['homeTeam']['goalies']]
+            away_team_forwards = [player['playerId'] for player in boxscore_data['playerByGameStats']['awayTeam']['forwards']]
+            away_team_defensemen = [player['playerId'] for player in boxscore_data['playerByGameStats']['awayTeam']['defense']]
+            away_team_goalies = [player['playerId'] for player in boxscore_data['playerByGameStats']['awayTeam']['goalies']]
 
-        roster_data = game_data['rosterSpots']
-        home_team_roster = [player['playerId'] for player in roster_data if player['teamId']==home_team_id]
-        away_team_roster = [player['playerId'] for player in roster_data if player['teamId']==away_team_id]
+            home_team_roster = home_team_forwards + home_team_defensemen + home_team_goalies
+            away_team_roster = away_team_forwards + away_team_defensemen + away_team_goalies
 
         sched_df.at[gameId, 'homeTeamLineup'] = sorted(home_team_roster)
         sched_df.at[gameId, 'awayTeamLineup'] = sorted(away_team_roster)
