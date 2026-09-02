@@ -148,6 +148,8 @@ home_tot_goals_against_col = 'home_tot_goals_against'
 away_tot_goals_against_col = 'away_tot_goals_against'
 home_decision_col = 'home_decision'
 away_decision_col = 'away_decision'
+home_lineup_col = 'homeTeamLineup'
+away_lineup_col = 'awayTeamLineup'
 
 pred_suf = '_predicted'
 act_suf = '_actual'

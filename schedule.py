@@ -169,8 +169,9 @@ def load_sched_df_features(feat_set_label=None):
                           cons.away_ev_goals_against_col, cons.away_sh_shots_against_col, cons.away_sh_saves_col,
                           cons.away_sh_goals_against_col, cons.away_pp_shots_against_col, cons.away_pp_saves_col,
                           cons.away_pp_goals_against_col, cons.away_tot_shots_against_col, cons.away_tot_saves_col,
-                          cons.away_tot_goals_against_col, cons.away_decision_col
-        ])
+                          cons.away_tot_goals_against_col, cons.away_decision_col])
+    if feat_set_label == 'player':
+            col_order.extend([cons.home_lineup_col, cons.away_lineup_col])
     
     feature_df = feature_df[col_order]
 
