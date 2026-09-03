@@ -119,6 +119,7 @@ def sched_update():
     if not sched_df_future.empty:
         seasons_to_update.extend(list(sched_df_future[cons.season_name_col].unique()))
 
+    sched_df.sort_values(by=[cons.game_id_col, cons.starttime_utc_col, cons.home_team_name_col], inplace=True)
     for seasonname in seasons_to_update:
         print(f'\nSaving updated schedule data for {seasonname[:4]}-{seasonname[4:]} season to CSV file...')
         csvSave(sched_df.loc[sched_df[cons.season_name_col] == seasonname], cons.season_sched_folder, cons.season_sched_filename.format(season=seasonname))
@@ -171,7 +172,7 @@ def load_sched_df_features(feat_set_label=None):
                           cons.away_pp_goals_against_col, cons.away_tot_shots_against_col, cons.away_tot_saves_col,
                           cons.away_tot_goals_against_col, cons.away_decision_col])
     if feat_set_label == 'player':
-            col_order.extend([cons.home_lineup_col, cons.away_lineup_col])
+        col_order.extend([cons.home_lineup_col, cons.away_lineup_col])
     
     feature_df = feature_df[col_order]
 
@@ -212,7 +213,7 @@ def clean_schedule_df(data_df):
     data_df[cons.starttime_utc_col] = pd.to_datetime(data_df[cons.starttime_utc_col], format='ISO8601')
     data_df[cons.season_name_col] = data_df[cons.season_name_col].astype(str)
 
-    data_df.sort_values(by=cons.starttime_utc_col, inplace=True)
+    data_df.sort_values(by=[cons.game_id_col, cons.starttime_utc_col, cons.home_team_name_col], inplace=True)
     data_df.reset_index(drop=True, inplace=True)
 
     for col in data_df.columns:

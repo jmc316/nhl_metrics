@@ -22,6 +22,7 @@ def feature_data_update(sched_feat_df, team_feat_df, player_feat_df, goalie_feat
     sched_df = sched_df.merge(goalie_feat_df, how='left', on=merge_cols)
 
     if save_feat_data:
+        sched_df.sort_values(by=[cons.game_id_col, cons.starttime_est_col, cons.home_team_name_col], inplace=True)
         for season in sched_df[cons.season_name_col].unique():
             season_df = sched_df[sched_df[cons.season_name_col] == season]
             csvSave(season_df, cons.season_feature_sets_folder, cons.feat_data_filename.format(season=season))
@@ -31,9 +32,9 @@ def feature_data_update(sched_feat_df, team_feat_df, player_feat_df, goalie_feat
 
 def clean_feature_df(data_df):
 
-    data_df[cons.starttime_est_col] = pd.to_datetime(data_df[cons.starttime_est_col], format='ISO8601')
+    data_df[cons.starttime_est_col] = pd.to_datetime(data_df[cons.starttime_est_col], format='mixed')
 
-    data_df.sort_values(by=cons.starttime_est_col, inplace=True)
+    data_df.sort_values(by=[cons.game_id_col, cons.starttime_est_col, cons.home_team_name_col], inplace=True)
     data_df.reset_index(drop=True, inplace=True)
 
     for col in data_df.columns:
@@ -59,17 +60,17 @@ def feature_data_load():
         temp_df = csvLoad(cons.season_feature_sets_folder, filename)
         feat_df = pd.concat([feat_df, temp_df], ignore_index=True)
 
-    clean_feature_df(feat_df)
+    feat_df = clean_feature_df(feat_df)
 
     return feat_df
 
 
-def feat_update(data_df=pd.DataFrame, save_feat_data=False, verbose=False):
+def feat_update(data_df=pd.DataFrame, save_feat_data=False, verbose=False, player_value_formula=None):
     print('Updating all feature data...')
 
     sched_feat_df, sched_features = sched_features_update(data_df, verbose)
     team_feat_df, team_features = team_features_update(data_df, verbose)
-    player_feat_df, player_features = player_features_update(data_df, verbose)
+    player_feat_df, player_features = player_features_update(data_df, verbose, player_value_formula=player_value_formula)
     goalie_feat_df, goalie_features = goalie_features_update(data_df, verbose)
 
     feature_df = feature_data_update(sched_feat_df, team_feat_df, player_feat_df, goalie_feat_df, save_feat_data)

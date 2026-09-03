@@ -58,9 +58,9 @@ def daily_probability(today_dt, date_since, season, display_graphic=True):
     # the date that playoffs starts for this season
     playoff_st_dt = season_actual_df.loc[season_actual_df[cons.game_type_col]==3, cons.starttime_est_col].dt.date.min()
 
-    total_return = odds_data.loc[odds_data[cons.starttime_est_col].dt.date > pd.to_datetime(date_since).date(), cons.winnings_col].sum()
+    total_return = odds_data.loc[odds_data[cons.starttime_est_col].dt.date >= pd.to_datetime(date_since).date(), cons.winnings_col].sum()
     if playoff_st_dt is not pd.NaT:
-        playoff_return = odds_data.loc[odds_data[cons.starttime_est_col].dt.date > playoff_st_dt, cons.winnings_col].sum()
+        playoff_return = odds_data.loc[odds_data[cons.starttime_est_col].dt.date >= playoff_st_dt, cons.winnings_col].sum()
 
     # print a bunch of stats to the terminal for two date ranges: total season and playoffs
     print('Yesterday\'s games and returns:')
@@ -71,8 +71,8 @@ def daily_probability(today_dt, date_since, season, display_graphic=True):
         else:
             print(f"\t{cons.team_name_addrev_map[row[cons.away_team_name_col]]} {int(row[cons.away_team_score_col])} at {cons.team_name_addrev_map[row[cons.home_team_name_col]].lower()} {int(row[cons.home_team_score_col])}{ot_str}: {row[cons.winnings_col]:.2f}")
 
-    num_correct_preds = odds_data.loc[odds_data[cons.starttime_est_col].dt.date > pd.to_datetime(date_since).date(), cons.cor_outcome_col].sum()
-    num_games = len(odds_data)
+    num_correct_preds = odds_data.loc[odds_data[cons.starttime_est_col].dt.date >= pd.to_datetime(date_since).date(), cons.cor_outcome_col].sum()
+    num_games = len(odds_data.loc[odds_data[cons.starttime_est_col].dt.date >= pd.to_datetime(date_since).date()])
     print(f'\nTotal return on $1 bet since {date_since}: ${total_return:.2f} ({num_correct_preds/num_games:.2%} win rate)\n')
 
     if pd.to_datetime(today_dt).date() > playoff_st_dt:

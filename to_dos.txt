@@ -1,9 +1,5 @@
 - model features to add:
-    - model is too favorable towards better teams
-    - starting goalie --- nhlc.nhl_client.misc.config()
-    - injury score  --- nhlc.nhl_client.game_center.play_by_play(2025021312)['rosterSpots']
     - nhl edge scraping?
-    - add historical predictions as feature
 
 - codebase features to add:
     - add ETL pipeline for input of game ML odds, currently manual - start with terminal input when missing
@@ -19,11 +15,9 @@
     - pytest
 
 - new to-dos
-    - starting goalie model
-    - filling out missing schedule data on request
+    - frontfilling features for future predictions
     - postseason/playoff round probability
     - regular season final standings graphic generation
-    - player features addition
     - explain a prediction menu item
     - betting odds automated ETL
     - predictions accuracy tracking

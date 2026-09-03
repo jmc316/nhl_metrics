@@ -203,6 +203,7 @@ goalie_feature_cols = sched_feature_cols + [home_goalie_name_col, away_goalie_na
                                             home_tot_shots_against_col, away_tot_shots_against_col,
                                             home_tot_saves_col, away_tot_saves_col, home_tot_goals_against_col,
                                             away_tot_goals_against_col, home_decision_col, away_decision_col]
+player_feature_cols = sched_feature_cols + [home_lineup_col, away_lineup_col]
 
 output_folder = 'output/'
 util_data_folder = 'util_data/'

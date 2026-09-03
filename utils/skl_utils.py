@@ -11,6 +11,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.inspection import permutation_importance
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 from sklearn.metrics import accuracy_score, roc_auc_score, log_loss, brier_score_loss
+from sklearn.calibration import CalibratedClassifierCV
+from sklearn.frozen import FrozenEstimator
 
 # avoid garbage collection
 matplotlib.use('Agg')
@@ -24,40 +26,53 @@ def preprocess_feature_data(data_df_in):
     # num_feats = ['homeGameNumPerc', 'awayGameNumPerc', 'relDaysRest', 'relTravelDist4Days',
     #             'relTravelDist7Days', 'relGamesPlayed4Days', 'relGamesPlayed7Days', 'relCrossedTZ4Days',
     #             'relCrossedTZ7Days']
-    num_feats_nonwindow = [cons.reg_game_num_perc_col.format(team='home'), cons.reg_game_num_perc_col.format(team='away'),
-                 cons.days_rest_col.format(pre='rel'), cons.elo_rat_col.format(pre='rel')] #, cons.goalie_days_rest_col.format(pre='rel')]
+    num_feats_nonwindow = [cons.elo_rat_col.format(pre='rel'), cons.reg_game_num_perc_col.format(team='home')] # [cons.reg_game_num_perc_col.format(team='home'), cons.reg_game_num_perc_col.format(team='away'),
+                 # cons.days_rest_col.format(pre='rel'), cons.elo_rat_col.format(pre='rel')] #, cons.goalie_days_rest_col.format(pre='rel')]
+
+    num_feats_nonwindow.extend(['rel_lineup_strength'])
+    
     num_feats_window = []
+    num_feats_window.append(cons.crossed_tz_n_days_col.format(pre='rel', n=7))
+    num_feats_window.append(cons.crossed_tz_n_days_col.format(pre='rel', n=4))
+    num_feats_window.append(cons.games_played_n_days_col.format(pre='rel', n=7))
     for window in cons.sched_feat_windows:
-        num_feats_window.append(cons.travel_dist_n_days_col.format(pre='rel', n=window))
-        num_feats_window.append(cons.games_played_n_days_col.format(pre='rel', n=window))
-        num_feats_window.append(cons.crossed_tz_n_days_col.format(pre='rel', n=window))
+        pass
+        # num_feats_window.append(cons.travel_dist_n_days_col.format(pre='rel', n=window))
+        # num_feats_window.append(cons.games_played_n_days_col.format(pre='rel', n=window))
+        # num_feats_window.append(cons.crossed_tz_n_days_col.format(pre='rel', n=window))
+    num_feats_window.append(cons.pk_per_n_col.format(pre='rel', n=5))
+    num_feats_window.append(cons.pk_per_n_col.format(pre='rel', n=20))
     for window in cons.team_feat_windows:
+        pass
         # num_feats_window.append(cons.point_per_n_col.format(pre='rel', n=window))
         # num_feats_window.append(cons.goal_diff_n_col.format(pre='rel', n=window))
         num_feats_window.append(cons.corsi_per_n_col.format(pre='rel', n=window))
-        num_feats_window.append(cons.pp_per_n_col.format(pre='rel', n=window))
-        num_feats_window.append(cons.pk_per_n_col.format(pre='rel', n=window))
+        # num_feats_window.append(cons.pp_per_n_col.format(pre='rel', n=window))
+        # num_feats_window.append(cons.pk_per_n_col.format(pre='rel', n=window))
         # num_feats_window.append(cons.fenwick_per_n_col.format(pre='rel', n=window))
+    num_feats_window.append('ev_'+cons.save_per_n_col.format(pre='rel', n=3))
+    num_feats_window.append('pp_'+cons.save_per_n_col.format(pre='rel', n=3))
     for window in cons.goalie_feat_windows:
         pass
         # num_feats_window.append(cons.save_per_n_col.format(pre='rel', n=window))
-        num_feats_window.append('ev_'+cons.save_per_n_col.format(pre='rel', n=window))
-        num_feats_window.append('pp_'+cons.save_per_n_col.format(pre='rel', n=window))
+        # num_feats_window.append('ev_'+cons.save_per_n_col.format(pre='rel', n=window))
+        # num_feats_window.append('pp_'+cons.save_per_n_col.format(pre='rel', n=window))
         # num_feats_window.append('sh_'+cons.save_per_n_col.format(pre='rel', n=window))
         # num_feats_window.append(cons.gaa_n_col.format(pre='rel', n=window))
         # num_feats_window.append('ev_'+cons.gaa_n_col.format(pre='rel', n=window))
-        num_feats_window.append('pp_'+cons.gaa_n_col.format(pre='rel', n=window))
+        # num_feats_window.append('pp_'+cons.gaa_n_col.format(pre='rel', n=window))
         # num_feats_window.append('sh_'+cons.gaa_n_col.format(pre='rel', n=window))
     for window in cons.goalie_feat_windows_2:
-        num_feats_window.append(cons.num_starts_n_col.format(pre='rel', n=window))
+        pass
+        # num_feats_window.append(cons.num_starts_n_col.format(pre='rel', n=window))
     num_feats = num_feats_nonwindow + num_feats_window
 
     # boolean categorical features, keep as is for the model
-    bool_feats = [cons.is_outdoor_venue_col, cons.is_home_opener_col,
-                  cons.is_ret_home_trap_col, cons.is_venue_alt_shock_col]
+    bool_feats = [cons.is_ret_home_trap_col] # [cons.is_outdoor_venue_col, cons.is_home_opener_col,
+                  # cons.is_ret_home_trap_col, cons.is_venue_alt_shock_col]
 
     # very low cardinality numeric categorical features (< 5 values), keep as is for the model
-    low_card_feats = [cons.rival_match_col, cons.market_intensity_col]
+    low_card_feats = [cons.rival_match_col] #, cons.market_intensity_col]
 
     # categorical features to be custom encoded with target encoding
     target_encoding_feats = [cons.venue_timezone_col]
@@ -70,7 +85,7 @@ def preprocess_feature_data(data_df_in):
     # medium cardinality categorical features to be one-hot encoded
     # helps avoid implication of false ordering
     # NOTE: venueTimezone added to one-hot encode mapped values above
-    one_hot_feats = [cons.day_of_week_col, cons.game_type_col, cons.venue_timezone_col]
+    one_hot_feats = [] # [cons.day_of_week_col] #, cons.game_type_col, cons.venue_timezone_col]
     one_hot_feats_new = []
     one_hot_encoder = OneHotEncoder(sparse_output=False).set_output(transform='pandas')
     for col in one_hot_feats:
@@ -79,58 +94,19 @@ def preprocess_feature_data(data_df_in):
         data_df = pd.concat([data_df.drop(columns=[col]), one_hot_encoded_df], axis=1)
 
     # larger cardinality categorical features to be label encoded
-    label_encode_feats = [cons.venue_col, cons.season_name_col]
+    label_encode_feats = [cons.venue_col] #[cons.venue_col, cons.season_name_col]
     label_encoder = LabelEncoder()
     for col in label_encode_feats:
         data_df[col] = label_encoder.fit_transform(data_df[col])
 
     feature_list = num_feats + bool_feats + low_card_feats + one_hot_feats_new + label_encode_feats
 
-    ### AUC=0.6085, Accuracy=0.5824
-    # ['homeRegGameNumPerc', 'awayRegGameNumPerc', 'relDaysRest', 'relEloRating',
-    # 'relTravelDist4Days', 'relGamesPlayed4Days', 'relCrossedTZ4Days', 'relTravelDist7Days',
-    # 'relGamesPlayed7Days', 'relCrossedTZ7Days', 'relCorsiPer5Games', 'relPPPer5Games',
-    # 'relPKPer5Games', 'relCorsiPer20Games', 'relPPPer20Games', 'relPKPer20Games',
-    # 'ev_relSavePer3Games', 'pp_relSavePer3Games', 'pp_relGAA3Games', 'relNumStarts7Days',
-    # 'isOutdoorVenue', 'isHomeOpener', 'isRetHomeTrap', 'isVenueAltShock', 'rivalMatch',
-    # 'marketIntensity', 'dayOfWeek_0', 'dayOfWeek_1', 'dayOfWeek_2', 'dayOfWeek_3', 'dayOfWeek_4',
-    # 'dayOfWeek_5', 'dayOfWeek_6', 'gameType_2', 'gameType_3', 'venueTimezone_Am_Central',
-    # 'venueTimezone_Am_Eastern', 'venueTimezone_Eu_Central', 'venueTimezone_Eu_Eastern',
-    # 'venueTimezone_Mountain', 'venueTimezone_Pacific', 'venue', 'seasonName']
-
-    ### AUC=0.6054, Accuracy=0.5824
-    # ['homeRegGameNumPerc', 'awayRegGameNumPerc', 'relDaysRest', 'relEloRating',
-    # 'relTravelDist4Days', 'relGamesPlayed4Days', 'relCrossedTZ4Days', 'relTravelDist7Days',
-    # 'relGamesPlayed7Days', 'relCrossedTZ7Days', 'relPointsPer5Games', 'relGoalDiff5Games',
-    # 'relCorsiPer5Games', 'relPPPer5Games', 'relPKPer5Games', 'relPointsPer20Games',
-    # 'relGoalDiff20Games', 'relCorsiPer20Games', 'relPPPer20Games', 'relPKPer20Games',
-    # 'pp_relSavePer3Games', 'ev_relGAA3Games', 'pp_relGAA3Games', 'relNumStarts7Days',
-    # 'isOutdoorVenue', 'isHomeOpener', 'isRetHomeTrap', 'isVenueAltShock', 'rivalMatch',
-    # 'marketIntensity', 'dayOfWeek_0', 'dayOfWeek_1', 'dayOfWeek_2', 'dayOfWeek_3',
-    # 'dayOfWeek_4', 'dayOfWeek_5', 'dayOfWeek_6', 'gameType_2', 'gameType_3',
-    # 'venueTimezone_Am_Central', 'venueTimezone_Am_Eastern', 'venueTimezone_Eu_Central',
-    # 'venueTimezone_Eu_Eastern', 'venueTimezone_Mountain', 'venueTimezone_Pacific', 'venue',
-    # 'seasonName']
-
-    ### AUC=0.606, Accuracy=0.582
-    # ['homeRegGameNumPerc', 'awayRegGameNumPerc', 'relDaysRest', 'relEloRating',
-    # 'relTravelDist4Days', 'relGamesPlayed4Days', 'relCrossedTZ4Days', 'relTravelDist7Days',
-    # 'relGamesPlayed7Days', 'relCrossedTZ7Days', 'relPointsPer5Games', 'relGoalDiff5Games',
-    # 'relCorsiPer5Games', 'relPPPer5Games', 'relPKPer5Games', 'relPointsPer20Games',
-    # 'relGoalDiff20Games', 'relCorsiPer20Games', 'relPPPer20Games', 'relPKPer20Games',
-    # 'isOutdoorVenue', 'isHomeOpener', 'isRetHomeTrap', 'isVenueAltShock', 'rivalMatch',
-    # 'marketIntensity', 'dayOfWeek_0', 'dayOfWeek_1', 'dayOfWeek_2', 'dayOfWeek_3',
-    # 'dayOfWeek_4', 'dayOfWeek_5', 'dayOfWeek_6', 'gameType_2', 'gameType_3',
-    # 'venueTimezone_Am_Central', 'venueTimezone_Am_Eastern', 'venueTimezone_Eu_Central',
-    # 'venueTimezone_Eu_Eastern', 'venueTimezone_Mountain', 'venueTimezone_Pacific', 'venue',
-    # 'seasonName']
-
     return data_df, feature_list
 
 
 def model_train(data_df, feature_list, save_model=True):
 
-    actual_df = data_df[data_df[cons.home_team_win_col].notna()]
+    actual_df = data_df[data_df[cons.home_team_win_col].notna()].sort_values(by=[cons.game_id_col, cons.starttime_est_col, cons.home_team_name_col], ascending=True)
 
     if save_model:
         # get the unique seasons in the dataframe, sorted
@@ -155,15 +131,21 @@ def model_train(data_df, feature_list, save_model=True):
             preds = val_model.predict(X_val)
             probs = val_model.predict_proba(X_val)[:, 1]  # probability of the positive class
 
+            # Calibrate the model
+            frozen_val_model = FrozenEstimator(val_model)
+            val_model_calib = CalibratedClassifierCV(frozen_val_model)
+            val_model_calib.fit(X_val, y_val)
+            calibrated_probabilities = val_model_calib.predict_proba(X_val)[:, 1]
+
             fold_result = {
                 'train_seasons': train_seasons,
                 'val_season': val_season,
                 'n_train': len(X_train),
                 'n_val': len(X_val),
                 'accuracy': accuracy_score(y_val, preds),
-                'auc': roc_auc_score(y_val, probs),
-                'log_loss': log_loss(y_val, probs),
-                'brier': brier_score_loss(y_val, probs)
+                'auc': roc_auc_score(y_val, calibrated_probabilities),
+                'log_loss': log_loss(y_val, calibrated_probabilities),
+                'brier': brier_score_loss(y_val, calibrated_probabilities)
             }
             fold_results.append(fold_result)
 
