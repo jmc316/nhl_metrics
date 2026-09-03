@@ -131,21 +131,15 @@ def model_train(data_df, feature_list, save_model=True):
             preds = val_model.predict(X_val)
             probs = val_model.predict_proba(X_val)[:, 1]  # probability of the positive class
 
-            # Calibrate the model
-            frozen_val_model = FrozenEstimator(val_model)
-            val_model_calib = CalibratedClassifierCV(frozen_val_model)
-            val_model_calib.fit(X_val, y_val)
-            calibrated_probabilities = val_model_calib.predict_proba(X_val)[:, 1]
-
             fold_result = {
                 'train_seasons': train_seasons,
                 'val_season': val_season,
                 'n_train': len(X_train),
                 'n_val': len(X_val),
                 'accuracy': accuracy_score(y_val, preds),
-                'auc': roc_auc_score(y_val, calibrated_probabilities),
-                'log_loss': log_loss(y_val, calibrated_probabilities),
-                'brier': brier_score_loss(y_val, calibrated_probabilities)
+                'auc': roc_auc_score(y_val, probs),
+                'log_loss': log_loss(y_val, probs),
+                'brier': brier_score_loss(y_val, probs)
             }
             fold_results.append(fold_result)
 
@@ -292,7 +286,11 @@ def init_model(random_state_in=None):
     model = RandomForestClassifier(
         n_estimators=300,
         random_state=random_state_in,
-        n_jobs=-1
+        n_jobs=-1,
+        max_depth=10,           # tuned hyperparameter
+        min_samples_leaf=45,    # tuned hyperparameter
+        max_features='sqrt',    # tuned hyperparameter
+        max_samples=1.0         # tuned hyperparameter
         )
 
     return model

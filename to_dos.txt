@@ -16,8 +16,8 @@
 
 - new to-dos
     - frontfilling features for future predictions
-    - postseason/playoff round probability
     - regular season final standings graphic generation
+    - postseason/playoff round probability
     - explain a prediction menu item
     - betting odds automated ETL
     - predictions accuracy tracking
