@@ -1,3 +1,5 @@
+"""Orchestrates building, merging, saving, and loading the full (schedule/team/player/goalie) feature set."""
+
 import os
 
 import pandas as pd
@@ -11,6 +13,7 @@ from features.feat_schedule import sched_features_update
 
 
 def feature_data_update(sched_feat_df, team_feat_df, player_feat_df, goalie_feat_df, save_feat_data):
+    """Merge the schedule/team/player/goalie feature dataframes into one, optionally saving per season."""
 
     # merge all feature dataframes into a single dataframe
     merge_cols = [cons.game_id_col, cons.season_name_col, cons.game_type_col, cons.starttime_est_col,
@@ -31,6 +34,7 @@ def feature_data_update(sched_feat_df, team_feat_df, player_feat_df, goalie_feat
 
 
 def clean_feature_df(data_df):
+    """Normalize dtypes/sort order of a loaded feature dataframe."""
 
     data_df[cons.starttime_est_col] = pd.to_datetime(data_df[cons.starttime_est_col], format='mixed')
 
@@ -45,6 +49,7 @@ def clean_feature_df(data_df):
 
 
 def feature_data_load():
+    """Load and concatenate all previously saved per-season feature files into one dataframe."""
 
     # the list of feature files that have already been generated
     season_sched_list = [file for file in os.listdir(cons.season_feature_sets_folder) if file.endswith(cons.feat_data_filename.format(season='$').split('$')[1])]
@@ -66,6 +71,8 @@ def feature_data_load():
 
 
 def feat_update(data_df=pd.DataFrame, save_feat_data=False, verbose=False, player_value_formula=None):
+    """Rebuild schedule, team, player, and goalie features and merge them into one feature dataframe."""
+
     print('Updating all feature data...')
 
     sched_feat_df, sched_features = sched_features_update(data_df, verbose)

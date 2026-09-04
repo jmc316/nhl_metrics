@@ -1,11 +1,12 @@
 import numpy as np
 import pandas as pd
 import constants as cons
-from sklearn.ensemble import RandomForestClassifier
+
 from sklearn.metrics import roc_auc_score
-from features.feat_team import compute_elo_ratings
 from features.features import feature_data_load
+from features.feat_team import compute_elo_ratings
 from utils.skl_utils import preprocess_feature_data
+from sklearn.ensemble import RandomForestClassifier
 
 
 

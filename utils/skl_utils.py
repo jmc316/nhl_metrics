@@ -1,3 +1,5 @@
+"""Trains, runs inference with, and explains the scikit-learn RandomForest win-probability model."""
+
 import shap
 import warnings
 import matplotlib
@@ -7,19 +9,18 @@ import pandas as pd
 import constants as cons
 import matplotlib.pyplot as plt
 
-from utils.file_utils import pklLoad, pklSave, txtSave
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.inspection import permutation_importance
+from utils.file_utils import pklLoad, pklSave, txtSave
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 from sklearn.metrics import accuracy_score, roc_auc_score, log_loss, brier_score_loss
-from sklearn.calibration import CalibratedClassifierCV
-from sklearn.frozen import FrozenEstimator
 
 # avoid garbage collection
 matplotlib.use('Agg')
 
 
 def preprocess_feature_data(data_df_in):
+    """Select and encode the feature columns used by the model, returning (encoded_df, feature_list)."""
 
     data_df = data_df_in.copy()
 
@@ -30,7 +31,7 @@ def preprocess_feature_data(data_df_in):
     num_feats_nonwindow = [cons.elo_rat_col.format(pre='rel'), cons.reg_game_num_perc_col.format(team='home')] # [cons.reg_game_num_perc_col.format(team='home'), cons.reg_game_num_perc_col.format(team='away'),
                  # cons.days_rest_col.format(pre='rel'), cons.elo_rat_col.format(pre='rel')] #, cons.goalie_days_rest_col.format(pre='rel')]
 
-    num_feats_nonwindow.extend(['rel_lineup_strength'])
+    num_feats_nonwindow.extend([cons.lineup_strength_col.format(pre='rel')])
     
     num_feats_window = []
     num_feats_window.append(cons.crossed_tz_n_days_col.format(pre='rel', n=7))
@@ -106,6 +107,11 @@ def preprocess_feature_data(data_df_in):
 
 
 def model_train(data_df, feature_list, save_model=True):
+    """
+    Walk-forward train/validate the model season-by-season (when save_model=True, printing accuracy/AUC/
+    log loss/Brier score, permutation importance, and feature correlations), then fit and return a final
+    model on all completed games.
+    """
 
     actual_df = data_df[data_df[cons.home_team_win_col].notna()].sort_values(by=[cons.game_id_col, cons.starttime_est_col, cons.home_team_name_col], ascending=True)
 
@@ -197,22 +203,6 @@ def model_train(data_df, feature_list, save_model=True):
     final_model = init_model(random_state_in=42)
     final_model.fit(actual_df[feature_list], actual_df[cons.home_team_win_col])
 
-    # Schedule-only baseline (no class_weight):
-    # Avg AUC:      ~0.539
-    # Avg Accuracy: 0.5352 (baseline: 0.537)
-    # Avg Brier:    ~0.254
-    # Avg Log Loss: ~0.703
-
-    # Schedule + Team Features (no class_weight):
-    # Avg AUC:      0.6060
-    # Avg Accuracy: 0.5820
-    # Avg brier:    
-    # Avg log loss: 
-
-    # Vegas Model:
-    #   Accuracy = ~62-63%
-    #   AUC = 68-72%
-
     if save_model:
         print('\nSaving model file...')
         pklSave(final_model, cons.model_files_folder, cons.sklearn_model_filename)
@@ -221,6 +211,7 @@ def model_train(data_df, feature_list, save_model=True):
 
 
 def model_inference(data_df, feature_list, today_dt, model=None):
+    """Predict outcomes/win probabilities for all not-yet-played games and merge them back into data_df."""
 
     # if the model is not passed in, load it from the pkl file
     if not model:
@@ -259,8 +250,8 @@ def model_inference(data_df, feature_list, today_dt, model=None):
 
 
 def init_model(random_state_in=None):
+    """Construct the RandomForestClassifier with this project's tuned hyperparameters.
 
-    """
     SciKit Learn RandomForestRegressor parameters:
     - n_estimators:  The number of trees in the forest (default is 100)
     - criterion:  The function to measure the quality of a split (default is 'squared_error' for regression)
@@ -282,11 +273,6 @@ def init_model(random_state_in=None):
     - monotonic_cst:  Monotonic constraints (default is None)
     """
 
-    """
-    Project-specific notes for model parameter tuning
-    
-    """
-
     model = RandomForestClassifier(
         n_estimators=300,
         random_state=random_state_in,
@@ -301,6 +287,7 @@ def init_model(random_state_in=None):
 
 
 def explain_predictions(pred_data_x, model, home_team, away_team, game_date, today_dt):
+    """Generate and save a SHAP waterfall plot explaining a single game's home-win prediction."""
 
     # Build the explainer once, using your trained model
     explainer = shap.TreeExplainer(model)

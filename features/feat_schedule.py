@@ -1,11 +1,13 @@
+"""Builds schedule-based features (rest, travel, rivalries, playoff context, etc.) for the model dataset."""
+
 import bisect
 
 import numpy as np
 import pandas as pd
 import constants as cons
 
-from utils.file_utils import csvLoad, csvSave
 from schedule import load_sched_df_features
+from utils.file_utils import csvLoad, csvSave
 
 
 def sched_features_update(data_df_in=pd.DataFrame, verbose=False):
@@ -479,6 +481,10 @@ def games_played_last_n_days(data_df, team_col, n):
 
 
 def travel_distance_last_n_days(data_df, team_col, n, backfill=True):
+    """
+    Adds a new column to the input DataFrame with each team's average travel distance (km, great-circle)
+    between venues over its games in the trailing N days before the current game.
+    """
 
     # load the geolocation file for venues and merge with the feature dataframe
     geoloc_df = csvLoad(cons.util_data_folder, cons.venue_geoloc_filename)
@@ -784,6 +790,10 @@ def is_venue_altitude_shock(data_df):
 
 
 def playoff_series_score(data_df, backfill=True):
+    """
+    Adds home/away playoff series score columns (games won so far in the current best-of-7 series)
+    for each playoff game. Non-playoff games are left at 0.
+    """
 
     # create dataframe to loop through
     if backfill:

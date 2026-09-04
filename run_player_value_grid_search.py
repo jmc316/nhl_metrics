@@ -1,15 +1,15 @@
+import json
 import argparse
 import itertools
-import json
 
 import numpy as np
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, roc_auc_score
-
 import constants as cons
+
 from features.features import feat_update
 from schedule import load_sched_df_features
 from utils.skl_utils import preprocess_feature_data
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, roc_auc_score
 
 
 def build_formula_grid(limit=None):

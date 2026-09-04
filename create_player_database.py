@@ -1,7 +1,8 @@
-import pandas as pd
-import requests
-import constants as cons
 import os
+import requests
+
+import pandas as pd
+import constants as cons
 
 from nhlpy import NHLClient
 from schedule import load_sched_df

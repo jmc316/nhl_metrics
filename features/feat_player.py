@@ -1,12 +1,17 @@
+"""Builds player-based features (lineup strength) for the model dataset."""
+
 import json
 
 import numpy as np
 import pandas as pd
 import constants as cons
 
-from utils.file_utils import csvLoad, csvSave
 from schedule import load_sched_df_features
+from utils.file_utils import csvLoad, csvSave
 
+# fallback value/value_per60 used when a player has no prior-season history (league-wide averages)
+DEFAULT_VALUE_PER60 = 0.001056387
+DEFAULT_VALUE = 35.77355929
 
 DEFAULT_PLAYER_VALUE_FORMULA = {
     'skater': {
@@ -28,6 +33,8 @@ DEFAULT_PLAYER_VALUE_FORMULA = {
 
 
 def resolve_player_value_formula(formula=None):
+    """Merge a user-supplied player value formula (full or partial) over the default weights."""
+
     resolved = {
         'skater': dict(DEFAULT_PLAYER_VALUE_FORMULA['skater']),
         'goalie': dict(DEFAULT_PLAYER_VALUE_FORMULA['goalie']),
@@ -53,6 +60,7 @@ def resolve_player_value_formula(formula=None):
 
 
 def player_features_update(data_df_in=pd.DataFrame, verbose=False, player_value_formula=None):
+    """Add all player features to data_df_in (or a freshly loaded feature set if empty)."""
 
     if data_df_in.empty:
         data_df = load_sched_df_features(feat_set_label='player')
@@ -79,8 +87,8 @@ def player_features_update(data_df_in=pd.DataFrame, verbose=False, player_value_
 
         if feature == 'lineup_strength':
             data_df = lineup_strength(data_df, player_df)
-            data_df['rel_lineup_strength_per60'] = data_df['home_lineup_strength_per60'] - data_df['away_lineup_strength_per60']
-            data_df['rel_lineup_strength'] = data_df['home_lineup_strength'] - data_df['away_lineup_strength']
+            data_df[cons.lineup_strength_per60_col.format(pre='rel')] = data_df[cons.lineup_strength_per60_col.format(pre='home')] - data_df[cons.lineup_strength_per60_col.format(pre='away')]
+            data_df[cons.lineup_strength_col.format(pre='rel')] = data_df[cons.lineup_strength_col.format(pre='home')] - data_df[cons.lineup_strength_col.format(pre='away')]
 
     if data_df_in.empty:
         for season in data_df[cons.season_name_col].unique():
@@ -92,8 +100,9 @@ def player_features_update(data_df_in=pd.DataFrame, verbose=False, player_value_
 
 
 def load_player_df():
+    """Load the per-season player stats dataframe used as the source for all player features."""
 
-    # load the saved goalie features dataframe
+    # load the saved player features dataframe
     player_df = csvLoad(cons.player_features_folder, cons.player_data_filename)
     player_df[cons.season_name_col] = player_df[cons.season_name_col].astype('string')
     
@@ -101,6 +110,7 @@ def load_player_df():
 
 
 def compute_player_value(player_df, formula=None):
+    """Aggregate each player's per-season stats and score them into a single `value`/`value_per60`."""
 
     formula_cfg = resolve_player_value_formula(formula)
 
@@ -168,13 +178,10 @@ def compute_player_value(player_df, formula=None):
 
 
 def compute_player_asof_value(values_df, playerid, decay_rate=0.7):
-
-    # initialized to non-null average across all player data
-    value_per60 = 0.001056387
-    value = 35.77355929
+    """Exponentially-weighted average of a player's `value`/`value_per60` across prior seasons."""
 
     if values_df.empty:
-        return value_per60, value
+        return DEFAULT_VALUE_PER60, DEFAULT_VALUE
 
     weights = [decay_rate ** i for i in range(len(values_df))]
     value_per60 = np.average(values_df['value_per60'], weights=weights)
@@ -184,6 +191,7 @@ def compute_player_asof_value(values_df, playerid, decay_rate=0.7):
 
 
 def lineup_strength(data_df, player_df):
+    """Add each matchup's home/away lineup strength as the sum of each player's as-of value."""
 
     # Precompute each player's prior-season values once so every matchup can be scored with a
     # direct lookup instead of re-filtering the full player history for each lineup member.
@@ -196,27 +204,27 @@ def lineup_strength(data_df, player_df):
             'value_per60': group['value_per60'].to_numpy(dtype=float),
         }
 
-    default_value_per60 = 0.001056387
-    default_value = 35.77355929
     asof_cache = {}
 
     def get_asof_value(player_id, season_label):
+        # cache repeated (player, season) lookups since the same lineup often recurs across games
         cache_key = (player_id, season_label)
         if cache_key in asof_cache:
             return asof_cache[cache_key]
 
         history = player_histories.get(player_id)
         if history is None:
-            asof_cache[cache_key] = (default_value_per60, default_value)
+            asof_cache[cache_key] = (DEFAULT_VALUE_PER60, DEFAULT_VALUE)
             return asof_cache[cache_key]
 
+        # only consider seasons strictly before season_label, to avoid leaking future data
         seasons = history[cons.season_name_col]
         prior_idx = np.searchsorted(seasons, season_label, side='left')
         prior_value_per60 = history['value_per60'][:prior_idx]
         prior_values = history['value'][:prior_idx]
 
         if len(prior_value_per60) == 0:
-            asof_cache[cache_key] = (default_value_per60, default_value)
+            asof_cache[cache_key] = (DEFAULT_VALUE_PER60, DEFAULT_VALUE)
             return asof_cache[cache_key]
 
         weights = [0.7 ** i for i in range(len(prior_value_per60))]
@@ -258,9 +266,9 @@ def lineup_strength(data_df, player_df):
         home_lineup_strengths.append(home_strength)
         away_lineup_strengths.append(away_strength)
 
-    data_df['home_lineup_strength_per60'] = home_lineup_strengths_per60
-    data_df['away_lineup_strength_per60'] = away_lineup_strengths_per60
-    data_df['home_lineup_strength'] = home_lineup_strengths
-    data_df['away_lineup_strength'] = away_lineup_strengths
+    data_df[cons.lineup_strength_per60_col.format(pre='home')] = home_lineup_strengths_per60
+    data_df[cons.lineup_strength_per60_col.format(pre='away')] = away_lineup_strengths_per60
+    data_df[cons.lineup_strength_col.format(pre='home')] = home_lineup_strengths
+    data_df[cons.lineup_strength_col.format(pre='away')] = away_lineup_strengths
 
     return data_df

@@ -1,3 +1,5 @@
+"""Builds team-based features (points %, goal diff, corsi/fenwick, special teams, Elo) for the model dataset."""
+
 import bisect
 
 import numpy as np
@@ -153,6 +155,7 @@ def load_team_df():
 
 
 def points_percentage_feature_add(feature_df, debug, backfill, team_col, n=None):
+    """Add a team's points percentage (2 pts/win, 1 pt/OTL) over its prior N games, or the season if n is None."""
 
     # assign n to a large number to capture all games in the current season for the specified team
     if not n:
@@ -187,7 +190,8 @@ def points_percentage_feature_add(feature_df, debug, backfill, team_col, n=None)
 
 
 def prevN_result(data_df, backfill, target_col, team_col, n):
-    
+    """Count a team's wins/losses/OTLs (per target_col) over its prior N games in the same season."""
+
     # create dataframe to loop through
     if backfill:
         data_df_target = data_df.copy()
@@ -285,6 +289,7 @@ def prevN_result(data_df, backfill, target_col, team_col, n):
 
 
 def prevN_gpg(data_df, backfill, target_col, team_col, n, for_against):
+    """Sum a team's goals for/against (per for_against) over its prior N games in the same season."""
 
     if for_against == 'for':
         score_col = cons.home_team_score_col if team_col == cons.home_team_name_col else cons.away_team_score_col
@@ -373,6 +378,7 @@ def prevN_gpg(data_df, backfill, target_col, team_col, n, for_against):
 
 
 def prevN_corsi(data_df, backfill, target_col, team_col, n):
+    """Average a team's corsi percentage (shot attempt share) over its prior N games in the same season."""
 
     # create dataframe to loop through
     if backfill:
@@ -465,6 +471,8 @@ def prevN_corsi(data_df, backfill, target_col, team_col, n):
 
 
 def prevN_fenwick(data_df, target_col, backfill, team_col, n, data_df_target=None):
+    """Average a team's fenwick percentage (unblocked shot attempt share) over its prior N games in the same season."""
+
     # create dataframe to loop through
     if backfill:
         data_df_target = data_df.copy()
@@ -554,6 +562,10 @@ def prevN_fenwick(data_df, target_col, backfill, team_col, n, data_df_target=Non
 
 
 def compute_elo_ratings(data_df, k=6, home_advantage=25, season_regress_factor=0.75, starting_elo=1500):
+    """
+    Adds home/away/relative pre-game Elo rating columns, updating each team's rating chronologically
+    after every completed game (with a partial regression to the mean at the start of each new season).
+    """
 
     data_df = data_df.sort_values(cons.starttime_est_col).reset_index(drop=True)
     
@@ -616,6 +628,7 @@ def compute_elo_ratings(data_df, k=6, home_advantage=25, season_regress_factor=0
 
 
 def add_ppper(data_df, team_col, n):
+    """Add a team's power play conversion percentage over its prior N games in the same season."""
 
     target_col = cons.pp_per_n_col.format(pre=team_col[:4], n=n)
 
@@ -698,6 +711,7 @@ def add_ppper(data_df, team_col, n):
 
 
 def add_pkper(data_df, team_col, n):
+    """Add a team's penalty kill percentage over its prior N games in the same season."""
 
     target_col = cons.pk_per_n_col.format(pre=team_col[:4], n=n)
 

@@ -15,6 +15,11 @@ matplotlib.use('Agg')
 
 
 def daily_probability(today_dt, date_since, season, display_graphic=True):
+    """
+    Compute Kelly-criterion betting returns for all predicted games between date_since and today_dt,
+    save the results to the predictions folder, print accuracy/return summaries, and plot cumulative
+    bankroll growth (full/half/quarter Kelly) over the date range.
+    """
 
     # load the schedule data with game results
     season_actual_df = csvLoad(cons.season_sched_folder, cons.season_sched_filename.format(season=season))
@@ -40,41 +45,44 @@ def daily_probability(today_dt, date_since, season, display_graphic=True):
         print(f"*** WARNING: Missing odds data for {missing_games} entries! ***")
 
     # add implied probability based off odds
-    odds_data.loc[odds_data[cons.home_odds_col] > 0, 'homeTeamImpliedProb'] = (100 / (odds_data['homeTeamOdds']+100)) * 100
-    odds_data.loc[odds_data[cons.away_odds_col] > 0, 'awayTeamImpliedProb'] = (100 / (odds_data['awayTeamOdds']+100)) * 100
-    odds_data.loc[odds_data[cons.home_odds_col] < 0, 'homeTeamImpliedProb'] = (abs(odds_data['homeTeamOdds']) / (abs(odds_data['homeTeamOdds'])+100)) * 100
-    odds_data.loc[odds_data[cons.away_odds_col] < 0, 'awayTeamImpliedProb'] = (abs(odds_data['awayTeamOdds']) / (abs(odds_data['awayTeamOdds'])+100)) * 100
+    odds_data.loc[odds_data[cons.home_odds_col] > 0, cons.home_implied_prob_col] = (100 / (odds_data[cons.home_odds_col]+100)) * 100
+    odds_data.loc[odds_data[cons.away_odds_col] > 0, cons.away_implied_prob_col] = (100 / (odds_data[cons.away_odds_col]+100)) * 100
+    odds_data.loc[odds_data[cons.home_odds_col] < 0, cons.home_implied_prob_col] = (abs(odds_data[cons.home_odds_col]) / (abs(odds_data[cons.home_odds_col])+100)) * 100
+    odds_data.loc[odds_data[cons.away_odds_col] < 0, cons.away_implied_prob_col] = (abs(odds_data[cons.away_odds_col]) / (abs(odds_data[cons.away_odds_col])+100)) * 100
 
     # add a row that is the odds of the winner if the correct prediction was made, else 0
-    odds_data['winner_odds'] = odds_data.apply(
+    odds_data[cons.winner_odds_col] = odds_data.apply(
         lambda row: row[cons.home_odds_col] if row[cons.cor_outcome_col] == 1 and row[cons.home_team_score_col] > row[cons.away_team_score_col]
             else (row[cons.away_odds_col] if row[cons.cor_outcome_col] == 1 and row[cons.home_team_score_col] < row[cons.away_team_score_col]
                 else 0), axis=1)
 
     # create value column
-    odds_data.loc[odds_data[cons.home_odds_col] > 0, 'homeNetOdds'] = odds_data[cons.home_odds_col] / 100
-    odds_data.loc[odds_data[cons.home_odds_col] < 0, 'homeNetOdds'] = 100 / abs(odds_data[cons.home_odds_col])
-    odds_data.loc[odds_data[cons.away_odds_col] > 0, 'awayNetOdds'] = odds_data[cons.away_odds_col] / 100
-    odds_data.loc[odds_data[cons.away_odds_col] < 0, 'awayNetOdds'] = 100 / abs(odds_data[cons.away_odds_col])
-    odds_data.loc[odds_data[cons.home_odds_col] > odds_data[cons.away_odds_col], 'ExpectedValue'] = odds_data[cons.home_win_prob_col] * odds_data['homeNetOdds'] - odds_data[cons.away_win_prob_col]
-    odds_data.loc[odds_data[cons.away_odds_col] > odds_data[cons.home_odds_col], 'ExpectedValue'] = odds_data[cons.away_win_prob_col] * odds_data['awayNetOdds'] - odds_data[cons.home_win_prob_col]
+    odds_data.loc[odds_data[cons.home_odds_col] > 0, cons.home_net_odds_col] = odds_data[cons.home_odds_col] / 100
+    odds_data.loc[odds_data[cons.home_odds_col] < 0, cons.home_net_odds_col] = 100 / abs(odds_data[cons.home_odds_col])
+    odds_data.loc[odds_data[cons.away_odds_col] > 0, cons.away_net_odds_col] = odds_data[cons.away_odds_col] / 100
+    odds_data.loc[odds_data[cons.away_odds_col] < 0, cons.away_net_odds_col] = 100 / abs(odds_data[cons.away_odds_col])
+    odds_data.loc[odds_data[cons.home_odds_col] > odds_data[cons.away_odds_col], cons.expected_value_col] = odds_data[cons.home_win_prob_col] * odds_data[cons.home_net_odds_col] - odds_data[cons.away_win_prob_col]
+    odds_data.loc[odds_data[cons.away_odds_col] > odds_data[cons.home_odds_col], cons.expected_value_col] = odds_data[cons.away_win_prob_col] * odds_data[cons.away_net_odds_col] - odds_data[cons.home_win_prob_col]
 
+    kelly_full_col = cons.kelly_per_col.format(size='full')
+    kelly_hlf_col = cons.kelly_per_col.format(size='hlf')
+    kelly_qtr_col = cons.kelly_per_col.format(size='qtr')
     odds_data.loc[(odds_data[cons.home_odds_col] > odds_data[cons.away_odds_col]) &
-                  (odds_data['ExpectedValue'] > 0), 'kellyPer_full'] = (odds_data['homeNetOdds']*odds_data[cons.home_win_prob_col] - odds_data[cons.away_win_prob_col]) / odds_data['homeNetOdds']
+                  (odds_data[cons.expected_value_col] > 0), kelly_full_col] = (odds_data[cons.home_net_odds_col]*odds_data[cons.home_win_prob_col] - odds_data[cons.away_win_prob_col]) / odds_data[cons.home_net_odds_col]
     odds_data.loc[(odds_data[cons.home_odds_col] < odds_data[cons.away_odds_col]) &
-                  (odds_data['ExpectedValue'] > 0), 'kellyPer_full'] = (odds_data['awayNetOdds']*odds_data[cons.away_win_prob_col] - odds_data[cons.home_win_prob_col]) / odds_data['awayNetOdds']
-    odds_data['kellyPer_qtr'] = odds_data['kellyPer_full'] / 4
-    odds_data['kellyPer_hlf'] = odds_data['kellyPer_full'] / 2
+                  (odds_data[cons.expected_value_col] > 0), kelly_full_col] = (odds_data[cons.away_net_odds_col]*odds_data[cons.away_win_prob_col] - odds_data[cons.home_win_prob_col]) / odds_data[cons.away_net_odds_col]
+    odds_data[kelly_qtr_col] = odds_data[kelly_full_col] / 4
+    odds_data[kelly_hlf_col] = odds_data[kelly_full_col] / 2
 
     # implement betting strategy here: track a compounding bankroll, wagering kellyStake_full% of the
     # bankroll on each game, where a day's bankroll reflects the prior day's wins/losses
     odds_data[cons.game_date_col] = odds_data[cons.starttime_est_col].dt.date
 
     # multiplier applied to a game's stake: odds payout if won, -1 if lost, 0 if no bet was placed
-    odds_data['stakeMultiplier'] = -1.0
-    odds_data.loc[odds_data[cons.winner_odds_col] > 0, 'stakeMultiplier'] = odds_data[cons.winner_odds_col] / 100
-    odds_data.loc[odds_data[cons.winner_odds_col] < 0, 'stakeMultiplier'] = 100 / abs(odds_data[cons.winner_odds_col])
-    odds_data.loc[odds_data['kellyPer_full'].isna(), 'stakeMultiplier'] = 0.0
+    odds_data[cons.stake_multiplier_col] = -1.0
+    odds_data.loc[odds_data[cons.winner_odds_col] > 0, cons.stake_multiplier_col] = odds_data[cons.winner_odds_col] / 100
+    odds_data.loc[odds_data[cons.winner_odds_col] < 0, cons.stake_multiplier_col] = 100 / abs(odds_data[cons.winner_odds_col])
+    odds_data.loc[odds_data[kelly_full_col].isna(), cons.stake_multiplier_col] = 0.0
 
     bankroll_init = 100.0
     bankroll_full = bankroll_init
@@ -88,22 +96,25 @@ def daily_probability(today_dt, date_since, season, display_graphic=True):
         bankroll_hlf_by_date[game_date] = bankroll_hlf
         bankroll_qtr_by_date[game_date] = bankroll_qtr
         day_mask = odds_data[cons.game_date_col] == game_date
-        day_full_stakes = 100 * bankroll_full * odds_data.loc[day_mask, 'kellyPer_full'].fillna(0) / 100
-        bankroll_full += (day_full_stakes * odds_data.loc[day_mask, 'stakeMultiplier']).sum()
-        bankroll_hlf_stakes = 100 * bankroll_hlf * odds_data.loc[day_mask, 'kellyPer_hlf'].fillna(0) / 100
-        bankroll_hlf += (bankroll_hlf_stakes * odds_data.loc[day_mask, 'stakeMultiplier']).sum()
-        bankroll_qtr_stakes = 100 * bankroll_qtr * odds_data.loc[day_mask, 'kellyPer_qtr'].fillna(0) / 100
-        bankroll_qtr += (bankroll_qtr_stakes * odds_data.loc[day_mask, 'stakeMultiplier']).sum()
+        day_full_stakes = 100 * bankroll_full * odds_data.loc[day_mask, kelly_full_col].fillna(0) / 100
+        bankroll_full += (day_full_stakes * odds_data.loc[day_mask, cons.stake_multiplier_col]).sum()
+        day_hlf_stakes = 100 * bankroll_hlf * odds_data.loc[day_mask, kelly_hlf_col].fillna(0) / 100
+        bankroll_hlf += (day_hlf_stakes * odds_data.loc[day_mask, cons.stake_multiplier_col]).sum()
+        day_qtr_stakes = 100 * bankroll_qtr * odds_data.loc[day_mask, kelly_qtr_col].fillna(0) / 100
+        bankroll_qtr += (day_qtr_stakes * odds_data.loc[day_mask, cons.stake_multiplier_col]).sum()
 
-    odds_data[f'{cons.bankroll_col}_full'] = odds_data[cons.game_date_col].map(bankroll_full_by_date)
-    odds_data[f'{cons.bankroll_col}_hlf'] = odds_data[cons.game_date_col].map(bankroll_hlf_by_date)
-    odds_data[f'{cons.bankroll_col}_qtr'] = odds_data[cons.game_date_col].map(bankroll_qtr_by_date)
+    bankroll_full_col = f'{cons.bankroll_col}_full'
+    bankroll_hlf_col = f'{cons.bankroll_col}_hlf'
+    bankroll_qtr_col = f'{cons.bankroll_col}_qtr'
+    odds_data[bankroll_full_col] = odds_data[cons.game_date_col].map(bankroll_full_by_date)
+    odds_data[bankroll_hlf_col] = odds_data[cons.game_date_col].map(bankroll_hlf_by_date)
+    odds_data[bankroll_qtr_col] = odds_data[cons.game_date_col].map(bankroll_qtr_by_date)
 
-    odds_data[f'{cons.winnings_col}_full'] = odds_data['kellyPer_full'] * odds_data['bankroll_full'] * odds_data['stakeMultiplier']
-    odds_data[f'{cons.winnings_col}_hlf'] = odds_data['kellyPer_hlf'] * odds_data['bankroll_hlf'] * odds_data['stakeMultiplier']
-    odds_data[f'{cons.winnings_col}_qtr'] = odds_data['kellyPer_qtr'] * odds_data['bankroll_qtr'] * odds_data['stakeMultiplier']
+    odds_data[f'{cons.winnings_col}_full'] = odds_data[kelly_full_col] * odds_data[bankroll_full_col] * odds_data[cons.stake_multiplier_col]
+    odds_data[f'{cons.winnings_col}_hlf'] = odds_data[kelly_hlf_col] * odds_data[bankroll_hlf_col] * odds_data[cons.stake_multiplier_col]
+    odds_data[f'{cons.winnings_col}_qtr'] = odds_data[kelly_qtr_col] * odds_data[bankroll_qtr_col] * odds_data[cons.stake_multiplier_col]
 
-    odds_data.drop(columns=['stakeMultiplier', 'homeTeamImpliedProb', 'awayTeamImpliedProb', 'homeNetOdds', 'awayNetOdds'], inplace=True)
+    odds_data.drop(columns=[cons.stake_multiplier_col, cons.home_implied_prob_col, cons.away_implied_prob_col, cons.home_net_odds_col, cons.away_net_odds_col], inplace=True)
 
     # save the prediction return data to the prediction folder
     csvSave(odds_data, cons.season_pred_folder.format(date=today_dt), cons.pred_ret_filename.format(date_since=date_since, today_dt=today_dt))
