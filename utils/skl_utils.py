@@ -1,4 +1,5 @@
 import shap
+import warnings
 import matplotlib
 
 import numpy as np
@@ -155,15 +156,18 @@ def model_train(data_df, feature_list, save_model=True):
         print(f"Avg Model Validation Log Loss:      {fold_results_df['log_loss'].mean():.4f}")
         print(f"Avg Model Validation Brier Score:  {fold_results_df['brier'].mean():.4f}")
 
-        perm_imp_result = permutation_importance(
-            val_model,           # your fitted RandomForestClassifier
-            X_val,
-            y_val,
-            n_repeats=10,    # shuffle each feature 10x, average the effect
-            random_state=42,
-            n_jobs=-1,       # parallelize across cores
-            scoring='accuracy'     # or 'neg_mean_squared_error', etc.
-        )
+        # n_jobs=-1 triggers a harmless sklearn/joblib delayed-propagation UserWarning
+        with warnings.catch_warnings():
+            warnings.filterwarnings('ignore', message='.*sklearn.utils.parallel.delayed.*')
+            perm_imp_result = permutation_importance(
+                val_model,           # your fitted RandomForestClassifier
+                X_val,
+                y_val,
+                n_repeats=10,    # shuffle each feature 10x, average the effect
+                random_state=42,
+                n_jobs=-1,       # parallelize across cores
+                scoring='accuracy'     # or 'neg_mean_squared_error', etc.
+            )
 
         perm_imp_df = pd.DataFrame({
             'feature': X_val.columns,
