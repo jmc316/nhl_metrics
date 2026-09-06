@@ -215,6 +215,15 @@ goalie_feature_cols = sched_feature_cols + [home_goalie_name_col, away_goalie_na
                                             away_tot_goals_against_col, home_decision_col, away_decision_col]
 player_feature_cols = sched_feature_cols + [home_lineup_col, away_lineup_col]
 
+# the current list of features used in the feature and model creation
+model_features = [elo_rat_col.format(pre='rel'), reg_game_num_perc_col.format(team='home'), lineup_strength_col.format(pre='rel'),
+                  crossed_tz_n_days_col.format(pre='rel', n=7), crossed_tz_n_days_col.format(pre='rel', n=4),
+                  games_played_n_days_col.format(pre='rel', n=7), pk_per_n_col.format(pre='rel', n=5), pk_per_n_col.format(pre='rel', n=20),
+                  corsi_per_n_col.format(pre='rel', n=5), corsi_per_n_col.format(pre='rel', n=20), 
+                  'ev_' + save_per_n_col.format(pre='rel', n=3), 'pp_' + save_per_n_col.format(pre='rel', n=3),
+                  is_ret_home_trap_col.format(pre='rel'), rival_match_col.format(pre='rel'), venue_col.format(pre='rel')
+                  ]
+
 output_folder = 'output/'
 util_data_folder = 'util_data/'
 model_files_folder = 'model_files/'

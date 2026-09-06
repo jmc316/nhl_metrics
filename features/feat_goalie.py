@@ -45,14 +45,14 @@ def goalie_features_update(data_df_in=pd.DataFrame, verbose=False):
 
     for feature in goalie_features:
 
-        if verbose: print(f'\tAdding {feature}...')
+        # if verbose: print(f'\tAdding {feature}...')
 
         # add a feature that tracks save percentage over the last n games for each starting goalie
         if feature == cons.save_per_n_col:
             for filt in cons.goalie_feat_prefixes:
-                if verbose: print(f'\t\tProcessing filter: {filt}')
+                # if verbose: print(f'\t\tProcessing filter: {filt}')
                 for window in cons.goalie_feat_windows:
-                    if verbose: print(f'\t\tProcessing window: {window}')
+                    # if verbose: print(f'\t\tProcessing window: {window}')
                     data_df = save_per_n(data_df, goalie_df, team='home', window=window, filt=filt, verbose=verbose)
                     data_df = save_per_n(data_df, goalie_df, team='away', window=window, filt=filt, verbose=verbose)
 
@@ -69,59 +69,59 @@ def goalie_features_update(data_df_in=pd.DataFrame, verbose=False):
                     data_df.drop(columns=[home_save_per, away_save_per], inplace=True)
 
         # add a feature that tracks goals against average over the last n games for each starting goalie
-        if feature == cons.gaa_n_col:
-            for filt in cons.goalie_feat_prefixes:
-                if verbose: print(f'\t\tProcessing filter: {filt}')
-                for window in cons.goalie_feat_windows:
-                    if verbose: print(f'\t\tProcessing window: {window}')
-                    data_df = gaa_n(data_df, goalie_df, team='home', window=window, filt=filt, verbose=verbose)
-                    data_df = gaa_n(data_df, goalie_df, team='away', window=window, filt=filt, verbose=verbose)
+        # if feature == cons.gaa_n_col:
+        #     for filt in cons.goalie_feat_prefixes:
+        #         # if verbose: print(f'\t\tProcessing filter: {filt}')
+        #         for window in cons.goalie_feat_windows:
+        #             # if verbose: print(f'\t\tProcessing window: {window}')
+        #             data_df = gaa_n(data_df, goalie_df, team='home', window=window, filt=filt, verbose=verbose)
+        #             data_df = gaa_n(data_df, goalie_df, team='away', window=window, filt=filt, verbose=verbose)
 
-                    # create relational feature, drop individual features
-                    if not filt:
-                        home_gaa = cons.gaa_n_col.format(pre='home', n=window)
-                        away_gaa = cons.gaa_n_col.format(pre='away', n=window)
-                        rel_gaa = cons.gaa_n_col.format(pre='rel', n=window)
-                    else:
-                        home_gaa = f'{filt}_' + cons.gaa_n_col.format(pre='home', n=window)
-                        away_gaa = f'{filt}_' + cons.gaa_n_col.format(pre='away', n=window)
-                        rel_gaa = f'{filt}_' + cons.gaa_n_col.format(pre='rel', n=window)
-                    data_df[rel_gaa] = data_df[home_gaa] - data_df[away_gaa]
-                    data_df.drop(columns=[home_gaa, away_gaa], inplace=True)
+        #             # create relational feature, drop individual features
+        #             if not filt:
+        #                 home_gaa = cons.gaa_n_col.format(pre='home', n=window)
+        #                 away_gaa = cons.gaa_n_col.format(pre='away', n=window)
+        #                 rel_gaa = cons.gaa_n_col.format(pre='rel', n=window)
+        #             else:
+        #                 home_gaa = f'{filt}_' + cons.gaa_n_col.format(pre='home', n=window)
+        #                 away_gaa = f'{filt}_' + cons.gaa_n_col.format(pre='away', n=window)
+        #                 rel_gaa = f'{filt}_' + cons.gaa_n_col.format(pre='rel', n=window)
+        #             data_df[rel_gaa] = data_df[home_gaa] - data_df[away_gaa]
+        #             data_df.drop(columns=[home_gaa, away_gaa], inplace=True)
 
         # add a feature that tracks the number of days since each starting goalie last played
-        if feature == cons.goalie_days_rest_col:
-            data_df = goalie_rest(data_df, goalie_df, team='home', verbose=verbose)
-            data_df = goalie_rest(data_df, goalie_df, team='away', verbose=verbose)
+        # if feature == cons.goalie_days_rest_col:
+        #     data_df = goalie_rest(data_df, goalie_df, team='home', verbose=verbose)
+        #     data_df = goalie_rest(data_df, goalie_df, team='away', verbose=verbose)
 
-            # create relational feature, drop individual features
-            home_goalie_rest = cons.goalie_days_rest_col.format(pre='home')
-            away_goalie_rest = cons.goalie_days_rest_col.format(pre='away')
-            rel_goalie_rest = cons.goalie_days_rest_col.format(pre='rel')
-            data_df[rel_goalie_rest] = data_df[home_goalie_rest] - data_df[away_goalie_rest]
-            data_df.drop(columns=[home_goalie_rest, away_goalie_rest], inplace=True)
+        #     # create relational feature, drop individual features
+        #     home_goalie_rest = cons.goalie_days_rest_col.format(pre='home')
+        #     away_goalie_rest = cons.goalie_days_rest_col.format(pre='away')
+        #     rel_goalie_rest = cons.goalie_days_rest_col.format(pre='rel')
+        #     data_df[rel_goalie_rest] = data_df[home_goalie_rest] - data_df[away_goalie_rest]
+        #     data_df.drop(columns=[home_goalie_rest, away_goalie_rest], inplace=True)
 
-            # cap the max relative goalie rest at 14 days, since a goalie who has not played in two weeks is likely injured or otherwise unavailable
-            data_df[rel_goalie_rest] = data_df[rel_goalie_rest].clip(lower=-14, upper=14)
+        #     # cap the max relative goalie rest at 14 days, since a goalie who has not played in two weeks is likely injured or otherwise unavailable
+        #     data_df[rel_goalie_rest] = data_df[rel_goalie_rest].clip(lower=-14, upper=14)
 
         # add a feature that tracks the number of starts for each starting goalie over the last n days
-        if feature == cons.num_starts_n_col:
-            for window in cons.goalie_feat_windows_2:
-                if verbose: print(f'\t\tProcessing window: {window}')
+        # if feature == cons.num_starts_n_col:
+        #     for window in cons.goalie_feat_windows_2:
+        #         if verbose: print(f'\t\tProcessing window: {window}')
 
-                data_df = goalie_starts_n(data_df, goalie_df, team='home', window=window, verbose=verbose)
-                data_df = goalie_starts_n(data_df, goalie_df, team='away', window=window, verbose=verbose)
+        #         data_df = goalie_starts_n(data_df, goalie_df, team='home', window=window, verbose=verbose)
+        #         data_df = goalie_starts_n(data_df, goalie_df, team='away', window=window, verbose=verbose)
 
-                # create relational feature, drop individual features
-                home_num_starts = cons.num_starts_n_col.format(pre='home', n=window)
-                away_num_starts = cons.num_starts_n_col.format(pre='away', n=window)
-                rel_num_starts = cons.num_starts_n_col.format(pre='rel', n=window)
-                data_df[rel_num_starts] = data_df[home_num_starts] - data_df[away_num_starts]
-                data_df.drop(columns=[home_num_starts, away_num_starts], inplace=True)
+        #         # create relational feature, drop individual features
+        #         home_num_starts = cons.num_starts_n_col.format(pre='home', n=window)
+        #         away_num_starts = cons.num_starts_n_col.format(pre='away', n=window)
+        #         rel_num_starts = cons.num_starts_n_col.format(pre='rel', n=window)
+        #         data_df[rel_num_starts] = data_df[home_num_starts] - data_df[away_num_starts]
+        #         data_df.drop(columns=[home_num_starts, away_num_starts], inplace=True)
 
     if data_df_in.empty:
+        print(f'Writing goalie features...')
         for season in data_df[cons.season_name_col].unique():
-            print(f'Writing goalie features for season: {season}...')
             data_df_season = data_df.loc[data_df[cons.season_name_col] == season].copy()
             csvSave(data_df_season, cons.goalie_features_folder, cons.goalie_features_filename.format(season=season))
 

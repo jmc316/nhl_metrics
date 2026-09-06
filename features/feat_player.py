@@ -78,12 +78,12 @@ def player_features_update(data_df_in=pd.DataFrame, verbose=False, player_value_
 
     player_df = load_player_df()
 
-    if verbose: print(f'\tComputing Player values...')
+    # if verbose: print(f'\tComputing Player values...')
     player_df = compute_player_value(player_df, formula=player_value_formula)
 
     for feature in player_features:
 
-        if verbose: print(f'\tAdding {feature}...')
+        # if verbose: print(f'\tAdding {feature}...')
 
         if feature == 'lineup_strength':
             data_df = lineup_strength(data_df, player_df)
@@ -91,8 +91,8 @@ def player_features_update(data_df_in=pd.DataFrame, verbose=False, player_value_
             data_df[cons.lineup_strength_col.format(pre='rel')] = data_df[cons.lineup_strength_col.format(pre='home')] - data_df[cons.lineup_strength_col.format(pre='away')]
 
     if data_df_in.empty:
+        print(f'Writing player features...')
         for season in data_df[cons.season_name_col].unique():
-            print(f'Writing player features for season: {season}...')
             data_df_season = data_df.loc[data_df[cons.season_name_col] == season].copy()
             csvSave(data_df_season, cons.player_features_folder, cons.player_features_filename.format(season=season))
 

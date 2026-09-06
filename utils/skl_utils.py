@@ -24,57 +24,26 @@ def preprocess_feature_data(data_df_in):
 
     data_df = data_df_in.copy()
 
-    # numeric features that do not need to be scaled or normalized, keep as is for the model
-    # num_feats = ['homeGameNumPerc', 'awayGameNumPerc', 'relDaysRest', 'relTravelDist4Days',
-    #             'relTravelDist7Days', 'relGamesPlayed4Days', 'relGamesPlayed7Days', 'relCrossedTZ4Days',
-    #             'relCrossedTZ7Days']
-    num_feats_nonwindow = [cons.elo_rat_col.format(pre='rel'), cons.reg_game_num_perc_col.format(team='home')] # [cons.reg_game_num_perc_col.format(team='home'), cons.reg_game_num_perc_col.format(team='away'),
-                 # cons.days_rest_col.format(pre='rel'), cons.elo_rat_col.format(pre='rel')] #, cons.goalie_days_rest_col.format(pre='rel')]
-
-    num_feats_nonwindow.extend([cons.lineup_strength_col.format(pre='rel')])
+    num_feats_nonwindow = [cons.elo_rat_col.format(pre='rel'), cons.reg_game_num_perc_col.format(team='home'),
+                           cons.lineup_strength_col.format(pre='rel')]
     
     num_feats_window = []
     num_feats_window.append(cons.crossed_tz_n_days_col.format(pre='rel', n=7))
     num_feats_window.append(cons.crossed_tz_n_days_col.format(pre='rel', n=4))
     num_feats_window.append(cons.games_played_n_days_col.format(pre='rel', n=7))
-    for window in cons.sched_feat_windows:
-        pass
-        # num_feats_window.append(cons.travel_dist_n_days_col.format(pre='rel', n=window))
-        # num_feats_window.append(cons.games_played_n_days_col.format(pre='rel', n=window))
-        # num_feats_window.append(cons.crossed_tz_n_days_col.format(pre='rel', n=window))
     num_feats_window.append(cons.pk_per_n_col.format(pre='rel', n=5))
     num_feats_window.append(cons.pk_per_n_col.format(pre='rel', n=20))
-    for window in cons.team_feat_windows:
-        pass
-        # num_feats_window.append(cons.point_per_n_col.format(pre='rel', n=window))
-        # num_feats_window.append(cons.goal_diff_n_col.format(pre='rel', n=window))
-        num_feats_window.append(cons.corsi_per_n_col.format(pre='rel', n=window))
-        # num_feats_window.append(cons.pp_per_n_col.format(pre='rel', n=window))
-        # num_feats_window.append(cons.pk_per_n_col.format(pre='rel', n=window))
-        # num_feats_window.append(cons.fenwick_per_n_col.format(pre='rel', n=window))
+    num_feats_window.append(cons.corsi_per_n_col.format(pre='rel', n=5))
+    num_feats_window.append(cons.corsi_per_n_col.format(pre='rel', n=20))
     num_feats_window.append('ev_'+cons.save_per_n_col.format(pre='rel', n=3))
     num_feats_window.append('pp_'+cons.save_per_n_col.format(pre='rel', n=3))
-    for window in cons.goalie_feat_windows:
-        pass
-        # num_feats_window.append(cons.save_per_n_col.format(pre='rel', n=window))
-        # num_feats_window.append('ev_'+cons.save_per_n_col.format(pre='rel', n=window))
-        # num_feats_window.append('pp_'+cons.save_per_n_col.format(pre='rel', n=window))
-        # num_feats_window.append('sh_'+cons.save_per_n_col.format(pre='rel', n=window))
-        # num_feats_window.append(cons.gaa_n_col.format(pre='rel', n=window))
-        # num_feats_window.append('ev_'+cons.gaa_n_col.format(pre='rel', n=window))
-        # num_feats_window.append('pp_'+cons.gaa_n_col.format(pre='rel', n=window))
-        # num_feats_window.append('sh_'+cons.gaa_n_col.format(pre='rel', n=window))
-    for window in cons.goalie_feat_windows_2:
-        pass
-        # num_feats_window.append(cons.num_starts_n_col.format(pre='rel', n=window))
     num_feats = num_feats_nonwindow + num_feats_window
 
     # boolean categorical features, keep as is for the model
-    bool_feats = [cons.is_ret_home_trap_col] # [cons.is_outdoor_venue_col, cons.is_home_opener_col,
-                  # cons.is_ret_home_trap_col, cons.is_venue_alt_shock_col]
+    bool_feats = [cons.is_ret_home_trap_col]
 
     # very low cardinality numeric categorical features (< 5 values), keep as is for the model
-    low_card_feats = [cons.rival_match_col] #, cons.market_intensity_col]
+    low_card_feats = [cons.rival_match_col]
 
     # categorical features to be custom encoded with target encoding
     target_encoding_feats = [cons.venue_timezone_col]
@@ -84,24 +53,13 @@ def preprocess_feature_data(data_df_in):
     for feat in target_encoding_feats:
         data_df[feat] = data_df[feat].map(target_encoding_map[feat])
 
-    # medium cardinality categorical features to be one-hot encoded
-    # helps avoid implication of false ordering
-    # NOTE: venueTimezone added to one-hot encode mapped values above
-    one_hot_feats = [] # [cons.day_of_week_col] #, cons.game_type_col, cons.venue_timezone_col]
-    one_hot_feats_new = []
-    one_hot_encoder = OneHotEncoder(sparse_output=False).set_output(transform='pandas')
-    for col in one_hot_feats:
-        one_hot_encoded_df = one_hot_encoder.fit_transform(data_df[[col]])
-        one_hot_feats_new.extend(one_hot_encoded_df.columns.tolist())
-        data_df = pd.concat([data_df.drop(columns=[col]), one_hot_encoded_df], axis=1)
-
     # larger cardinality categorical features to be label encoded
-    label_encode_feats = [cons.venue_col] #[cons.venue_col, cons.season_name_col]
+    label_encode_feats = [cons.venue_col]
     label_encoder = LabelEncoder()
     for col in label_encode_feats:
         data_df[col] = label_encoder.fit_transform(data_df[col])
 
-    feature_list = num_feats + bool_feats + low_card_feats + one_hot_feats_new + label_encode_feats
+    feature_list = num_feats + bool_feats + low_card_feats + label_encode_feats
 
     return data_df, feature_list
 

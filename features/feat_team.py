@@ -27,51 +27,51 @@ def team_features_update(data_df_in=pd.DataFrame, verbose=False):
 
     for feature in team_features:
 
-        if verbose: print(f'\tAdding {feature}...')
+        # if verbose: print(f'\tAdding {feature}...')
 
         # add a feature that calculates the win percentage for the last n games played for each team
-        if feature == cons.point_per_n_col:
-            for window in cons.team_feat_windows:
-                if verbose: print(f'\t\tProcessing window: {window}')
-                data_df = points_percentage_feature_add(data_df, debug=verbose, backfill=True, team_col=cons.home_team_name_col, n=window)
-                data_df = points_percentage_feature_add(data_df, debug=verbose, backfill=True, team_col=cons.away_team_name_col, n=window)
+        # if feature == cons.point_per_n_col:
+        #     for window in cons.team_feat_windows:
+        #         if verbose: print(f'\t\tProcessing window: {window}')
+        #         data_df = points_percentage_feature_add(data_df, debug=verbose, backfill=True, team_col=cons.home_team_name_col, n=window)
+        #         data_df = points_percentage_feature_add(data_df, debug=verbose, backfill=True, team_col=cons.away_team_name_col, n=window)
 
-                # create relational feature, drop individual features
-                home_games_played_col = cons.point_per_n_col.format(pre='home', n=window)
-                away_games_played_col = cons.point_per_n_col.format(pre='away', n=window)
-                data_df[cons.point_per_n_col.format(pre='rel', n=window)] = data_df[home_games_played_col] - data_df[away_games_played_col]
-                data_df.drop(columns=[home_games_played_col, away_games_played_col], inplace=True)
-            continue
+        #         # create relational feature, drop individual features
+        #         home_games_played_col = cons.point_per_n_col.format(pre='home', n=window)
+        #         away_games_played_col = cons.point_per_n_col.format(pre='away', n=window)
+        #         data_df[cons.point_per_n_col.format(pre='rel', n=window)] = data_df[home_games_played_col] - data_df[away_games_played_col]
+        #         data_df.drop(columns=[home_games_played_col, away_games_played_col], inplace=True)
+        #     continue
 
         # add a feature that calculates the goal differential for the last n games played for each team
-        if feature == cons.goal_diff_n_col:
-            for window in cons.team_feat_windows:
-                if verbose: print(f'\t\tProcessing window: {window}')
+        # if feature == cons.goal_diff_n_col:
+        #     for window in cons.team_feat_windows:
+        #         if verbose: print(f'\t\tProcessing window: {window}')
 
-                # calculate the goals for and against for the home team and away team for the last n games played
-                data_df = prevN_gpg(data_df, target_col=cons.goal_diff_n_col.format(pre='home', n=window)+'for', backfill=True, team_col=cons.home_team_name_col, n=window, for_against='for')
-                data_df = prevN_gpg(data_df, target_col=cons.goal_diff_n_col.format(pre='home', n=window)+'against', backfill=True, team_col=cons.home_team_name_col, n=window, for_against='against')
-                data_df = prevN_gpg(data_df, target_col=cons.goal_diff_n_col.format(pre='away', n=window)+'for', backfill=True, team_col=cons.away_team_name_col, n=window, for_against='for')
-                data_df = prevN_gpg(data_df, target_col=cons.goal_diff_n_col.format(pre='away', n=window)+'against', backfill=True, team_col=cons.away_team_name_col, n=window, for_against='against')
+        #         # calculate the goals for and against for the home team and away team for the last n games played
+        #         data_df = prevN_gpg(data_df, target_col=cons.goal_diff_n_col.format(pre='home', n=window)+'for', backfill=True, team_col=cons.home_team_name_col, n=window, for_against='for')
+        #         data_df = prevN_gpg(data_df, target_col=cons.goal_diff_n_col.format(pre='home', n=window)+'against', backfill=True, team_col=cons.home_team_name_col, n=window, for_against='against')
+        #         data_df = prevN_gpg(data_df, target_col=cons.goal_diff_n_col.format(pre='away', n=window)+'for', backfill=True, team_col=cons.away_team_name_col, n=window, for_against='for')
+        #         data_df = prevN_gpg(data_df, target_col=cons.goal_diff_n_col.format(pre='away', n=window)+'against', backfill=True, team_col=cons.away_team_name_col, n=window, for_against='against')
 
-                # only calculate the goal differential if both the goals for and against are not null
-                data_df.loc[~data_df[cons.goal_diff_n_col.format(pre='home', n=window)+'for'].isna() & ~data_df[cons.goal_diff_n_col.format(pre='home', n=window)+'against'].isna(), cons.goal_diff_n_col.format(pre='home', n=window)] = data_df[cons.goal_diff_n_col.format(pre='home', n=window)+'for'] - data_df[cons.goal_diff_n_col.format(pre='home', n=window)+'against']
-                data_df.loc[~data_df[cons.goal_diff_n_col.format(pre='away', n=window)+'for'].isna() & ~data_df[cons.goal_diff_n_col.format(pre='away', n=window)+'against'].isna(), cons.goal_diff_n_col.format(pre='away', n=window)] = data_df[cons.goal_diff_n_col.format(pre='away', n=window)+'for'] - data_df[cons.goal_diff_n_col.format(pre='away', n=window)+'against']
-                data_df.drop(columns=[cons.goal_diff_n_col.format(pre='home', n=window)+'for', cons.goal_diff_n_col.format(pre='home', n=window)+'against', cons.goal_diff_n_col.format(pre='away', n=window)+'for', cons.goal_diff_n_col.format(pre='away', n=window)+'against'], inplace=True)
+        #         # only calculate the goal differential if both the goals for and against are not null
+        #         data_df.loc[~data_df[cons.goal_diff_n_col.format(pre='home', n=window)+'for'].isna() & ~data_df[cons.goal_diff_n_col.format(pre='home', n=window)+'against'].isna(), cons.goal_diff_n_col.format(pre='home', n=window)] = data_df[cons.goal_diff_n_col.format(pre='home', n=window)+'for'] - data_df[cons.goal_diff_n_col.format(pre='home', n=window)+'against']
+        #         data_df.loc[~data_df[cons.goal_diff_n_col.format(pre='away', n=window)+'for'].isna() & ~data_df[cons.goal_diff_n_col.format(pre='away', n=window)+'against'].isna(), cons.goal_diff_n_col.format(pre='away', n=window)] = data_df[cons.goal_diff_n_col.format(pre='away', n=window)+'for'] - data_df[cons.goal_diff_n_col.format(pre='away', n=window)+'against']
+        #         data_df.drop(columns=[cons.goal_diff_n_col.format(pre='home', n=window)+'for', cons.goal_diff_n_col.format(pre='home', n=window)+'against', cons.goal_diff_n_col.format(pre='away', n=window)+'for', cons.goal_diff_n_col.format(pre='away', n=window)+'against'], inplace=True)
 
-                # create relational feature, drop individual features
-                home_goal_diff_col = cons.goal_diff_n_col.format(pre='home', n=window)
-                away_goal_diff_col = cons.goal_diff_n_col.format(pre='away', n=window)
+        #         # create relational feature, drop individual features
+        #         home_goal_diff_col = cons.goal_diff_n_col.format(pre='home', n=window)
+        #         away_goal_diff_col = cons.goal_diff_n_col.format(pre='away', n=window)
 
-                # only calculate relational feature if both the home and away goal differentials are not null
-                data_df.loc[~data_df[home_goal_diff_col].isna() & ~data_df[away_goal_diff_col].isna(), cons.goal_diff_n_col.format(pre='rel', n=window)] = data_df[home_goal_diff_col] - data_df[away_goal_diff_col]
-                data_df.drop(columns=[home_goal_diff_col, away_goal_diff_col], inplace=True)
-            continue
+        #         # only calculate relational feature if both the home and away goal differentials are not null
+        #         data_df.loc[~data_df[home_goal_diff_col].isna() & ~data_df[away_goal_diff_col].isna(), cons.goal_diff_n_col.format(pre='rel', n=window)] = data_df[home_goal_diff_col] - data_df[away_goal_diff_col]
+        #         data_df.drop(columns=[home_goal_diff_col, away_goal_diff_col], inplace=True)
+        #     continue
 
         # add a feature that calculates the corsi percentage for the last n games played for each team
         if feature == cons.corsi_per_n_col:
             for window in cons.team_feat_windows:
-                if verbose: print(f'\t\tProcessing window: {window}')
+                # if verbose: print(f'\t\tProcessing window: {window}')
 
                 data_df = prevN_corsi(data_df, target_col=cons.corsi_per_n_col.format(pre='home', n=window), backfill=True, team_col=cons.home_team_name_col, n=window)
                 data_df = prevN_corsi(data_df, target_col=cons.corsi_per_n_col.format(pre='away', n=window), backfill=True, team_col=cons.away_team_name_col, n=window)
@@ -86,42 +86,42 @@ def team_features_update(data_df_in=pd.DataFrame, verbose=False):
             continue
 
         # add a feature that calculates the fenwick percentage for the last n games played for each team
-        if feature == cons.fenwick_per_n_col:
-            for window in cons.team_feat_windows:
-                if verbose: print(f'\t\tProcessing window: {window}')
+        # if feature == cons.fenwick_per_n_col:
+        #     for window in cons.team_feat_windows:
+        #         if verbose: print(f'\t\tProcessing window: {window}')
 
-                data_df = prevN_fenwick(data_df, target_col=cons.fenwick_per_n_col.format(pre='home', n=window), backfill=True, team_col=cons.home_team_name_col, n=window)
-                data_df = prevN_fenwick(data_df, target_col=cons.fenwick_per_n_col.format(pre='away', n=window), backfill=True, team_col=cons.away_team_name_col, n=window)
+        #         data_df = prevN_fenwick(data_df, target_col=cons.fenwick_per_n_col.format(pre='home', n=window), backfill=True, team_col=cons.home_team_name_col, n=window)
+        #         data_df = prevN_fenwick(data_df, target_col=cons.fenwick_per_n_col.format(pre='away', n=window), backfill=True, team_col=cons.away_team_name_col, n=window)
 
-                # create relational feature, drop individual features
-                home_fenwick_col = cons.fenwick_per_n_col.format(pre='home', n=window)
-                away_fenwick_col = cons.fenwick_per_n_col.format(pre='away', n=window)
+        #         # create relational feature, drop individual features
+        #         home_fenwick_col = cons.fenwick_per_n_col.format(pre='home', n=window)
+        #         away_fenwick_col = cons.fenwick_per_n_col.format(pre='away', n=window)
                 
-                # only calculate relational feature if both the home and away fenwick percentages are not null
-                data_df.loc[~data_df[home_fenwick_col].isna() & ~data_df[away_fenwick_col].isna(), cons.fenwick_per_n_col.format(pre='rel', n=window)] = data_df[home_fenwick_col] - data_df[away_fenwick_col]
-                data_df.drop(columns=[home_fenwick_col, away_fenwick_col], inplace=True)
-            continue
+        #         # only calculate relational feature if both the home and away fenwick percentages are not null
+        #         data_df.loc[~data_df[home_fenwick_col].isna() & ~data_df[away_fenwick_col].isna(), cons.fenwick_per_n_col.format(pre='rel', n=window)] = data_df[home_fenwick_col] - data_df[away_fenwick_col]
+        #         data_df.drop(columns=[home_fenwick_col, away_fenwick_col], inplace=True)
+        #     continue
 
         # add a feature that calculates the power play percentage for the last n games played for each team
-        if feature == cons.pp_per_n_col:
-            for window in cons.team_feat_windows:
-                if verbose: print(f'\t\tProcessing window: {window}')
+        # if feature == cons.pp_per_n_col:
+        #     for window in cons.team_feat_windows:
+        #         if verbose: print(f'\t\tProcessing window: {window}')
 
-                data_df = add_ppper(data_df, team_col=cons.home_team_name_col, n=window)
-                data_df = add_ppper(data_df, team_col=cons.away_team_name_col, n=window)
+        #         data_df = add_ppper(data_df, team_col=cons.home_team_name_col, n=window)
+        #         data_df = add_ppper(data_df, team_col=cons.away_team_name_col, n=window)
 
-                # create relational feature, drop individual features
-                home_pp_col = cons.pp_per_n_col.format(pre='home', n=window)
-                away_pp_col = cons.pp_per_n_col.format(pre='away', n=window)
+        #         # create relational feature, drop individual features
+        #         home_pp_col = cons.pp_per_n_col.format(pre='home', n=window)
+        #         away_pp_col = cons.pp_per_n_col.format(pre='away', n=window)
 
-                # only calculate relational feature if both the home and away power play percentages are not null
-                data_df.loc[~data_df[home_pp_col].isna() & ~data_df[away_pp_col].isna(), cons.pp_per_n_col.format(pre='rel', n=window)] = data_df[home_pp_col] - data_df[away_pp_col]
-                data_df.drop(columns=[home_pp_col, away_pp_col], inplace=True)
+        #         # only calculate relational feature if both the home and away power play percentages are not null
+        #         data_df.loc[~data_df[home_pp_col].isna() & ~data_df[away_pp_col].isna(), cons.pp_per_n_col.format(pre='rel', n=window)] = data_df[home_pp_col] - data_df[away_pp_col]
+        #         data_df.drop(columns=[home_pp_col, away_pp_col], inplace=True)
 
         # add a feature that calculates the penalty kill percentage for the last n games played for each team
         if feature == cons.pk_per_n_col:
             for window in cons.team_feat_windows:
-                if verbose: print(f'\t\tProcessing window: {window}')
+                # if verbose: print(f'\t\tProcessing window: {window}')
 
                 data_df = add_pkper(data_df, team_col=cons.home_team_name_col, n=window)
                 data_df = add_pkper(data_df, team_col=cons.away_team_name_col, n=window)
@@ -141,8 +141,8 @@ def team_features_update(data_df_in=pd.DataFrame, verbose=False):
             continue
 
     if data_df_in.empty:
+        print(f'Writing team features...')
         for season in data_df[cons.season_name_col].unique():
-            print(f'Writing team features for season: {season}...')
             data_df_season = data_df.loc[data_df[cons.season_name_col] == season].copy()
             csvSave(data_df_season, cons.team_features_folder, cons.team_features_filename.format(season=season))
 

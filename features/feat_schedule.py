@@ -28,84 +28,85 @@ def sched_features_update(data_df_in=pd.DataFrame, verbose=False):
 
     for feature in sched_features:
 
-        if verbose: print(f'\tAdding {feature}...')
+        # if verbose: print(f'\tAdding {feature}...')
 
         # add the game time in EST timezone for each game
-        if feature == cons.game_time_secs_est_col:
-            data_df = game_time_seconds_est(data_df)
-            continue
+        # if feature == cons.game_time_secs_est_col:
+        #     data_df = game_time_seconds_est(data_df)
+        #     continue
 
         # add the day of the week the game is played for each game
-        if feature == cons.day_of_week_col:
-            data_df = day_of_week(data_df)
-            continue
+        # if feature == cons.day_of_week_col:
+        #     data_df = day_of_week(data_df)
+        #     continue
     
         # add the game number percentage for each team in each regular season
         if feature == cons.reg_game_num_perc_col:
             data_df = reg_game_num_perc(data_df, team_col=cons.home_team_name_col)
-            data_df = reg_game_num_perc(data_df, team_col=cons.away_team_name_col)
+            # data_df = reg_game_num_perc(data_df, team_col=cons.away_team_name_col)
             continue
 
         # add the game number for each team in each playoff season
-        if feature == cons.playoff_game_num_col:
-            data_df = playoff_game_num(data_df, team_col=cons.home_team_name_col)
-            data_df = playoff_game_num(data_df, team_col=cons.away_team_name_col)
-            continue
+        # if feature == cons.playoff_game_num_col:
+        #     data_df = playoff_game_num(data_df, team_col=cons.home_team_name_col)
+        #     data_df = playoff_game_num(data_df, team_col=cons.away_team_name_col)
+        #     continue
 
         # add the number of rest days for each team prior to each game in each season
-        if feature == cons.days_rest_col:
-            data_df = days_rest(data_df, team_col=cons.home_team_name_col)
-            data_df = days_rest(data_df, team_col=cons.away_team_name_col)
+        # if feature == cons.days_rest_col:
+        #     data_df = days_rest(data_df, team_col=cons.home_team_name_col)
+        #     data_df = days_rest(data_df, team_col=cons.away_team_name_col)
 
-            # create relational feature, drop individual features
-            home_days_rest = cons.days_rest_col.format(pre='home')
-            away_days_rest = cons.days_rest_col.format(pre='away')
-            data_df[cons.days_rest_col.format(pre='rel')] = data_df[home_days_rest] - data_df[away_days_rest]
-            data_df.drop(columns=[home_days_rest, away_days_rest], inplace=True)
-            continue
+        #     # create relational feature, drop individual features
+        #     home_days_rest = cons.days_rest_col.format(pre='home')
+        #     away_days_rest = cons.days_rest_col.format(pre='away')
+        #     data_df[cons.days_rest_col.format(pre='rel')] = data_df[home_days_rest] - data_df[away_days_rest]
+        #     data_df.drop(columns=[home_days_rest, away_days_rest], inplace=True)
+        #     continue
 
         # add a binary feature indicating whether the game is played in an outdoor venue
-        if feature == cons.is_outdoor_venue_col:
-            data_df = is_outdoor_venue(data_df)
-            continue
+        # if feature == cons.is_outdoor_venue_col:
+        #     data_df = is_outdoor_venue(data_df)
+        #     continue
 
         # add a feature indicating the sequence of games played on the road for the away team
-        if feature == cons.road_trip_seq_col:
-            data_df = road_trip_sequence(data_df)
-            continue
+        # if feature == cons.road_trip_seq_col:
+        #     data_df = road_trip_sequence(data_df)
+        #     continue
 
         # add a feature that counts the number of games played in the last N days for each team in each season
         if feature == cons.games_played_n_days_col:
             for window in cons.sched_feat_windows:
-                if verbose: print(f'\t\tProcessing window: {window}')
-                data_df = games_played_last_n_days(data_df, team_col=cons.home_team_name_col, n=window)
-                data_df = games_played_last_n_days(data_df, team_col=cons.away_team_name_col, n=window)
+                if window in [7]:
+                    # if verbose: print(f'\t\tProcessing window: {window}')
+                    data_df = games_played_last_n_days(data_df, team_col=cons.home_team_name_col, n=window)
+                    data_df = games_played_last_n_days(data_df, team_col=cons.away_team_name_col, n=window)
 
-                # create relational feature, drop individual features
-                home_games_played_col = cons.games_played_n_days_col.format(pre='home', n=window)
-                away_games_played_col = cons.games_played_n_days_col.format(pre='away', n=window)
-                data_df[cons.games_played_n_days_col.format(pre='rel', n=window)] = data_df[home_games_played_col] - data_df[away_games_played_col]
-                data_df.drop(columns=[home_games_played_col, away_games_played_col], inplace=True)
+                    # create relational feature, drop individual features
+                    home_games_played_col = cons.games_played_n_days_col.format(pre='home', n=window)
+                    away_games_played_col = cons.games_played_n_days_col.format(pre='away', n=window)
+                    data_df[cons.games_played_n_days_col.format(pre='rel', n=window)] = data_df[home_games_played_col] - data_df[away_games_played_col]
+                    data_df.drop(columns=[home_games_played_col, away_games_played_col], inplace=True)
             continue
 
         # add a feature that calculates the travel distance for each team in the last N days for each season
-        if feature == cons.travel_dist_n_days_col:
-            for window in cons.sched_feat_windows:
-                if verbose: print(f'\t\tProcessing window: {window}')
-                data_df = travel_distance_last_n_days(data_df, team_col=cons.home_team_name_col, n=window)
-                data_df = travel_distance_last_n_days(data_df, team_col=cons.away_team_name_col, n=window)
+        # if feature == cons.travel_dist_n_days_col:
+        #     for window in cons.sched_feat_windows:
+        #         if verbose: print(f'\t\tProcessing window: {window}')
+        #         data_df = travel_distance_last_n_days(data_df, team_col=cons.home_team_name_col, n=window)
+        #         data_df = travel_distance_last_n_days(data_df, team_col=cons.away_team_name_col, n=window)
 
-                # create relational feature, drop individual features
-                home_travel_dist_col = cons.travel_dist_n_days_col.format(pre='home', n=window)
-                away_travel_dist_col = cons.travel_dist_n_days_col.format(pre='away', n=window)
-                data_df[cons.travel_dist_n_days_col.format(pre='rel', n=window)] = data_df[home_travel_dist_col] - data_df[away_travel_dist_col]
-                data_df.drop(columns=[home_travel_dist_col, away_travel_dist_col], inplace=True)
-            continue
+        #         # create relational feature, drop individual features
+        #         home_travel_dist_col = cons.travel_dist_n_days_col.format(pre='home', n=window)
+        #         away_travel_dist_col = cons.travel_dist_n_days_col.format(pre='away', n=window)
+        #         data_df[cons.travel_dist_n_days_col.format(pre='rel', n=window)] = data_df[home_travel_dist_col] - data_df[away_travel_dist_col]
+        #         data_df.drop(columns=[home_travel_dist_col, away_travel_dist_col], inplace=True)
+        #     continue
 
         # add a feature that counts the number of time zones crossed for each team in the last N days for each season
         if feature == cons.crossed_tz_n_days_col:
             for window in cons.sched_feat_windows:
-                if verbose: print(f'\t\tProcessing window: {window}')
+                # if verbose: print(f'\t\tProcessing window: {window}')
                 data_df = time_zones_crossed_last_n_days(data_df, team_col=cons.home_team_name_col, n=window)
                 data_df = time_zones_crossed_last_n_days(data_df, team_col=cons.away_team_name_col, n=window)
 
@@ -117,9 +118,9 @@ def sched_features_update(data_df_in=pd.DataFrame, verbose=False):
             continue
 
         # add a feature that indicates the timezone of the venue for each game
-        if feature == cons.is_home_opener_col:
-            data_df = is_home_opener(data_df)
-            continue
+        # if feature == cons.is_home_opener_col:
+        #     data_df = is_home_opener(data_df)
+        #     continue
 
         # add a feature that indicates if the matchup is inter-divisional or inter-conference
         if feature == cons.rival_match_col:
@@ -127,9 +128,9 @@ def sched_features_update(data_df_in=pd.DataFrame, verbose=False):
             continue
 
         # add a feature that indicates the market intensity of the home team
-        if feature == cons.market_intensity_col:
-            data_df = market_intensity(data_df)
-            continue
+        # if feature == cons.market_intensity_col:
+        #     data_df = market_intensity(data_df)
+        #     continue
 
         # add a feature that indicates if the home team is a returning home team after a road trip
         if feature == cons.is_ret_home_trap_col:
@@ -137,18 +138,18 @@ def sched_features_update(data_df_in=pd.DataFrame, verbose=False):
             continue
 
         # add a feature that indicates if the venue is above 4,000ft elevation
-        if feature == cons.is_venue_alt_shock_col:
-            data_df = is_venue_altitude_shock(data_df)
-            continue
+        # if feature == cons.is_venue_alt_shock_col:
+        #     data_df = is_venue_altitude_shock(data_df)
+        #     continue
 
         # add a feature that indicates the playoff series score for each team in each playoff season
-        if feature == cons.playoff_series_score_col:
-            data_df = playoff_series_score(data_df)
-            continue
+        # if feature == cons.playoff_series_score_col:
+        #     data_df = playoff_series_score(data_df)
+        #     continue
 
     if data_df_in.empty:
+        if verbose: print(f'Writing schedule features...')
         for season in data_df[cons.season_name_col].unique():
-            if verbose: print(f'Writing schedule features for season: {season}...')
             data_df_season = data_df.loc[data_df[cons.season_name_col] == season].copy()
             csvSave(data_df_season, cons.sched_features_folder, cons.sched_features_filename.format(season=season))
 
