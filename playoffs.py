@@ -441,6 +441,8 @@ def create_playoff_round_schedule(all_matchups, venue_map_df, feature_df, playof
     season_name = max(feature_df[cons.season_name_col])
 
     # Build a venue -> typical game time map once per round rather than once per matchup.
+    if cons.game_time_secs_est_col not in feature_df.columns:
+        feature_df[cons.game_time_secs_est_col] = (feature_df[cons.starttime_est_col] - feature_df[cons.starttime_est_col].dt.normalize()).dt.total_seconds().astype(int)
     game_time_df = pd.DataFrame(feature_df.loc[
         feature_df[cons.season_name_col] == season_name, [cons.game_time_secs_est_col, cons.venue_col]].value_counts(), columns=['count'])
     game_time_df = game_time_df.loc[game_time_df['count'] > 5]
