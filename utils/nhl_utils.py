@@ -4,10 +4,12 @@ import constants as cons
 import nhl_client as nhlc
 
 from tabulate import tabulate
+from datetime import datetime as dt
 from utils.file_utils import csvSave
+from nhl_final_standings import main as nhl_final_standings_main
 
 
-def nhl_team_standings(data_df=None):
+def nhl_team_standings(season_name, data_df=None):
 
     if data_df is None:
         data_df = nhlc.get_nhl_team_standings()
@@ -36,6 +38,9 @@ def nhl_team_standings(data_df=None):
     # western conference playoff seeding
     west_conf_spots = _sort_conference_wildcard_spots(data_df.loc[data_df[cons.conference_name_col] == 'Western'])
     print_wildcard_standings(west_conf_spots, 'Western')
+
+    # generate the NHL final standings png image
+    nhl_final_standings_main(dt.now().date().strftime(cons.date_format_yyyy_mm_dd), season_name, False)
 
     print()
 

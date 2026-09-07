@@ -9,7 +9,6 @@ from utils.skl_utils import preprocess_feature_data
 from sklearn.ensemble import RandomForestClassifier
 
 
-
 k_values = [6, 10, 14, 20]
 home_adv_values = [0, 25, 50, 75, 100]
 

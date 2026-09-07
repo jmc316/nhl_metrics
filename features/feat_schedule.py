@@ -143,9 +143,9 @@ def sched_features_update(data_df_in=pd.DataFrame, verbose=False):
         #     continue
 
         # add a feature that indicates the playoff series score for each team in each playoff season
-        # if feature == cons.playoff_series_score_col:
-        #     data_df = playoff_series_score(data_df)
-        #     continue
+        if feature == cons.playoff_series_score_col:
+            data_df = playoff_series_score(data_df)
+            continue
 
     if data_df_in.empty:
         if verbose: print(f'Writing schedule features...')

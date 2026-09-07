@@ -170,55 +170,6 @@ def preprocess_historic_data(feature_df, today_dt):
     return feature_df, in_playoffs
 
 
-# def game_results_update(last_act_dt):
-
-#     # today's date in EST timezone
-#     today_dt = dt.now().date()
-
-#     # initialize empty dataframe to store any missing schedule data that needs to be updated with actual results
-#     missing_sched_df = pd.DataFrame()
-
-#     # if the date of the first unplayed game is in the past, the schedule dataframe is missing some data
-#     if today_dt > last_act_dt:
-#         print('\tSchedule data actuals update required...')
-
-#         # the last possible day of the season, no need to check games beyond this date
-#         cur_season_enddt = pd.to_datetime(f'{cons.season_enddt}-{str(today_dt.year)}').date()
-
-#         # add schedule actuals data one date at a time
-#         for game_date in pd.date_range(start=last_act_dt, end=min(cur_season_enddt, today_dt - pd.Timedelta(days=1)), freq='D'):
-#             print(f'\t\t... {game_date.strftime("%Y-%m-%d")} ...')
-#             new_data = nhlc.get_sched_data(game_date, 0)
-
-#             # if there were no games on this date, check the next date
-#             if new_data.empty:
-#                 continue
-
-#             # if the games on this date have not yetr been played, there are no more games to check for actuals, so break out of the loop
-#             if new_data.loc[new_data[cons.last_period_col].notna()].empty:
-#                 break
-
-#             # there were games on this date found with completed final scores, so add them to the missing schedule dataframe
-#             missing_sched_df = pd.concat([missing_sched_df, new_data], ignore_index=True)
-
-#         if missing_sched_df.empty:
-#             print('\tNo missing actuals data found\n')
-#             return missing_sched_df
-        
-#         missing_sched_df[cons.starttime_utc_col] = pd.to_datetime(missing_sched_df[cons.starttime_utc_col], format='ISO8601')
-#         missing_sched_df[cons.starttime_est_col] = missing_sched_df[cons.starttime_utc_col].dt.tz_convert('EST')
-#         missing_sched_df[cons.season_name_col] = missing_sched_df[cons.season_name_col].astype(str)
-
-#         missing_sched_df.sort_values(by=cons.starttime_utc_col, inplace=True)
-#         missing_sched_df.reset_index(drop=True, inplace=True)
-
-#         for col in missing_sched_df.columns:
-#             if isinstance(missing_sched_df[col], np.int64):
-#                 missing_sched_df[col] = missing_sched_df[col].astype(int)
-
-#     return missing_sched_df
-
-
 def load_season_df(season_name):
 
     season_filename = cons.season_sched_filename.format(season=season_name)

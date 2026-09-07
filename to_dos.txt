@@ -15,8 +15,10 @@
     - pytest
 
 - new to-dos
-    - frontfilling features for future predictions
     - regular season final standings graphic generation
+    - frontfilling features for future predictions
+    - feature creation optimization / appends mode
+    - hyperparameters as input
     - postseason/playoff round probability
     - explain a prediction menu item
     - betting odds automated ETL
