@@ -1,26 +1,12 @@
-- model features to add:
-    - nhl edge scraping?
+- CRUCIAL to-do list
+    - add manual input for starting goalies
+    - postseason/playoff round probability  
 
-- codebase features to add:
-    - add ETL pipeline for input of game ML odds, currently manual - start with terminal input when missing
-    - add website for users to view data
-    - historical playoff projections with series in progress
-    - add all_time_schedule_odds capability for multiple seasons, multiple date ranges (reg season, playoffs, total season, all time, etc.)
-
-- visuals
-    - add end of regular season standings visual
-
-- future concept implementations
-    - pytorch
-    - pytest
-
-- new to-dos
-    - frontfilling features for future predictions
-    - test new goalie player values?
-    - feature creation optimization / appends mode
+- FUTURE to-do list
     - hyperparameters as input
-    - postseason/playoff round probability
     - team lineup / player values display
+    - test new player values
+    - fine-tune starting goalie model
     - explain a prediction menu item
     - betting odds automated ETL
     - predictions accuracy tracking
