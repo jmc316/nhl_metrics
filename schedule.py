@@ -4,10 +4,12 @@ import numpy as np
 import pandas as pd
 import constants as cons
 import nhl_client as nhlc
+import utils.player_feat_utils as pl_ut
 
 from zoneinfo import ZoneInfo
 from datetime import datetime as dt
 from utils.file_utils import csvLoad, csvSave
+from start_goalie import predict_starting_goalies
 
 
 def sched_update():
@@ -133,11 +135,15 @@ def sched_update():
 
 def fill_fut_sched_data(sched_df):
 
+    player_df = pl_ut.load_player_df()
+    player_df = pl_ut.compute_player_value(player_df)
+    player_df.sort_values(by=['playerId', cons.season_name_col], ascending=[False, False], inplace=True)
+
     # front fill lineup data based on current lineup availability
-    sched_df = nhlc.fill_future_lineup(sched_df)
+    sched_df = nhlc.fill_future_lineup(sched_df, player_df=player_df)
 
     # predict starting goalies for future games based on historical data
-    pass
+    # sched_df = predict_starting_goalies(sched_df, player_df=player_df)
 
     return sched_df
 

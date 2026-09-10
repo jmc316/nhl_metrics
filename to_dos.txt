@@ -16,9 +16,11 @@
 
 - new to-dos
     - frontfilling features for future predictions
+    - test new goalie player values?
     - feature creation optimization / appends mode
     - hyperparameters as input
     - postseason/playoff round probability
+    - team lineup / player values display
     - explain a prediction menu item
     - betting odds automated ETL
     - predictions accuracy tracking

@@ -160,6 +160,8 @@ home_decision_col = 'home_decision'
 away_decision_col = 'away_decision'
 home_lineup_col = 'homeTeamLineup'
 away_lineup_col = 'awayTeamLineup'
+start_goalie_id_col = 'startingGoalieId'
+start_goalie_name_col = 'startingGoalieName'
 
 pred_suf = '_predicted'
 act_suf = '_actual'

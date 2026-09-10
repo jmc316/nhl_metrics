@@ -74,7 +74,77 @@ def get_sched_data(week, dow, is_historical):
                 team_df = get_team_data(gameId, pbp_data=pbp_data)
                 weekly_sched = pd.merge(weekly_sched, team_df, how='left', on=cons.game_id_col)
 
+        if not is_historical:
+            for gameId in weekly_sched[cons.game_id_col]:
+
+                # fill in any known starting goalies for future games
+                weekly_sched = fill_known_starting_goalies(weekly_sched, gameId)
+
+
         return weekly_sched
+
+
+def fill_known_starting_goalies(weekly_sched, gameId):
+
+    # implement this in future when data becomes available
+    pass
+
+    return weekly_sched
+
+
+def get_team_goalies(sched_df, player_df, team_name):
+
+    goalies_list = []
+    team_abbv = cons.team_name_addrev_map[team_name]
+    cur_season = sched_df[cons.season_name_col].max()
+
+    # get the goalies listed on the team roster
+    team_roster_goalies_data = nhl_client.teams.team_roster(team_abbr=team_abbv, season=cur_season)['goalies']
+    team_roster_goalies = {goalie['id']: f'{goalie['firstName']['default'][0]}. {goalie['lastName']['default']}' for goalie in team_roster_goalies_data}
+
+    # get the last two goalies to start games for this team in home or away games
+    home_starts = sched_df.loc[(sched_df[cons.home_team_name_col] == team_name) & (sched_df['home_starter'])]
+    home_starts['goalie_name'] = home_starts['home_goalie_name']
+    home_starts['goalie_id'] = home_starts['home_goalie_id']
+    away_starts = sched_df.loc[(sched_df[cons.away_team_name_col] == team_name) & (sched_df['away_starter'])]
+    away_starts['goalie_name'] = away_starts['away_goalie_name']
+    away_starts['goalie_id'] = away_starts['away_goalie_id']
+    team_starts = pd.concat([home_starts, away_starts]).sort_values(by=cons.starttime_utc_col, ascending=False)[['goalie_name', 'goalie_id']].drop_duplicates()
+    prior_start_goalies = {int(row['goalie_id']): row['goalie_name'] for _, row in team_starts.head(2).iterrows()}
+
+    pass
+
+    # loop through the prior starting goalies
+    for goalie_id in prior_start_goalies.keys():
+        if goalie_id in team_roster_goalies:
+            goalies_list.append({'goalie_id': goalie_id, 'goalie_name': team_roster_goalies[goalie_id]})
+
+    if len(goalies_list) < 2:
+
+        # add player value to each goalie on the team roster
+        for goalie_id in team_roster_goalies.keys():
+            if goalie_id in list(player_df['playerId']):
+                value = player_df.loc[(player_df['playerId']==goalie_id), 'value'].values[0]
+            else:
+                value = pl_ut.DEFAULT_VALUE
+
+            team_roster_goalies[goalie_id] = {
+                'goalie_name': team_roster_goalies[goalie_id],
+                'value': value
+            }
+    
+        # sort the goalies by value
+        team_roster_goalies = dict(sorted(team_roster_goalies.items(), key=lambda item: item[1]['value'], reverse=True))
+
+        # fill in with the highest value goalies from the team roster
+        for goalie_id, goalie_info in team_roster_goalies.items():
+            if goalie_id not in [g['goalie_id'] for g in goalies_list]:
+                # print(f'\tAdding goalie {team_roster_goalies[goalie_id]["goalie_name"]}')
+                goalies_list.append({'goalie_id': goalie_id, 'goalie_name': goalie_info['goalie_name']})
+            if len(goalies_list) >= 2:
+                break
+
+    return goalies_list
 
 
 def get_team_data(gameId, pbp_data=None):
@@ -215,16 +285,13 @@ def get_game_lineups(gameId, pbp_data=None):
     return sorted(home_team_roster), sorted(away_team_roster)
 
 
-def fill_future_lineup(sched_df):
+def fill_future_lineup(sched_df, player_df):
 
     # the dataframe for the current season
     sched_df_cur = sched_df.loc[sched_df[cons.season_name_col] == sched_df[cons.season_name_col].max()]
 
     # if there have been no games played yet this season, construct lineups based off of offseason rosters
     if sched_df_cur.loc[sched_df_cur[cons.last_period_col].notna()].empty:
-        player_df = pl_ut.load_player_df()
-        player_df = pl_ut.compute_player_value(player_df)
-        player_df.sort_values(by=['playerId', cons.season_name_col], ascending=[False, False], inplace=True)
 
         # get the current lineup availability for each team
         team_lineups = {}
