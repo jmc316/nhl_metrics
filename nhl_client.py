@@ -102,6 +102,21 @@ def get_team_goalies(sched_df, player_df, team_name):
     team_roster_goalies_data = nhl_client.teams.team_roster(team_abbr=team_abbv, season=cur_season)['goalies']
     team_roster_goalies = {goalie['id']: f'{goalie['firstName']['default'][0]}. {goalie['lastName']['default']}' for goalie in team_roster_goalies_data}
 
+    # add player value to each goalie on the team roster
+    for goalie_id in team_roster_goalies.keys():
+        if goalie_id in list(player_df['playerId']):
+            value = player_df.loc[(player_df['playerId']==goalie_id), 'value'].values[0]
+        else:
+            value = pl_ut.DEFAULT_VALUE
+
+        team_roster_goalies[goalie_id] = {
+            'goalie_name': team_roster_goalies[goalie_id],
+            'value': value
+        }
+
+    # sort the goalies by value
+    team_roster_goalies = dict(sorted(team_roster_goalies.items(), key=lambda item: item[1]['value'], reverse=True))
+
     # get the last two goalies to start games for this team in home or away games
     home_starts = sched_df.loc[(sched_df[cons.home_team_name_col] == team_name) & (sched_df['home_starter'])]
     home_starts['goalie_name'] = home_starts['home_goalie_name']
@@ -117,30 +132,21 @@ def get_team_goalies(sched_df, player_df, team_name):
     # loop through the prior starting goalies
     for goalie_id in prior_start_goalies.keys():
         if goalie_id in team_roster_goalies:
-            goalies_list.append({'goalie_id': goalie_id, 'goalie_name': team_roster_goalies[goalie_id]})
+            goalies_list.append({'goalie_id': goalie_id,
+                                 'goalie_name': team_roster_goalies[goalie_id]['goalie_name'],
+                                 'value': team_roster_goalies[goalie_id]['value']
+                                 })
 
     if len(goalies_list) < 2:
-
-        # add player value to each goalie on the team roster
-        for goalie_id in team_roster_goalies.keys():
-            if goalie_id in list(player_df['playerId']):
-                value = player_df.loc[(player_df['playerId']==goalie_id), 'value'].values[0]
-            else:
-                value = pl_ut.DEFAULT_VALUE
-
-            team_roster_goalies[goalie_id] = {
-                'goalie_name': team_roster_goalies[goalie_id],
-                'value': value
-            }
-    
-        # sort the goalies by value
-        team_roster_goalies = dict(sorted(team_roster_goalies.items(), key=lambda item: item[1]['value'], reverse=True))
 
         # fill in with the highest value goalies from the team roster
         for goalie_id, goalie_info in team_roster_goalies.items():
             if goalie_id not in [g['goalie_id'] for g in goalies_list]:
                 # print(f'\tAdding goalie {team_roster_goalies[goalie_id]["goalie_name"]}')
-                goalies_list.append({'goalie_id': goalie_id, 'goalie_name': goalie_info['goalie_name']})
+                goalies_list.append({'goalie_id': goalie_id,
+                                     'goalie_name': goalie_info['goalie_name'],
+                                     'value': goalie_info['value']
+                                     })
             if len(goalies_list) >= 2:
                 break
 

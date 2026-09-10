@@ -9,7 +9,7 @@ import utils.player_feat_utils as pl_ut
 from zoneinfo import ZoneInfo
 from datetime import datetime as dt
 from utils.file_utils import csvLoad, csvSave
-from start_goalie import predict_starting_goalies
+from start_goalie import predict_starting_goalies, predict_starting_goalies_simple
 
 
 def sched_update():
@@ -143,7 +143,7 @@ def fill_fut_sched_data(sched_df):
     sched_df = nhlc.fill_future_lineup(sched_df, player_df=player_df)
 
     # predict starting goalies for future games based on historical data
-    # sched_df = predict_starting_goalies(sched_df, player_df=player_df)
+    sched_df = predict_starting_goalies_simple(sched_df, player_df=player_df)
 
     return sched_df
 
