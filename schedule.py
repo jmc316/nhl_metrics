@@ -50,7 +50,7 @@ def sched_update():
         # add schedule actuals data one date at a time
         for game_date in pd.date_range(start=sched_last_act_dt, end=min(cur_season_enddt, today_dt - pd.Timedelta(days=1)), freq='D'):
             print(f'\t\t... {game_date.strftime("%Y-%m-%d")} ...')
-            new_data = nhlc.get_sched_data(game_date, 0)
+            new_data = nhlc.get_sched_data(game_date, 0, True)
 
             # if there were no games on this date, check the next date
             if new_data.empty:
@@ -98,11 +98,15 @@ def sched_update():
 
         print(f'\t... {week.strftime("%Y-%m-%d")} ...')
         for dow in range(0, 7):
-            sched_df_future = pd.concat([sched_df_future, nhlc.get_sched_data(week, dow)], ignore_index=True)
+            sched_df_future = pd.concat([sched_df_future, nhlc.get_sched_data(week, dow, False)], ignore_index=True)
 
     sched_df_future = clean_schedule_df(sched_df_future)
 
     sched_df = pd.concat([sched_df_act, sched_df_missing, sched_df_future], ignore_index=True)
+
+    # front fill missing schedule data for future games
+    sched_df = fill_fut_sched_data(sched_df)
+
     sched_df.sort_values(by=cons.starttime_utc_col, inplace=True)
     sched_df.reset_index(drop=True, inplace=True)
 
@@ -123,6 +127,17 @@ def sched_update():
     for seasonname in seasons_to_update:
         print(f'\nSaving updated schedule data for {seasonname[:4]}-{seasonname[4:]} season to CSV file...')
         csvSave(sched_df.loc[sched_df[cons.season_name_col] == seasonname], cons.season_sched_folder, cons.season_sched_filename.format(season=seasonname))
+
+    return sched_df
+
+
+def fill_fut_sched_data(sched_df):
+
+    # front fill lineup data based on current lineup availability
+    sched_df = nhlc.fill_future_lineup(sched_df)
+
+    # predict starting goalies for future games based on historical data
+    pass
 
     return sched_df
 

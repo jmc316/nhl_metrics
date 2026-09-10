@@ -15,7 +15,6 @@
     - pytest
 
 - new to-dos
-    - regular season final standings graphic generation
     - frontfilling features for future predictions
     - feature creation optimization / appends mode
     - hyperparameters as input
