@@ -9,9 +9,6 @@ import constants as cons
 scale = 0.75
 SIZE = int(1200 * scale)
 center = (SIZE // 2, SIZE // 2)
-# Reused render surface for the radial playoff probability chart.
-canvas = np.zeros((SIZE, SIZE, 3), dtype=np.uint8)
-canvas[:] = (16, 16, 18)
 
 
 def overlay_center_image(img, image_path, center, size):
@@ -160,6 +157,10 @@ def display_playoff_probability(pred_date, season, playoff_rd=0, matchups=None, 
     3) Build 5 concentric rings (playoffs -> cup winner).
     4) Draw team wedges, labels, logos, and final center art.
     """
+
+    # Reused render surface for the radial playoff probability chart.
+    canvas = np.zeros((SIZE, SIZE, 3), dtype=np.uint8)
+    canvas[:] = (16, 16, 18)
 
     # list files in output/season_predictions/{pred_date}/ and find the one with the highest n
     season_sched_list = [file for file in os.listdir(cons.season_pred_folder.format(date=pred_date)) if file.startswith(cons.season_results_prob_filename.format(date=pred_date, n='n').split('_n')[0])]

@@ -1,6 +1,3 @@
-- CRUCIAL to-do list
-    - add manual input for starting goalies
-
 - FUTURE to-do list
     - hyperparameters as input
     - overall runtime optimization
