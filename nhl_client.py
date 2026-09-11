@@ -124,7 +124,10 @@ def get_team_goalies(sched_df, player_df, team_name):
     away_starts = sched_df.loc[(sched_df[cons.away_team_name_col] == team_name) & (sched_df['away_starter'])]
     away_starts['goalie_name'] = away_starts['away_goalie_name']
     away_starts['goalie_id'] = away_starts['away_goalie_id']
-    team_starts = pd.concat([home_starts, away_starts]).sort_values(by=cons.starttime_utc_col, ascending=False)[['goalie_name', 'goalie_id']].drop_duplicates()
+    if cons.starttime_utc_col in home_starts.columns and cons.starttime_utc_col in away_starts.columns:
+        team_starts = pd.concat([home_starts, away_starts]).sort_values(by=cons.starttime_utc_col, ascending=False)[['goalie_name', 'goalie_id']].drop_duplicates()
+    else:
+        team_starts = pd.concat([home_starts, away_starts]).sort_values(by=cons.starttime_est_col, ascending=False)[['goalie_name', 'goalie_id']].drop_duplicates()
     prior_start_goalies = {int(row['goalie_id']): row['goalie_name'] for _, row in team_starts.head(2).iterrows()}
 
     pass
@@ -291,19 +294,20 @@ def get_game_lineups(gameId, pbp_data=None):
     return sorted(home_team_roster), sorted(away_team_roster)
 
 
-def fill_future_lineup(sched_df, player_df):
+def fill_future_lineup(sched_df, player_df, season_type, term_out=True):
 
     # the dataframe for the current season
-    sched_df_cur = sched_df.loc[sched_df[cons.season_name_col] == sched_df[cons.season_name_col].max()]
+    sched_df_cur = sched_df.loc[(sched_df[cons.season_name_col] == sched_df[cons.season_name_col].max()) &
+                                (sched_df[cons.game_type_col] == season_type)]
+    cur_season = sched_df_cur[cons.season_name_col].max()
 
     # if there have been no games played yet this season, construct lineups based off of offseason rosters
-    if sched_df_cur.loc[sched_df_cur[cons.last_period_col].notna()].empty:
+    if (sched_df_cur.loc[sched_df_cur[cons.last_period_col].notna()].empty) and season_type==2:
 
         # get the current lineup availability for each team
         team_lineups = {}
-        cur_season = sched_df_cur[cons.season_name_col].max()
 
-        print('\nGenerating team lineups from offseason rosters...')
+        if term_out: print('\nGenerating team lineups from offseason rosters...')
         for team_name in sched_df_cur.loc[sched_df_cur[cons.season_name_col] == cur_season, cons.home_team_name_col].unique():
             team_roster_values = {}
             team_abbv = cons.team_name_addrev_map[team_name]

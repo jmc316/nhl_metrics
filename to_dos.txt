@@ -1,9 +1,9 @@
 - CRUCIAL to-do list
     - add manual input for starting goalies
-    - postseason/playoff round probability  
 
 - FUTURE to-do list
     - hyperparameters as input
+    - overall runtime optimization
     - team lineup / player values display
     - test new player values
     - fine-tune starting goalie model

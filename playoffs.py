@@ -9,9 +9,10 @@ from utils.file_utils import csvSave
 from playoff_matchup import PlayoffMatchup
 from playoff_tree import display_playoff_tree
 from datetime import datetime as dt, timedelta
+from schedule import fill_fut_sched_data
 
 
-def playoff_tree_predictions(regular_season_df, season_results_df, today_dt, term_out=True, to_csv=True, display_image=True):
+def playoff_tree_predictions(regular_season_df, season_results_df, today_dt, term_out=True, to_csv=True, display_image=True, rnd_prob=False):
 
     print('Predicting playoff tree...')
 
@@ -231,6 +232,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, today_dt, ter
             series_in_progress = []  # reset series in progress list for the next round of playoffs
 
         # update the features for the new rows in the df
+        playoff_df = fill_fut_sched_data(playoff_df, season_type=3, term_out=term_out)
         playoff_df = ft.feat_update(playoff_df, save_feat_data=False, verbose=False, term_out=term_out)
 
         # predict games for this playoff round one day at a time
@@ -262,14 +264,14 @@ def playoff_tree_predictions(regular_season_df, season_results_df, today_dt, ter
                 processed_playoff_df_filt = processed_playoff_df.loc[processed_playoff_df[cons.starttime_est_col].dt.date <= game_dt]
 
                 # make predictions for the game_dt
-                pred_playoff_df_filt, _ = sklu.model_inference(processed_playoff_df_filt, feature_list, today_dt, model=model)
+                pred_playoff_df_filt, _ = sklu.model_inference(processed_playoff_df_filt, feature_list, today_dt, model=model, rnd_prob=rnd_prob)
 
             # don't need to train the model, just preprocess data to predict
             else:
                 processed_playoff_df_filt, feature_list = sklu.preprocess_feature_data(playoff_df_filt)
 
                 # make predictions for the game_dt
-                pred_playoff_df_filt, _ = sklu.model_inference(processed_playoff_df_filt, feature_list, today_dt)
+                pred_playoff_df_filt, _ = sklu.model_inference(processed_playoff_df_filt, feature_list, today_dt, rnd_prob=rnd_prob)
 
             playoff_df_filt.update(pred_playoff_df_filt[[cons.home_team_win_col, cons.home_win_prob_col, cons.away_win_prob_col]])
 

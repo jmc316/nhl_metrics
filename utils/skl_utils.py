@@ -195,11 +195,12 @@ def model_inference(data_df, feature_list, today_dt, rnd_prob=False, model=None)
         random_draws = np.random.random(len(predict_df))
         sim_home_wins = random_draws < home_win_prob
         predict_df[cons.home_team_win_col] = sim_home_wins.astype(int)
+        predict_df[cons.home_win_prob_col] = sim_home_wins.astype(int)
+        predict_df[cons.away_win_prob_col] = (~sim_home_wins).astype(int)
     else:
         predict_df[cons.home_team_win_col] = predictset_predictions
-
-    predict_df[cons.home_win_prob_col] = home_win_prob
-    predict_df[cons.away_win_prob_col] = away_win_prob
+        predict_df[cons.home_win_prob_col] = home_win_prob
+        predict_df[cons.away_win_prob_col] = away_win_prob
 
     data_df.update(predict_df[[cons.home_team_win_col,
                                cons.home_win_prob_col,

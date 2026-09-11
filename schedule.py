@@ -107,7 +107,7 @@ def sched_update():
     sched_df = pd.concat([sched_df_act, sched_df_missing, sched_df_future], ignore_index=True)
 
     # front fill missing schedule data for future games
-    sched_df = fill_fut_sched_data(sched_df)
+    sched_df = fill_fut_sched_data(sched_df, season_type=2)
 
     sched_df.sort_values(by=cons.starttime_utc_col, inplace=True)
     sched_df.reset_index(drop=True, inplace=True)
@@ -133,17 +133,17 @@ def sched_update():
     return sched_df
 
 
-def fill_fut_sched_data(sched_df):
+def fill_fut_sched_data(sched_df, season_type, term_out=True):
 
     player_df = pl_ut.load_player_df()
     player_df = pl_ut.compute_player_value(player_df)
     player_df.sort_values(by=['playerId', cons.season_name_col], ascending=[False, False], inplace=True)
 
     # front fill lineup data based on current lineup availability
-    sched_df = nhlc.fill_future_lineup(sched_df, player_df=player_df)
+    sched_df = nhlc.fill_future_lineup(sched_df, player_df=player_df, season_type=season_type, term_out=term_out)
 
     # predict starting goalies for future games based on historical data
-    sched_df = predict_starting_goalies_simple(sched_df, player_df=player_df)
+    sched_df = predict_starting_goalies_simple(sched_df, player_df=player_df, term_out=term_out, season_type=season_type)
 
     return sched_df
 
