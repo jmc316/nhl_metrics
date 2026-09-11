@@ -28,7 +28,7 @@ def todate_predict():
     today_dt = dt.now().date().strftime(cons.date_format_yyyy_mm_dd)
 
     print('Updating predictions for current season...\n')
-    feature_df = predict_season(to_csv=True, set_model_state=True, today_dt=today_dt)
+    feature_df = predict_season(to_csv=True, rnd_prob=False, today_dt=today_dt)
     feature_df_game_points = nhlu.assign_game_points(feature_df.loc[(feature_df[cons.game_type_col]==2) & (feature_df[cons.season_name_col]==max(feature_df[cons.season_name_col]))])
     season_results_df = nhlu.generate_final_standings(feature_df_game_points, today_dt, to_csv=True)
     if not feature_df.loc[(feature_df[cons.game_type_col]==2) &
@@ -36,7 +36,7 @@ def todate_predict():
                       feature_df[cons.last_period_col].isna()].empty:
         season_name = feature_df[cons.season_name_col].max()[:4] + '-' + feature_df[cons.season_name_col].max()[4:]
         nhlu.nhl_team_standings(season_name, season_results_df)
-    playoff_df, _, _, _ = playoffs.playoff_tree_predictions(feature_df, season_results_df, True, today_dt)
+    playoff_df, _, _, _ = playoffs.playoff_tree_predictions(feature_df, season_results_df, today_dt)
 
     # set the first comparison date to the first date of the current season
     prob_date_since = playoff_df.loc[playoff_df[cons.season_name_col]==playoff_df[cons.season_name_col].max(),
@@ -50,14 +50,14 @@ def historic_predict(today_dt=None):
         today_dt = get_asofdate()
 
     print(f'Updating predictions for current season as of {today_dt}...\n')
-    feature_df = predict_season(to_csv=True, set_model_state=True, today_dt=today_dt)
+    feature_df = predict_season(to_csv=True, today_dt=today_dt)
     feature_df_game_points = nhlu.assign_game_points(feature_df.loc[(feature_df[cons.game_type_col]==2) & (feature_df[cons.season_name_col]==max(feature_df[cons.season_name_col]))])
     season_results_df = nhlu.generate_final_standings(feature_df_game_points, today_dt, to_csv=True)
     if not feature_df.loc[(feature_df[cons.game_type_col]==2) &
                       (feature_df[cons.season_name_col]==max(feature_df[cons.season_name_col])) &
                       feature_df[cons.last_period_col].isna()].empty:
         nhlu.nhl_team_standings(season_results_df)
-    playoff_df, _, _, _ = playoffs.playoff_tree_predictions(feature_df, season_results_df, True, today_dt)
+    playoff_df, _, _, _ = playoffs.playoff_tree_predictions(feature_df, season_results_df, today_dt)
 
     # set the first comparison date to the first date of the current season
     prob_date_since = playoff_df.loc[playoff_df[cons.season_name_col]==playoff_df[cons.season_name_col].max(),
@@ -83,7 +83,7 @@ def todate_playoff_spot_predict():
 
     # get user input for n
     print('Select the number of iterations to run the simulation for:')
-    n_in = input('> ')
+    n_in = int(input('> '))
     print()
 
     playoff_spot_predictions(today_dt, n=n_in)
@@ -95,7 +95,7 @@ def historic_playoff_spot_predict():
 
     # get user input for n
     print('Select the number of iterations to run the simulation for:')
-    n_in = input('> ')
+    n_in = int(input('> '))
     print()
 
     playoff_spot_predictions(today_dt, n=n_in)

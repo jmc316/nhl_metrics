@@ -162,7 +162,7 @@ def display_playoff_probability(pred_date, season, playoff_rd=0, matchups=None, 
     """
 
     # list files in output/season_predictions/{pred_date}/ and find the one with the highest n
-    season_sched_list = [file for file in os.listdir(cons.season_pred_folder.format(date=pred_date)) if file.startswith(cons.season_results_prob_filename.format(date=pred_date).split('{n}')[0])]
+    season_sched_list = [file for file in os.listdir(cons.season_pred_folder.format(date=pred_date)) if file.startswith(cons.season_results_prob_filename.format(date=pred_date, n='n').split('_n')[0])]
     if not season_sched_list:
         print(f'No playoff probability files found for {pred_date}. Please run the playoff prediction first.')
         return
@@ -171,7 +171,7 @@ def display_playoff_probability(pred_date, season, playoff_rd=0, matchups=None, 
     # Always use the largest n so visualization reflects the most complete run.
     n_values = [int(file.split('_n')[-1].split('.csv')[0]) for file in season_sched_list]
     n_sims = max(n_values)
-    df_prob = pd.read_csv(f'{cons.season_pred_folder.format(date=pred_date)}{cons.season_results_prob_filename.format(date=pred_date).split("{n}")[0]}n{n_sims}.csv')
+    df_prob = pd.read_csv(f'{cons.season_pred_folder.format(date=pred_date)}{cons.season_results_prob_filename.format(date=pred_date, n='n').split('_n')[0]}_n{n_sims}.csv')
 
     # Regular-season view keeps all teams alphabetized.
     if playoff_rd == 0:

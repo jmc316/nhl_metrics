@@ -70,10 +70,10 @@ def feature_data_load():
     return feat_df
 
 
-def feat_update(data_df=pd.DataFrame, save_feat_data=False, verbose=False, player_value_formula=None):
+def feat_update(data_df=pd.DataFrame, term_out=True, save_feat_data=False, verbose=False, player_value_formula=None):
     """Rebuild schedule, team, player, and goalie features and merge them into one feature dataframe."""
 
-    print('Updating all feature data...')
+    if term_out: print('Updating all feature data...')
 
     sched_feat_df, sched_features = sched_features_update(data_df, verbose)
     team_feat_df, team_features = team_features_update(data_df, verbose)
@@ -82,7 +82,7 @@ def feat_update(data_df=pd.DataFrame, save_feat_data=False, verbose=False, playe
 
     feature_df = feature_data_update(sched_feat_df, team_feat_df, player_feat_df, goalie_feat_df, save_feat_data)
 
-    print('All feature data updated.\n')
+    if term_out: print('All feature data updated.\n')
 
     feature_df.sort_values(by=cons.starttime_est_col, inplace=True)
 

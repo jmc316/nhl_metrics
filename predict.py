@@ -14,7 +14,7 @@ from features.features import feature_data_load
 from playoff_probability import display_playoff_probability
 
 
-def predict_season(to_csv, set_model_state, today_dt):
+def predict_season(to_csv, rnd_prob, today_dt, term_out=True):
 
     # load all of the feature data with all actuals
     feature_df = feature_data_load()
@@ -35,11 +35,11 @@ def predict_season(to_csv, set_model_state, today_dt):
     if today_dt < dt.now().date().strftime(cons.date_format_yyyy_mm_dd):
         # train a model on the past data state
         model = sklu.model_train(processed_df, feature_list, save_model=False)
-        pred_df, model = sklu.model_inference(processed_df, feature_list, today_dt, model=model)
+        pred_df, model = sklu.model_inference(processed_df, feature_list, today_dt, rnd_prob=rnd_prob, model=model)
 
     else:
         # make predictions from the start date to the end of the schedule, and add the predictions to the feature dataframe
-        pred_df, model = sklu.model_inference(processed_df, feature_list, today_dt)
+        pred_df, model = sklu.model_inference(processed_df, feature_list, today_dt, rnd_prob=rnd_prob)
 
     # return feature_df with the win probability columns added
     feature_df.update(pred_df[[cons.home_team_win_col, cons.home_win_prob_col, cons.away_win_prob_col]])
@@ -50,22 +50,23 @@ def predict_season(to_csv, set_model_state, today_dt):
     first_pred_dt_df = feature_df.loc[feature_df[cons.starttime_est_col].dt.date==print_dt]
 
     # print next game day's predictions into the terminal
-    print(f'\nPredicted game results for {print_dt.strftime("%Y-%m-%d")}:')
-    for idx, row in first_pred_dt_df.iterrows():
+    if term_out:
+        print(f'\nPredicted game results for {print_dt.strftime("%Y-%m-%d")}:')
+        for idx, row in first_pred_dt_df.iterrows():
 
-        home_team = cons.team_name_addrev_map[row[cons.home_team_name_col]]
-        away_team = cons.team_name_addrev_map[row[cons.away_team_name_col]]
-        ot_str = ' (OT)' if row[cons.last_period_col]=='OT' else ''
+            home_team = cons.team_name_addrev_map[row[cons.home_team_name_col]]
+            away_team = cons.team_name_addrev_map[row[cons.away_team_name_col]]
+            ot_str = ' (OT)' if row[cons.last_period_col]=='OT' else ''
 
-        if row[cons.home_win_prob_col] > row[cons.away_win_prob_col]:
-            print(f"\t{away_team.lower()} {(row[cons.away_win_prob_col]*100):.2f} at {home_team} {(row[cons.home_win_prob_col]*100):.2f}{ot_str}")
-        else:
-            print(f"\t{away_team} {(row[cons.away_win_prob_col]*100):.2f} at {home_team.lower()} {(row[cons.home_win_prob_col]*100):.2f}{ot_str}")
+            if row[cons.home_win_prob_col] > row[cons.away_win_prob_col]:
+                print(f"\t{away_team.lower()} {(row[cons.away_win_prob_col]*100):.2f} at {home_team} {(row[cons.home_win_prob_col]*100):.2f}{ot_str}")
+            else:
+                print(f"\t{away_team} {(row[cons.away_win_prob_col]*100):.2f} at {home_team.lower()} {(row[cons.home_win_prob_col]*100):.2f}{ot_str}")
 
-        # generate SHAP values chart for each of the games
-        sklu.explain_predictions(pred_df.iloc[[idx]][feature_list],
-                                model, home_team, away_team,
-                                print_dt, today_dt)
+            # generate SHAP values chart for each of the games
+            sklu.explain_predictions(pred_df.iloc[[idx]][feature_list],
+                                    model, home_team, away_team,
+                                    print_dt, today_dt)
 
     # save the season predictinos to the prediction folder
     if to_csv:
@@ -240,10 +241,10 @@ def playoff_spot_predictions(today_dt, n=100, to_csv=True):
     # this will allow us to calculate the probabilities of each team making the playoffs and their likely seed
     for i in range(n):
         print(f'\nSimulation {i+1} of {n}...')
-        season_results_df = predict_season(False, False, today_dt)
+        season_results_df = predict_season(False, True, today_dt, term_out=False)
         season_results_points = nhlu.assign_game_points(season_results_df.loc[season_results_df[cons.game_type_col]==2])
         final_standings_df = nhlu.generate_final_standings(season_results_points, today_dt)
-        _, playoff_matchups, rounds_scheduled, rounds_completed = playoffs.playoff_tree_predictions(season_results_df, final_standings_df, False, today_dt, to_csv=False)
+        _, playoff_matchups, rounds_scheduled, rounds_completed = playoffs.playoff_tree_predictions(season_results_df, final_standings_df, today_dt, to_csv=False, term_out=False)
 
         # count the number of times each team finishes in each playoff seed across all simulations
         for _, row in final_standings_df.iterrows():
@@ -312,14 +313,14 @@ if __name__ == "__main__":
 
     ######################
     # create one set of predictions
-    feature_df = predict_season(to_csv=True, set_model_state=True, today_dt=today_dt)
+    feature_df = predict_season(to_csv=True,  today_dt=today_dt)
     feature_df_game_points = nhlu.assign_game_points(feature_df.loc[(feature_df[cons.game_type_col]==2) & (feature_df[cons.season_name_col]==max(feature_df[cons.season_name_col]))])
     season_results_df = nhlu.generate_final_standings(feature_df_game_points, today_dt, to_csv=True)
     if not feature_df.loc[(feature_df[cons.game_type_col]==2) &
                       (feature_df[cons.season_name_col]==max(feature_df[cons.season_name_col])) &
                       feature_df[cons.last_period_col].isna()].empty:
         nhlu.nhl_team_standings(season_results_df)
-    playoff_results_df = playoffs.playoff_tree_predictions(feature_df, season_results_df, True, today_dt)
+    playoff_results_df = playoffs.playoff_tree_predictions(feature_df, season_results_df, today_dt)
 
     ######################
     # create playoff spot predictions for current season based on n simulations

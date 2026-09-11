@@ -11,7 +11,7 @@ from playoff_tree import display_playoff_tree
 from datetime import datetime as dt, timedelta
 
 
-def playoff_tree_predictions(regular_season_df, season_results_df, set_model_state, today_dt, to_csv=True, display_image=True):
+def playoff_tree_predictions(regular_season_df, season_results_df, today_dt, term_out=True, to_csv=True, display_image=True):
 
     print('Predicting playoff tree...')
 
@@ -231,7 +231,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
             series_in_progress = []  # reset series in progress list for the next round of playoffs
 
         # update the features for the new rows in the df
-        playoff_df = ft.feat_update(playoff_df, save_feat_data=False, verbose=False)
+        playoff_df = ft.feat_update(playoff_df, save_feat_data=False, verbose=False, term_out=term_out)
 
         # predict games for this playoff round one day at a time
         playoff_season = playoff_df[cons.season_name_col].max()
@@ -249,7 +249,7 @@ def playoff_tree_predictions(regular_season_df, season_results_df, set_model_sta
             playoff_df_filt = playoff_df.loc[playoff_df[cons.starttime_est_col].dt.date <= game_dt]
 
             # predict games on selected date
-            print(f'\tPredicting games for {game_dt.strftime("%Y-%m-%d")}...')
+            if term_out: print(f'\tPredicting games for {game_dt.strftime("%Y-%m-%d")}...')
 
             # if this is the first loop of playoff predictions and no previous regular season
             # predictions were made, train the model based on the data available to this point
@@ -655,4 +655,4 @@ if __name__ == '__main__':
     
     final_standings_df = csvLoad(cons.season_pred_folder.format(date=today_dt), cons.final_standings_filename.format(date=today_dt))
 
-    playoff_tree_predictions(feature_df, final_standings_df, False, today_dt)
+    playoff_tree_predictions(feature_df, final_standings_df, today_dt)

@@ -168,7 +168,7 @@ def model_train(data_df, feature_list, save_model=True):
     return final_model
 
 
-def model_inference(data_df, feature_list, today_dt, model=None):
+def model_inference(data_df, feature_list, today_dt, rnd_prob=False, model=None):
     """Predict outcomes/win probabilities for all not-yet-played games and merge them back into data_df."""
 
     # if the model is not passed in, load it from the pkl file
@@ -185,11 +185,18 @@ def model_inference(data_df, feature_list, today_dt, model=None):
 
     # update the original data_df with the predictions for the target variables and determine the last period based on the predicted scores
     predict_df = data_df[data_df[cons.home_team_win_col].isna()]
-    predict_df[cons.home_team_win_col] = predictset_predictions
 
     probs = model.predict_proba(x_predict_df)
     home_win_prob = probs[:, 1]  # column 1 = probability of class "1" (home win)
     away_win_prob = probs[:, 0]  # column 0 = probability of class "0" (away win)
+
+    # if rnd_prob, introduce some randomness
+    if rnd_prob:
+        random_draws = np.random.random(len(predict_df))
+        sim_home_wins = random_draws < home_win_prob
+        predict_df[cons.home_team_win_col] = sim_home_wins.astype(int)
+    else:
+        predict_df[cons.home_team_win_col] = predictset_predictions
 
     predict_df[cons.home_win_prob_col] = home_win_prob
     predict_df[cons.away_win_prob_col] = away_win_prob
