@@ -252,11 +252,12 @@ def init_model(random_state_in=None):
     return model
 
 
-def explain_predictions(pred_data_x, model, home_team, away_team, game_date, today_dt):
+def explain_predictions(pred_data_x, model, home_team, away_team, game_date, today_dt, explainer=None):
     """Generate and save a SHAP waterfall plot explaining a single game's home-win prediction."""
 
-    # Build the explainer once, using your trained model
-    explainer = shap.TreeExplainer(model)
+    # allow the caller to build and reuse a single explainer across many predictions
+    if explainer is None:
+        explainer = shap.TreeExplainer(model)
 
     # Get SHAP values for the predictions you want to explain
     explanation = explainer(pred_data_x)

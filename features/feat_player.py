@@ -117,9 +117,11 @@ def lineup_strength(data_df, player_df):
     data_df.loc[data_df[cons.home_lineup_col].isnull(), cons.home_lineup_col] = '[]'
     data_df.loc[data_df[cons.away_lineup_col].isnull(), cons.away_lineup_col] = '[]'
 
-    for index, row in data_df.iterrows():
-        home_lineup = json.loads(row[cons.home_lineup_col])
-        away_lineup = json.loads(row[cons.away_lineup_col])
+    # parse each lineup's JSON once per row (vectorized column op) instead of inside the per-row loop
+    home_lineups = data_df[cons.home_lineup_col].map(json.loads)
+    away_lineups = data_df[cons.away_lineup_col].map(json.loads)
+
+    for season_label, home_lineup, away_lineup in zip(data_df[cons.season_name_col], home_lineups, away_lineups):
 
         home_strength_per60 = 0
         away_strength_per60 = 0
@@ -127,12 +129,12 @@ def lineup_strength(data_df, player_df):
         away_strength = 0
 
         for player in home_lineup:
-            value_per60, value = get_asof_value(player, row[cons.season_name_col])
+            value_per60, value = get_asof_value(player, season_label)
             home_strength_per60 += value_per60 if value_per60 is not None else 0
             home_strength += value if value is not None else 0
 
         for player in away_lineup:
-            value_per60, value = get_asof_value(player, row[cons.season_name_col])
+            value_per60, value = get_asof_value(player, season_label)
             away_strength_per60 += value_per60 if value_per60 is not None else 0
             away_strength += value if value is not None else 0
 

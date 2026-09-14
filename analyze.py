@@ -22,10 +22,11 @@ def prediction_analysis(actuals_df, date_since, date_until):
         else:
             predict_df_indiv = csvLoad(cons.season_pred_base_folder + pred_date + '/', cons.playoff_pred_filename.format(date=pred_date))
         # print(f'Analyzing predictions for {pred_date}...')
-        min_predict_date = pd.to_datetime(predict_df_indiv.loc[pd.to_datetime(predict_df_indiv[cons.starttime_est_col]).dt.date == dt.strptime(pred_date, '%Y-%m-%d').date(), cons.starttime_est_col]).dt.date.min()
-        predict_df = pd.concat([predict_df, predict_df_indiv.loc[pd.to_datetime(predict_df_indiv[cons.starttime_est_col]).dt.date == min_predict_date]], ignore_index=True)
+        game_dates = pd.to_datetime(predict_df_indiv[cons.starttime_est_col]).dt.date
+        min_predict_date = game_dates.loc[game_dates == dt.strptime(pred_date, '%Y-%m-%d').date()].min()
+        predict_df = pd.concat([predict_df, predict_df_indiv.loc[game_dates == min_predict_date]], ignore_index=True)
 
-        if predict_df_indiv.loc[pd.to_datetime(predict_df_indiv[cons.starttime_est_col]).dt.date == min_predict_date].empty:
+        if predict_df_indiv.loc[game_dates == min_predict_date].empty:
             # print(f'\t... No games found')
             pass
 

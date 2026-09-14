@@ -1,6 +1,7 @@
 import os
 import playoffs
 
+import shap
 import numpy as np
 import pandas as pd
 import constants as cons
@@ -9,6 +10,7 @@ import utils.nhl_utils as nhlu
 import utils.skl_utils as sklu
 
 from datetime import datetime as dt
+from collections import defaultdict
 from utils.file_utils import csvLoad, csvSave
 from features.features import feature_data_load
 from playoff_probability import display_playoff_probability
@@ -54,6 +56,7 @@ def predict_season(to_csv, rnd_prob, today_dt, feature_df = None, term_out=True,
     # print next game day's predictions into the terminal
     if term_out:
         print(f'\nPredicted game results for {print_dt.strftime("%Y-%m-%d")}:')
+        explainer = shap.TreeExplainer(model)
         for idx, row in first_pred_dt_df.iterrows():
 
             home_team = cons.team_name_addrev_map[row[cons.home_team_name_col]]
@@ -68,7 +71,7 @@ def predict_season(to_csv, rnd_prob, today_dt, feature_df = None, term_out=True,
             # generate SHAP values chart for each of the games
             sklu.explain_predictions(pred_df.iloc[[idx]][feature_list],
                                     model, home_team, away_team,
-                                    print_dt, today_dt)
+                                    print_dt, today_dt, explainer=explainer)
 
     # save the season predictinos to the prediction folder
     if to_csv:
@@ -246,6 +249,9 @@ def playoff_spot_predictions(today_dt, n=100, to_csv=True):
     # the trained model only depends on completed games, which are identical across simulations, so train it once and reuse it
     model = None
 
+    # accumulate counts in a plain dict keyed by (team, column) instead of a boolean-mask DataFrame update per team per simulation
+    seed_round_counts = defaultdict(int)
+
     # run n simulations of the season and count the number of times each team finishes in each playoff seed across all simulations;
     # this will allow us to calculate the probabilities of each team making the playoffs and their likely seed
     for i in range(n):
@@ -258,18 +264,25 @@ def playoff_spot_predictions(today_dt, n=100, to_csv=True):
 
         # count the number of times each team finishes in each playoff seed across all simulations
         for _, row in final_standings_df.iterrows():
-            count_df.loc[count_df[cons.team_name_col] == row[cons.team_name_col], row[cons.playoff_seed_col]] += 1
+            seed_round_counts[(row[cons.team_name_col], row[cons.playoff_seed_col])] += 1
 
         # count the number of times each playoff team advances to each round across all simulations
         for round in playoff_matchups.keys():
             for _, matchup in playoff_matchups[round].items():
-                if matchup.get_series_winner() is not None:
+                winner = matchup.get_series_winner()
+                if winner is not None:
                     if round < 3:
-                        count_df.loc[count_df[cons.team_name_col] == matchup.get_series_winner(), f'make_round_{round+1}'] += 1
+                        seed_round_counts[(winner, f'make_round_{round+1}')] += 1
                     elif round == 3:
-                        count_df.loc[count_df[cons.team_name_col] == matchup.get_series_winner(), cons.make_cup_final_val] += 1
+                        seed_round_counts[(winner, cons.make_cup_final_val)] += 1
                     elif round == 4:
-                        count_df.loc[count_df[cons.team_name_col] == matchup.get_series_winner(), cons.win_cup_val] += 1
+                        seed_round_counts[(winner, cons.win_cup_val)] += 1
+
+    # apply the accumulated counts to count_df once, instead of a boolean-mask update per team per simulation
+    count_df = count_df.set_index(cons.team_name_col)
+    for (team, col), count in seed_round_counts.items():
+        count_df.at[team, col] = count
+    count_df = count_df.reset_index()
 
     # calculate the probabilities of each team making the playoffs and their likely seed based on the counts across all simulations
     count_df[f'{cons.div_1_val}_%'] = count_df[cons.div_1_val] / n * 100

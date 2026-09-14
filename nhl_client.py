@@ -10,6 +10,10 @@ from nhlpy import NHLClient
 # Create an instance of the NHLClient
 nhl_client = NHLClient()
 
+# reuse a single session for connection pooling across all raw HTTP calls
+http_session = requests.Session()
+REQUEST_TIMEOUT_SECS = 10
+
 
 def get_sched_data(week, dow, is_historical):
     while True:
@@ -57,6 +61,9 @@ def get_sched_data(week, dow, is_historical):
 
         # if there have been games that have already been played, need to fill in more data
         if is_historical:
+            goalie_dfs = []
+            team_dfs = []
+
             for gameId in weekly_sched[cons.game_id_col]:
 
                 pbp_data = nhl_client.game_center.play_by_play(gameId)
@@ -66,13 +73,16 @@ def get_sched_data(week, dow, is_historical):
                 weekly_sched.at[gameId, 'homeTeamLineup'] = home_team_roster
                 weekly_sched.at[gameId, 'awayTeamLineup'] = away_team_roster
 
-                # get the goalie data
-                goalie_df = get_goalie_data(gameId)
-                weekly_sched = pd.merge(weekly_sched, goalie_df, how='left', on=cons.game_id_col)
+                # collect the goalie and team stats data for this game to merge in once after the loop
+                goalie_data = get_goalie_data(gameId)
+                if goalie_data is not None:
+                    goalie_dfs.append(goalie_data)
+                team_dfs.append(get_team_data(gameId, pbp_data=pbp_data))
 
-                # get the team stats data
-                team_df = get_team_data(gameId, pbp_data=pbp_data)
-                weekly_sched = pd.merge(weekly_sched, team_df, how='left', on=cons.game_id_col)
+            if goalie_dfs:
+                weekly_sched = pd.merge(weekly_sched, pd.concat(goalie_dfs, ignore_index=True), how='left', on=cons.game_id_col)
+            if team_dfs:
+                weekly_sched = pd.merge(weekly_sched, pd.concat(team_dfs, ignore_index=True), how='left', on=cons.game_id_col)
 
         if not is_historical:
             for gameId in weekly_sched[cons.game_id_col]:
@@ -118,10 +128,10 @@ def get_team_goalies(sched_df, player_df, team_name):
     team_roster_goalies = dict(sorted(team_roster_goalies.items(), key=lambda item: item[1]['value'], reverse=True))
 
     # get the last two goalies to start games for this team in home or away games
-    home_starts = sched_df.loc[(sched_df[cons.home_team_name_col] == team_name) & (sched_df['home_starter'])]
+    home_starts = sched_df.loc[(sched_df[cons.home_team_name_col] == team_name) & (sched_df['home_starter'])].copy()
     home_starts['goalie_name'] = home_starts['home_goalie_name']
     home_starts['goalie_id'] = home_starts['home_goalie_id']
-    away_starts = sched_df.loc[(sched_df[cons.away_team_name_col] == team_name) & (sched_df['away_starter'])]
+    away_starts = sched_df.loc[(sched_df[cons.away_team_name_col] == team_name) & (sched_df['away_starter'])].copy()
     away_starts['goalie_name'] = away_starts['away_goalie_name']
     away_starts['goalie_id'] = away_starts['away_goalie_id']
     if cons.starttime_utc_col in home_starts.columns and cons.starttime_utc_col in away_starts.columns:
@@ -230,17 +240,17 @@ def get_team_data(gameId, pbp_data=None):
 
 def get_goalie_data(gameId):
 
-    goalie_df = pd.DataFrame()
-
     url = f"https://api-web.nhle.com/v1/gamecenter/{gameId}/boxscore"
     try:
-        boxscore_data = requests.get(url).json()
+        boxscore_data = http_session.get(url, timeout=REQUEST_TIMEOUT_SECS).json()
     except:
         print(f"Failed to fetch data for game {gameId}. Skipping...")
         return None
 
     home_goalies = boxscore_data['playerByGameStats']['homeTeam']['goalies']
     away_goalies = boxscore_data['playerByGameStats']['awayTeam']['goalies']
+
+    goalie_rows = []
 
     # loop through all goalies listed for this game and record info for the starters
     for goalie in home_goalies + away_goalies:
@@ -253,7 +263,7 @@ def get_goalie_data(gameId):
         else:
             team = 'away'
 
-        goalie_df = pd.concat([goalie_df, pd.DataFrame([{
+        goalie_rows.append({
             cons.game_id_col: gameId,
             cons.starttime_est_col: pd.to_datetime(boxscore_data['startTimeUTC']).tz_convert(cons.est_tz).tz_localize(None),
             'team': team,
@@ -274,9 +284,9 @@ def get_goalie_data(gameId):
             'tot_saves': goalie['saves'],
             'tot_goals_against': goalie['goalsAgainst'],
             'decision': goalie['decision'] if 'decision' in goalie else None,
-        }])], ignore_index=True)
+        })
 
-    return goalie_df
+    return pd.DataFrame(goalie_rows)
 
 
 def get_game_lineups(gameId, pbp_data=None):

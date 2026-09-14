@@ -1,7 +1,6 @@
 import os
 import time
 
-import numpy as np
 import pandas as pd
 import constants as cons
 
@@ -17,10 +16,6 @@ def csvLoad(folder, filename):
 
     if cons.game_date_col in dfdata.columns:
         dfdata[cons.game_date_col] = pd.to_datetime(dfdata[cons.game_date_col]).dt.date
-
-    for col in dfdata.columns:
-        if isinstance(dfdata[col], np.int64):
-            dfdata[col] = dfdata[col].astype(int)
 
     return dfdata
 
