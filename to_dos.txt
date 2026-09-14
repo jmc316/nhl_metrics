@@ -1,5 +1,4 @@
 - FUTURE to-do list
-    - hyperparameters as input
     - overall runtime optimization
     - team lineup / player values display
     - test new player values

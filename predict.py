@@ -14,10 +14,11 @@ from features.features import feature_data_load
 from playoff_probability import display_playoff_probability
 
 
-def predict_season(to_csv, rnd_prob, today_dt, term_out=True):
+def predict_season(to_csv, rnd_prob, today_dt, feature_df = None, term_out=True, model=None):
 
     # load all of the feature data with all actuals
-    feature_df = feature_data_load()
+    if feature_df is None:
+        feature_df = feature_data_load()
 
     # running for past predictions, pre-preprocess the feature data
     if today_dt < dt.now().date().strftime(cons.date_format_yyyy_mm_dd):
@@ -26,20 +27,21 @@ def predict_season(to_csv, rnd_prob, today_dt, term_out=True):
 
         # if playoffs are currently underway for the today_dt, move to playoff prediction method
         if in_playoffs:
-            return feature_df
+            return feature_df, model
 
     # pre-process the feature data
     processed_df, feature_list = sklu.preprocess_feature_data(feature_df)
 
     # running for past predictions, need to train a model on the past data state
     if today_dt < dt.now().date().strftime(cons.date_format_yyyy_mm_dd):
-        # train a model on the past data state
-        model = sklu.model_train(processed_df, feature_list, save_model=False)
+        # train a model on the past data state only if one wasn't already passed in (e.g. reused across simulations)
+        if model is None:
+            model = sklu.model_train(processed_df, feature_list, save_model=False)
         pred_df, model = sklu.model_inference(processed_df, feature_list, today_dt, rnd_prob=rnd_prob, model=model)
 
     else:
         # make predictions from the start date to the end of the schedule, and add the predictions to the feature dataframe
-        pred_df, model = sklu.model_inference(processed_df, feature_list, today_dt, rnd_prob=rnd_prob)
+        pred_df, model = sklu.model_inference(processed_df, feature_list, today_dt, rnd_prob=rnd_prob, model=model)
 
     # return feature_df with the win probability columns added
     feature_df.update(pred_df[[cons.home_team_win_col, cons.home_win_prob_col, cons.away_win_prob_col]])
@@ -73,7 +75,7 @@ def predict_season(to_csv, rnd_prob, today_dt, term_out=True):
         print('Saving season predictions to CSV file...')
         csvSave(pred_df, cons.season_pred_folder.format(date=today_dt), cons.season_pred_filename.format(date=today_dt))
     
-    return feature_df
+    return feature_df, model
 
 
 def create_df_set(today_dt):
@@ -237,11 +239,19 @@ def playoff_spot_predictions(today_dt, n=100, to_csv=True):
     count_df[cons.team_name_col] = list(cons.team_info.keys())
     count_df.fillna(0, inplace=True)
 
+    # load the feature data before the loop
+    feature_df = feature_data_load()
+    reset_dt = feature_df.loc[feature_df[cons.home_team_win_col].isna(), cons.starttime_est_col].min()
+
+    # the trained model only depends on completed games, which are identical across simulations, so train it once and reuse it
+    model = None
+
     # run n simulations of the season and count the number of times each team finishes in each playoff seed across all simulations;
     # this will allow us to calculate the probabilities of each team making the playoffs and their likely seed
     for i in range(n):
         print(f'\nSimulation {i+1} of {n}...')
-        season_results_df = predict_season(False, True, today_dt, term_out=False)
+        feature_df.loc[feature_df[cons.starttime_est_col] >= reset_dt, cons.home_team_win_col] = None
+        season_results_df, model = predict_season(False, True, today_dt, feature_df, term_out=False, model=model)
         season_results_points = nhlu.assign_game_points(season_results_df.loc[season_results_df[cons.game_type_col]==2])
         final_standings_df = nhlu.generate_final_standings(season_results_points, today_dt)
         _, playoff_matchups, rounds_scheduled, rounds_completed = playoffs.playoff_tree_predictions(season_results_df, final_standings_df, today_dt, to_csv=False, term_out=False, rnd_prob=True)
@@ -313,7 +323,7 @@ if __name__ == "__main__":
 
     ######################
     # create one set of predictions
-    feature_df = predict_season(to_csv=True,  today_dt=today_dt)
+    feature_df, _ = predict_season(to_csv=True,  today_dt=today_dt)
     feature_df_game_points = nhlu.assign_game_points(feature_df.loc[(feature_df[cons.game_type_col]==2) & (feature_df[cons.season_name_col]==max(feature_df[cons.season_name_col]))])
     season_results_df = nhlu.generate_final_standings(feature_df_game_points, today_dt, to_csv=True)
     if not feature_df.loc[(feature_df[cons.game_type_col]==2) &
