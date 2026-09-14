@@ -11,8 +11,13 @@ from schedule import load_sched_df_features
 from utils.file_utils import csvSave
 
 
-def player_features_update(data_df_in=pd.DataFrame, verbose=False, player_value_formula=None):
-    """Add all player features to data_df_in (or a freshly loaded feature set if empty)."""
+def player_features_update(data_df_in=pd.DataFrame, verbose=False, player_value_formula=None, existing_feat_df=None):
+    """Add all player features to data_df_in (or a freshly loaded feature set if empty).
+
+    If existing_feat_df is provided (a previously computed player feature dataframe in this same
+    output format), only games not already present in it (by gameId) are computed, and the result
+    is existing_feat_df with the newly computed rows appended, instead of recomputing every game.
+    """
 
     if data_df_in.empty:
         data_df = load_sched_df_features(feat_set_label='player')
@@ -28,6 +33,14 @@ def player_features_update(data_df_in=pd.DataFrame, verbose=False, player_value_
     # windows to perform rolling calculations over for certain features
     windows = [4, 7]
 
+    # append mode: restrict to only the games missing from existing_feat_df; player values are
+    # looked up from the independent player_df history, so computing on a subset of games is still correct
+    if existing_feat_df is not None and not existing_feat_df.empty:
+        data_df = data_df.loc[~data_df[cons.game_id_col].isin(existing_feat_df[cons.game_id_col])].copy()
+        if data_df.empty:
+            if verbose: print('\tNo new games to compute player features for.')
+            return existing_feat_df, player_features
+
     player_df = pl_ut.load_player_df()
 
     # if verbose: print(f'\tComputing Player values...')
@@ -42,6 +55,10 @@ def player_features_update(data_df_in=pd.DataFrame, verbose=False, player_value_
             # data_df[cons.lineup_strength_per60_col.format(pre='rel')] = data_df[cons.lineup_strength_per60_col.format(pre='home')] - data_df[cons.lineup_strength_per60_col.format(pre='away')]
             data_df[cons.lineup_strength_col.format(pre='rel')] = data_df[cons.lineup_strength_col.format(pre='home')] - data_df[cons.lineup_strength_col.format(pre='away')]
             data_df.drop([cons.lineup_strength_col.format(pre='home'), cons.lineup_strength_col.format(pre='away')], axis=1, inplace=True)
+
+    # append mode: merge the newly computed rows back onto the previously computed data
+    if existing_feat_df is not None and not existing_feat_df.empty:
+        data_df = pd.concat([existing_feat_df, data_df], ignore_index=True)
 
     if data_df_in.empty:
         print(f'Writing player features...')

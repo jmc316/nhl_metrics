@@ -24,7 +24,7 @@ def main():
             case '1': # 'Update Schedule Data'
                 sched_update()
             case '2': # 'Update Feature Data'
-                feat_update(save_feat_data=True, verbose=True)
+                feat_update(save_feat_data=True, verbose=True, append_mode=True)
             case '3': # 'Train Model'
                 train_model()
             case '4': # 'Run Inference'

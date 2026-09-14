@@ -22,11 +22,15 @@ _GOALS_AGAINST_COL_BY_FILT = {
 }
 
 
-def goalie_features_update(data_df_in=pd.DataFrame, verbose=False):
+def goalie_features_update(data_df_in=pd.DataFrame, verbose=False, existing_feat_df=None):
     """Add all goalie features to data_df_in (or a freshly loaded feature set if empty).
 
     For each feature, home/away values are computed and then collapsed into a single
     home-minus-away relational column, since only the relative difference is used by the model.
+
+    If existing_feat_df is provided (a previously computed goalie feature dataframe in this same
+    output format), only games not already present in it (by gameId) are computed, and the result
+    is existing_feat_df with the newly computed rows appended, instead of recomputing every game.
     """
 
     if data_df_in.empty:
@@ -40,6 +44,14 @@ def goalie_features_update(data_df_in=pd.DataFrame, verbose=False):
 
     # features to add in the future
     future_features = ['mins_played_last']
+
+    # append mode: restrict to only the games missing from existing_feat_df; the goalie stat lookups
+    # below key off of the independent goalie_df history, so computing on a subset of games is still correct
+    if existing_feat_df is not None and not existing_feat_df.empty:
+        data_df = data_df.loc[~data_df[cons.game_id_col].isin(existing_feat_df[cons.game_id_col])].copy()
+        if data_df.empty:
+            if verbose: print('\tNo new games to compute goalie features for.')
+            return existing_feat_df, goalie_features
 
     goalie_df = load_goalie_df()
 
@@ -118,6 +130,10 @@ def goalie_features_update(data_df_in=pd.DataFrame, verbose=False):
         #         rel_num_starts = cons.num_starts_n_col.format(pre='rel', n=window)
         #         data_df[rel_num_starts] = data_df[home_num_starts] - data_df[away_num_starts]
         #         data_df.drop(columns=[home_num_starts, away_num_starts], inplace=True)
+
+    # append mode: merge the newly computed rows back onto the previously computed data
+    if existing_feat_df is not None and not existing_feat_df.empty:
+        data_df = pd.concat([existing_feat_df, data_df], ignore_index=True)
 
     if data_df_in.empty:
         print(f'Writing goalie features...')

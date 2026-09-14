@@ -10,7 +10,15 @@ from schedule import load_sched_df_features
 from utils.file_utils import csvLoad, csvSave
 
 
-def sched_features_update(data_df_in=pd.DataFrame, verbose=False):
+def sched_features_update(data_df_in=pd.DataFrame, verbose=False, existing_feat_df=None):
+    """Add all schedule features to data_df_in (or a freshly loaded feature set if empty).
+
+    If existing_feat_df is provided (a previously computed schedule feature dataframe in this same
+    output format), computation is skipped entirely when there are no games beyond what it already
+    contains. Otherwise, since these features are rolling/cumulative counts within each team's own
+    game history, the full history must still be recomputed for correctness, but only the newly
+    appearing games (by gameId) are appended to existing_feat_df in the result.
+    """
 
     if data_df_in.empty:
         data_df = load_sched_df_features()
@@ -25,6 +33,14 @@ def sched_features_update(data_df_in=pd.DataFrame, verbose=False):
 
     # features to add in the future
     future_features = ['isMajorCeremonyNight']
+
+    # append mode: skip entirely if there are no games beyond what's already been computed
+    new_game_ids = None
+    if existing_feat_df is not None and not existing_feat_df.empty:
+        new_game_ids = set(data_df[cons.game_id_col]) - set(existing_feat_df[cons.game_id_col])
+        if not new_game_ids:
+            if verbose: print('\tNo new games to compute schedule features for.')
+            return existing_feat_df, sched_features
 
     for feature in sched_features:
 
@@ -146,6 +162,11 @@ def sched_features_update(data_df_in=pd.DataFrame, verbose=False):
         if feature == cons.playoff_series_score_col:
             data_df = playoff_series_score(data_df)
             continue
+
+    # append mode: the full history above was recomputed for correctness (rolling/cumulative counts
+    # depend on each team's prior games), but only the newly appearing rows need to be appended
+    if new_game_ids is not None:
+        data_df = pd.concat([existing_feat_df, data_df.loc[data_df[cons.game_id_col].isin(new_game_ids)]], ignore_index=True)
 
     if data_df_in.empty:
         if verbose: print(f'Writing schedule features...')

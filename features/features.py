@@ -70,15 +70,33 @@ def feature_data_load():
     return feat_df
 
 
-def feat_update(data_df=pd.DataFrame, term_out=True, save_feat_data=False, verbose=False, player_value_formula=None):
-    """Rebuild schedule, team, player, and goalie features and merge them into one feature dataframe."""
+def feat_update(data_df=pd.DataFrame, term_out=True, save_feat_data=False, verbose=False, player_value_formula=None,
+                existing_sched_feat_df=None, existing_team_feat_df=None, existing_player_feat_df=None, existing_goalie_feat_df=None,
+                append_mode=False):
+    """Rebuild schedule, team, player, and goalie features and merge them into one feature dataframe.
+
+    Each existing_*_feat_df param, if provided, is the previously computed feature dataframe (in that
+    domain's own output format) to append newly appearing games onto, instead of recomputing every game.
+    If append_mode is True, any existing_*_feat_df left as None is auto-loaded from the previously
+    saved per-domain feature CSVs on disk, so the caller doesn't have to load them manually.
+    """
 
     if term_out: print('Updating all feature data...')
 
-    sched_feat_df, sched_features = sched_features_update(data_df, verbose)
-    team_feat_df, team_features = team_features_update(data_df, verbose)
-    player_feat_df, player_features = player_features_update(data_df, verbose, player_value_formula=player_value_formula)
-    goalie_feat_df, goalie_features = goalie_features_update(data_df, verbose)
+    if append_mode:
+        if existing_sched_feat_df is None:
+            existing_sched_feat_df = load_domain_feature_data(cons.sched_features_folder, cons.sched_features_filename)
+        if existing_team_feat_df is None:
+            existing_team_feat_df = load_domain_feature_data(cons.team_features_folder, cons.team_features_filename)
+        if existing_player_feat_df is None:
+            existing_player_feat_df = load_domain_feature_data(cons.player_features_folder, cons.player_features_filename)
+        if existing_goalie_feat_df is None:
+            existing_goalie_feat_df = load_domain_feature_data(cons.goalie_features_folder, cons.goalie_features_filename)
+
+    sched_feat_df, sched_features = sched_features_update(data_df, verbose, existing_feat_df=existing_sched_feat_df)
+    team_feat_df, team_features = team_features_update(data_df, verbose, existing_feat_df=existing_team_feat_df)
+    player_feat_df, player_features = player_features_update(data_df, verbose, player_value_formula=player_value_formula, existing_feat_df=existing_player_feat_df)
+    goalie_feat_df, goalie_features = goalie_features_update(data_df, verbose, existing_feat_df=existing_goalie_feat_df)
 
     feature_df = feature_data_update(sched_feat_df, team_feat_df, player_feat_df, goalie_feat_df, save_feat_data)
 
@@ -87,6 +105,26 @@ def feat_update(data_df=pd.DataFrame, term_out=True, save_feat_data=False, verbo
     feature_df.sort_values(by=cons.starttime_est_col, inplace=True)
 
     return feature_df
+
+
+def load_domain_feature_data(folder, filename_format):
+    """Load previously saved per-season feature files for one feature domain (empty if none exist yet)."""
+
+    if not os.path.isdir(folder):
+        return pd.DataFrame()
+
+    filename_suffix = filename_format.format(season='$').split('$')[1]
+    season_files = [file for file in os.listdir(folder) if file.endswith(filename_suffix)]
+    if not season_files:
+        return pd.DataFrame()
+
+    domain_df = pd.DataFrame()
+    for filename in season_files:
+        domain_df = pd.concat([domain_df, csvLoad(folder, filename)], ignore_index=True)
+
+    domain_df[cons.starttime_est_col] = pd.to_datetime(domain_df[cons.starttime_est_col], format='mixed')
+
+    return domain_df
 
 
 def update_schedule_feature_data():

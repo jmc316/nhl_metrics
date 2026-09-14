@@ -10,7 +10,15 @@ from utils.file_utils import csvSave
 from schedule import load_sched_df_features
 
 
-def team_features_update(data_df_in=pd.DataFrame, verbose=False):
+def team_features_update(data_df_in=pd.DataFrame, verbose=False, existing_feat_df=None):
+    """Add all team features to data_df_in (or a freshly loaded feature set if empty).
+
+    If existing_feat_df is provided (a previously computed team feature dataframe in this same
+    output format), computation is skipped entirely when there are no games beyond what it already
+    contains. Otherwise, since these features (rolling corsi/pk%, Elo ratings, etc.) are cumulative
+    within each team's own game history, the full history must still be recomputed for correctness,
+    but only the newly appearing games (by gameId) are appended to existing_feat_df in the result.
+    """
 
     if data_df_in.empty:
         data_df = load_sched_df_features(feat_set_label='team')
@@ -24,6 +32,14 @@ def team_features_update(data_df_in=pd.DataFrame, verbose=False):
 
     # features to add in the future
     future_features = ['ex_gf_per', 'ex_ga_per', 'shot_per']
+
+    # append mode: skip entirely if there are no games beyond what's already been computed
+    new_game_ids = None
+    if existing_feat_df is not None and not existing_feat_df.empty:
+        new_game_ids = set(data_df[cons.game_id_col]) - set(existing_feat_df[cons.game_id_col])
+        if not new_game_ids:
+            if verbose: print('\tNo new games to compute team features for.')
+            return existing_feat_df, team_features
 
     for feature in team_features:
 
@@ -139,6 +155,11 @@ def team_features_update(data_df_in=pd.DataFrame, verbose=False):
             data_df = compute_elo_ratings(data_df)
             data_df.drop(columns=[cons.elo_rat_col.format(pre='home'), cons.elo_rat_col.format(pre='away')], inplace=True)
             continue
+
+    # append mode: the full history above was recomputed for correctness (rolling/cumulative stats
+    # depend on each team's prior games), but only the newly appearing rows need to be appended
+    if new_game_ids is not None:
+        data_df = pd.concat([existing_feat_df, data_df.loc[data_df[cons.game_id_col].isin(new_game_ids)]], ignore_index=True)
 
     if data_df_in.empty:
         print(f'Writing team features...')
