@@ -1,5 +1,4 @@
 - FUTURE to-do list
-    - overall runtime optimization
     - team lineup / player values display
     - test new player values
     - fine-tune starting goalie model

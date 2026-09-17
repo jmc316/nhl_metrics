@@ -187,16 +187,18 @@ def daily_probability(today_dt, date_since, season, display_graphic=True):
             colors.append('lightblue')
 
     # Create bar chart
-    daily_revenue = list(odds_data_daily_full[f'{cons.winnings_col}_full'] + odds_data_daily_full[f'{cons.winnings_col}_hlf'] + odds_data_daily_full[f'{cons.winnings_col}_qtr'])
-    ax.bar(list(odds_data_daily_full[cons.game_date_col]), daily_revenue, color=colors, label='Revenue')
+    daily_revenue = list(odds_data_daily_full[f'{cons.winnings_col}_hlf'] + odds_data_daily_full[f'{cons.winnings_col}_qtr'])
+    ax.bar(list(odds_data_daily_full[cons.game_date_col]), daily_revenue, color=colors, label='Daily Return')
 
     # Create line chart on the same axis
-    ax.plot(list(odds_data_daily_full[cons.game_date_col]), list(odds_data_daily_full['full_daily_return']), color='red', label='Full Kelly')
+    # ax.plot(list(odds_data_daily_full[cons.game_date_col]), list(odds_data_daily_full['full_daily_return']), color='red', label='Full Kelly')
     ax.plot(list(odds_data_daily_full[cons.game_date_col]), list(odds_data_daily_full['hlf_daily_return']), color='blue', label='Half Kelly')
     ax.plot(list(odds_data_daily_full[cons.game_date_col]), list(odds_data_daily_full['qtr_daily_return']), color='purple', label='Quarter Kelly')
 
     # generate a plot chart for returns over the course of the time frame
     ax.set_title(f'Predictions Returns for {date_since} to {today_dt}')
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Return (Units)')
     ax.legend()
     plt.xticks(rotation=45, ha='right')
     plt.savefig(cons.season_pred_folder.format(date=today_dt) + cons.pred_ret_filename.format(date_since=date_since, today_dt=today_dt).replace('.csv', '.png'), bbox_inches='tight')

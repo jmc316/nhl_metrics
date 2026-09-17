@@ -50,7 +50,7 @@ def historic_predict(today_dt=None):
         today_dt = get_asofdate()
 
     print(f'Updating predictions for current season as of {today_dt}...\n')
-    feature_df, _ = predict_season(to_csv=True, today_dt=today_dt)
+    feature_df, _ = predict_season(to_csv=True, rnd_prob=False, today_dt=today_dt)
     feature_df_game_points = nhlu.assign_game_points(feature_df.loc[(feature_df[cons.game_type_col]==2) & (feature_df[cons.season_name_col]==max(feature_df[cons.season_name_col]))])
     season_results_df = nhlu.generate_final_standings(feature_df_game_points, today_dt, to_csv=True)
     if not feature_df.loc[(feature_df[cons.game_type_col]==2) &
