@@ -18,6 +18,9 @@ from sklearn.metrics import accuracy_score, roc_auc_score, log_loss, brier_score
 # avoid garbage collection
 matplotlib.use('Agg')
 
+# harmless warning from RandomForestClassifier(n_jobs=-1) fit/predict parallelism
+warnings.filterwarnings('ignore', message='.*sklearn.utils.parallel.delayed.*')
+
 
 def preprocess_feature_data(data_df_in):
     """Select and encode the feature columns used by the model, returning (encoded_df, feature_list)."""
@@ -120,18 +123,16 @@ def model_train(data_df, feature_list, save_model=True):
         print(f"Avg Model Validation Log Loss:      {fold_results_df['log_loss'].mean():.4f}")
         print(f"Avg Model Validation Brier Score:  {fold_results_df['brier'].mean():.4f}")
 
-        # n_jobs=-1 triggers a harmless sklearn/joblib delayed-propagation UserWarning
-        with warnings.catch_warnings():
-            warnings.filterwarnings('ignore', message='.*sklearn.utils.parallel.delayed.*')
-            perm_imp_result = permutation_importance(
-                val_model,           # your fitted RandomForestClassifier
-                X_val,
-                y_val,
-                n_repeats=10,    # shuffle each feature 10x, average the effect
-                random_state=42,
-                n_jobs=-1,       # parallelize across cores
-                scoring='accuracy'     # or 'neg_mean_squared_error', etc.
-            )
+        # n_jobs=-1 triggers a harmless sklearn/joblib delayed-propagation UserWarning (filtered at module level)
+        perm_imp_result = permutation_importance(
+            val_model,           # your fitted RandomForestClassifier
+            X_val,
+            y_val,
+            n_repeats=10,    # shuffle each feature 10x, average the effect
+            random_state=42,
+            n_jobs=-1,       # parallelize across cores
+            scoring='accuracy'     # or 'neg_mean_squared_error', etc.
+        )
 
         perm_imp_df = pd.DataFrame({
             'feature': X_val.columns,
