@@ -83,7 +83,7 @@ def model_train(data_df, feature_list, save_model=True):
         # Walk-forward loop: train on all seasons up to N, validate on season N+1
         fold_results = []
 
-        for i in range(1, len(seasons)):  # leave last season out as final holdout test
+        for i in range(1, len(seasons)):
             train_seasons = seasons[:i]
             val_season = seasons[i]
 
@@ -115,19 +115,32 @@ def model_train(data_df, feature_list, save_model=True):
         print('\nValidation Set Results:')
         print(fold_results_df)
 
+        tot_accuracy = (fold_results_df['accuracy'] * fold_results_df['n_val']).sum() / fold_results_df['n_val'].sum()
+        tot_auc = (fold_results_df['auc'] * fold_results_df['n_val']).sum() / fold_results_df['n_val'].sum()
+        tot_log_loss = (fold_results_df['log_loss'] * fold_results_df['n_val']).sum() / fold_results_df['n_val'].sum()
+        tot_brier = (fold_results_df['brier'] * fold_results_df['n_val']).sum() / fold_results_df['n_val'].sum()
+
         baseline_acc = (actual_df[cons.home_team_win_col] == 1).mean()
         print(f"Baseline Accuracy:              {baseline_acc:.3f}")
-        print(f"Avg Model Validation Accuracy:      {fold_results_df['accuracy'].mean():.4f}")
+        print(f"Avg Model Validation Accuracy:      {tot_accuracy:.4f}")
         print(f"Target AUC:                     0.68")
-        print(f"Avg Model Validation AUC:           {fold_results_df['auc'].mean():.4f}")
-        print(f"Avg Model Validation Log Loss:      {fold_results_df['log_loss'].mean():.4f}")
-        print(f"Avg Model Validation Brier Score:  {fold_results_df['brier'].mean():.4f}")
+        print(f"Avg Model Validation AUC:           {tot_auc:.4f}")
+        print(f"Avg Model Validation Log Loss:      {tot_log_loss:.4f}")
+        print(f"Avg Model Validation Brier Score:  {tot_brier:.4f}")
+
+        # train a final model on all actual data to use for the prediction set
+        print('\nFinalizing model data...')
+    final_model = init_model(random_state_in=42)
+    final_model.fit(actual_df[feature_list], actual_df[cons.home_team_win_col])
+
+    if save_model:
+        X_all, y_all = actual_df[feature_list], actual_df[cons.home_team_win_col]
 
         # n_jobs=-1 triggers a harmless sklearn/joblib delayed-propagation UserWarning (filtered at module level)
         perm_imp_result = permutation_importance(
-            val_model,           # your fitted RandomForestClassifier
-            X_val,
-            y_val,
+            final_model,
+            X_all,
+            y_all,
             n_repeats=10,    # shuffle each feature 10x, average the effect
             random_state=42,
             n_jobs=-1,       # parallelize across cores
@@ -135,7 +148,7 @@ def model_train(data_df, feature_list, save_model=True):
         )
 
         perm_imp_df = pd.DataFrame({
-            'feature': X_val.columns,
+            'feature': X_all.columns,
             'importance_mean': perm_imp_result.importances_mean,
             'importance_std': perm_imp_result.importances_std
         }).sort_values('importance_mean', ascending=False)
@@ -144,7 +157,7 @@ def model_train(data_df, feature_list, save_model=True):
         print(perm_imp_df)
 
         print('\nFeature Correlation Analysis:')
-        corr_matrix = X_val.corr()
+        corr_matrix = X_all.corr()
 
         # find all correlations that are greater than .7
         high_corr_pairs = []
@@ -157,12 +170,6 @@ def model_train(data_df, feature_list, save_model=True):
         for pair in high_corr_pairs:
             print(f'{pair[0]} - {pair[1]}: {pair[2]:.2f}')
 
-        # train a final model on all actual data to use for the prediction set
-        print('\nFinalizing model data...')
-    final_model = init_model(random_state_in=42)
-    final_model.fit(actual_df[feature_list], actual_df[cons.home_team_win_col])
-
-    if save_model:
         print('\nSaving model file...')
         pklSave(final_model, cons.model_files_folder, cons.sklearn_model_filename)
 

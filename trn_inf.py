@@ -35,7 +35,7 @@ def todate_predict():
                       (feature_df[cons.season_name_col]==max(feature_df[cons.season_name_col])) &
                       feature_df[cons.last_period_col].isna()].empty:
         season_name = feature_df[cons.season_name_col].max()[:4] + '-' + feature_df[cons.season_name_col].max()[4:]
-        nhlu.nhl_team_standings(season_name, season_results_df)
+        nhlu.nhl_team_standings(season_name, today_dt, season_results_df)
     playoff_df, _, _, _ = playoffs.playoff_tree_predictions(feature_df, season_results_df, today_dt)
 
     # set the first comparison date to the first date of the current season

@@ -9,7 +9,7 @@ import constants as cons
 def csvLoad(folder, filename):
 
     filepath = os.path.join(folder, filename)
-    dfdata = pd.read_csv(filepath)
+    dfdata = pd.read_csv(filepath, low_memory=False)
 
     if cons.season_name_col in dfdata.columns:
         dfdata[cons.season_name_col] = dfdata[cons.season_name_col].astype(str)

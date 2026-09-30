@@ -1,4 +1,5 @@
 import time
+import json
 
 import pandas as pd
 import requests
@@ -370,13 +371,13 @@ def fill_future_lineup(sched_df, player_df, season_type, term_out=True):
             home_team_name = row[cons.home_team_name_col]
             away_team_name = row[cons.away_team_name_col]
             if (home_team_name not in last_lineups) or (pd.notna(row[cons.home_lineup_col])):
-                if isinstance(row[cons.home_lineup_col], list):
-                    last_lineups[home_team_name] = row[cons.home_lineup_col]
+                if isinstance(row[cons.home_lineup_col], str) and row[cons.home_lineup_col].strip().startswith('['):
+                    last_lineups[home_team_name] = json.loads(row[cons.home_lineup_col])
                 else:
                     last_lineups[home_team_name] = []
             if (away_team_name not in last_lineups) or (pd.notna(row[cons.away_lineup_col])):
-                if isinstance(row[cons.away_lineup_col], list):
-                    last_lineups[away_team_name] = row[cons.away_lineup_col]
+                if isinstance(row[cons.away_lineup_col], str) and row[cons.away_lineup_col].strip().startswith('['):
+                    last_lineups[away_team_name] = json.loads(row[cons.away_lineup_col])
                 else:
                     last_lineups[away_team_name] = []
 
@@ -392,8 +393,8 @@ def fill_future_lineup(sched_df, player_df, season_type, term_out=True):
         for idx, row in sched_df.loc[(sched_df[cons.season_name_col] == cur_season) & (sched_df[cons.home_lineup_col].isna() | sched_df[cons.away_lineup_col].isna())].iterrows():
             home_team_name = row[cons.home_team_name_col]
             away_team_name = row[cons.away_team_name_col]
-            sched_df.at[idx, cons.home_lineup_col] = last_lineups.get(home_team_name, [])
-            sched_df.at[idx, cons.away_lineup_col] = last_lineups.get(away_team_name, [])
+            sched_df.at[idx, cons.home_lineup_col] = str(last_lineups.get(home_team_name, []))
+            sched_df.at[idx, cons.away_lineup_col] = str(last_lineups.get(away_team_name, []))
 
     return sched_df
 

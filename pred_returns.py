@@ -126,7 +126,7 @@ def daily_probability(today_dt, date_since, season, display_graphic=True):
     half_kelly_return = odds_data.loc[odds_data[cons.starttime_est_col].dt.date >= pd.to_datetime(date_since).date(), f'{cons.winnings_col}_hlf'].sum()
     qtr_kelly_return = odds_data.loc[odds_data[cons.starttime_est_col].dt.date >= pd.to_datetime(date_since).date(), f'{cons.winnings_col}_qtr'].sum()
 
-    if playoff_st_dt is not pd.NaT:
+    if pd.notna(playoff_st_dt):
         full_kelly_playoff_return = odds_data.loc[odds_data[cons.starttime_est_col].dt.date >= playoff_st_dt, f'{cons.winnings_col}_full'].sum()
         half_kelly_playoff_return = odds_data.loc[odds_data[cons.starttime_est_col].dt.date >= playoff_st_dt, f'{cons.winnings_col}_hlf'].sum()
         qtr_kelly_playoff_return = odds_data.loc[odds_data[cons.starttime_est_col].dt.date >= playoff_st_dt, f'{cons.winnings_col}_qtr'].sum()
@@ -148,11 +148,11 @@ def daily_probability(today_dt, date_since, season, display_graphic=True):
     num_games = len(odds_data.loc[odds_data[cons.starttime_est_col].dt.date >= pd.to_datetime(date_since).date()])
     print(f'\nSince {date_since}:')
     print(f'\tModel Win Accuracy: {num_correct_preds/num_games:.2%} ({num_correct_preds}/{num_games})')
-    print(f'\tFull Kelly return: {full_kelly_return:.2f}')
+    # print(f'\tFull Kelly return: {full_kelly_return:.2f}')
     print(f'\tHalf Kelly return: {half_kelly_return:.2f}')
     print(f'\tQuarter Kelly return: {qtr_kelly_return:.2f}\n')
 
-    if pd.to_datetime(today_dt).date() > playoff_st_dt:
+    if pd.notna(playoff_st_dt) and (pd.to_datetime(today_dt).date() > playoff_st_dt):
         num_correct_preds = odds_data.loc[odds_data[cons.starttime_est_col].dt.date >= playoff_st_dt, cons.cor_outcome_col].sum()
         num_games = len(odds_data.loc[odds_data[cons.starttime_est_col].dt.date>=playoff_st_dt])
         print(f'Since playoffs start ({playoff_st_dt}):')
@@ -173,7 +173,7 @@ def daily_probability(today_dt, date_since, season, display_graphic=True):
     ax.axhline(0, color='black', linewidth=0.8, linestyle='-')
 
     # create x=playoff_st_dt line (playoffs start)
-    if pd.to_datetime(today_dt).date() > playoff_st_dt:
+    if pd.notna(playoff_st_dt) and (pd.to_datetime(today_dt).date() > playoff_st_dt):
         ax.axvline(playoff_st_dt, color='green', linewidth=0.8, linestyle='--', label='Playoffs Start')
 
     # Define condition: green if perfect, red if 0% accuracy, blue otherwise

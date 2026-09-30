@@ -3,6 +3,7 @@
     - update all time schedule odds with schedule
 
 - FUTURE to-do list
+    - revisit model features used by importance mean
     - team lineup / player values display
     - test new player values
     - fine-tune starting goalie model
