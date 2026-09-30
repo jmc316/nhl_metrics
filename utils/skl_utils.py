@@ -1,5 +1,6 @@
 """Trains, runs inference with, and explains the scikit-learn RandomForest win-probability model."""
 
+import os
 import shap
 import warnings
 import matplotlib
@@ -18,7 +19,9 @@ from sklearn.metrics import accuracy_score, roc_auc_score, log_loss, brier_score
 # avoid garbage collection
 matplotlib.use('Agg')
 
-# harmless warning from RandomForestClassifier(n_jobs=-1) fit/predict parallelism
+# harmless warning from RandomForestClassifier(n_jobs=-1) fit/predict parallelism;
+# set via env var (not just warnings.filterwarnings) so it also applies inside spawned joblib worker processes
+os.environ.setdefault('PYTHONWARNINGS', 'ignore::UserWarning:sklearn.utils.parallel')
 warnings.filterwarnings('ignore', message='.*sklearn.utils.parallel.delayed.*')
 
 

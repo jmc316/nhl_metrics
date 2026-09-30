@@ -1,6 +1,7 @@
 - NOW to-do list
     - update stats in schedule file with schedule update
     - update all time schedule odds with schedule
+    - more accurate team lineup predictions
 
 - FUTURE to-do list
     - revisit model features used by importance mean

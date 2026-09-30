@@ -114,7 +114,16 @@ def get_team_goalies(sched_df, player_df, team_name):
     cur_season = sched_df[cons.season_name_col].max()
 
     # get the goalies listed on the team roster
-    team_roster_goalies_data = nhl_client.teams.team_roster(team_abbr=team_abbv, season=cur_season)['goalies']
+    while True:
+        try:
+            team_roster_goalies_data = nhl_client.teams.team_roster(team_abbr=team_abbv, season=cur_season)['goalies']
+            break
+        except Exception as ex:
+            # re-try the roster retrieval if there was a timeout error
+            print(f'\t\t... {ex} ...')
+            time.sleep(cons.api_timeout_wait_time)
+            continue
+        
     team_roster_goalies = {goalie['id']: f'{goalie['firstName']['default'][0]}. {goalie['lastName']['default']}' for goalie in team_roster_goalies_data}
 
     # add player value to each goalie on the team roster
