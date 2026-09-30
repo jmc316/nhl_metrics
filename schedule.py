@@ -118,7 +118,10 @@ def sched_update():
     sched_df_future = clean_schedule_df(sched_df_future)
 
     # get rid of any future games that are already covered in the missing schedule dataframe
-    sched_df_future = sched_df_future.loc[sched_df_future[cons.starttime_utc_col]>max(sched_df_missing[cons.starttime_utc_col])]
+    if not sched_df_missing.empty:
+        sched_df_future = sched_df_future.loc[sched_df_future[cons.starttime_utc_col]>max(sched_df_missing[cons.starttime_utc_col])]
+    else:
+        sched_df_future = sched_df_future.loc[sched_df_future[cons.starttime_utc_col]>max(sched_df_act[cons.starttime_utc_col])]
 
     sched_df = pd.concat([sched_df_act, sched_df_missing, sched_df_future], ignore_index=True)
 
@@ -133,6 +136,9 @@ def sched_update():
     ##############################################
     ### 4. SAVE ALL UPDATED SCHEDULES TO CSV FILES
     ##############################################
+
+    # update the odds file
+    update_odds_file(sched_df)
 
     # create a list of the files to save
     seasons_to_update = []
@@ -259,3 +265,31 @@ def clean_schedule_df(data_df):
             data_df[col] = data_df[col].astype(int)
 
     return data_df
+
+
+def update_odds_file(sched_df):
+
+    print('Updating odds file...')
+
+    sched_df[cons.starttime_est_col] = pd.to_datetime(sched_df[cons.starttime_utc_col]).dt.tz_convert(cons.est_tz)
+
+    # load the odds data
+    odds_df = csvLoad(cons.util_data_folder, cons.sched_odds_filename)
+
+    # merge the future schedule with the existing odds data
+    odds_data_cols = [cons.game_id_col, cons.home_odds_col, cons.away_odds_col]
+    updated_odds_df = pd.merge(odds_df[odds_data_cols], sched_df, on=cons.game_id_col, how='outer')
+
+    # only include seasons with odds data
+    updated_odds_df = updated_odds_df.loc[updated_odds_df[cons.season_name_col] >= '20252026']
+    updated_odds_df = updated_odds_df[[cons.game_id_col, cons.season_name_col, cons.game_type_col, 
+                                       cons.starttime_utc_col, cons.venue_timezone_col, cons.venue_col,
+                                       cons.home_team_name_col, cons.away_team_name_col, cons.home_team_score_col,
+                                       cons.away_team_score_col, cons.last_period_col, cons.home_odds_col,
+                                       cons.away_odds_col, cons.starttime_est_col]]
+
+    updated_odds_df.sort_values(by=[cons.starttime_utc_col, cons.home_team_name_col], inplace=True)
+    updated_odds_df.reset_index(drop=True, inplace=True)
+
+    # save the updated odds data back to the CSV file
+    csvSave(updated_odds_df, cons.util_data_folder, cons.sched_odds_filename)

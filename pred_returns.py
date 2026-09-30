@@ -34,7 +34,7 @@ def daily_probability(today_dt, date_since, season, display_graphic=True):
         return
 
     # load dataframe containing all odds data
-    odds_data = pd.read_csv(cons.util_data_folder + cons.sched_odds_filename)
+    odds_data = csvLoad(cons.util_data_folder, cons.sched_odds_filename)
 
     # merge the predictions into the odds data
     merge_cols = [cons.game_id_col, cons.home_team_name_col, cons.away_team_name_col]
@@ -214,7 +214,7 @@ def daily_probability(today_dt, date_since, season, display_graphic=True):
 def new_pred_disp(pred_df, today_dt, half_kelly_bankroll, qtr_kelly_bankroll):
 
     # load dataframe containing all odds data
-    odds_data = pd.read_csv(cons.util_data_folder + cons.sched_odds_filename)
+    odds_data = csvLoad(cons.util_data_folder, cons.sched_odds_filename)
 
     # merge the predictions into the odds data
     merge_cols = [cons.game_id_col, cons.home_team_name_col, cons.away_team_name_col]
