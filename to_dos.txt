@@ -1,3 +1,7 @@
+- NOW to-do list
+    - update stats in schedule file with schedule update
+    - update all time schedule odds with schedule
+
 - FUTURE to-do list
     - team lineup / player values display
     - test new player values

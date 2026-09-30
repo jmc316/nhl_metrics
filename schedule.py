@@ -47,10 +47,20 @@ def sched_update():
         print('\tSchedule data actuals update required...')
 
         # the last possible day of the season, no need to check games beyond this date
-        cur_season_enddt = pd.to_datetime(f'{cons.season_enddt}-{str(today_dt.year)}').date()
+        if today_dt.month > int(cons.season_enddt.split('-')[0]):
+            cur_season_enddt = pd.to_datetime(f'{cons.season_enddt}-{str(today_dt.year+1)}')
+        else:
+            cur_season_enddt = pd.to_datetime(f'{cons.season_enddt}-{str(today_dt.year)}')
+
+        update_range = pd.date_range(start=sched_last_act_dt, end=min(cur_season_enddt, pd.Timestamp(today_dt) - pd.Timedelta(days=1)), freq='D')
+
+        # remove any dates in the range that are in the offseason
+        cur_offseason_start = pd.to_datetime(f'{cons.season_enddt}-{str(today_dt.year)}')
+        cur_offseason_end = pd.to_datetime(f'{cons.season_stdt}-{str(today_dt.year)}')
+        update_range = update_range[(update_range < cur_offseason_start) | (update_range > cur_offseason_end)]
 
         # add schedule actuals data one date at a time
-        for game_date in pd.date_range(start=sched_last_act_dt, end=min(cur_season_enddt, today_dt - pd.Timedelta(days=1)), freq='D'):
+        for game_date in update_range:
             print(f'\t\t... {game_date.strftime("%Y-%m-%d")} ...')
             new_data = nhlc.get_sched_data(game_date, 0, True)
 
@@ -89,8 +99,11 @@ def sched_update():
     real_season_name = cons.cur_season_name # the name corresponding to the latest season schedule released by the NHL
     real_last_sched_dt = pd.to_datetime(f'{real_season_name[4:]}-{cons.season_enddt}', format=cons.date_format_yyyy_mm_dd).date()
 
+    # get the last Sunday before the real_last_sched_dt
+    last_sunday = real_last_act_dt - pd.Timedelta(days=real_last_act_dt.weekday() + 1)
+
     # loop through each week of the season and fetch the schedule data for that week, then concatenate it to the season schedule dataframe
-    for week in pd.date_range(start=real_last_act_dt + pd.Timedelta(days=1), end=real_last_sched_dt, freq='W'):
+    for week in pd.date_range(start=last_sunday, end=real_last_sched_dt, freq='W'):
 
         # if the week is in the offseason, skip to the next week
         cur_year_offseason_begin_dt = pd.to_datetime(f'{week.year}-{cons.season_enddt}', format=cons.date_format_yyyy_mm_dd) + pd.Timedelta(days=1)
@@ -103,6 +116,9 @@ def sched_update():
             sched_df_future = pd.concat([sched_df_future, nhlc.get_sched_data(week, dow, False)], ignore_index=True)
 
     sched_df_future = clean_schedule_df(sched_df_future)
+
+    # get rid of any future games that are already covered in the missing schedule dataframe
+    sched_df_future = sched_df_future.loc[sched_df_future[cons.starttime_utc_col]>max(sched_df_missing[cons.starttime_utc_col])]
 
     sched_df = pd.concat([sched_df_act, sched_df_missing, sched_df_future], ignore_index=True)
 
@@ -124,6 +140,7 @@ def sched_update():
         seasons_to_update.extend(list(sched_df_missing[cons.season_name_col].unique()))
     if not sched_df_future.empty:
         seasons_to_update.extend(list(sched_df_future[cons.season_name_col].unique()))
+    seasons_to_update = list(set(seasons_to_update))  # remove duplicates
 
     sched_df.sort_values(by=[cons.game_id_col, cons.starttime_utc_col, cons.home_team_name_col], inplace=True)
     for seasonname in seasons_to_update:

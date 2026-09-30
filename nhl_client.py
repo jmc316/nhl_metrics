@@ -64,14 +64,18 @@ def get_sched_data(week, dow, is_historical):
             goalie_dfs = []
             team_dfs = []
 
-            for gameId in weekly_sched[cons.game_id_col]:
+            # pre-create lineup columns as object dtype so lists can be assigned to individual cells
+            weekly_sched['homeTeamLineup'] = None
+            weekly_sched['awayTeamLineup'] = None
+
+            for idx, gameId in weekly_sched[cons.game_id_col].items():
 
                 pbp_data = nhl_client.game_center.play_by_play(gameId)
 
                 # get the lineup data
                 home_team_roster, away_team_roster = get_game_lineups(gameId, pbp_data=pbp_data)
-                weekly_sched.at[gameId, 'homeTeamLineup'] = home_team_roster
-                weekly_sched.at[gameId, 'awayTeamLineup'] = away_team_roster
+                weekly_sched.at[idx, 'homeTeamLineup'] = home_team_roster
+                weekly_sched.at[idx, 'awayTeamLineup'] = away_team_roster
 
                 # collect the goalie and team stats data for this game to merge in once after the loop
                 goalie_data = get_goalie_data(gameId)
@@ -247,46 +251,37 @@ def get_goalie_data(gameId):
         print(f"Failed to fetch data for game {gameId}. Skipping...")
         return None
 
-    home_goalies = boxscore_data['playerByGameStats']['homeTeam']['goalies']
-    away_goalies = boxscore_data['playerByGameStats']['awayTeam']['goalies']
+    game_row = {
+        cons.game_id_col: gameId,
+        cons.starttime_est_col: pd.to_datetime(boxscore_data['startTimeUTC']).tz_convert(cons.est_tz).tz_localize(None),
+    }
 
-    goalie_rows = []
+    # build a single wide row per game with home_/away_ prefixed goalie stats, keeping only the starter for each team
+    for team, goalies in (('home', boxscore_data['playerByGameStats']['homeTeam']['goalies']),
+                          ('away', boxscore_data['playerByGameStats']['awayTeam']['goalies'])):
+        for goalie in goalies:
+            if (goalie['toi'] == '00:00') or (not goalie['starter']):
+                continue
 
-    # loop through all goalies listed for this game and record info for the starters
-    for goalie in home_goalies + away_goalies:
+            game_row[f'{team}_goalie_name'] = goalie['name']['default']
+            game_row[f'{team}_goalie_id'] = goalie['playerId']
+            game_row[f'{team}_starter'] = goalie['starter']
+            game_row[f'{team}_toi_secs'] = int(goalie['toi'].split(':')[0])*60+int(goalie['toi'].split(':')[1])
+            game_row[f'{team}_ev_shots_against'] = int(goalie['evenStrengthShotsAgainst'].split('/')[1])
+            game_row[f'{team}_ev_saves'] = int(goalie['evenStrengthShotsAgainst'].split('/')[0])
+            game_row[f'{team}_ev_goals_against'] = int(goalie['evenStrengthGoalsAgainst'])
+            game_row[f'{team}_sh_shots_against'] = int(goalie['shorthandedShotsAgainst'].split('/')[1])
+            game_row[f'{team}_sh_saves'] = int(goalie['shorthandedShotsAgainst'].split('/')[0])
+            game_row[f'{team}_sh_goals_against'] = int(goalie['shorthandedGoalsAgainst'])
+            game_row[f'{team}_pp_shots_against'] = int(goalie['powerPlayShotsAgainst'].split('/')[1])
+            game_row[f'{team}_pp_saves'] = int(goalie['powerPlayShotsAgainst'].split('/')[0])
+            game_row[f'{team}_pp_goals_against'] = int(goalie['powerPlayGoalsAgainst'])
+            game_row[f'{team}_tot_shots_against'] = goalie['shotsAgainst']
+            game_row[f'{team}_tot_saves'] = goalie['saves']
+            game_row[f'{team}_tot_goals_against'] = goalie['goalsAgainst']
+            game_row[f'{team}_decision'] = goalie['decision'] if 'decision' in goalie else None
 
-        if (goalie['toi'] == '00:00') or (not goalie['starter']):
-            continue
-
-        if goalie in home_goalies:
-            team = 'home'
-        else:
-            team = 'away'
-
-        goalie_rows.append({
-            cons.game_id_col: gameId,
-            cons.starttime_est_col: pd.to_datetime(boxscore_data['startTimeUTC']).tz_convert(cons.est_tz).tz_localize(None),
-            'team': team,
-            'goalie_name': goalie['name']['default'],
-            'goalie_id': goalie['playerId'],
-            'starter': goalie['starter'],
-            'toi_secs': int(goalie['toi'].split(':')[0])*60+int(goalie['toi'].split(':')[1]),
-            'ev_shots_against': int(goalie['evenStrengthShotsAgainst'].split('/')[1]),
-            'ev_saves': int(goalie['evenStrengthShotsAgainst'].split('/')[0]),
-            'ev_goals_against': int(goalie['evenStrengthGoalsAgainst']),
-            'sh_shots_against': int(goalie['shorthandedShotsAgainst'].split('/')[1]),
-            'sh_saves': int(goalie['shorthandedShotsAgainst'].split('/')[0]),
-            'sh_goals_against': int(goalie['shorthandedGoalsAgainst']),
-            'pp_shots_against': int(goalie['powerPlayShotsAgainst'].split('/')[1]),
-            'pp_saves': int(goalie['powerPlayShotsAgainst'].split('/')[0]),
-            'pp_goals_against': int(goalie['powerPlayGoalsAgainst']),
-            'tot_shots_against': goalie['shotsAgainst'],
-            'tot_saves': goalie['saves'],
-            'tot_goals_against': goalie['goalsAgainst'],
-            'decision': goalie['decision'] if 'decision' in goalie else None,
-        })
-
-    return pd.DataFrame(goalie_rows)
+    return pd.DataFrame([game_row])
 
 
 def get_game_lineups(gameId, pbp_data=None):
@@ -304,6 +299,45 @@ def get_game_lineups(gameId, pbp_data=None):
     return sorted(home_team_roster), sorted(away_team_roster)
 
 
+def get_offseason_lineups(player_df, cur_season, sched_df_cur, term_out=True):
+
+    # get the current lineup availability for each team
+    team_lineups = {}
+
+    if term_out: print('\nGenerating team lineups from offseason rosters...')
+    for team_name in sched_df_cur.loc[sched_df_cur[cons.season_name_col] == cur_season, cons.home_team_name_col].unique():
+        team_roster_values = {}
+        team_abbv = cons.team_name_addrev_map[team_name]
+        while True:
+            try:
+                team_roster = nhl_client.teams.team_roster(team_abbr=team_abbv, season=cur_season)
+                break
+            except Exception as ex:
+                # re-try the roster retrieval if there was a timeout error
+                print(f'\t\t... {ex} ...')
+                time.sleep(cons.api_timeout_wait_time)
+                continue
+
+        # get the value for each player
+        for position in team_roster:
+            for player in team_roster[position]:
+                player_id = player['id']
+                if player_id in player_df['playerId'].values:
+                    value = player_df.loc[player_df['playerId']==player_id, 'value'].iloc[0]
+                else:
+                    value = pl_ut.DEFAULT_VALUE
+                team_roster_values.setdefault(position, {})[player_id] = value
+
+        # get the top 12 forwards, 6 defensemen, and 2 goalies from the roster
+        team_lineups[team_name] = {
+            'forwards': sorted(team_roster_values.get('forwards', {}).items(), key=lambda x: x[1], reverse=True)[:12],
+            'defensemen': sorted(team_roster_values.get('defensemen', {}).items(), key=lambda x: x[1], reverse=True)[:6],
+            'goalies': sorted(team_roster_values.get('goalies', {}).items(), key=lambda x: x[1], reverse=True)[:2],
+        }
+
+    return team_lineups
+
+
 def fill_future_lineup(sched_df, player_df, season_type, term_out=True):
 
     # the dataframe for the current season
@@ -314,33 +348,7 @@ def fill_future_lineup(sched_df, player_df, season_type, term_out=True):
     # if there have been no games played yet this season, construct lineups based off of offseason rosters
     if (sched_df_cur.loc[sched_df_cur[cons.last_period_col].notna()].empty) and season_type==2:
 
-        # get the current lineup availability for each team
-        team_lineups = {}
-
-        if term_out: print('\nGenerating team lineups from offseason rosters...')
-        for team_name in sched_df_cur.loc[sched_df_cur[cons.season_name_col] == cur_season, cons.home_team_name_col].unique():
-            team_roster_values = {}
-            team_abbv = cons.team_name_addrev_map[team_name]
-            team_roster = nhl_client.teams.team_roster(team_abbr=team_abbv, season=cur_season)
-    
-            # get the value for each player
-            for position in team_roster:
-                for player in team_roster[position]:
-                    player_id = player['id']
-                    if player_id in player_df['playerId'].values:
-                        value = player_df.loc[player_df['playerId']==player_id, 'value'].iloc[0]
-                    else:
-                        value = pl_ut.DEFAULT_VALUE
-                    team_roster_values.setdefault(position, {})[player_id] = value
-
-            # get the top 12 forwards, 6 defensemen, and 2 goalies from the roster
-            team_lineups[team_name] = {
-                'forwards': sorted(team_roster_values.get('forwards', {}).items(), key=lambda x: x[1], reverse=True)[:12],
-                'defensemen': sorted(team_roster_values.get('defensemen', {}).items(), key=lambda x: x[1], reverse=True)[:6],
-                'goalies': sorted(team_roster_values.get('goalies', {}).items(), key=lambda x: x[1], reverse=True)[:2],
-            }
-
-            pass
+        team_lineups = get_offseason_lineups(player_df, cur_season, sched_df_cur, term_out=term_out)
 
         # fill in the future lineup data based on the current best roster
         for idx, row in sched_df.loc[sched_df[cons.season_name_col] == cur_season].iterrows():
@@ -361,15 +369,31 @@ def fill_future_lineup(sched_df, player_df, season_type, term_out=True):
         for idx, row in sched_df_cur.iterrows():
             home_team_name = row[cons.home_team_name_col]
             away_team_name = row[cons.away_team_name_col]
-            last_lineups[home_team_name] = row[cons.home_lineup_col]
-            last_lineups[away_team_name] = row[cons.away_lineup_col]
+            if (home_team_name not in last_lineups) or (pd.notna(row[cons.home_lineup_col])):
+                if isinstance(row[cons.home_lineup_col], list):
+                    last_lineups[home_team_name] = row[cons.home_lineup_col]
+                else:
+                    last_lineups[home_team_name] = []
+            if (away_team_name not in last_lineups) or (pd.notna(row[cons.away_lineup_col])):
+                if isinstance(row[cons.away_lineup_col], list):
+                    last_lineups[away_team_name] = row[cons.away_lineup_col]
+                else:
+                    last_lineups[away_team_name] = []
+
+        # if some teams haven't played yet, get offseason lineups for them
+        team_lineups = get_offseason_lineups(player_df, cur_season, sched_df_cur, term_out=term_out)
+        for team in last_lineups:
+            if last_lineups[team] == []:
+                last_lineups[team] = [player_id for player_id, _ in team_lineups.get(team, {}).get('forwards', []) +
+                                         team_lineups.get(team, {}).get('defensemen', []) +
+                                         team_lineups.get(team, {}).get('goalies', [])]
 
         # fill in the future lineup data based on the last available lineups
-        for idx, row in sched_df.loc[sched_df[cons.season_name_col] == cur_season].iterrows():
+        for idx, row in sched_df.loc[(sched_df[cons.season_name_col] == cur_season) & (sched_df[cons.home_lineup_col].isna() | sched_df[cons.away_lineup_col].isna())].iterrows():
             home_team_name = row[cons.home_team_name_col]
             away_team_name = row[cons.away_team_name_col]
-            sched_df.at[idx, cons.home_lineup_col] = last_lineups.get(home_team_name, '[]')
-            sched_df.at[idx, cons.away_lineup_col] = last_lineups.get(away_team_name, '[]')
+            sched_df.at[idx, cons.home_lineup_col] = last_lineups.get(home_team_name, [])
+            sched_df.at[idx, cons.away_lineup_col] = last_lineups.get(away_team_name, [])
 
     return sched_df
 

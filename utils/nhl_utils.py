@@ -9,7 +9,7 @@ from utils.file_utils import csvSave
 from nhl_final_standings import main as nhl_final_standings_main
 
 
-def nhl_team_standings(season_name, data_df=None):
+def nhl_team_standings(season_name, today_dt=dt.now().date().strftime(cons.date_format_yyyy_mm_dd), data_df=None):
 
     if data_df is None:
         data_df = nhlc.get_nhl_team_standings()
@@ -40,7 +40,7 @@ def nhl_team_standings(season_name, data_df=None):
     print_wildcard_standings(west_conf_spots, 'Western')
 
     # generate the NHL final standings png image
-    nhl_final_standings_main(dt.now().date().strftime(cons.date_format_yyyy_mm_dd), season_name, False)
+    nhl_final_standings_main(today_dt, season_name, False)
 
     print()
 

@@ -56,7 +56,7 @@ def historic_predict(today_dt=None):
     if not feature_df.loc[(feature_df[cons.game_type_col]==2) &
                       (feature_df[cons.season_name_col]==max(feature_df[cons.season_name_col])) &
                       feature_df[cons.last_period_col].isna()].empty:
-        nhlu.nhl_team_standings(season_results_df)
+        nhlu.nhl_team_standings(season_results_df, today_dt=today_dt)
     playoff_df, _, _, _ = playoffs.playoff_tree_predictions(feature_df, season_results_df, today_dt)
 
     # set the first comparison date to the first date of the current season
