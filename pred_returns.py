@@ -204,3 +204,55 @@ def daily_probability(today_dt, date_since, season, display_graphic=True):
     plt.savefig(cons.season_pred_folder.format(date=today_dt) + cons.pred_ret_filename.format(date_since=date_since, today_dt=today_dt).replace('.csv', '.png'), bbox_inches='tight')
     # plt.show()
     plt.close()
+
+    half_kelly_bankroll = bankroll_init + odds_data_daily_full['hlf_daily_return'].sum()
+    qtr_kelly_bankroll = bankroll_init + odds_data_daily_full['qtr_daily_return'].sum()
+
+    return half_kelly_bankroll, qtr_kelly_bankroll
+
+
+def new_pred_disp(pred_df, today_dt, half_kelly_bankroll, qtr_kelly_bankroll):
+
+    # load dataframe containing all odds data
+    odds_data = pd.read_csv(cons.util_data_folder + cons.sched_odds_filename)
+
+    # merge the predictions into the odds data
+    merge_cols = [cons.game_id_col, cons.home_team_name_col, cons.away_team_name_col]
+    fut_odds_data = pd.merge(pred_df, odds_data[merge_cols+[cons.home_odds_col, cons.away_odds_col]], on=merge_cols, how='left')
+
+    # get games for the next prediction date
+    fut_odds_data = fut_odds_data.loc[pd.notna(fut_odds_data['homeTeamOdds']) & pd.isna(fut_odds_data['homeTeamScore'])]
+
+    # create value column
+    fut_odds_data.loc[fut_odds_data[cons.home_odds_col] > 0, cons.home_net_odds_col] = fut_odds_data[cons.home_odds_col] / 100
+    fut_odds_data.loc[fut_odds_data[cons.home_odds_col] < 0, cons.home_net_odds_col] = 100 / abs(fut_odds_data[cons.home_odds_col])
+    fut_odds_data.loc[fut_odds_data[cons.away_odds_col] > 0, cons.away_net_odds_col] = fut_odds_data[cons.away_odds_col] / 100
+    fut_odds_data.loc[fut_odds_data[cons.away_odds_col] < 0, cons.away_net_odds_col] = 100 / abs(fut_odds_data[cons.away_odds_col])
+    fut_odds_data.loc[fut_odds_data[cons.home_odds_col] > fut_odds_data[cons.away_odds_col], cons.expected_value_col] = fut_odds_data[cons.home_win_prob_col] * fut_odds_data[cons.home_net_odds_col] - fut_odds_data[cons.away_win_prob_col]
+    fut_odds_data.loc[fut_odds_data[cons.away_odds_col] > fut_odds_data[cons.home_odds_col], cons.expected_value_col] = fut_odds_data[cons.away_win_prob_col] * fut_odds_data[cons.away_net_odds_col] - fut_odds_data[cons.home_win_prob_col]
+
+    kelly_full_col = cons.kelly_per_col.format(size='full')
+    kelly_hlf_col = cons.kelly_per_col.format(size='hlf')
+    kelly_qtr_col = cons.kelly_per_col.format(size='qtr')
+    fut_odds_data.loc[(fut_odds_data[cons.home_odds_col] > fut_odds_data[cons.away_odds_col]) &
+                    (fut_odds_data[cons.expected_value_col] > 0), kelly_full_col] = (fut_odds_data[cons.home_net_odds_col]*fut_odds_data[cons.home_win_prob_col] - fut_odds_data[cons.away_win_prob_col]) / fut_odds_data[cons.home_net_odds_col]
+    fut_odds_data.loc[(fut_odds_data[cons.home_odds_col] < fut_odds_data[cons.away_odds_col]) &
+                    (fut_odds_data[cons.expected_value_col] > 0), kelly_full_col] = (fut_odds_data[cons.away_net_odds_col]*fut_odds_data[cons.away_win_prob_col] - fut_odds_data[cons.home_win_prob_col]) / fut_odds_data[cons.away_net_odds_col]
+    fut_odds_data[kelly_qtr_col] = fut_odds_data[kelly_full_col] / 4
+    fut_odds_data[kelly_hlf_col] = fut_odds_data[kelly_full_col] / 2
+
+    fut_odds_data = fut_odds_data.loc[fut_odds_data[cons.expected_value_col] > 0]
+
+    if fut_odds_data.empty:
+        print(f'No recommended plays for {today_dt}')
+    else:
+        print(f'Recommended plays for {today_dt}:')
+        for _, row in fut_odds_data.iterrows():
+            if row[cons.home_win_prob_col] > row[cons.away_win_prob_col]:
+                print(f"{row[cons.away_team_name_col]} at {row[cons.home_team_name_col].upper()} ({row[cons.home_odds_col]:.0f})")
+                print(f"\tModel Prediction: {row[cons.home_win_prob_col]:.2f}; Value: {row[cons.expected_value_col]:.2f}")
+                print(f"\tHalf Kelly: {row[kelly_hlf_col]*half_kelly_bankroll:.2f} units; Quarter Kelly: {row[kelly_qtr_col]*qtr_kelly_bankroll:.2f}\n")
+            if row[cons.away_win_prob_col] > row[cons.home_win_prob_col]:
+                print(f"{row[cons.away_team_name_col].upper()} ({row[cons.away_odds_col]:.0f}) at {row[cons.home_team_name_col]}")
+                print(f"\tModel Prediction: {row[cons.away_win_prob_col]:.2f}; Value: {row[cons.expected_value_col]:.2f}")
+                print(f"\tHalf Kelly: {row[kelly_hlf_col]*half_kelly_bankroll:.2f} units; Quarter Kelly: {row[kelly_qtr_col]*qtr_kelly_bankroll:.2f}\n")

@@ -8,7 +8,7 @@ import utils.skl_utils as sklu
 from datetime import datetime as dt
 from utils.file_utils import csvLoad
 from analyze import prediction_analysis
-from pred_returns import daily_probability
+from pred_returns import daily_probability, new_pred_disp
 from features.features import feature_data_load
 from predict import predict_season, playoff_spot_predictions
 
@@ -41,7 +41,8 @@ def todate_predict():
     # set the first comparison date to the first date of the current season
     prob_date_since = playoff_df.loc[playoff_df[cons.season_name_col]==playoff_df[cons.season_name_col].max(),
                                      cons.starttime_est_col].dt.date.min().strftime(cons.date_format_yyyy_mm_dd)
-    daily_probability(today_dt, season=playoff_df[cons.season_name_col].max(), date_since=prob_date_since)
+    half_kelly_bankroll, qtr_kelly_bankroll = daily_probability(today_dt, season=playoff_df[cons.season_name_col].max(), date_since=prob_date_since)
+    new_pred_disp(playoff_df, today_dt, half_kelly_bankroll, qtr_kelly_bankroll)
 
 
 def historic_predict(today_dt=None):
