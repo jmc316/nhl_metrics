@@ -379,12 +379,12 @@ def fill_future_lineup(sched_df, player_df, season_type, term_out=True):
         for idx, row in sched_df_cur.iterrows():
             home_team_name = row[cons.home_team_name_col]
             away_team_name = row[cons.away_team_name_col]
-            if (home_team_name not in last_lineups) or (pd.notna(row[cons.home_lineup_col])):
+            if (home_team_name not in last_lineups) or isinstance(row[cons.home_lineup_col], str):
                 if isinstance(row[cons.home_lineup_col], str) and row[cons.home_lineup_col].strip().startswith('['):
                     last_lineups[home_team_name] = json.loads(row[cons.home_lineup_col])
                 else:
                     last_lineups[home_team_name] = []
-            if (away_team_name not in last_lineups) or (pd.notna(row[cons.away_lineup_col])):
+            if (away_team_name not in last_lineups) or isinstance(row[cons.away_lineup_col], str):
                 if isinstance(row[cons.away_lineup_col], str) and row[cons.away_lineup_col].strip().startswith('['):
                     last_lineups[away_team_name] = json.loads(row[cons.away_lineup_col])
                 else:

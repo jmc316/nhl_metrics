@@ -249,10 +249,12 @@ def new_pred_disp(pred_df, today_dt, half_kelly_bankroll, qtr_kelly_bankroll):
         print(f'Recommended plays for {today_dt}:')
         for _, row in fut_odds_data.iterrows():
             if row[cons.home_win_prob_col] > row[cons.away_win_prob_col]:
-                print(f"{row[cons.away_team_name_col]} at {row[cons.home_team_name_col].upper()} ({row[cons.home_odds_col]:.0f})")
+                odds_str = f"{row[cons.home_odds_col]:.0f}" if row[cons.home_odds_col] < 0 else f"+{row[cons.home_odds_col]:.0f}"
+                print(f"{row[cons.away_team_name_col]} at {row[cons.home_team_name_col].upper()} ({odds_str})")
                 print(f"\tModel Prediction: {row[cons.home_win_prob_col]:.2f}; Value: {row[cons.expected_value_col]:.2f}")
                 print(f"\tHalf Kelly: {row[kelly_hlf_col]*half_kelly_bankroll:.2f} units; Quarter Kelly: {row[kelly_qtr_col]*qtr_kelly_bankroll:.2f}\n")
             if row[cons.away_win_prob_col] > row[cons.home_win_prob_col]:
-                print(f"{row[cons.away_team_name_col].upper()} ({row[cons.away_odds_col]:.0f}) at {row[cons.home_team_name_col]}")
+                odds_str = f"{row[cons.away_odds_col]:.0f}" if row[cons.away_odds_col] < 0 else f"+{row[cons.away_odds_col]:.0f}"
+                print(f"{row[cons.away_team_name_col].upper()} ({odds_str}) at {row[cons.home_team_name_col]}")
                 print(f"\tModel Prediction: {row[cons.away_win_prob_col]:.2f}; Value: {row[cons.expected_value_col]:.2f}")
                 print(f"\tHalf Kelly: {row[kelly_hlf_col]*half_kelly_bankroll:.2f} units; Quarter Kelly: {row[kelly_qtr_col]*qtr_kelly_bankroll:.2f}\n")

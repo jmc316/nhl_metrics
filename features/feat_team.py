@@ -596,7 +596,7 @@ def compute_elo_ratings(data_df, k=6, home_advantage=25, season_regress_factor=0
 
         # Skip rows where the game outcome is not yet known (e.g., future games)
         if pd.isna(row[cons.home_team_win_col]):
-            break
+            continue
         
         home_rating = elo_ratings[home_team]
         away_rating = elo_ratings[away_team]

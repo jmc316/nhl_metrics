@@ -87,6 +87,9 @@ def sched_update():
     else:
         real_last_act_dt = sched_last_act_dt
 
+    # remove the "missing" games from the actuals dataframe
+    sched_df_act = sched_df_act.loc[sched_df_act[cons.last_period_col].notna()]
+
     print('...Finished checking for updates to actual game results')
 
     ####################################################
@@ -278,7 +281,7 @@ def update_odds_file(sched_df):
 
     # merge the future schedule with the existing odds data
     odds_data_cols = [cons.game_id_col, cons.home_odds_col, cons.away_odds_col]
-    updated_odds_df = pd.merge(odds_df[odds_data_cols], sched_df, on=cons.game_id_col, how='outer')
+    updated_odds_df = pd.merge(odds_df[odds_data_cols], sched_df, on=cons.game_id_col, how='right')
 
     # only include seasons with odds data
     updated_odds_df = updated_odds_df.loc[updated_odds_df[cons.season_name_col] >= '20252026']

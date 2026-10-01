@@ -63,10 +63,10 @@ def predict_season(to_csv, rnd_prob, today_dt, feature_df = None, term_out=True,
             away_team = cons.team_name_addrev_map[row[cons.away_team_name_col]]
             ot_str = ' (OT)' if row[cons.last_period_col]=='OT' else ''
 
-            if row[cons.home_win_prob_col] > row[cons.away_win_prob_col]:
-                print(f"\t{away_team.lower()} {(row[cons.away_win_prob_col]*100):.2f} at {home_team} {(row[cons.home_win_prob_col]*100):.2f}{ot_str}")
-            else:
-                print(f"\t{away_team} {(row[cons.away_win_prob_col]*100):.2f} at {home_team.lower()} {(row[cons.home_win_prob_col]*100):.2f}{ot_str}")
+            # if row[cons.home_win_prob_col] > row[cons.away_win_prob_col]:
+            #     print(f"\t{away_team.lower()} {(row[cons.away_win_prob_col]*100):.2f} at {home_team} {(row[cons.home_win_prob_col]*100):.2f}{ot_str}")
+            # else:
+            #     print(f"\t{away_team} {(row[cons.away_win_prob_col]*100):.2f} at {home_team.lower()} {(row[cons.home_win_prob_col]*100):.2f}{ot_str}")
 
             # generate SHAP values chart for each of the games
             sklu.explain_predictions(pred_df.iloc[[idx]][feature_list],
