@@ -139,10 +139,11 @@ def daily_probability(today_dt, date_since, season, display_graphic=True):
         print(f'Yesterday\'s games and returns ({total_daily_return:.2f}):')
         for _, row in odds_data.loc[odds_data[cons.starttime_est_col].dt.date == (pd.to_datetime(today_dt) - datetime.timedelta(days=1)).date()].iterrows():
             ot_str = ' (OT)' if row[cons.last_period_col]=='OT' else ''
+            winnings = f"{row[f'{cons.winnings_col}_qtr']:.2f}" if pd.notna(row[f'{cons.winnings_col}_qtr']) else 'N/A'
             if row[cons.home_team_score_col] > row[cons.away_team_score_col]:
-                print(f"\t{cons.team_name_addrev_map[row[cons.away_team_name_col]].lower()} {int(row[cons.away_team_score_col])} at {cons.team_name_addrev_map[row[cons.home_team_name_col]]} {int(row[cons.home_team_score_col])}{ot_str}: {row[f'{cons.winnings_col}_qtr']:.2f}")
+                print(f"\t{cons.team_name_addrev_map[row[cons.away_team_name_col]].lower()} {int(row[cons.away_team_score_col])} at {cons.team_name_addrev_map[row[cons.home_team_name_col]]} {int(row[cons.home_team_score_col])}{ot_str}: {winnings}")
             else:
-                print(f"\t{cons.team_name_addrev_map[row[cons.away_team_name_col]]} {int(row[cons.away_team_score_col])} at {cons.team_name_addrev_map[row[cons.home_team_name_col]].lower()} {int(row[cons.home_team_score_col])}{ot_str}: {row[f'{cons.winnings_col}_qtr']:.2f}")
+                print(f"\t{cons.team_name_addrev_map[row[cons.away_team_name_col]]} {int(row[cons.away_team_score_col])} at {cons.team_name_addrev_map[row[cons.home_team_name_col]].lower()} {int(row[cons.home_team_score_col])}{ot_str}: {winnings}")
 
     num_correct_preds = odds_data.loc[odds_data[cons.starttime_est_col].dt.date >= pd.to_datetime(date_since).date(), cons.cor_outcome_col].sum()
     num_games = len(odds_data.loc[odds_data[cons.starttime_est_col].dt.date >= pd.to_datetime(date_since).date()])
@@ -244,7 +245,7 @@ def new_pred_disp(pred_df, today_dt, half_kelly_bankroll, qtr_kelly_bankroll):
     fut_odds_data = fut_odds_data.loc[fut_odds_data[cons.expected_value_col] > 0]
 
     if fut_odds_data.empty:
-        print(f'No recommended plays for {today_dt}')
+        print(f'No recommended plays for {today_dt}\n')
     else:
         print(f'Recommended plays for {today_dt}:')
         for _, row in fut_odds_data.iterrows():
