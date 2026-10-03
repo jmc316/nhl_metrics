@@ -37,7 +37,7 @@ def predict_starting_goalies_simple(sched_df, player_df, season_type, term_out=T
         'Vancouver Canucks': 'K. Lankinen',
         'Vegas Golden Knights': 'C. Hart',
         'Washington Capitals': 'L. Thompson',
-        'Winnipeg Jets': 'C. Hellebuyck',
+        'Winnipeg Jets': 'S. Skinner',
     }
 
     sched_df_cur = sched_df.loc[(sched_df[cons.season_name_col] == sched_df[cons.season_name_col].max()) &
@@ -48,7 +48,6 @@ def predict_starting_goalies_simple(sched_df, player_df, season_type, term_out=T
     # get the current goalies for every team
     if term_out: print('\nGenerating current goalies per team...')
     for team_name in sorted(sched_df_cur[cons.home_team_name_col].unique()):
-        
         goalies_per_team[team_name] = get_team_goalies(sched_df, player_df=player_df, team_name=team_name)
 
     # get the starting goalie for each team based on each team's highest valued goalie
@@ -86,8 +85,6 @@ def predict_starting_goalies(sched_df, player_df):
 
     print('Creating starting goalie data...')
     start_goalie_df = create_starting_goalie_data(sched_df)
-
-    pass
 
     return sched_df
 

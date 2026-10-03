@@ -55,7 +55,7 @@ def predict_season(to_csv, rnd_prob, today_dt, feature_df = None, term_out=True,
 
     # print next game day's predictions into the terminal
     if term_out:
-        print(f'\nPredicted game results for {print_dt.strftime("%Y-%m-%d")}:')
+        # print(f'\nPredicted game results for {print_dt.strftime("%Y-%m-%d")}:')
         explainer = shap.TreeExplainer(model)
         for idx, row in first_pred_dt_df.iterrows():
 

@@ -351,8 +351,7 @@ def get_offseason_lineups(player_df, cur_season, sched_df_cur, term_out=True):
 def fill_future_lineup(sched_df, player_df, season_type, term_out=True):
 
     # the dataframe for the current season
-    sched_df_cur = sched_df.loc[(sched_df[cons.season_name_col] == sched_df[cons.season_name_col].max()) &
-                                (sched_df[cons.game_type_col] == season_type)]
+    sched_df_cur = sched_df.loc[(sched_df[cons.season_name_col] == sched_df[cons.season_name_col].max())]
     cur_season = sched_df_cur[cons.season_name_col].max()
 
     # if there have been no games played yet this season, construct lineups based off of offseason rosters
@@ -391,12 +390,13 @@ def fill_future_lineup(sched_df, player_df, season_type, term_out=True):
                     last_lineups[away_team_name] = []
 
         # if some teams haven't played yet, get offseason lineups for them
-        team_lineups = get_offseason_lineups(player_df, cur_season, sched_df_cur, term_out=term_out)
-        for team in last_lineups:
-            if last_lineups[team] == []:
-                last_lineups[team] = [player_id for player_id, _ in team_lineups.get(team, {}).get('forwards', []) +
-                                         team_lineups.get(team, {}).get('defensemen', []) +
-                                         team_lineups.get(team, {}).get('goalies', [])]
+        if [team for team in last_lineups if last_lineups[team]==[]]:
+            team_lineups = get_offseason_lineups(player_df, cur_season, sched_df_cur, term_out=term_out)
+            for team in last_lineups:
+                if last_lineups[team] == []:
+                    last_lineups[team] = [player_id for player_id, _ in team_lineups.get(team, {}).get('forwards', []) +
+                                             team_lineups.get(team, {}).get('defensemen', []) +
+                                             team_lineups.get(team, {}).get('goalies', [])]
 
         # fill in the future lineup data based on the last available lineups
         for idx, row in sched_df.loc[(sched_df[cons.season_name_col] == cur_season) & (sched_df[cons.home_lineup_col].isna() | sched_df[cons.away_lineup_col].isna())].iterrows():

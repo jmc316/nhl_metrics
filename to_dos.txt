@@ -1,5 +1,6 @@
 - NOW to-do list
     - more accurate team lineup predictions
+    - starting goalies for playoffs can be re-used to save runtime
 
 - FUTURE to-do list
     - revisit model features used by importance mean
