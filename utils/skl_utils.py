@@ -22,6 +22,7 @@ matplotlib.use('Agg')
 # harmless warning from RandomForestClassifier(n_jobs=-1) fit/predict parallelism;
 # set via env var (not just warnings.filterwarnings) so it also applies inside spawned joblib worker processes
 os.environ.setdefault('PYTHONWARNINGS', 'ignore::UserWarning:sklearn.utils.parallel')
+warnings.filterwarnings('ignore', category=UserWarning, module=r'sklearn\.utils\.parallel')
 warnings.filterwarnings('ignore', message='.*sklearn.utils.parallel.delayed.*')
 
 
@@ -139,16 +140,19 @@ def model_train(data_df, feature_list, save_model=True):
     if save_model:
         X_all, y_all = actual_df[feature_list], actual_df[cons.home_team_win_col]
 
-        # n_jobs=-1 triggers a harmless sklearn/joblib delayed-propagation UserWarning (filtered at module level)
-        perm_imp_result = permutation_importance(
-            final_model,
-            X_all,
-            y_all,
-            n_repeats=10,    # shuffle each feature 10x, average the effect
-            random_state=42,
-            n_jobs=-1,       # parallelize across cores
-            scoring='accuracy'     # or 'neg_mean_squared_error', etc.
-        )
+        # n_jobs=-1 spawns loky worker processes that re-emit the harmless delayed-propagation UserWarning
+        # regardless of module-level filters, so suppress it locally around this call too
+        with warnings.catch_warnings():
+            warnings.filterwarnings('ignore', category=UserWarning, module=r'sklearn\.utils\.parallel')
+            perm_imp_result = permutation_importance(
+                final_model,
+                X_all,
+                y_all,
+                n_repeats=10,    # shuffle each feature 10x, average the effect
+                random_state=42,
+                n_jobs=-1,       # parallelize across cores
+                scoring='accuracy'     # or 'neg_mean_squared_error', etc.
+            )
 
         perm_imp_df = pd.DataFrame({
             'feature': X_all.columns,
