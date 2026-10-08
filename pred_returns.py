@@ -206,8 +206,8 @@ def daily_probability(today_dt, date_since, season, display_graphic=True):
     # plt.show()
     plt.close()
 
-    half_kelly_bankroll = bankroll_init + odds_data_daily_full['hlf_daily_return'].sum()
-    qtr_kelly_bankroll = bankroll_init + odds_data_daily_full['qtr_daily_return'].sum()
+    half_kelly_bankroll = bankroll_init + odds_data_daily_full['hlf_daily_return'].iloc[-1]
+    qtr_kelly_bankroll = bankroll_init + odds_data_daily_full['qtr_daily_return'].iloc[-1]
 
     return half_kelly_bankroll, qtr_kelly_bankroll
 
