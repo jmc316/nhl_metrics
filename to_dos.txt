@@ -1,4 +1,6 @@
 - NOW to-do list
+    - pipeline for daily updates (1-4, fill in odds, assign starting goalies, etc)
+    - manual fill in of projected goalies
     - more accurate team lineup predictions
     - starting goalies for playoffs can be re-used to save runtime
 

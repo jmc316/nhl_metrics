@@ -24,7 +24,7 @@ def predict_starting_goalies_simple(sched_df, player_df, season_type, term_out=T
         'Nashville Predators': 'J. Saros',
         'New Jersey Devils': 'J. Allen',
         'New York Islanders': 'I. Sorokin',
-        'New York Rangers': 'I. Shesterkin',
+        'New York Rangers': 'D. Garand',
         'Ottawa Senators': 'L. Ullmark',
         'Philadelphia Flyers': 'D. Vladar',
         'Pittsburgh Penguins': 'A. Silovs',

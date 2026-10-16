@@ -180,9 +180,9 @@ def daily_probability(today_dt, date_since, season, display_graphic=True):
     # Define condition: green if perfect, red if 0% accuracy, blue otherwise
     colors = []
     for date in odds_data_daily_full[cons.game_date_col]:
-        if odds_data.loc[pd.to_datetime(odds_data[cons.game_date_col]) == dt.strftime(date, cons.date_format_yyyy_mm_dd), cons.cor_outcome_col].mean() == 1.0:
+        if odds_data.loc[(pd.to_datetime(odds_data[cons.game_date_col]) == dt.strftime(date, cons.date_format_yyyy_mm_dd)) & odds_data[f'{cons.winnings_col}_hlf'].notna(), cons.cor_outcome_col].mean() == 1.0:
             colors.append('green')
-        elif odds_data.loc[pd.to_datetime(odds_data[cons.game_date_col]) == dt.strftime(date, cons.date_format_yyyy_mm_dd), cons.cor_outcome_col].mean() == 0.0:
+        elif odds_data.loc[(pd.to_datetime(odds_data[cons.game_date_col]) == dt.strftime(date, cons.date_format_yyyy_mm_dd)) & odds_data[f'{cons.winnings_col}_hlf'].notna(), cons.cor_outcome_col].mean() == 0.0:
             colors.append('red')
         else:
             colors.append('lightblue')
