@@ -17,15 +17,15 @@ def predict_starting_goalies_simple(sched_df, player_df, season_type, term_out=T
         'Dallas Stars': 'J. Oettinger',
         'Detroit Red Wings': 'J. Gibson',
         'Edmonton Oilers': 'T. Jarry',
-        'Florida Panthers': 'J. Markstrom',
+        'Florida Panthers': 'A. Schmid',
         'Los Angeles Kings': 'D. Kuemper',
         'Minnesota Wild': 'J. Wallstedt',
         'Montréal Canadiens': 'J. Dobes',
         'Nashville Predators': 'J. Saros',
-        'New Jersey Devils': 'J. Allen',
+        'New Jersey Devils': 'C. Hellebuyck',
         'New York Islanders': 'I. Sorokin',
         'New York Rangers': 'D. Garand',
-        'Ottawa Senators': 'L. Ullmark',
+        'Ottawa Senators': 'J. Johansson',
         'Philadelphia Flyers': 'D. Vladar',
         'Pittsburgh Penguins': 'A. Silovs',
         'San Jose Sharks': 'Y. Askarov',
@@ -54,7 +54,14 @@ def predict_starting_goalies_simple(sched_df, player_df, season_type, term_out=T
     starting_goalies = {}
     for team_name, goalies in goalies_per_team.items():
 
-        top_goalie = [goalie for goalie in goalies if set_starting_goalies[team_name]==goalie['goalie_name']][0]
+        top_goalie = [goalie for goalie in goalies if set_starting_goalies[team_name]==goalie['goalie_name']]
+
+        # if the expected starting goalie is found in the list of goalies, use it;
+        # otherwise, fall back to the highest rated available goalie
+        if top_goalie:
+            top_goalie = top_goalie[0]
+        else:
+            top_goalie = max(goalies_per_team[team_name], key=lambda g: g['value'])
 
         # top_goalie = max(goalies, key=lambda g: g['value'])
         # print(f"{team_name} starting goalie: {top_goalie['goalie_name']} (Value: {top_goalie['value']})")
