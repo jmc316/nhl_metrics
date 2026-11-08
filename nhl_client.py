@@ -52,9 +52,14 @@ def get_sched_data(week, dow, is_historical):
 
         # if the game has already been played, extract the scores and last period type from the raw data; otherwise, set these columns to None for now and they will be filled in with predictions later
         if cons.game_outcome_col in weekly_sched_raw.columns:
-            weekly_sched[cons.away_team_score_col] = [item['score'] for item in weekly_sched_raw[cons.away_team_col]]
-            weekly_sched[cons.home_team_score_col] = [item['score'] for item in weekly_sched_raw[cons.home_team_col]]
-            weekly_sched[cons.last_period_col] = [item['lastPeriodType'] for item in weekly_sched_raw[cons.game_outcome_col]]
+            try:
+                weekly_sched[cons.away_team_score_col] = [item['score'] for item in weekly_sched_raw[cons.away_team_col]]
+                weekly_sched[cons.home_team_score_col] = [item['score'] for item in weekly_sched_raw[cons.home_team_col]]
+                weekly_sched[cons.last_period_col] = [item['lastPeriodType'] for item in weekly_sched_raw[cons.game_outcome_col]]
+            except KeyError:
+                weekly_sched[cons.away_team_score_col] = None
+                weekly_sched[cons.home_team_score_col] = None
+                weekly_sched[cons.last_period_col] = None
         else:
             weekly_sched[cons.away_team_score_col] = None
             weekly_sched[cons.home_team_score_col] = None
