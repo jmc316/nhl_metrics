@@ -47,20 +47,19 @@ def predict_starting_goalies_simple(sched_df, player_df, season_type, term_out=T
 
     # get the current goalies for every team
     if term_out: print('\nGenerating current goalies per team...')
-    for team_name in sorted(sched_df_cur[cons.home_team_name_col].unique()):
-        goalies_per_team[team_name] = get_team_goalies(sched_df, player_df=player_df, team_name=team_name)
 
     # get the starting goalie for each team based on each team's highest valued goalie
     starting_goalies = {}
     for team_name, goalies in goalies_per_team.items():
 
-        top_goalie = [goalie for goalie in goalies if set_starting_goalies[team_name]==goalie['goalie_name']]
+        top_goalies = [goalie for goalie in goalies if set_starting_goalies[team_name]==goalie['goalie_name']]
 
         # if the expected starting goalie is found in the list of goalies, use it;
         # otherwise, fall back to the highest rated available goalie
-        if top_goalie:
-            top_goalie = top_goalie[0]
+        if top_goalies:
+            top_goalie = top_goalies[0]
         else:
+            goalies_per_team[team_name] = get_team_goalies(sched_df, player_df=player_df, team_name=team_name)
             top_goalie = max(goalies_per_team[team_name], key=lambda g: g['value'])
 
         # top_goalie = max(goalies, key=lambda g: g['value'])
