@@ -2,7 +2,6 @@
     - pipeline for daily updates (1-4, fill in odds, assign starting goalies, etc)
     - manual fill in of projected goalies
     - more accurate team lineup predictions
-    - default starting goalies fail for goalies on IR?
 
 - FUTURE to-do list
     - revisit model features used by importance mean
